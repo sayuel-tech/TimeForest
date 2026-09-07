@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "recorded_at": "2026-09-07T03:55:50+00:00",
-  "note": "按用户明确授权将首页、视频分镜、图片候选、资产库四张原始截图加入README与中文介绍，配图注/导航并折叠技术内容；同步截图来源哈希、地图、AGENTS、分享、交接和指纹覆盖。原图哈希、相对链接与GitHub Markdown渲染检查通过，仅文档，无业务或生成测试。",
+  "recorded_at": "2026-09-07T04:02:33+00:00",
+  "note": "README安装段与独立分发说明加入用户提供的夸克配套工具包链接和提取码xUnt，保留install复制步骤；同步地图和交接，AGENTS正文规则不变。链接文字/差异检查通过，未下载重验云盘文件，未改业务或配套ZIP。",
   "no_doc_change_reason": "",
-  "snapshot_id": "b32c3c9c51585f57",
+  "snapshot_id": "f071c739dae09d4d",
   "snapshot": {
     "config_sha256": "8dc31b1cf3a97fe19f7e60ded24e08a84d2a1b56f5ded1e31e057b2f6673f19a",
     "version": {
@@ -16,8 +16,8 @@
     },
     "required_files": {
       "AGENTS.md": "5a21fee481846c1ea75d239d49a63855df287b24615a43a18f60674b1cbfa773",
-      "PROJECT_GUIDE.md": "bbbec08b478c5f9636c95005619e247435d194b3c44fa68fb278a0f3627b1eb1",
-      "README.md": "1da0e80faef62e17d74e351c8d460b6188a7d78b1fae6ff8a82bb941bfc0db94",
+      "PROJECT_GUIDE.md": "d6c23bfddcb59eae92807810aa04ca3005eda2d7428c2416e0534ac52c135b84",
+      "README.md": "3fbe37bddc7f0fc5c54ed0c8927f472761ed820856dcd7d6c050a16d1194bcbc",
       "docs/asset-library-architecture.md": "d00c7fd3d3ca1c1293e2b1c8fd11511282e6689e7fb20b3ca30cf5e3ff729ccc",
       "docs/asset-library-maintenance.md": "5f8aecf6cf70ea8e36a6ee8ea5a4b7104f97652e66ec9f3e121875ef2db78291",
       "docs/candidate-records.md": "6df0495160800c4ee2feddf0dbb6c159079007d82966822bb3191518c82b42b0",
@@ -35,12 +35,12 @@
       "docs/image-assets.md": "b7aba1d57003bdd48adbbfc992d3b34367ec2a683be991f96d6449037bbc5458",
       "docs/images/manifest.json": "db2fefd2a84c8471f1aae5a3d1f6d53fdf3fe9ef3d87e5b3761f4dbaad04bd36",
       "docs/local-model-catalog.md": "d23d559018fb18d79bee981ea5756c1f08ee93cf94ea9a5589cf3abdb30b906e",
-      "docs/maintenance-baseline.md": "9bb55141106a269810ed493845d4760f3c795fa61467beb72dad73c3eabe70e6",
+      "docs/maintenance-baseline.md": "385f86fb6ff70a94a5028405c480e7c0b9d3ba7a35505251d152c7d37fa727fb",
       "docs/product/module-contracts.md": "ae1268b695f1aa7db57d65582426dd15f3fdf12381780750bfcc71401b584d74",
       "docs/project-archive-deletion.md": "07b7676e7b77a7468b33827ba05490f9da2a48784c1de1b90e44f8cb3cbae6d1",
       "docs/prompts/swap-template-v3.md": "ab046240abf986e5642b1beca0aa82f6c39f25588f934fef60e70df6a4e411d0",
       "docs/recycle-bin.md": "c015cc91e51551248151b537f5663628630a6c82a147daefad369460d099a7eb",
-      "docs/release-distribution.md": "d8c76eb956a0ed07d96708235af17cdf90e2cd1a28e8a6fecd52cf182f2a819f",
+      "docs/release-distribution.md": "7f32a483a1237459ea90c704be8774752964fc11c932648a361a5c34d2ded1e7",
       "docs/task-queue.md": "b6d815090747388b7fdfceadc5ff2c38bf70f6ef20cb9a7a363616a0391f8afa",
       "static/index.html": "9cb9c571a2e2a35778ce931a56f93fb50eac8079cff3fc2da4b760882e913311",
       "static/studio/app/mode-registry.js": "4011c98310ac00a4d14a698281de94b20329ee27c82791c1a332fb0c37daaa4d",
@@ -125,8 +125,8 @@
           "static/styles/tokens.css": "1739b6502ce29d633902d5adb29f1578b647f7413f8e97147216cf9021beb4bd"
         },
         "docs": {
-          "PROJECT_GUIDE.md": "bbbec08b478c5f9636c95005619e247435d194b3c44fa68fb278a0f3627b1eb1",
-          "docs/maintenance-baseline.md": "9bb55141106a269810ed493845d4760f3c795fa61467beb72dad73c3eabe70e6",
+          "PROJECT_GUIDE.md": "d6c23bfddcb59eae92807810aa04ca3005eda2d7428c2416e0534ac52c135b84",
+          "docs/maintenance-baseline.md": "385f86fb6ff70a94a5028405c480e7c0b9d3ba7a35505251d152c7d37fa727fb",
           "docs/frontend/README.md": "a344ff0076f7e52a1d2ecd3bd15aeb46bfb910d31589962a14145d83ae7fce16",
           "docs/frontend/image-workspace-ui.md": "cf9843f567cef43fe069073771094a3798b78f42631b4128781c632226ab4f12",
           "docs/frontend/parameter-and-interaction-contract.md": "0636c4659c93a078ca4e674dc74826cb1ef7120f26d83a275f8249933d9250ab",
@@ -180,8 +180,8 @@
           "h3ui/swap_template_v3.py": "a7b2d3a10ca0fafe2447c941122f62bfd911359190024043a4f130ddf3b32c98"
         },
         "docs": {
-          "PROJECT_GUIDE.md": "bbbec08b478c5f9636c95005619e247435d194b3c44fa68fb278a0f3627b1eb1",
-          "docs/maintenance-baseline.md": "9bb55141106a269810ed493845d4760f3c795fa61467beb72dad73c3eabe70e6",
+          "PROJECT_GUIDE.md": "d6c23bfddcb59eae92807810aa04ca3005eda2d7428c2416e0534ac52c135b84",
+          "docs/maintenance-baseline.md": "385f86fb6ff70a94a5028405c480e7c0b9d3ba7a35505251d152c7d37fa727fb",
           "docs/frontend/parameter-map.md": "d1795006c07d2ceb8755187535352b0f51b7527504aeacec81d07c9d1ed65692",
           "docs/image-assets.md": "b7aba1d57003bdd48adbbfc992d3b34367ec2a683be991f96d6449037bbc5458",
           "docs/local-model-catalog.md": "d23d559018fb18d79bee981ea5756c1f08ee93cf94ea9a5589cf3abdb30b906e",
@@ -215,8 +215,8 @@
           "h3ui/task_center.py": "97f0629b9c7aa595317b73a61d738a3bf7548235a75e00f9b9baded4a468899a"
         },
         "docs": {
-          "PROJECT_GUIDE.md": "bbbec08b478c5f9636c95005619e247435d194b3c44fa68fb278a0f3627b1eb1",
-          "docs/maintenance-baseline.md": "9bb55141106a269810ed493845d4760f3c795fa61467beb72dad73c3eabe70e6",
+          "PROJECT_GUIDE.md": "d6c23bfddcb59eae92807810aa04ca3005eda2d7428c2416e0534ac52c135b84",
+          "docs/maintenance-baseline.md": "385f86fb6ff70a94a5028405c480e7c0b9d3ba7a35505251d152c7d37fa727fb",
           "docs/asset-library-architecture.md": "d00c7fd3d3ca1c1293e2b1c8fd11511282e6689e7fb20b3ca30cf5e3ff729ccc",
           "docs/asset-library-maintenance.md": "5f8aecf6cf70ea8e36a6ee8ea5a4b7104f97652e66ec9f3e121875ef2db78291",
           "docs/project-archive-deletion.md": "07b7676e7b77a7468b33827ba05490f9da2a48784c1de1b90e44f8cb3cbae6d1",
@@ -301,15 +301,15 @@
           "tools/test_context_guard.py": "58bfe13e4893bdb999e789055a3e262f1e877bc89963ccbb94d84b64c5c4aeaf"
         },
         "docs": {
-          "README.md": "1da0e80faef62e17d74e351c8d460b6188a7d78b1fae6ff8a82bb941bfc0db94",
-          "PROJECT_GUIDE.md": "bbbec08b478c5f9636c95005619e247435d194b3c44fa68fb278a0f3627b1eb1",
-          "docs/maintenance-baseline.md": "9bb55141106a269810ed493845d4760f3c795fa61467beb72dad73c3eabe70e6",
+          "README.md": "3fbe37bddc7f0fc5c54ed0c8927f472761ed820856dcd7d6c050a16d1194bcbc",
+          "PROJECT_GUIDE.md": "d6c23bfddcb59eae92807810aa04ca3005eda2d7428c2416e0534ac52c135b84",
+          "docs/maintenance-baseline.md": "385f86fb6ff70a94a5028405c480e7c0b9d3ba7a35505251d152c7d37fa727fb",
           "docs/governance/context-maintenance.md": "1eacaacba4a0330fb3c1a1d167eb8188ebdaa6168d118d5238bfd3dc0c2f505c",
           "docs/governance/checks-and-release.md": "7fe1b5e6a31238c0c848a2f99a762effd449072a9bb81acea3790610b5aabd37",
           "docs/github-sharing.md": "1e6c30e547373a0bd5099fae8e74bfa354c93dd8edf380ddbf93a71f1350a489",
           "docs/asset-library-maintenance.md": "5f8aecf6cf70ea8e36a6ee8ea5a4b7104f97652e66ec9f3e121875ef2db78291",
           "docs/director-launcher.md": "b50b01560385f06d1f138593e58f0c7f1311669f75d2952688085fc120f33200",
-          "docs/release-distribution.md": "d8c76eb956a0ed07d96708235af17cdf90e2cd1a28e8a6fecd52cf182f2a819f"
+          "docs/release-distribution.md": "7f32a483a1237459ea90c704be8774752964fc11c932648a361a5c34d2ded1e7"
         }
       }
     }

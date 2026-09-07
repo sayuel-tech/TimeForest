@@ -108,7 +108,11 @@
 
 ## 安装与启动
 
-> 工作流文件单独分发，GitHub仓库不包含这些JSON或配套压缩包。首次运行前，请先获取维护者提供的配套包，按[配套安装说明](docs/release-distribution.md)补齐文件。
+> 工作流文件单独分发，GitHub仓库不包含这些JSON或配套压缩包。首次运行前，请下载下方配套工具包，按[配套安装说明](docs/release-distribution.md)补齐文件。
+
+**配套工具包下载：[夸克网盘](https://pan.quark.cn/s/bfc35a323389?pwd=xUnt)　提取码：`xUnt`**
+
+包内包含工作流、模型选用名称TXT与安装说明；解压后将 `install/` 内的内容复制到网站根目录，保留子目录结构。
 
 1. 准备 Python 3.10+，将 FFmpeg、FFprobe 加入 PATH。生成需要自行配置 ComfyUI、相应模型与节点。
 2. 解压配套包，将其中 `install/` 的内容复制到本仓库根目录，保留目录结构。模型名称及启用/可选状态见包内TXT；不需要为不同工作流安装全部模型。
