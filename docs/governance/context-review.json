@@ -1,23 +1,23 @@
 {
   "schema_version": 1,
-  "recorded_at": "2026-09-07T03:43:57+00:00",
-  "note": "首次公开源码快照6.3.11：正式介绍与配套安装说明，工作流/模型TXT独立分发，清理本机资料及节点目录文件名，保留生成默认和许可。56项Python、39项Node及菜单19项隔离断言通过；仅离线检查，未生成。",
+  "recorded_at": "2026-09-07T03:55:50+00:00",
+  "note": "按用户明确授权将首页、视频分镜、图片候选、资产库四张原始截图加入README与中文介绍，配图注/导航并折叠技术内容；同步截图来源哈希、地图、AGENTS、分享、交接和指纹覆盖。原图哈希、相对链接与GitHub Markdown渲染检查通过，仅文档，无业务或生成测试。",
   "no_doc_change_reason": "",
-  "snapshot_id": "648924b6cafba8a4",
+  "snapshot_id": "b32c3c9c51585f57",
   "snapshot": {
-    "config_sha256": "462bea563e07ab0b1f840e3b6d9462f7411582cf3d01ed71e1b75d77dbe1eae6",
+    "config_sha256": "8dc31b1cf3a97fe19f7e60ded24e08a84d2a1b56f5ded1e31e057b2f6673f19a",
     "version": {
       "label": "静态入口版本",
       "path": "static/index.html",
       "value": "6.3.11"
     },
     "instructions": {
-      "AGENTS.md": "d66aeaed18b7e8d4cec3ed1dcc5703702d3bb649502bce90c5fd74ba50b17e54"
+      "AGENTS.md": "5a21fee481846c1ea75d239d49a63855df287b24615a43a18f60674b1cbfa773"
     },
     "required_files": {
-      "AGENTS.md": "d66aeaed18b7e8d4cec3ed1dcc5703702d3bb649502bce90c5fd74ba50b17e54",
-      "PROJECT_GUIDE.md": "7d831f65eaba71ac7bfbeb0d98d6b5b1518a9173af10ce6ccaf414b8eed5d95a",
-      "README.md": "c91bd1e0c0d12b1003fdb56062615a22df2f4ef00fd7eb9b3cc1fd16d6fd8f35",
+      "AGENTS.md": "5a21fee481846c1ea75d239d49a63855df287b24615a43a18f60674b1cbfa773",
+      "PROJECT_GUIDE.md": "bbbec08b478c5f9636c95005619e247435d194b3c44fa68fb278a0f3627b1eb1",
+      "README.md": "1da0e80faef62e17d74e351c8d460b6188a7d78b1fae6ff8a82bb941bfc0db94",
       "docs/asset-library-architecture.md": "d00c7fd3d3ca1c1293e2b1c8fd11511282e6689e7fb20b3ca30cf5e3ff729ccc",
       "docs/asset-library-maintenance.md": "5f8aecf6cf70ea8e36a6ee8ea5a4b7104f97652e66ec9f3e121875ef2db78291",
       "docs/candidate-records.md": "6df0495160800c4ee2feddf0dbb6c159079007d82966822bb3191518c82b42b0",
@@ -27,14 +27,15 @@
       "docs/frontend/image-workspace-ui.md": "cf9843f567cef43fe069073771094a3798b78f42631b4128781c632226ab4f12",
       "docs/frontend/parameter-and-interaction-contract.md": "0636c4659c93a078ca4e674dc74826cb1ef7120f26d83a275f8249933d9250ab",
       "docs/frontend/parameter-map.md": "d1795006c07d2ceb8755187535352b0f51b7527504aeacec81d07c9d1ed65692",
-      "docs/github-sharing.md": "2b8974a4b67ea809364ed99e4d844075ab998e08b5b3880a7a7158ee2d4a426d",
+      "docs/github-sharing.md": "1e6c30e547373a0bd5099fae8e74bfa354c93dd8edf380ddbf93a71f1350a489",
       "docs/governance/checks-and-release.md": "7fe1b5e6a31238c0c848a2f99a762effd449072a9bb81acea3790610b5aabd37",
       "docs/governance/context-maintenance.md": "1eacaacba4a0330fb3c1a1d167eb8188ebdaa6168d118d5238bfd3dc0c2f505c",
       "docs/governance/workflow-evolution-contract.md": "2c5339f9bd77463fa9eed4d96c50166baca8ff6cbd6fdf350eca5ffefb61fb16",
       "docs/image-assets-art.md": "9bd5fc127f7f5c01b2b86ef7367aaed3b27f12c52c96fa481c1410bfa552d429",
       "docs/image-assets.md": "b7aba1d57003bdd48adbbfc992d3b34367ec2a683be991f96d6449037bbc5458",
+      "docs/images/manifest.json": "db2fefd2a84c8471f1aae5a3d1f6d53fdf3fe9ef3d87e5b3761f4dbaad04bd36",
       "docs/local-model-catalog.md": "d23d559018fb18d79bee981ea5756c1f08ee93cf94ea9a5589cf3abdb30b906e",
-      "docs/maintenance-baseline.md": "c9856b67b11474832055801c825b67ac9b3938c37fee9f2170cad4f98b5b8cef",
+      "docs/maintenance-baseline.md": "9bb55141106a269810ed493845d4760f3c795fa61467beb72dad73c3eabe70e6",
       "docs/product/module-contracts.md": "ae1268b695f1aa7db57d65582426dd15f3fdf12381780750bfcc71401b584d74",
       "docs/project-archive-deletion.md": "07b7676e7b77a7468b33827ba05490f9da2a48784c1de1b90e44f8cb3cbae6d1",
       "docs/prompts/swap-template-v3.md": "ab046240abf986e5642b1beca0aa82f6c39f25588f934fef60e70df6a4e411d0",
@@ -124,8 +125,8 @@
           "static/styles/tokens.css": "1739b6502ce29d633902d5adb29f1578b647f7413f8e97147216cf9021beb4bd"
         },
         "docs": {
-          "PROJECT_GUIDE.md": "7d831f65eaba71ac7bfbeb0d98d6b5b1518a9173af10ce6ccaf414b8eed5d95a",
-          "docs/maintenance-baseline.md": "c9856b67b11474832055801c825b67ac9b3938c37fee9f2170cad4f98b5b8cef",
+          "PROJECT_GUIDE.md": "bbbec08b478c5f9636c95005619e247435d194b3c44fa68fb278a0f3627b1eb1",
+          "docs/maintenance-baseline.md": "9bb55141106a269810ed493845d4760f3c795fa61467beb72dad73c3eabe70e6",
           "docs/frontend/README.md": "a344ff0076f7e52a1d2ecd3bd15aeb46bfb910d31589962a14145d83ae7fce16",
           "docs/frontend/image-workspace-ui.md": "cf9843f567cef43fe069073771094a3798b78f42631b4128781c632226ab4f12",
           "docs/frontend/parameter-and-interaction-contract.md": "0636c4659c93a078ca4e674dc74826cb1ef7120f26d83a275f8249933d9250ab",
@@ -179,8 +180,8 @@
           "h3ui/swap_template_v3.py": "a7b2d3a10ca0fafe2447c941122f62bfd911359190024043a4f130ddf3b32c98"
         },
         "docs": {
-          "PROJECT_GUIDE.md": "7d831f65eaba71ac7bfbeb0d98d6b5b1518a9173af10ce6ccaf414b8eed5d95a",
-          "docs/maintenance-baseline.md": "c9856b67b11474832055801c825b67ac9b3938c37fee9f2170cad4f98b5b8cef",
+          "PROJECT_GUIDE.md": "bbbec08b478c5f9636c95005619e247435d194b3c44fa68fb278a0f3627b1eb1",
+          "docs/maintenance-baseline.md": "9bb55141106a269810ed493845d4760f3c795fa61467beb72dad73c3eabe70e6",
           "docs/frontend/parameter-map.md": "d1795006c07d2ceb8755187535352b0f51b7527504aeacec81d07c9d1ed65692",
           "docs/image-assets.md": "b7aba1d57003bdd48adbbfc992d3b34367ec2a683be991f96d6449037bbc5458",
           "docs/local-model-catalog.md": "d23d559018fb18d79bee981ea5756c1f08ee93cf94ea9a5589cf3abdb30b906e",
@@ -214,8 +215,8 @@
           "h3ui/task_center.py": "97f0629b9c7aa595317b73a61d738a3bf7548235a75e00f9b9baded4a468899a"
         },
         "docs": {
-          "PROJECT_GUIDE.md": "7d831f65eaba71ac7bfbeb0d98d6b5b1518a9173af10ce6ccaf414b8eed5d95a",
-          "docs/maintenance-baseline.md": "c9856b67b11474832055801c825b67ac9b3938c37fee9f2170cad4f98b5b8cef",
+          "PROJECT_GUIDE.md": "bbbec08b478c5f9636c95005619e247435d194b3c44fa68fb278a0f3627b1eb1",
+          "docs/maintenance-baseline.md": "9bb55141106a269810ed493845d4760f3c795fa61467beb72dad73c3eabe70e6",
           "docs/asset-library-architecture.md": "d00c7fd3d3ca1c1293e2b1c8fd11511282e6689e7fb20b3ca30cf5e3ff729ccc",
           "docs/asset-library-maintenance.md": "5f8aecf6cf70ea8e36a6ee8ea5a4b7104f97652e66ec9f3e121875ef2db78291",
           "docs/project-archive-deletion.md": "07b7676e7b77a7468b33827ba05490f9da2a48784c1de1b90e44f8cb3cbae6d1",
@@ -230,6 +231,13 @@
           ".gitattributes": "f57bdf07222c701bab0c0c36b040aef0c42d67ccb340f1bade9dcac83100fb1a",
           ".gitignore": "8f0bdd4f6572b2a03ceaf63728ed8d47f092388469c3c1e360a2356a50f23172",
           "config.example.json": "2063cb70df64617477d9dd743cc40aaa7bc4cf3add5954fdf4053ddf8f90a507",
+          "docs/images/README.md": "e12f1ce5d452b1577240e7f9581f6142b6a484f0975d441f5b9b179ed4916b6b",
+          "docs/images/asset-library.png": "97c1e8bea46ae5039e85133aeba700604976b7fc6bfb39f4737a9806b4096cd0",
+          "docs/images/home.png": "c5c66a26402387663fd63f552ac853da48b32b35e8621f09ddf571366f22c68e",
+          "docs/images/image-candidates.png": "696a40393775e1e3b3935e4ff491ff01488de841b12a84f8148d7cfa8ff2e20b",
+          "docs/images/manifest.json": "db2fefd2a84c8471f1aae5a3d1f6d53fdf3fe9ef3d87e5b3761f4dbaad04bd36",
+          "docs/images/video-storyboard.png": "03786b55c34312c09743ef47896f2c85293473da5f3b08b681bf670bb323993d",
+          "docs/project-introduction.zh-CN.md": "00ead35358f3bdccdaa8428045d7ed0ad38950b04d264224429cb3c62b827d59",
           "h3ui/__init__.py": "7c88e67b3eee0957d616a8e60d516f049a782004a6f3c14b3e5d64f28cfdceb4",
           "h3ui/config.py": "39c4d1344565503994c19e67ed69d2cbef70224c38a06ab938b4f07f59114223",
           "requirements.txt": "9efc8910abf6a5f582e1b774148c53cfc90ea30938a41d4987417d42394dfb8a",
@@ -293,12 +301,12 @@
           "tools/test_context_guard.py": "58bfe13e4893bdb999e789055a3e262f1e877bc89963ccbb94d84b64c5c4aeaf"
         },
         "docs": {
-          "README.md": "c91bd1e0c0d12b1003fdb56062615a22df2f4ef00fd7eb9b3cc1fd16d6fd8f35",
-          "PROJECT_GUIDE.md": "7d831f65eaba71ac7bfbeb0d98d6b5b1518a9173af10ce6ccaf414b8eed5d95a",
-          "docs/maintenance-baseline.md": "c9856b67b11474832055801c825b67ac9b3938c37fee9f2170cad4f98b5b8cef",
+          "README.md": "1da0e80faef62e17d74e351c8d460b6188a7d78b1fae6ff8a82bb941bfc0db94",
+          "PROJECT_GUIDE.md": "bbbec08b478c5f9636c95005619e247435d194b3c44fa68fb278a0f3627b1eb1",
+          "docs/maintenance-baseline.md": "9bb55141106a269810ed493845d4760f3c795fa61467beb72dad73c3eabe70e6",
           "docs/governance/context-maintenance.md": "1eacaacba4a0330fb3c1a1d167eb8188ebdaa6168d118d5238bfd3dc0c2f505c",
           "docs/governance/checks-and-release.md": "7fe1b5e6a31238c0c848a2f99a762effd449072a9bb81acea3790610b5aabd37",
-          "docs/github-sharing.md": "2b8974a4b67ea809364ed99e4d844075ab998e08b5b3880a7a7158ee2d4a426d",
+          "docs/github-sharing.md": "1e6c30e547373a0bd5099fae8e74bfa354c93dd8edf380ddbf93a71f1350a489",
           "docs/asset-library-maintenance.md": "5f8aecf6cf70ea8e36a6ee8ea5a4b7104f97652e66ec9f3e121875ef2db78291",
           "docs/director-launcher.md": "b50b01560385f06d1f138593e58f0c7f1311669f75d2952688085fc120f33200",
           "docs/release-distribution.md": "d8c76eb956a0ed07d96708235af17cdf90e2cd1a28e8a6fecd52cf182f2a819f"

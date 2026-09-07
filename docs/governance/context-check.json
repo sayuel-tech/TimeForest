@@ -40,7 +40,8 @@
     "docs/director-launcher.md",
     "docs/candidate-records.md",
     "docs/recycle-bin.md",
-    "docs/release-distribution.md"
+    "docs/release-distribution.md",
+    "docs/images/manifest.json"
   ],
   "instruction_globs": [
     "AGENTS.override.md",
@@ -161,7 +162,11 @@
         "tools/*.cmd",
         "tests/*.ps1",
         ".gitignore",
-        ".gitattributes"
+        ".gitattributes",
+        "docs/project-introduction.zh-CN.md",
+        "docs/images/*.png",
+        "docs/images/*.md",
+        "docs/images/*.json"
       ],
       "docs": [
         "README.md",

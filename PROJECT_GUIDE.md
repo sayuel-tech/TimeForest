@@ -7,7 +7,7 @@
 | 工作内容 | 真实实现入口（相对仓库根目录） | 现行说明 |
 |---|---|---|
 | GitHub代码与独立工作流包 | 当前源码筛选导出；六个原始工作流、五个图片API示例与模型TXT独立压缩 | [独立分发](docs/release-distribution.md)；保留原维护历史，公开快照排除工作流/模型清单包/个人资料，补包后离线验证 |
-| GitHub项目介绍与功能表述 | `docs/project-introduction.zh-CN.md`、`docs/product/tool-comparison.md`；README为原安装/维护入口 | [GitHub分享](docs/github-sharing.md)；正式介绍以视觉设计和交互体验开篇，再说明四模式、迭代制作与资产复用；生成效果和硬件能力按真实证据表述 |
+| GitHub项目介绍与功能表述 | `docs/project-introduction.zh-CN.md`、`docs/images/`、`docs/product/tool-comparison.md`；公开README同步图文，原维护README保留安装入口 | [GitHub分享](docs/github-sharing.md)；正式介绍以视觉设计和交互体验开篇，再说明四模式、迭代制作与资产复用；生成效果和硬件能力按真实证据表述 |
 | 启动、组装与页面 | `start.bat`、`run.py`、`h3ui/__init__.py`、`static/index.html`、`static/studio/app.js` | [README](README.md)、[维护基线](docs/maintenance-baseline.md)；`--no-startup-recovery` 仅抑制本次启动恢复，默认行为不变 |
 | 桌面菜单与网站启动停止 | `tools/director-menu.cmd`、`tools/director_service.ps1`、`tests/director_service.tests.ps1`；桌面 `启动时间森林导演台.cmd` 为绝对路径转接 | [启动停止菜单](docs/director-launcher.md)；复用当前配置与现有环境、准确进程核对、隐藏运行及本地日志 |
 | 功能导航、三个视频工作区 | `static/studio/app/mode-registry.js`、`static/studio/modes/{swap,image-story,text-story}/workspace.js` | [模块约定](docs/product/module-contracts.md)、[前端结构](docs/frontend/README.md) |

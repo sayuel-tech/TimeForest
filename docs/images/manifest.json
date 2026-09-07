@@ -1,0 +1,30 @@
+[
+  {
+    "file": "home.png",
+    "title": "首页与四种创作入口",
+    "width": 1964,
+    "height": 1574,
+    "sha256": "c5c66a26402387663fd63f552ac853da48b32b35e8621f09ddf571366f22c68e"
+  },
+  {
+    "file": "video-storyboard.png",
+    "title": "参考图长视频：素材与分镜编排",
+    "width": 2438,
+    "height": 1380,
+    "sha256": "03786b55c34312c09743ef47896f2c85293473da5f3b08b681bf670bb323993d"
+  },
+  {
+    "file": "image-candidates.png",
+    "title": "图片资产创作：生成与挑选",
+    "width": 2390,
+    "height": 1770,
+    "sha256": "696a40393775e1e3b3935e4ff491ff01488de841b12a84f8148d7cfa8ff2e20b"
+  },
+  {
+    "file": "asset-library.png",
+    "title": "资产库：分类浏览与素材复用",
+    "width": 2269,
+    "height": 1505,
+    "sha256": "97c1e8bea46ae5039e85133aeba700604976b7fc6bfb39f4737a9806b4096cd0"
+  }
+]
