@@ -5,9 +5,11 @@ import {errorFeedback, bindErrorFeedback} from '../../ui/error-feedback.js';
 const states={waiting:'等待通道',queued:'排队中',submitting:'提交中',running:'执行中',
   stopping:'正在停止',unknown:'待确认提交',success:'已完成',done:'已完成',complete:'已完成',
   accepted:'已完成',needs_review:'等待审核',interrupted:'已中断',failed:'未完成',cancelled:'已取消'};
-const actions={cancel:'取消排队',pause:'停止后续执行',stop:'停止当前生成',close:'结束等待并保留记录'};
+const actions={recover:'查询恢复',cancel:'取消排队',pause:'停止后续执行',stop:'停止当前生成',close:'结束等待并保留记录'};
 
 export function confirmation(task,action) {
+  if(task.kind==='assembly'&&action==='recover')return `查询「${task.name}」原提交并继续剩余续接任务，已登记的提交不会重复发送。`;
+  if(task.kind==='assembly'&&action==='stop')return `停止「${task.name}」当前处理及后续任务？只控制本任务的引擎提交或媒体子进程，原件及已完成结果保留。`;
   if(action==='close')return `结束「${task.name}」这条旧提交的等待？系统会先重查引擎队列和历史。若仍无记录，保留原编号与快照并解除占用；其他排队任务随后可以继续。原提交的结果仍记为未确认，不会重新提交。`;
   if(action==='stop')return `停止「${task.name}」当前生成？只请求中断这条任务，已完成结果保留。${task.kind==='video'?'本项目后续任务也会停止。':''}通道会在引擎确认后释放；若引擎不支持按任务停止，会显示实际错误。`;
   if(action==='pause')return `停止「${task.name}」后续执行？当前内部生成任务会完成并保留结果，不再开始下一项。`;
@@ -27,7 +29,7 @@ export function taskCard(task,index) {
     ${task.seed!==undefined&&task.seed!==null?`<small>种子 ${esc(task.seed)}</small>`:''}
     ${task.blocked_by?.length?`<div class="task-blockers">通道占用：${task.blocked_by.map(b=>`<a href="${esc(b.url)}" data-task-link>${esc(b.name)} · ${esc(b.id.slice(0,8))}</a>`).join('、')}</div>`:''}
     ${task.error_raw?`<details><summary>查看原始反馈</summary><pre>${esc(typeof task.error_raw==='string'?task.error_raw:JSON.stringify(task.error_raw,null,2))}</pre></details>`:''}
-    <div class="task-actions"><a class="btn" data-task-link href="${esc(task.url)}">打开${task.kind==='local'?'资产任务':'项目'}</a>${task.actions.map(a=>`<button type="button" data-task-action="${a}" data-task-index="${index}">${actions[a]}</button>`).join('')}</div>
+    <div class="task-actions"><a class="btn" data-task-link href="${esc(task.url)}">打开${task.kind==='local'?'资产任务':'项目'}</a>${task.actions.map(a=>`<button type="button" data-task-action="${a}" data-task-index="${index}">${task.kind==='assembly'&&a==='stop'?'停止当前任务':actions[a]}</button>`).join('')}</div>
     ${task.kind==='local'&&task.state==='running'?'<small>文件处理已开始，将完成当前操作；原件保留。</small>':''}
   </article>`;
 }

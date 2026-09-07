@@ -21,3 +21,7 @@
 前端 `static/studio/features/task-center/index.js` 由 bootstrap 仅装配一次。每 5 秒更新，后台标签页暂停；确认/执行中暂停轮询替换，保留键盘焦点和被操作任务的准确身份。API 缺失明确提示网站后台需要重启；静态入口版本不代表旧 Python 进程已加载新接口。
 
 隔离检查入口：`tests/test_task_center.py`、`tests/studio_task_center.test.mjs`；真实 HTTP/UI fixture 为 `tests/task_center_ui_fixture.py --port 5098`，工厂使用临时配置与数据库、假引擎，禁生成与启动恢复。不得指向生产配置来验收停止功能。实际检查结果、浏览器与真实生成限制统一见 [维护基线](maintenance-baseline.md)。
+
+## 视频拼接任务
+
+kind=assembly汇总导入视频、AI尾部续接和本地拼接，只显示活动与待确认记录。本地任务停止控制持有的取消标记/子进程，生成停止校验prompt_id与client_id。recover查询原提交，不重发已登记任务，可能继续剩余内部任务；close重查后结束无法确认的等待，记录保留。后台启动不自动重新提交续接。相关实现h3ui/video_assembly/service.py，与旧队列共用通道保护；详见[视频拼接](video-assembly.md)。

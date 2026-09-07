@@ -16,6 +16,15 @@ def recycle_index(studio,images,library):
         if deleted:
             groups['projects'].append(dict(id=p['id'],title=p['name'],type='project',revision=p['revision'],
                 mode=p['mode'],removed_at=p['deleted_at'],open_url='#/p/'+p['id'],blocked_reason='项目仍有任务正在处理' if busy else ''))
+        if p['mode']=='video_assembly':
+            blocked='请先恢复所属项目' if deleted else '项目仍有运行或待确认任务' if busy or any(r['state'] in ('preparing','submitting','running','unknown') for r in p['assembly']['runs']) else ''
+            for clip in p['assembly']['clips']:
+                for value,kind in [(clip,'clip')]+[(e,'extension') for e in clip['extensions']]:
+                    if value.get('removed_at'):
+                        groups['projects'].append(dict(id=value['id'],title=clip['name'],task_name=p['name']+' · '+('视频片段' if kind=='clip' else '续写段'),type='assembly_'+kind,project=p['id'],revision=p['revision'],mode=p['mode'],removed_at=value['removed_at'],open_url='#/p/'+p['id'],blocked_reason=blocked or ('请先恢复所属视频片段' if kind=='extension' and clip.get('removed_at') else '')))
+            for run in p['assembly']['runs']:
+                if run.get('removed_at'):
+                    groups['generations'].append(dict(id=run['id'],title=p['name'],task_name='续接候选' if run['kind']=='generate' else '拼接成片',type='assembly_run',project=p['id'],revision=p['revision'],mode=p['mode'],removed_at=run['removed_at'],open_url='#/p/'+p['id'],blocked_reason=blocked,state=run['state'],seed=run.get('seed')))
         for segment in p.get('segments',[]):
             for run in segment.get('attempts',[]):
                 if not run.get('removed_at'):continue

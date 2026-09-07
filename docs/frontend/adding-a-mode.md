@@ -55,3 +55,9 @@
 4. 新输入类型先修改 studio_inputs.inventory/validate 与编译器消费路径，再修改模板和 UI 清单。Picture/Audio/Video 来自有效输入序列，Subject/S 来自语义和发声顺序，不能互相推导。
 5. 空、忙、失败、满数据四种状态先在隔离服务走查。最少核验1280×720主动作可见、窄屏字段可达、长目录不撑高页面、保存取消不提交。
 6. 实际发布时同步唯一 static/index.html 静态入口版本和能力契约；文档维护不据此发布或改入口版本。记录旧项目缺字段默认值，不批量改写旧正文或运行候选。
+
+新增模式须调用[完整公共界面入口](shared-ui.md)，不自行创建参数容器或复制外壳CSS。检查公共样式实际生效与全部调用模式，而不是只检查导入了公共函数。6.3.13已修正拼接参数/底栏分叉并接入参考素材，业务会话仍独立。
+
+## 视频序列接入实例
+
+已接入video_assembly，kind=assembly，由bootstrap分派独立序列控制器。此任务的原片/续写结构与故事分镜不同，因此复用公共呈现、API边界和watchProject，而不是强行投影到ProjectSession的segments。后端输入、保存、编译、运行、入库与恢复均有对应适配，目录与health显式返回assembly_contract_version=1；旧后台不展示入口。最初计划和现行差异见[视频拼接说明](../video-assembly.md)。

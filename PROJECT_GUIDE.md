@@ -6,13 +6,16 @@
 
 | 工作内容 | 真实实现入口（相对仓库根目录） | 现行说明 |
 |---|---|---|
-| GitHub代码与独立工作流包 | 当前源码筛选导出；六个原始工作流、五个图片API示例与模型TXT独立压缩 | [独立分发](docs/release-distribution.md)含网盘下载入口与提取码；保留原维护历史，公开快照排除工作流/模型清单包/个人资料，补包后离线验证 |
+| 五模式公共界面 | `static/studio/ui/{production-settings,model-selector,workspace-actions,reference-assets,workbench}.js`、`static/studio/styles/production-settings.css`与各业务适配 | [公共组件归属](docs/frontend/shared-ui.md)；完整参数外壳、完整目录模型选择/手动文件名、动作分组、视频素材卡；隔离多模式检查tests/shared_ui_fixture.py，模型选择→保存→离线编译检查tests/model_selection_ui_fixture.py |
+| 状态轮询与输入草稿保护 | `static/studio/core/{progress-channel,project-session}.js`；接续适配在`modes/video-assembly/workspace.js`的receive；`tests/video_assembly_draft_ui_fixture.py` | [草稿接收规范](docs/frontend/shared-ui.md)；无变化保持对象、迟到响应不能覆盖编辑、保存失败阻止提交；隔离API→保存→运行快照检查 |
+| 视频接续与AI尾部续接 | `h3ui/video_assembly/{service,references,source_parameters,track,compiler,media,routes}.py`、`static/studio/modes/video-assembly/{workspace,import-dialog,source-parameters,track,settings}.js`、`static/studio/styles/video-assembly.css`；`tests/test_video_assembly.py`、`tests/studio_video_assembly.test.mjs`、`tests/video_assembly_ui_fixture.py`、`tests/test_video_assembly_track.py`、`tests/video_assembly_track_ui_fixture.py`、`tests/assembly_import_ui_fixture.py`、`tests/test_video_assembly_tail_geometry.py` | [现行说明](docs/video-assembly.md)、[原计划](docs/product/video-assembly-plan.md)；独立序列与两条续接适配，纯拼接不依赖ComfyUI，真实生成待验 |
+| GitHub代码与独立工作流包 | 当前源码筛选导出；六个原始工作流、五个图片与两个续接API示例、模型及节点TXT独立压缩 | [独立分发](docs/release-distribution.md)含网盘下载入口与提取码；保留原维护历史，公开快照排除工作流/模型清单包/个人资料，补包后离线验证 |
 | GitHub项目介绍与功能表述 | `docs/project-introduction.zh-CN.md`、`docs/images/`、`docs/product/tool-comparison.md`；公开README同步图文，原维护README保留安装入口 | [GitHub分享](docs/github-sharing.md)；正式介绍以视觉设计和交互体验开篇，再说明四模式、迭代制作与资产复用；生成效果和硬件能力按真实证据表述 |
 | 启动、组装与页面 | `start.bat`、`run.py`、`h3ui/__init__.py`、`static/index.html`、`static/studio/app.js` | [README](README.md)、[维护基线](docs/maintenance-baseline.md)；`--no-startup-recovery` 仅抑制本次启动恢复，默认行为不变 |
 | 桌面菜单与网站启动停止 | `tools/director-menu.cmd`、`tools/director_service.ps1`、`tests/director_service.tests.ps1`；桌面 `启动时间森林导演台.cmd` 为绝对路径转接 | [启动停止菜单](docs/director-launcher.md)；复用当前配置与现有环境、准确进程核对、隐藏运行及本地日志 |
 | 功能导航、三个视频工作区 | `static/studio/app/mode-registry.js`、`static/studio/modes/{swap,image-story,text-story}/workspace.js` | [模块约定](docs/product/module-contracts.md)、[前端结构](docs/frontend/README.md) |
 | 图片工作区与任务 | `static/studio/app/image-workspace-controller.js`、`core/image-session.js`、`features/image-results/workspace-view.js`、`features/image-canvas/index.js`（后三者均在 `static/studio/`） | [图片模块](docs/image-assets.md)、[图片 UI](docs/frontend/image-workspace-ui.md)；任务废弃/恢复在 `h3ui/image_studio/service.py`/`routes.py`，零任务空态保留新增入口 |
-| 四模式公共计时与运行时间 | `static/studio/ui/run-timing.js`、`ui/primitives.js`；图片 workspace-view、视频 production/records、source-preparation、export（均在 `static/studio/`）；`tests/studio_run_timing.test.mjs`、`tests/studio_image_clock.test.mjs` | 公共交互契约第11节、图片模块；认可的图片计时布局统一复用，各业务提供持久时间，终态固定及定时器清理；图片时间落库仍见 `h3ui/image_studio/runner.py` |
+| 五模式公共计时与运行时间 | `static/studio/ui/run-timing.js`、`ui/primitives.js`；图片 workspace-view、视频 production/records、source-preparation、export（均在 `static/studio/`）；`tests/studio_run_timing.test.mjs`、`tests/studio_image_clock.test.mjs` | 公共交互契约第11节、图片模块；认可的图片计时布局统一复用，各业务提供持久时间，终态固定及定时器清理；图片时间落库仍见 `h3ui/image_studio/runner.py` |
 | 视频工作区视觉层级 | `static/studio/styles/workbench.css`、`app/workspace-controller.js` 的 `workspace-draft-note`（同在 static/studio/） | 公共交互契约第11节；提示/进度/工具栏沿用工作区边框、圆角和控件尺度，原功能分布保留 |
 | 公共工作区、控件与样式 | `static/studio/ui/workbench.js`、`ui/primitives.js`、`styles/workbench.css`（后两者在 `static/studio/`） | [前端结构](docs/frontend/README.md)、[美术来源](docs/image-assets-art.md) |
 | 视频制作参数呈现 | `static/studio/features/workflow-settings/index.js`、`static/studio/core/capability-client.js` | [公共交互契约](docs/frontend/parameter-and-interaction-contract.md)、[唯一详细参数映射](docs/frontend/parameter-map.md) |
@@ -38,3 +41,7 @@
 新增隐藏字段走参数映射和交互契约；新增同用途工作流走工作流适配；仅独立新任务才走 [adding-a-mode](docs/frontend/adding-a-mode.md)。地图、入口或公共组件位置改变时，同批更新本表、AGENTS 路由与检查配置。
 
 静态资源版本证据来自 `static/index.html` 的 `app.js` 与 `style.css` 查询参数；它不是 API、数据格式版本，也不是指导包 V4。工具配置记录这个来源。历史方案在维护基线所指的外部归档，按需查证，不默认载入为待办。
+
+入口美术：`static/assets/modes/`；视频接续使用 `mode-video-continuation.webp`，统一注册在 `static/studio/app/mode-registry.js`。风格、来源与提示词见[美术资源](docs/image-assets-art.md)。
+
+发布入口：[相对6.3.11的更新日志](CHANGELOG.md)、[代码与配套分发](docs/release-distribution.md)。v6.3.20使用配套包新地址，版本引用与发行说明统一在更新日志中；公开版本沿用既有main历史，不合入原维护仓库历史。

@@ -105,3 +105,13 @@ node --test tests/studio_parameter_dialog.test.mjs tests/studio_image_interactio
 分享应保留有分发依据的必要代码、公共组件、工作流、示例配置、依赖说明、现行规范、AGENTS 与检查工具。真实配置、数据库、作品、外部资产、权重、环境和私有日志继续排除。[第三方来源](../../THIRD_PARTY_NOTICES.md) 的许可边界继续有效，网站 MIT 不覆盖所有外部内容。
 
 未配置钩子/CI 时由维护任务调用工具；未来接入需相应授权，只接 `check`，不自动重记快照。发布审查集中在发布任务执行，不给日常换模型/改参数增加认证流程。
+
+## 视频拼接隔离检查
+
+`python -m unittest tests.test_video_assembly -q`覆盖真实临时API、两配方默认/非默认图绑定、固定0种子、后台进度与独立草稿、混合声画/尺寸/FPS/VFR/方向媒体导出、外部尾部、子进程取消、未知提交/归属保护、入库和恢复。实际FFmpeg仅使用测试生成的纯色和测试音，不读用户作品；ComfyUI方法默认禁止，运行回收检查使用替身。
+
+`node --test tests/studio_video_assembly.test.mjs tests/studio_task_center.test.mjs tests/studio_recycle_bin.test.mjs tests/studio_run_timing.test.mjs tests/studio_frontend.test.mjs tests/studio_parameter_dialog.test.mjs`核对公共调用和纯交互逻辑。
+
+`python tests/video_assembly_ui_fixture.py --evidence-dir <仓库外证据目录>`使用现有Chrome无界面模式和真实临时API，检查宽窄布局、参数切换/取消/默认/刷新/保存、排序、纯拼接、入库及多选取消/应用。生产进程加载与真实生成另行记录，本轮不发布GitHub。
+
+6.3.13公共界面回归新增tests/shared_ui_fixture.py（原三视频模拟API、图片真实隔离API），拼接tests/video_assembly_ui_fixture.py增加同级导入、主按钮次序、素材上传/用途/保存/沿用/移除及参数根样式检查。对应后端测试含双图参考+尾部绑定和替身执行输入复制。用外部evidence-dir，既有Chrome与临时数据；不连接生产引擎。通过数量与证据见维护基线。

@@ -54,6 +54,13 @@ class ResultImports:
             result.append(dict(id=token, kind=kind, result_id=identifier, name=name, bytes=stat.st_size,
                                url=self.st.url(pid, file), project=pid))
 
+        if p['mode']=='video_assembly':
+            available={e['id'] for c in p['assembly']['clips'] if not c.get('removed_at') for e in c['extensions'] if not e.get('removed_at')}
+            for run in p['assembly']['runs']:
+                if run['kind']=='generate' and run.get('extension') not in available:continue
+                if run['state']=='success' and not run.get('removed_at') and run['kind'] in ('generate','export'):
+                    register('candidate' if run['kind']=='generate' else 'final',run['id'],p['name']+' · '+('续接' if run['kind']=='generate' else '成片'),run.get('file'),dict(type='generated',project=pid,candidate=run['id'],mode=p['mode'],seed=run.get('seed'),snapshot=run['snapshot'],tasks=run['tasks']))
+            return result
         for asset in self.st.store.assets(pid):
             path = Path(asset['path'])
             originals = list(path.parent.glob('original.*'))
@@ -97,9 +104,12 @@ class ResultImports:
         provenance = source['provenance']
         if provenance.get('candidate'):
             project=self.st.store.get(source['project'])
-            candidate=next((a for s in project['segments'] for a in s.get('attempts',[]) if a['id']==provenance['candidate']),None)
+            candidate=next((a for a in project['assembly']['runs'] if a['id']==provenance['candidate']),None) if project['mode']=='video_assembly' else next((a for s in project['segments'] for a in s.get('attempts',[]) if a['id']==provenance['candidate']),None)
+            if candidate and project['mode']=='video_assembly' and candidate['kind']=='generate':
+                available={e['id'] for c in project['assembly']['clips'] if not c.get('removed_at') for e in c['extensions'] if not e.get('removed_at')}
+                if candidate.get('extension') not in available:raise ValueError('请先恢复所属片段和续写段')
             if not candidate or candidate.get('removed_at'):
                 raise ValueError('候选已移除，请先恢复后重新选择入库')
         metadata = {'record_prompt': provenance.get('actual_prompt', ''), **data.get('metadata', {})}
         return self.lib.ingest(path, data.get('name') or source['name'], metadata, provenance,
-                               key='project-output:' + data['output'], progress=progress)
+                               key=('assembly-output:'+source['project']+':'+provenance['candidate']) if provenance.get('mode')=='video_assembly' else 'project-output:' + data['output'], progress=progress)

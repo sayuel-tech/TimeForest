@@ -98,12 +98,12 @@ flowchart LR
 
 `tests/image_parameter_ui_fixture.py --real-image-api` 用真实图片路由、临时 SQLite 和真实目录扫描假文件提供图片界面检查，catalog 原样交给前端；三视频为合成 API 对照。不加选项时保留原内存 API、模拟目录/错误/保存/运行记录模式。两种模式都不读取生产项目或连接生成引擎，`tests/test_image_api_ui_contract.py` 另检查真实接口到前端及保存/编译的衔接。具体检查结果、实际旧后台重载状态与待用户体验项见[维护基线](../maintenance-baseline.md)。历史5094浏览器验收不表示本轮启动了该服务；生产项目不用于测试写入。
 
-详细证据和备份位于 `D:/导演台归档-20260906/历史工作目录/time-forest-upgrade/visual-polish-v1/`。参阅其中 `checks/验收记录.md` 与 `发布与回退.md`。当前维护目录与归档边界见 [维护基线](../maintenance-baseline.md)。
+详细证据和备份位于 `<本地历史归档>`。参阅其中 `checks/验收记录.md` 与 `发布与回退.md`。当前维护目录与归档边界见 [维护基线](../maintenance-baseline.md)。
 
 
 ## 导演工作区 V3 接入规范
 
-历史实施及验收见 [V3 实施记录](D:/导演台归档-20260906/退役代码与资源/docs/plans/director-workbench-v3-implementation.md)。该记录的静态入口 6.2.4 是历史版本；当前版本只在维护基线登记。视频输入契约仍为 input_contract_version=2，图片项目 API 快照另有 image_contract_version=1，不将其混作单次生成运行快照字段。
+历史实施及验收见 [V3 实施记录](<本地历史归档>)。该记录的静态入口 6.2.4 是历史版本；当前版本只在维护基线登记。视频输入契约仍为 input_contract_version=2，图片项目 API 快照另有 image_contract_version=1，不将其混作单次生成运行快照字段。
 
 | 公共层 | 责任 |
 |---|---|
@@ -130,3 +130,11 @@ flowchart LR
 原低潜空间两采、低显存插件、素材继承、自动保存、人工审核及合成服务继续复用。UI 通过能力目录和统一有效输入清单适配，不构造虚假的工作流参数。
 
 文生图沿用图片控制器/会话/工作区三步骤，无A/B/画布实例；跨文生图与编辑工具另建任务并保留原草稿，后续经原保存门持久化。text能力由catalog.text_to_image_version=1及parameters.text确认；运行模型角色与节点检查依实际工具。现有参数弹窗忽略前次关闭事件，快速重开仍能应用。来源/参数详见[参数映射](parameter-map.md#文生图派生适配)，隔离检查增加tests/test_image_text_generation.py。
+
+## 视频拼接工作区
+
+`modes/video-assembly/workspace.js`维护独立序列会话，通过bootstrap的kind=assembly分派。共用workbench、production-settings、run-timing、error-feedback及core/progress-channel的watchProject；没有第二条进度轮询。制作参数临时副本在settings.js，两配方草稿和项目导出作用域分开。原故事分镜会话不需要接受外部视频序列。保存草稿有独立draft_revision，后台任务进度不会冒充其他页面编辑，运行快照保持不变。详见[视频拼接](../video-assembly.md)。
+
+## 6.3.13公共界面归属
+
+完整制作参数、步骤底栏、视频导入/参考卡片的唯一入口与各模式适配见[公共组件说明](shared-ui.md)。公共容器和样式不再依赖调用方拼装；原三视频/图片事务与拼接独立草稿保持。

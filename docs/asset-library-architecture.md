@@ -67,3 +67,11 @@
 - `tools/benchmark_library.py`：临时库5000条元数据，结果是本机测量，不是各硬件性能保证。
 
 不在普通自动检查中调用真实 `/prompt` 或装载模型。图像质量、身份、声音模仿效果及显存峰值须另行得到用户允许后核验。
+
+## 视频拼接的输入与结果
+
+video_assembly序列服务接受本地上传或固定asset/version/media视频ID，复用公共资产选择器可选多选，默认单选调用保持。服务核对媒体归属、创建项目副本并保存来源哈希，不走swap单源参考槽，不读资料PROMPT。结果枚举增加续接/拼接成片，快捷入库与通用项目结果导入共用来源去重键；移除父片段或续写段后先恢复父项。项目仍用现有JSON与revision，无新数据库或版本迁移。[使用说明](video-assembly.md)。
+
+## 视频拼接续写参考
+
+6.3.13由video_assembly/references.py接收当前固定asset/version/media，验证类型后复用Studio.upload规范化为项目副本；段内仅绑定id/用途/角色。生成快照冻结副本哈希和库来源，执行输入不动态读取资产最新版本；资料PROMPT不进入正文。选择器与卡片呈现复用ui/reference-assets，旧视频素材业务保持。

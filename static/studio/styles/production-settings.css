@@ -1,0 +1,63 @@
+.settings-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 24px;
+}
+.settings-group {
+  border-top: 1px solid var(--line);
+  padding-top: 28px;
+  margin-top: 32px;
+}
+.settings-group h3 {
+  font-size: 26px;
+}
+.settings-group fieldset {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px;
+  margin: 18px 0;
+}
+.settings-group legend {
+  padding: 0 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+dialog:has(.production-settings) {width:min(1100px,96vw);max-height:94dvh;padding:22px}
+.production-settings .dialog-heading h2 {font-size:27px;margin:2px 0 5px}
+.production-settings .dialog-heading {margin-bottom:8px}
+.production-settings-directory {margin:12px 0 20px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.production-settings-directory>.helper {margin:0 0 10px}
+.production-settings [data-model-field] {min-width:0;margin-bottom:14px}
+.production-settings [data-model-field]>.field {margin-bottom:6px}
+.production-settings [data-model-choice] {width:100%;min-width:0;text-overflow:ellipsis}
+.model-filename-editor {margin-top:6px;font-size:13px}
+.model-filename-editor summary {color:var(--sage);padding:4px 0;cursor:pointer}
+.model-filename-editor[open]>.field {margin-top:8px}
+.production-settings .settings-summary details {margin:2px 0 0}
+.production-settings .settings-summary summary,.production-settings .engine-directory summary {padding:4px 0}
+.production-settings .dialog-heading p {margin:0}
+.production-settings .engine-directory {margin:6px 0;font-size:13px}
+.production-settings .settings-summary {padding:10px 14px;margin:8px 0;font-size:13px}
+.production-settings .settings-summary p {margin:3px 0}
+.settings-workbench {display:grid;grid-template-columns:155px minmax(0,1fr);gap:20px;height:clamp(250px,calc(100dvh - 385px),570px)}
+.settings-navigation,.settings-fields {overflow:auto;min-width:0;scrollbar-width:thin}
+.settings-navigation {display:flex;flex-direction:column;gap:5px;align-items:stretch}
+.settings-navigation button {text-align:left;background:transparent;border:0;min-height:40px;font-size:14px;padding:9px 12px}
+.settings-navigation button[aria-current=true] {background:var(--sage-soft);color:var(--sage)}
+.production-settings .settings-group {margin:0;padding:4px 8px;border:0}
+.production-settings .settings-group h3 {font-size:20px;margin:0 0 14px}
+.production-settings .settings-grid {gap:12px 18px}
+.production-settings .field {margin:0 0 14px}
+.production-settings .dialog-actions {margin:12px 0 0;position:sticky;bottom:0;padding:10px 0;background:var(--paper)}
+.production-settings>.helper {font-size:12px;margin:0}
+
+.production-settings .settings-grid > * {min-width:0}
+@media(max-width:760px){.production-settings .settings-workbench{height:auto;grid-template-columns:1fr}.production-settings .settings-navigation{flex-direction:row;overflow:auto}.production-settings .settings-navigation button{flex-shrink:0}.production-settings .settings-grid{grid-template-columns:1fr}}
+
+@media(max-width:850px),(max-height:620px){
+  .settings-workbench {height:auto;grid-template-columns:1fr}
+  .settings-navigation {flex-direction:row;overflow:auto}
+  .settings-navigation button {flex-shrink:0}
+  .settings-fields {max-height:50dvh}
+}

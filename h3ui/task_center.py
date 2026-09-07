@@ -52,6 +52,12 @@ class TaskCenter:
         projects=self.st.store.list()+self.st.store.list(trash=True)
         seen=set()
         for p in projects:
+            if p['mode']=='video_assembly':
+                seen.update(j['id'] for j in jobs if j['project_id']==p['id'])
+                for r in p['assembly']['runs']:
+                    if r['state'] not in ('preparing','submitting','running','unknown'):continue
+                    rows.append(dict(kind='assembly',id=r['id'],project=p['id'],name=p['name'],title={'generate':'AI尾部续接','export':'视频拼接','import':'导入视频'}.get(r['kind'],'视频处理'),state=r['state'],active=True,attention=r['state']=='unknown',actions=['recover','close'] if r['state']=='unknown' else ['stop'],url='#/p/'+p['id'],created=r['created'],updated=r.get('started',r['created']),note=r.get('error') or r.get('note','')))
+                continue
             owned=[j for j in jobs if j['project_id']==p['id'] and j['kind']!='library_media']
             attempts=list(video_runs(p));uncertain=any(a.get('status') in ('submitting','submitted','interrupted') for a in attempts)
             if not owned and not attempts and p.get('status') not in ('preparing','generating','assembling','interrupted','failed'):continue
@@ -94,6 +100,9 @@ class TaskCenter:
     def action(self,body):
         if body.get('confirmed') is not True:raise Conflict('请先确认本次操作的范围与影响')
         kind,action=body.get('kind'),body.get('action');pid=body.get('project');rid=body.get('id')
+        if kind=='assembly' and getattr(self,'assembly',None):
+            self.assembly.control(pid,rid,action)
+            return '任务状态已更新，历史结果保留'
         if kind=='image' and self.images:
             if not pid or not rid:raise ValueError('缺少项目或任务编号')
             store=self.images.store;runner=self.images.runner

@@ -9,3 +9,7 @@
 @import url("./styles/workbench.css");
 @import url("./styles/image-assets.css");
 @import url("./styles/task-center.css");
+
+@import url("./styles/video-assembly.css");
+
+@import "./styles/production-settings.css";

@@ -88,26 +88,6 @@
 .input-table {width:100%;border-collapse:collapse;font-size:14px}
 .input-table th,.input-table td {padding:10px;border-bottom:1px solid var(--line);text-align:left;overflow-wrap:anywhere}
 .input-table th {color:var(--muted);font-weight:500}
-#dialog:has(#settings-content) {width:min(1100px,96vw);max-height:94dvh;padding:22px}
-#settings-content .dialog-heading h2 {font-size:27px;margin:2px 0 5px}
-#settings-content .dialog-heading {margin-bottom:8px}
-#settings-content .settings-summary details {margin:2px 0 0}
-#settings-content .settings-summary summary,#settings-content .engine-directory summary {padding:4px 0}
-#settings-content .dialog-heading p {margin:0}
-#settings-content .engine-directory {margin:6px 0;font-size:13px}
-#settings-content .settings-summary {padding:10px 14px;margin:8px 0;font-size:13px}
-#settings-content .settings-summary p {margin:3px 0}
-.settings-workbench {display:grid;grid-template-columns:155px minmax(0,1fr);gap:20px;height:clamp(250px,calc(100dvh - 385px),570px)}
-.settings-navigation,.settings-fields {overflow:auto;min-width:0;scrollbar-width:thin}
-.settings-navigation {display:flex;flex-direction:column;gap:5px;align-items:stretch}
-.settings-navigation button {text-align:left;background:transparent;border:0;min-height:40px;font-size:14px;padding:9px 12px}
-.settings-navigation button[aria-current=true] {background:var(--sage-soft);color:var(--sage)}
-#settings-content .settings-group {margin:0;padding:4px 8px;border:0}
-#settings-content .settings-group h3 {font-size:20px;margin:0 0 14px}
-#settings-content .settings-grid {gap:12px 18px}
-#settings-content .field {margin:0 0 14px}
-#settings-content .dialog-actions {margin:12px 0 0;position:sticky;bottom:0;padding:10px 0;background:var(--paper)}
-#settings-content>.helper {font-size:12px;margin:0}
 .library-page {max-width:1760px;padding:20px 28px}
 .library-page .library-header {margin:0 0 20px;align-items:center}
 .library-page .library-header h1 {font-size:32px;margin:4px 0}
@@ -208,10 +188,6 @@
   .swap-directing .source-stage video {max-height:180px}
 }
 @media(max-width:850px),(max-height:620px) {
-  .settings-workbench {height:auto;grid-template-columns:1fr}
-  .settings-navigation {flex-direction:row;overflow:auto}
-  .settings-navigation button {flex-shrink:0}
-  .settings-fields {max-height:50dvh}
   .library-page .library-layout {height:auto;grid-template-columns:1fr}
   .library-page .library-sidebar {display:flex;overflow:auto;gap:6px;max-height:140px;flex-wrap:wrap}
   .library-page .library-header {align-items:start;flex-direction:column}
@@ -241,3 +217,12 @@
 .final-prompt-heading h4 {margin:0;font-size:16px}
 .swap-script .final-prompt-preview textarea {display:block;width:100%;min-height:200px;height:240px;max-height:45dvh;resize:vertical;font-size:14px;line-height:1.65;background:var(--paper-2)}
 .swap-script .final-prompt-preview textarea[hidden] {display:none}
+
+/* Shared step actions and reference controls, owned by the workspace UI. */
+.workspace-support{min-width:0;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.workspace-actions{margin-left:auto;justify-content:flex-end;flex-wrap:wrap}
+.import-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.import-options>*{min-width:0;width:100%;box-sizing:border-box}
+.property-tabs{overflow-x:auto}
+.property-tabs>button{flex-shrink:0;min-width:64px}
+@media(max-width:760px){.workspace-actions{width:100%}.workspace-support{width:100%}}

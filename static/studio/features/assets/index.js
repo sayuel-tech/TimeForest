@@ -1,3 +1,4 @@
+import {referenceAssetCard} from '../../ui/reference-assets.js';
 import { useLibrary } from "../asset-picker/project-use.js";
 import { saveProjectMedia } from "../asset-picker/result-import.js";
 /** View feature; receives a project-scoped public workspace context. */
@@ -57,7 +58,7 @@ export function createFeature(ctx) {
       .filter(Boolean);
   }
   function assetCard(a, s) {
-    return `<div class="asset ${s.assets.includes(a.id) ? "" : "inherited"}">${a.kind === "image" ? `<img src="${ctx.esc(a.url)}" alt="${ctx.esc(a.name)}">` : a.kind === "audio" ? `<audio controls preload="none" src="${ctx.esc(a.url)}"></audio>` : ""}<h4>${ctx.esc(a.name)}</h4><small>${ctx.esc({ character: "角色", face: "脸部", costume: "服装", scene: "场景", palette: "色系", prop: "道具", voice: "音色参考" }[a.purpose] || a.purpose)} ${a.subject ? "· 角色" + ctx.esc(a.subject) : ""}</small>${a.duration ? `<small>${ctx.fmt(a.duration)}秒</small>` : ""}${s.assets.includes(a.id) || s.inherit_ids.includes(a.id) ? `<details class="asset-menu"><summary>管理素材</summary><button class="quiet" data-edit-asset="${a.id}" data-segment="${s.id}">修改用途/角色</button><button class="quiet danger" data-remove="${a.id}" data-segment="${s.id}">移除本段引用</button>${ctx.catalog.asset_library_version ? `<button type="button" class="quiet" data-library-save="${a.id}">保存到资产库</button>${a.library_reference?.root_asset===a.library_reference?.asset && a.library_reference ? `<button type="button" class="quiet" data-library-update="${a.id}" data-segment="${s.id}">检查库中版本</button>` : ""}` : ""}</details>` : "<small>来自P01</small>"}</div>`;
+    return referenceAssetCard(a,{inherited:!s.assets.includes(a.id),actions:`${s.assets.includes(a.id) || s.inherit_ids.includes(a.id) ? `<button class="quiet" data-edit-asset="${a.id}" data-segment="${s.id}">修改用途/角色</button><button class="quiet danger" data-remove="${a.id}" data-segment="${s.id}">移除本段引用</button>${ctx.catalog.asset_library_version ? `<button type="button" class="quiet" data-library-save="${a.id}">保存到资产库</button>${a.library_reference?.root_asset===a.library_reference?.asset && a.library_reference ? `<button type="button" class="quiet" data-library-update="${a.id}" data-segment="${s.id}">检查库中版本</button>` : ""}` : ""}` : "<small>来自P01</small>"}`});
   }
   async function uploadAssets(el) {
     const files = Array.from(el.files),

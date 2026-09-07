@@ -1,3 +1,4 @@
+import {workspaceActions} from '../../ui/workspace-actions.js';
 import {bindWorkbench} from '../../ui/workbench.js';
 import {mediaPlayer} from '../../ui/media-player.js';
 import {bindInputInventory} from '../../ui/input-inventory.js';
@@ -22,7 +23,7 @@ export function projectSummary(ctx) {
   }<button id="drafts" class="quiet">找回移出的片段内容</button></details><p id="duration-preview" class="preview-note" role="status"></p>`;
 }
 export function savebar(ctx) {
-  return `<div class="savebar"><span id="save-state">${ctx.dirty ? "有未保存修改" : "已保存 · 版本 " + ctx.project.revision}</span><div class="row"><button id="save" class="quiet">保存草稿</button><button id="preflight" data-auto-save data-saved-label="检查工作流" data-dirty-label="保存并检查">检查工作流</button><button id="review-go" class="primary">进入制作 <span aria-hidden="true">→</span></button></div></div>`;
+  return workspaceActions({support:`<span id="save-state">${ctx.dirty ? "有未保存修改" : "已保存 · 版本 " + ctx.project.revision}</span>`,actions:`<button id="save" class="quiet">保存草稿</button><button id="preflight" data-auto-save data-saved-label="检查工作流" data-dirty-label="保存并检查">检查工作流</button><button id="review-go" class="primary">进入制作 <span aria-hidden="true">→</span></button>`});
 }
 export function shotNavigation(ctx, title = "片段目录") {
   return `<div class="section-caption"><span class="eyebrow">SHOT INDEX</span><h3>${title}</h3></div><div class="shot-nav">${ctx.project.segments.map((s, i) => `<button data-focus-shot="${i}" class="${i === ctx.shot ? "active" : ""}"><span>P${String(i + 1).padStart(2, "0")}</span><span>${fmt((s.requested_frames ?? s.deliver) / 24)}秒</span>${status(s.status)}</button>`).join("")}</div>`;

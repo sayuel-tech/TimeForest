@@ -3,7 +3,7 @@ import * as ui from '../../ui/primitives.js';
 import {api} from '../../core/api-client.js';
 
 export const recycleCategories=[['assets','资产库移除的'],['projects','项目移除的'],['generations','生成移除的']];
-const modes={swap:'参考视频换人',image_story:'参考图长视频',text_story:'文生视频',image_assets:'图片资产创作',legacy:'旧版项目'};
+const modes={video_assembly:'视频接续',swap:'参考视频换人',image_story:'参考图长视频',text_story:'文生视频',image_assets:'图片资产创作',legacy:'旧版项目'};
 const states={success:'已生成',complete:'已生成',failed:'失败',cancelled:'已取消'};
 export function recycleUrl(category='assets',query='',page=1){
   const p=new URLSearchParams({view:'trash',recycle:category});
@@ -13,6 +13,7 @@ export function recycleUrl(category='assets',query='',page=1){
 export function restoreRequest(item){
   if(item.blocked_reason)throw new Error(item.blocked_reason);
   const revision=item.revision;
+  if(['assembly_clip','assembly_extension','assembly_run'].includes(item.type))return {path:`/assembly/${item.project}/visibility`,body:{revision,id:item.id,kind:item.type.slice(9),removed:false}};
   if(item.type==='asset')return {path:`/library/assets/${item.id}/trash`,body:{revision,restore:true}};
   if(item.type==='project')return {path:`/projects/${item.id}/trash`,body:{revision,restore:true}};
   if(item.type==='image_task')return {path:`/image-projects/${item.project}/tasks/${item.id}/discard`,body:{revision,restore:true}};

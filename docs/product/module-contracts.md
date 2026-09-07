@@ -2,7 +2,7 @@
 
 本文件沿用 V4 阶段 A 合并的维护规则，并依据阶段 B 的实际代码接入更新功能边界。下列现状来自注册、工作区、编译器及现行说明的定点核对；相关非生成检查、用户体验与真实生成状态统一记在[维护基线](../maintenance-baseline.md)，不在此另建版本台账。
 
-## 四个用户任务与当前入口
+## 五个用户任务与当前入口
 
 产品入口按用户任务划分；H3、Krea 或后续模型家族是执行实现，不决定网站一级导航。沿用 `static/studio/app/mode-registry.js` 的中文名称和稳定 ID，不为术语调整迁移项目或路由。当前图片入口由已有 `image_assets_enabled` 能力控制。
 
@@ -12,12 +12,15 @@
 | 参考图长视频 / `image_story` | 角色/场景等参考素材、图文分镜、用户目标时长、制作审核与成片；保留当前素材继承与连续声画规则 | `static/studio/modes/image-story/workspace.js`；`h3ui/studio_story.py`、`studio_plan.py`、`studio_inputs.py` |
 | 文生视频 / `text_story` | 镜头目录与剧本正文、按镜制作、声音/素材按需展开、审核与合成；带参考时按已有影响确认适配 | `static/studio/modes/text-story/workspace.js`；`h3ui/studio_story.py`、`studio_inputs.py`、`studio_recipes.py` |
 | 图片资产创作 / `image_assets`，`kind=image` | 单图、双图、局部重绘/移除、扩图及文生图五工具；任务、画布与指令；候选比较、选定、继续编辑、入库与视频引用 | `static/studio/app/image-workspace-controller.js`；`features/image-canvas/`、`features/image-results/`（均在 `static/studio/`）；`h3ui/image_studio/` |
+| 视频接续 / `video_assembly`，`kind=assembly` | 本地/资产库视频排序与非破坏裁切、跳舞/官方两种AI尾部续接、候选挑选、成片与入库 | `h3ui/video_assembly/`、`static/studio/modes/video-assembly/`；[现行说明](../video-assembly.md) |
 
 参考视频换人与参考图长视频是两个用户任务，不能因口语名称接近而合并。图片任务不是视频分镜：继续使用图片任务级设置、运行和输出身份，视频保留项目/片段作用域。
 
 视频继续复用项目会话、唯一命令门、审核和合成服务；图片继续复用现有 `ImageSession`、图片保存/运行服务、GPU 通道与资产库。共用设计组件不要求把两种业务会话强行改成一个。项目、历史作品、固定资产版本与原件保护仍按[资产维护说明](../asset-library-maintenance.md)和[资产架构](../asset-library-architecture.md)执行。
 
 ## 扩展分流与固定外壳
+
+视频接续已按[原开发计划](video-assembly-plan.md)接入本地代码。它保留原视频、按需生成新增续接，普通拼接与AI生成分通道。外部尾部独立适配，参数草稿、候选与精确来源不会改写旧三视频分镜语义；原始来源与网站补充、代码检查与生成效果分开记录。详见[现行说明](../video-assembly.md)。
 
 同用途的新工作流应进入原模块或原图片工具内的工作流选择；模型换代、节点更多、作者不同均不足以新增一级模块。现有三视频已有 `settings.recipe` 选择及各模式配方列表；图片当前是一个来源图的四编辑分支及派生文生图适配，尚未具备任意工作流选择器。这里规定其后续接入位置，不宣称选择器已经实现。
 

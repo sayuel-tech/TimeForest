@@ -54,8 +54,13 @@ def create_app(config_path: str | None = None, *, recover_tasks: bool = True):
         app.register_blueprint(image_bp)
         if recover_tasks:
             app.config['IMAGE_STUDIO'].runner.wake()
+    from .video_assembly.service import Assembly
+    from .video_assembly.routes import bp as assembly_bp
+    app.config['VIDEO_ASSEMBLY'] = Assembly(app.config['STUDIO'], app.config['ASSET_LIBRARY'], recover=recover_tasks)
+    app.register_blueprint(assembly_bp)
     from .task_center import TaskCenter, bp as task_bp
     app.config['TASK_CENTER'] = TaskCenter(app.config['STUDIO'], app.config.get('IMAGE_STUDIO'), app.config['ASSET_LIBRARY'].tasks)
+    app.config['TASK_CENTER'].assembly = app.config['VIDEO_ASSEMBLY']
     app.register_blueprint(task_bp)
     from .studio_records import bp as records_bp
     app.register_blueprint(records_bp)

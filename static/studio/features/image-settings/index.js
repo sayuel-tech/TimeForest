@@ -1,7 +1,7 @@
-import { esc, scopedModal } from '../../ui/primitives.js';
+import { esc } from '../../ui/primitives.js';
 import { assertImageCatalog } from '../../core/image-catalog.js';
 import { errorFeedback, bindErrorFeedback } from '../../ui/error-feedback.js';
-import { productionGroups, productionSettingsMarkup, bindSettingsNavigation, parameterField, seedFields } from '../../ui/production-settings.js';
+import { openProductionSettings, productionSettingsActions, productionGroups, productionSettingsMarkup, bindSettingsNavigation, parameterField, seedFields } from '../../ui/production-settings.js';
 
 const groups = { ...productionGroups, sampling: '采样', assets: '参考图' };
 const inputError = message => Object.assign(new Error(message), {kind:'input'});
@@ -106,12 +106,9 @@ function renderField(field, value, catalog, { quick = false, mode, seed, lastSee
   if (field.type === 'seed') return seedFields({mode, value: seed, lastSeed});
   const attr = field.scope === 'models' ? 'data-model' : 'data-setting';
   let options = field.type === 'model' ? catalog.choices?.[field.key] || [] : field.options;
-  if (field.type === 'model' && field.group !== 'lora' && value && !options.includes(value))
-    options = [[value, `${value}（目录未发现，保留当前选择）`], ...options];
   return parameterField(field, value, {
     attributes: `${attr}="${esc(field.key)}"`,
     options,
-    listId: field.type === 'model' && field.group === 'lora' ? `image-${quick ? 'quick' : 'dialog'}-model-${field.key}` : '',
     preserveCurrent: true,
   });
 }
@@ -142,8 +139,7 @@ export function openImageSettings({ task, catalog, request, onApply, onCatalog, 
   if (signal?.aborted) return Promise.resolve(null);
   return new Promise(resolve => {
     const draft = createImageSettingsDraft({task, catalog, request, onApply, onCatalog, signal});
-    const dialog = scopedModal('<div id="settings-content"></div>');
-    const content = dialog.querySelector('#settings-content');
+    const {dialog, content} = openProductionSettings();
     let selectedGroup = 'core', settled = false, refreshing = false, applying = false;
     const alive = () => !settled && draft.active && dialog.open;
     function finish(result = null) {
@@ -174,7 +170,7 @@ export function openImageSettings({ task, catalog, request, onApply, onCatalog, 
       content.innerHTML = productionSettingsMarkup({
         scope: `当前图片任务草稿 · ${task.name || task.id} · ${current.tools?.[task.submode] || task.submode}`,
         directory: directoryMarkup(current, task.submode), sections,
-        actions: '<button id="image-reset-defaults" type="button" class="quiet">恢复默认</button><button id="cancel-settings" type="button">取消</button><button id="apply-settings" type="button" class="primary">应用到任务草稿</button>',
+        actions: productionSettingsActions([{role:"reset",id:"image-reset-defaults",label:"恢复默认"},{role:"cancel",id:"cancel-settings",label:"取消"},{role:"apply",id:"apply-settings",label:"应用到任务草稿",primary:true}]),
         footer: '应用只更新当前图片任务草稿。使用「保存草稿」持久保存；生成图片时自动保存。素材、画布标注、候选与资产保持原有流程。',
       });
       bindSettingsNavigation(content, selectedGroup, key => { selectedGroup = key; });

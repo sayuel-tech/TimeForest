@@ -2,7 +2,7 @@ import { esc, fmt, status } from "../ui/primitives.js";
 import { getMode, listModes } from "../app/mode-registry.js";
 export function projectCard(p) {
   const mode = getMode(p.mode);
-  return `<a class="project-card" href="#/p/${p.id}">${p.cover ? `<img class="project-cover" loading="lazy" src="${esc(p.cover)}" alt="${esc(p.name)}项目参考图">` : `<div class="project-cover text-cover"><span class="eyebrow">${mode?.code || "PROJECT"}</span><span>${esc(p.name)}</span></div>`}<div class="card-body"><div class="row between"><span class="eyebrow">${mode?.code || esc(p.mode)}</span>${status(p.status)}</div><h3>${esc(p.name)}</h3><small>${p.kind === 'image' ? `${p.tasks}个任务 · ${p.outputs}张候选 · ${p.selected}张已选` : `${fmt(p.duration)}秒 · ${p.segments}段 · ${p.accepted}段已接受`}</small></div></a>`;
+  return `<a class="project-card" href="#/p/${p.id}">${p.cover ? `<img class="project-cover" loading="lazy" src="${esc(p.cover)}" alt="${esc(p.name)}项目参考图">` : `<div class="project-cover text-cover"><span class="eyebrow">${mode?.code || "PROJECT"}</span><span>${esc(p.name)}</span></div>`}<div class="card-body"><div class="row between"><span class="eyebrow">${mode?.code || esc(p.mode)}</span>${status(p.status)}</div><h3>${esc(p.name)}</h3><small>${p.kind === 'assembly' ? `${fmt(p.duration)}秒 · ${p.segments}个视频` : p.kind === 'image' ? `${p.tasks}个任务 · ${p.outputs}张候选 · ${p.selected}张已选` : `${fmt(p.duration)}秒 · ${p.segments}段 · ${p.accepted}段已接受`}</small></div></a>`;
 }
 export function renderHome(root, projects, create) {
   const items = projects.filter((p) => !p.archived);

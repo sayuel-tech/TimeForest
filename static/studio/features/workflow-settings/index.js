@@ -1,5 +1,5 @@
 import { esc, field, toast } from "../../ui/primitives.js";
-import { productionGroups as groups, productionSettingsMarkup, bindSettingsNavigation, parameterField } from "../../ui/production-settings.js";
+import { openProductionSettings, productionSettingsActions, productionGroups as groups, productionSettingsMarkup, bindSettingsNavigation, parameterField } from "../../ui/production-settings.js";
 import {
   visibleParameters,
   choicesFor,
@@ -12,8 +12,7 @@ export function createFeature(ctx) {
     const original = structuredClone(ctx.project.settings);
     let candidate = structuredClone(original);
     let selectedGroup="core";
-    const dialog = ctx.modal('<div id="settings-content"></div>');
-    const content = dialog.querySelector("#settings-content");
+    const {dialog, content} = openProductionSettings({signal:ctx.session.controller?.signal});
     const recipe = () =>
       ctx.catalog.recipes.find((r) => r.id === candidate.recipe);
     function input(f) {
@@ -71,7 +70,7 @@ export function createFeature(ctx) {
         const fs = fields.filter((f) => f.group === group),
           loras = group === "lora" && r.capabilities.lora_slots;
         if (!fs.length && !loras) return null;
-        const html = `<div class="settings-grid">${fs.map(input).join("")}</div>${loras ? `<p id="lora-state" class="helper"></p><div class="lora-slots">${candidate.loras.map((l, i) => `<fieldset><legend>LoRA ${i + 1}</legend>${field("文件", `<input list="lora-options" data-lora="${i}" data-key="file" value="${esc(l.file)}" title="${esc(l.file)}">`)}<div class="split">${field("强度", `<input type="number" min="-10" max="10" step=".05" data-lora="${i}" data-key="strength" value="${l.strength}">`)}<label class="check"><input type="checkbox" data-lora="${i}" data-key="bypass" ${l.bypass ? "checked" : ""}>Bypass · 跳过本槽</label></div></fieldset>`).join("")}</div>` : ""}`;
+        const html = `<div class="settings-grid">${fs.map(input).join("")}</div>${loras ? `<p id="lora-state" class="helper"></p><div class="lora-slots">${candidate.loras.map((l, i) => `<fieldset><legend>LoRA ${i + 1}</legend>${parameterField({type:"model",key:"lora"+i,label:"LoRA 文件"},l.file,{attributes:`data-lora="${i}" data-key="file"`,options:ctx.catalog.loras})}<div class="split">${field("强度", `<input type="number" min="-10" max="10" step=".05" data-lora="${i}" data-key="strength" value="${l.strength}">`)}<label class="check"><input type="checkbox" data-lora="${i}" data-key="bypass" ${l.bypass ? "checked" : ""}>Bypass · 跳过本槽</label></div></fieldset>`).join("")}</div>` : ""}`;
         return {key:group, title, html};
       }).filter(Boolean);
       content.innerHTML = productionSettingsMarkup({
@@ -79,8 +78,7 @@ export function createFeature(ctx) {
         directory: `<details class="engine-directory"><summary>本地模型目录</summary><p>刷新页面或点击下方按钮会重新扫描本地模型目录，无需启动ComfyUI。你的文件选择会原样提交；不兼容时显示ComfyUI返回的错误。${ctx.catalog.local_models?.updated ? ` 上次扫描：${new Date(ctx.catalog.local_models.updated * 1000).toLocaleString()}` : ""}</p>${(ctx.catalog.local_models?.errors || []).map(e => `<p class="notice error">${esc(e)}</p>`).join("")}<button id="connect-engine" type="button">刷新本地模型列表</button></details>`,
         summary: `<div class="settings-summary"><strong id="geometry-preview"></strong><p id="sampling-preview"></p><details><summary>工作流说明与适用范围</summary><p>${esc(r.description)}</p><p>${esc(r.capabilities.verification)}</p></details></div>`,
         sections,
-        extra: `<datalist id="lora-options">${ctx.catalog.loras.map((l) => `<option value="${esc(l)}">`).join("")}</datalist>`,
-        actions: '<button id="cancel-settings">取消</button><button id="reset-settings">恢复配方推荐值</button><button id="apply-settings" class="primary">应用到项目草稿</button>',
+        actions: productionSettingsActions([{role:"reset",id:"reset-settings",label:"恢复默认"},{role:"cancel",id:"cancel-settings",label:"取消"},{role:"apply",id:"apply-settings",label:"应用到项目草稿",primary:true}]),
         footer: '进入制作或生成时自动保存。涉及工作流、模型或已有结果的变化，会先展示影响并请你确认。',
       });
       bindSettingsNavigation(content, selectedGroup, key => { selectedGroup = key; });

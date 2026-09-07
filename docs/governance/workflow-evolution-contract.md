@@ -59,3 +59,9 @@
 每次交付同批更新相关模块说明、参数映射、必要来源/依赖说明和当前维护状态；任务路由、边界或入口变化同步修改 AGENTS/PROJECT_GUIDE 正文。按[上下文维护机制](context-maintenance.md)先语义核对，再刷新索引并检查；不能只改日期或只在聊天中说明。未授权自动提交、发布或安装检查钩子时，维护结果留在同一工作树，文件落地本身不等于自动强制执行已启用。
 
 文生图适配标识为image_assets/text，结构修订compiler.TEXT_ADAPTER_REVISION=1写入运行snapshot.adapter_revision；来源图未新增原生分组或被覆盖，而是按本地Krea/ComfyUI原生文字编码源码派生去参考输入的分支。加载器、节点、源版本与边界详见[唯一参数映射](../frontend/parameter-map.md#文生图派生适配)。无新插件安装、模型白名单或数据库迁移，离线图检查不能证明实际生成效果。
+
+## 外部视频尾部续接适配
+
+video_assembly通过assembly.dance_split与assembly.official_image（revision1）复用当前两种采样主体，旧配方定义和来源快照不改。准备外部22帧图像与24帧声音，标记external_decoded_av，不伪造内部pass2_lossless_tail来源；官方分支显式绑定独立音频尾部，输出裁掉前文再合成。内部任务首段也有前文。节点预检和替身回收已覆盖，动作、音色与接缝仍待真实生成。详见[现行说明](../video-assembly.md)。
+
+6.3.13续接参考输入沿用studio_inputs清单与Recipes.compile加载链，尾部声画上下文仍独立绑定。新字段必须核对run.snapshot.assets、执行输入文件及两配方图；不因参考区与参考图长视频相似就复制整套故事会话。默认无参考行为保持，真实模型遵循未验收。

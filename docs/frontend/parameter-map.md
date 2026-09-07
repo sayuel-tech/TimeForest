@@ -6,6 +6,8 @@
 
 ## 视频项目与片段映射
 
+视频拼接使用下文独立作用域；原三视频的项目/分镜字段保持不变。
+
 下表采样／模型字段属于 `project.settings`；时长和时间方式属于项目，参考素材、边界及种子属于片段，不能因统一控件而改成同一作用域。
 
 | 用户设置 | 持久字段 | 执行落实 |
@@ -81,7 +83,7 @@
 
 text只公开上述字段；不公开或消费lora/strength_model、参考权重、图像理解、fit_mode、遮罩、扩边及output_mp。任务可保留未公开旧字段以兼容结构，运行snapshot的A/B/mask置空、inputs={}，不复制底图。所需节点通过编译图class_type求得missing_by_tool，执行模型校验只检查unet/clip/vae；原四编辑分支及默认图不变。跨文字/编辑工具在前端创建独立任务并保留原草稿，后续经原保存门持久化；所选文字结果继续编辑时按原规则创建single任务，以候选为A。不迁库，不重新设计图片工作区。
 
-普通本地模型刷新走 `GET /api/v5/image-projects/catalog`，沿用 `LocalModels` 文件扫描；在线节点能力单独通过 `POST .../catalog/sync` 更新。图片底模／CLIP／VAE 使用与视频一致的 `select`，LoRA 使用可输入的 `datalist`；使用目录提供的完整相对文件名，目录未发现的当前选择保留并明确提示。远程引擎使用匹配该地址的节点缓存，不将本机扫描冒充远程模型目录；详见[模型目录](../local-model-catalog.md)。
+普通本地模型刷新走 `GET /api/v5/image-projects/catalog`，沿用 `LocalModels` 文件扫描；在线节点能力单独通过 `POST .../catalog/sync` 更新。五模式的底模、编码器、VAE、加速/普通LoRA统一使用 `ui/model-selector.js`：下拉展开完整目录，不以当前文件名过滤；“手动填写文件名”折叠区保留完整相对路径。目录外的当前值继续保留并提示，输入、选择、刷新均不自动替换模型。这只统一选择控件，字段键与下游绑定保持原样。远程引擎使用匹配该地址的节点缓存，不将本机扫描冒充远程模型目录；详见[模型目录](../local-model-catalog.md)。
 
 接口与运行记录提供错误分类及 `error_raw` 原文，公共错误组件展示摘要、展开和复制原始反馈，原文中实际收到的节点／字段信息保留为文本，不猜原因或自动试参。后续字段变更同步本表与真实描述／编译，不复制到 AGENTS 或另一个能力全表。相关非生成检查与仍待生成、体验验证的范围统一见[维护基线](../maintenance-baseline.md)。
 
@@ -99,3 +101,34 @@ text只公开上述字段；不公开或消费lora/strength_model、参考权重
 - 资产 record_prompt/设定文案仅供档案，不进入 inventory、条件或生成正文。单图换人限制不扩展到其他支持多图的模式。
 
 检查入口：test_director_v3.py、test_director_v3_routes.py、test_dance_split.py。测试编译真实图，不向真实引擎提交。
+
+## 视频拼接模式映射
+
+`assembly.clips[].extensions[]`为续写段（下表简称e），`e.configurations[recipe]`为各配方独立设置（简称s）。后台catalog按实际recipe.parameters筛选，字段条件沿用现有描述，详细范围/默认仍由当前Recipes定义；没有另造前端参数常量。原三视频上表节点落点继续适用其复用部分，新的绑定如下。
+
+| 用户设置/输入 | 持久字段与快照 | 执行落实 |
+|---|---|---|
+| 跳舞／官方工作流 | e.recipe，e.configurations | 私有投影分别复用dance_split / official_image；adapter_id=assembly.<recipe>，revision1；不修改原配方注册 |
+| 视频顺序、使用范围 | assembly.track_order保存原视频/已选续接槽顺序；start/end、provenance | 本地规范化trim/时间戳，再concat；原file与库版本不由保存请求替换 |
+| 尾部上下文 | run.snapshot.source与每个workflow文件的context | 101 LoadVideo.file；645 LoadAudio.audio；105 MotionContext.context_frames/音频、视频VAE和音频VAE；22视频帧与24音频帧，官方分支使用独立对齐声音 |
+| 后续正文 | e.prompt → run.snapshot.extension.prompt | 20 MiniMaxH3ReferenceToVideo.prompt；无原片ref_video输入，不拼资料PROMPT |
+| 新增时长／单次上限 | e.seconds、s.render_cap | plan首段和后续均head=22；20.length按5+17k合法raw；后处理去掉22帧和对应声音，只交付deliver |
+| 固定／随机种子 | e.seed_mode、e.seed；run.seed冻结安全整数 | 12 RandomNoise.noise_seed；固定0有效，随机仅在新运行时产生，各内部任务使用本次冻结种子 |
+| 底模／编码器／VAEs | s.model/clip/video_vae/audio_vae | 原1/2/3/4加载节点；3/4亦供上下文和声画解码；全文件名保留 |
+| 生成画布与放大 | s.size_mode/aspect/megapixels/width/height/scale | 原geometry与20宽高；跳舞学习型放大器沿用原绑定；官方不展示scale |
+| 采样 | s.steps/split_step/sampler/scheduler | 原采样器与调度器；跳舞总日程+SplitSigmas切点，官方单采，官方加速启用时按现行配方联动步数 |
+| LoRA／低显存 | s.loras、acceleration/accel_file/accel_strength、sage/low_vram/head_chunks/ff_chunks/seq_threshold/temporal_chunking/force_unload | 节点及条件沿用上方视频映射；只展示当前配方实际可用项，官方不展示跳舞三槽，跳舞不展示官方加速开关 |
+| 续接声音 | e.sound=native/mute | 图仍有原生声音输出；结果交付可明确静音。不改变原视频声音，无音轨原片用显式静音上下文 |
+| 成片画布／帧率／适配 | assembly.output.width/height/fps/fit | normalize的等比补边或明确填满裁切，按时间戳换帧率；与生成画布分开，不改变播放速度 |
+| 续写段参考素材 | assembly.references固定项目副本；e.references保存id/purpose/subject；run.snapshot.assets冻结规范化文件、哈希、库版本、用途/角色和顺序 | References校验归属→studio_inputs.inventory/validate→LoadImage/LoadAudio（400起）→20.ref_images.ref_image_N / ref_audios.ref_audio_N；独立于101/645/105尾部链，执行前校验哈希并prepare_execution_inputs复制 |
+| 参考精度 | s.reference_size=match/max | 20.ref_image_size，双配方实际消费；不再过滤此参数 |
+| 输入编号与正文 | e.input_inventory为只读派生；e.prompt保持用户正文 | Picture和Audio分别按有效顺序编号，validate_tags拒绝不存在编号；不自动写入资料PROMPT |
+| 草稿并发 | assembly.draft_revision＋项目revision | 草稿保存检查独立作者版本，任务状态落库不冒充用户编辑；其他增删/选用/提交仍检查项目revision。运行快照不回写 |
+
+原audio_policy、export_fps、文戏shift和独立精修项不在续接生成参数页；项目导出与续接声音分别有真正消费路径。恢复默认仅当前配方临时副本与种子/声音，不覆盖另一配方、视频、正文和候选。编译及替身回收通过不等于实际模型生成通过。
+
+来源参数只读投影：库固定媒体provenance.records.manifest.settings及已选内部任务记录，或接续run.snapshot.extension.configurations[recipe]，经source_parameters.py投影到clip/run.source_parameters；实际种子来自运行记录，不能用随机模式的预备seed冒充。来源页复用现行recipe字段定义/中文名和公共productionGroups，缺字段不补默认。这个展示字段不进入当前e.configurations或生成编译；固定媒体、复合成片和旧导入规则见video-assembly.md。
+
+### 接续片尾尺寸准备（6.3.20）
+
+AI尾部的媒体预处理保留源视频显示几何，经LoadVideo(101)→视频帧→MotionContext(105)进入现有画布适配；20.width/height仍取用户一采设置，不把导出contain补边用于AI参考。新运行snapshot.tail_preparation=source_geometry_v2，旧运行缺字段按legacy_contain_v1恢复。只调整外部片尾预处理，不改用户默认参数、节点加载或两采绑定；普通拼接导出fit仍按原设置执行。详见[视频接续](../video-assembly.md#时长与声音)。

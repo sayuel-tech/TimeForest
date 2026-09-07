@@ -464,18 +464,25 @@ def listing():
     st=service();items=[]
     for p in st.store.list(trash=request.args.get("trash")=="1"):
         cover=None
+        if p['mode']=='video_assembly':
+            assembly=current_app.config['VIDEO_ASSEMBLY']
+            items.append(dict(id=p['id'],revision=p['revision'],name=p['name'],mode=p['mode'],kind='assembly',status=p['status'],duration=assembly.duration(p),updated=p['updated_at'],deleted_at=p.get('deleted_at'),busy=st.jobs.is_busy(p['id']),cover=None,segments=sum(not c.get('removed_at') for c in p['assembly']['clips']),accepted=0))
+            continue
         if p['segments']:
             try:cover=next((st.url(p['id'],a['path']) for a in st.resolve(p,p['segments'][0]) if a['kind']=='image'),None)
             except ValueError:pass
         items.append(dict(revision=p['revision'],deleted_at=p.get('deleted_at'),busy=st.jobs.is_busy(p['id']),id=p['id'],name=p['name'],mode=p['mode'],status=p['status'],duration=p['duration'],updated=p['updated_at'],cover=cover,segments=len(p['segments']),accepted=sum(s['status'] in ['accepted','done'] for s in p['segments'])))
     images=current_app.config.get('IMAGE_STUDIO')
     if images:items.extend(images.summaries(trash=request.args.get('trash')=='1'))
-    return jsonify(projects=sorted(items,key=lambda p:p['updated'],reverse=True),image_assets_enabled=bool(images))
+    return jsonify(projects=sorted(items,key=lambda p:p['updated'],reverse=True),image_assets_enabled=bool(images),assembly_contract_version=1)
 @bp.post('/projects/<pid>/trash')
 def project_trash(pid):
     st=service();data=request.get_json() or {}
     images=current_app.config.get('IMAGE_STUDIO')
     if images and images.store.exists(pid):return jsonify(images.trash(pid,data))
+    if st.store.get(pid,include_deleted=True)['mode']=='video_assembly':
+        p=st.store.get(pid,include_deleted=True)
+        if any(r['state'] in ('preparing','submitting','running','unknown') for r in p['assembly']['runs']):raise Conflict('请先处理活动或待确认任务')
     if st.jobs.is_busy(pid):raise Conflict('该项目有任务正在处理，请稍后再删除')
     try:
         p=st.jobs.run_inline('project_archive',pid,lambda:st.store.trash(pid,data.get('revision'),data.get('restore') is True))
@@ -485,6 +492,9 @@ def project_trash(pid):
 @bp.post('/projects')
 def create():
     d=request.get_json()
+    if d.get('mode')=='video_assembly':
+        assembly=current_app.config['VIDEO_ASSEMBLY']
+        return jsonify(assembly.snapshot(assembly.create(d.get('name'))['id']))
     if d.get('mode')=='image_assets':
         images=current_app.config.get('IMAGE_STUDIO')
         if not images:raise ValueError('图片创作尚未启用')
@@ -521,6 +531,8 @@ def resume_story(pid,index):
 @bp.get('/projects/<pid>')
 def get(pid):
     images=current_app.config.get('IMAGE_STUDIO')
+    if not (images and images.store.exists(pid)) and service().store.get(pid)['mode']=='video_assembly':
+        return jsonify(current_app.config['VIDEO_ASSEMBLY'].snapshot(pid))
     return jsonify(images.snapshot(pid) if images and images.store.exists(pid) else service().snapshot(service().store.get(pid)))
 @bp.post('/projects/<pid>/assets')
 def upload(pid):
@@ -642,7 +654,7 @@ def files(pid,subpath):
 @bp.get('/health')
 def health():
     st=service();state=st.recipes.engine_catalog.status()
-    return jsonify(ok=True,version=5,local_server_version=1,image_assets_enabled='IMAGE_STUDIO' in current_app.config,image_parameter_contract_version=st.ctx.get('image_parameter_contract_version'),startup_recovery=st.ctx.get('startup_recovery',True),deployment=str(st.ctx['root']),comfy_connected=state['connected'],engine=state,busy=st.jobs.is_busy(),job=st.jobs.current(),jobs=st.jobs.snapshot(),devices=state['devices'])
+    return jsonify(ok=True,version=5,local_server_version=1,assembly_contract_version=1,assembly_reference_version=1,assembly_track_version=1,assembly_source_parameters_version=1,assembly_tail_preparation_version=2,image_assets_enabled='IMAGE_STUDIO' in current_app.config,image_parameter_contract_version=st.ctx.get('image_parameter_contract_version'),startup_recovery=st.ctx.get('startup_recovery',True),deployment=str(st.ctx['root']),comfy_connected=state['connected'],engine=state,busy=st.jobs.is_busy(),job=st.jobs.current(),jobs=st.jobs.snapshot(),devices=state['devices'])
 
 @bp.post('/engine/connect')
 def connect_engine():
@@ -732,3 +744,12 @@ def engine_launcher_status():return jsonify(service().launcher.status())
 def engine_launcher_save():
     if service().jobs.is_busy():raise Conflict('请等待当前任务结束后修改引擎启动设置')
     return jsonify(service().launcher.save(request.get_json()))
+
+@bp.before_request
+def protect_assembly_contract():
+    if request.method=='POST' and request.view_args and 'pid' in request.view_args and request.endpoint!='studio.project_trash':
+        pid=request.view_args['pid']
+        try:p=service().store.get(pid)
+        except KeyError:return
+        if p['mode']=='video_assembly':
+            raise ValueError('视频拼接须使用对应的序列接口，原项目保留')

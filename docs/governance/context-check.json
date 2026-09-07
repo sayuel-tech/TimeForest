@@ -18,6 +18,7 @@
     "docs/frontend/README.md",
     "docs/frontend/parameter-map.md",
     "docs/product/module-contracts.md",
+    "docs/product/video-assembly-plan.md",
     "docs/frontend/parameter-and-interaction-contract.md",
     "docs/governance/workflow-evolution-contract.md",
     "docs/governance/context-maintenance.md",
@@ -41,7 +42,10 @@
     "docs/candidate-records.md",
     "docs/recycle-bin.md",
     "docs/release-distribution.md",
-    "docs/images/manifest.json"
+    "docs/images/manifest.json",
+    "docs/video-assembly.md",
+    "docs/product/shared-ui-optimization-plan.md",
+    "docs/frontend/shared-ui.md"
   ],
   "instruction_globs": [
     "AGENTS.override.md",
@@ -72,7 +76,8 @@
         "static/studio/style.css",
         "static/studio/pages/**/*.js",
         "static/studio/contracts/*.js",
-        "static/studio/design-system.html"
+        "static/studio/design-system.html",
+        "static/assets/modes/*.webp"
       ],
       "docs": [
         "PROJECT_GUIDE.md",
@@ -81,12 +86,15 @@
         "docs/frontend/image-workspace-ui.md",
         "docs/frontend/parameter-and-interaction-contract.md",
         "docs/product/module-contracts.md",
+        "docs/product/video-assembly-plan.md",
         "docs/frontend/adding-a-mode.md",
         "docs/frontend/parameter-map.md",
         "docs/image-assets-art.md",
         "docs/task-queue.md",
         "docs/candidate-records.md",
-        "docs/recycle-bin.md"
+        "docs/recycle-bin.md",
+        "docs/video-assembly.md",
+        "docs/frontend/shared-ui.md"
       ]
     },
     {
@@ -106,9 +114,11 @@
         "h3ui/swap_template_v3.py",
         "h3ui/segmenter.py",
         "h3ui/studio_sources/manifest.json",
-        "h3ui/studio_sources/impact.json"
+        "h3ui/studio_sources/impact.json",
+        "h3ui/video_assembly/*.py"
       ],
       "docs": [
+        "docs/product/video-assembly-plan.md",
         "PROJECT_GUIDE.md",
         "docs/maintenance-baseline.md",
         "docs/frontend/parameter-map.md",
@@ -119,7 +129,8 @@
         "docs/governance/checks-and-release.md",
         "docs/task-queue.md",
         "docs/candidate-records.md",
-        "docs/recycle-bin.md"
+        "docs/recycle-bin.md",
+        "docs/video-assembly.md"
       ]
     },
     {
@@ -142,7 +153,8 @@
         "docs/image-assets.md",
         "docs/task-queue.md",
         "docs/candidate-records.md",
-        "docs/recycle-bin.md"
+        "docs/recycle-bin.md",
+        "docs/video-assembly.md"
       ]
     },
     {

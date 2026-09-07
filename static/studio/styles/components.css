@@ -363,30 +363,6 @@ dialog::backdrop {
   margin-top: 28px;
   z-index: 2;
 }
-.settings-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0 24px;
-}
-.settings-group {
-  border-top: 1px solid var(--line);
-  padding-top: 28px;
-  margin-top: 32px;
-}
-.settings-group h3 {
-  font-size: 26px;
-}
-.settings-group fieldset {
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 20px;
-  margin: 18px 0;
-}
-.settings-group legend {
-  padding: 0 8px;
-  font-size: 14px;
-  font-weight: 500;
-}
 .recipe-note {
   font-size: 13px;
   color: var(--muted);

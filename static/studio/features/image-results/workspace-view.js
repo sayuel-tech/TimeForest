@@ -1,3 +1,4 @@
+import {workspaceActionGroups} from '../../ui/workspace-actions.js';
 import {esc,field,opts} from '../../ui/primitives.js';
 import {runTiming,runStatusRow} from '../../ui/run-timing.js';
 import {workbench,propertyTabs} from '../../ui/workbench.js';
@@ -49,7 +50,7 @@ export function imageActionBar({project,task,page,selection,view}){
     primary=`<button id="${view.saveTarget==='version'?'image-version':'image-ingest'}" class="primary">${view.saveTarget==='version'?'选择资产并添加版本':'保存为新资产'}</button>`;
     hint=view.saveTarget==='version'?'选择现有资产后确认添加版本，原媒体保留。':'保存后可复用到视频项目。';
   }
-  return `<div><span id="image-save-state" role="status">${view.dirty?'有未保存修改':'草稿已保存'}</span><small id="image-action-hint">${hint}</small></div><div class="row"><button id="image-save" class="quiet">保存草稿</button>${secondary}${primary}</div>`;
+  return workspaceActionGroups({support:`<div><span id="image-save-state" role="status">${view.dirty?'有未保存修改':'草稿已保存'}</span><small id="image-action-hint">${hint}</small></div>`,actions:`<button id="image-save" class="quiet">保存草稿</button>${secondary}${primary}`});
 }
 
 function mediaSlot(role,{task,project}){

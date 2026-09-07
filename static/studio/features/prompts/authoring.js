@@ -1,3 +1,4 @@
+import {importOptions} from '../../ui/reference-assets.js';
 import {esc,field,opts,fmt,status} from '../../ui/primitives.js';
 import {propertyTabs} from '../../ui/workbench.js';
 import {inputActions} from '../../ui/input-inventory.js';
@@ -6,8 +7,7 @@ const control=(s,key,label,help='')=>field(label,`<textarea class="short" data-f
 
 export function assetCommands(ctx,s) {
   const swap=ctx.project.mode==='swap';
-  return `<div class="asset-commands"><label class="upload">${swap?'选择角色图':'本地图片'}<input type="file" accept="image/png,image/jpeg,image/webp" ${swap?'':'multiple'} data-upload="image" data-segment="${s.id}"></label><label class="upload">本地声音<input type="file" accept="audio/*" multiple data-upload="audio" data-segment="${s.id}"></label>${ctx.catalog.asset_library_version?`<button type="button" data-library-use="${s.id}">从资产库选择</button>`:''}${s.index?`<button type="button" class="quiet" data-inherit="${s.id}">从P1沿用指定素材</button>`:''}</div>`;
-}
+  return importOptions([`<label class="upload">${swap?'选择角色图':'本地图片'}<input type="file" accept="image/png,image/jpeg,image/webp" ${swap?'':'multiple'} data-upload="image" data-segment="${s.id}"></label><label class="upload">本地声音<input type="file" accept="audio/*" multiple data-upload="audio" data-segment="${s.id}"></label>${ctx.catalog.asset_library_version?`<button type="button" data-library-use="${s.id}">从资产库选择</button>`:''}${s.index?`<button type="button" class="quiet" data-inherit="${s.id}">从P1沿用指定素材</button>`:''}`]);}
 
 export function shotProperties(ctx,s) {
   const assets=ctx.localAssets(s),swap=ctx.project.mode==='swap';

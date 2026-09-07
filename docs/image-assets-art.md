@@ -1,4 +1,4 @@
-# 图片资产创作：美术资源
+# 创作模式与空状态：美术资源
 
 更新日期：2026-09-07。使用内置 imagegen，以原站 mode-r2v.webp 和 mode-t2v.webp 为风格参考，生成三张配套插画。暖象牙纸、水彩与细墨线、森林灰绿和烟蓝、柔和拼贴边缘；文字由网页渲染。
 
@@ -32,3 +32,14 @@ Use case: stylized-concept, finished website empty-state art. Create a single la
 Images 1 and 2 are STYLE REFERENCES ONLY. Match the original site's warm ivory textured watercolor paper, muted forest olive green, smoky blue-gray, sepia, fine natural ink details, torn-paper photo-study collage and soft washed edges. Atmospheric handmade cinematic editorial illustration.
 Subject: a small carefully arranged collection of three loose image studies waiting to be selected and filed: one soft forest landscape watercolor study, one subtle olive garment study, one mostly blank ivory sheet. They rest together in a shallow open paper portfolio, accompanied by one fine botanical twig. Visual metaphor for reviewing image candidates and preserving a chosen creative asset. No people, no badges or selection checkmarks.
 Composition: a simple quiet central vignette occupying about 65% of the canvas, clear silhouette that remains recognizable at 240x160 pixels, ample warm ivory negative space all around, delicate shadows, faded watercolor edges. Natural restrained detail, visually coherent with the references. No writing, labels, letterforms, logo, watermark, UI mockup, buttons, flat vector shapes, bright colors or border around whole image.
+
+
+## 视频接续入口插画
+
+本地6.3.14新增 `static/assets/modes/mode-video-continuation.webp`，替换第五入口此前复用的R2V图。使用内置imagegen生成，以原站 `mode-t2v.webp` 仅作风格参考；胶片片段连接，末帧河流延伸进森林晨光，区别于参考图长视频的人物画面序列。首页沿用公共卡片，不增加模式私有样式。
+
+原始PNG：`<本地用户目录>`。网站使用独立WebP，1536×1024、3:2，保留尺寸和构图，只转换网页编码（quality=90）；原图保留。文字由网页渲染。
+
+生成提示词：
+
+Create one finished website module-card illustration, landscape 3:2 aspect ratio. It represents VIDEO CONTINUATION: joining existing video clips and extending their final moving frames into new scenery. Match the attached style reference ONLY in palette and media: warm ivory watercolor paper, muted forest olive, smoky blue gray, sepia ink, subtle vintage paper collage, sophisticated quiet literary cinematic atmosphere. New independent composition: a gently curving continuous strip of film flows from the lower left across the middle into a misty forest valley on the right; two short film-strip pieces visibly meet along the journey, their frames containing consecutive views of the SAME forest river, and the final film frame gradually dissolves into the actual flowing river and distant soft golden dawn. Elegant broad flowing motion, delicate tree silhouettes and ink detail, balanced negative space and bright creamy paper at edges. Central 75 percent readable when used in a small 3:2 card. Restrained low-contrast watercolor, handmade soft torn paper edges. Do NOT reproduce reference composition, do NOT include a camera as main subject, no people or repeated portrait panels. No text, letters, numbers, logos, arrows, controls, borders or mockup. Deliver the illustration alone.

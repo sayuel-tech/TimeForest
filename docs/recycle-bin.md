@@ -35,3 +35,9 @@
 `tests/test_recycle_bin.py` 使用真实Flask工厂、临时数据和假引擎，验证只读分类/分页/搜索、三视频与图片及旧项目、父项目删除、恢复保留文件/快照、版本/待确认保护。真实API JSON交给实际JS生成恢复请求，再调用真实原接口；不是模拟恢复契约。
 
 `tests/studio_recycle_bin.test.mjs` 覆盖分类链接、类型/归属路由、种子0、转义和已删除项目提示。实际运行结果与浏览器验证只记在[维护基线](maintenance-baseline.md)，不在真实项目/资产上试恢复。
+
+## 视频拼接条目
+
+项目类新增assembly_clip与assembly_extension，生成类新增assembly_run；直接读取该项目JSON的removed_at，不创建另一套删除库。恢复通过/assembly/<pid>/visibility与原项目revision，父项目/片段/续写段先恢复，不自动选用或生成。当前选用及运行/待确认保护不变，已入库媒体保留。[现行说明](video-assembly.md)。
+
+视频接续6.3.16的左侧轨道由原视频和已选成功续接投影；轨道项没有第二套删除状态。移除原视频/生成续接分别复用assembly_clip/assembly_extension，父级与下游依赖保护保持。恢复续写段不自动恢复选用，因此不会直接重返成片轨道；用户重新选用已有候选后加入，文件和旧快照保持。

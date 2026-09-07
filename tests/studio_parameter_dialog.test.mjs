@@ -123,7 +123,7 @@ test('tool descriptors and shared field markup keep quick controls scoped and mo
 test('shared shell preserves video categories and its select/boolean/number controls', () => {
   assert.deepEqual(Object.entries(productionGroups),[['core','工作流与模型'],['picture','画布与输出'],['sampling','两采与时长'],['assets','参考与声音'],['lora','LoRA'],['memory','低显存'],['advanced','高级模型组件']]);
   const model=parameterField({key:'model',type:'model',label:'底模文件'},'saved/model.safetensors',{attributes:'data-param="model"',options:[['saved/model.safetensors','目录未列出，保留当前选择'],'new.safetensors']});
-  assert.match(model,/<select data-param="model"/);assert.doesNotMatch(model,/<datalist|<input/);
+  assert.match(model,/<select data-param="model"/);assert.doesNotMatch(model,/<datalist/);assert.match(model,/data-model-filename/);
   assert.match(model,/<option value="saved\/model.safetensors" selected>/);
   const bool=parameterField({type:'boolean',label:'低显存'},true,{attributes:'data-param="low_vram"'});
   assert.match(bool,/type="checkbox" checked/);
