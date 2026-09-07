@@ -1,0 +1,113 @@
+.creation-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+@media(min-width:1550px){.creation-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:650px){.creation-grid{grid-template-columns:1fr}}
+
+/* Image-only layout. The video reference workspace owns the existing image-desk name. */
+.image-workspace .image-asset-desk .desk-canvas{gap:6px;padding:14px}
+.image-workspace .image-task-heading{flex-shrink:0;gap:8px}
+.image-workspace .image-task-heading h2{font-size:18px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;flex:1}
+.image-workspace .image-task-heading button{font-size:13px;padding:4px 8px;min-height:32px}
+.image-workspace .image-task-heading .inspector-toggle{margin-left:auto}
+.image-workspace .desk-rail>.row{margin-bottom:12px}
+.image-workspace .desk-rail h3{margin:0;font-size:18px}
+.image-workspace .desk-rail #image-new{padding:4px 8px;min-height:36px}
+.image-workspace .image-task{display:flex;align-items:stretch;flex-direction:column;text-align:left;gap:4px;width:100%;margin-bottom:8px;padding:10px;white-space:normal;min-height:44px;background:transparent;border-color:transparent}
+.image-workspace .image-task strong{font-size:13px;font-weight:500}
+.image-workspace .image-task span{font-size:14px;overflow-wrap:anywhere}
+.image-workspace .image-task small{font-size:12px;color:var(--muted)}
+.image-workspace .image-task.active{background:var(--sage-soft);border-color:var(--sage);color:var(--ink)}
+.image-workspace .image-task-toggle{display:none}
+.image-workspace .image-tools{display:flex;gap:4px;flex-wrap:wrap;flex-shrink:0;border-bottom:1px solid var(--line);padding-bottom:8px}
+.image-workspace .image-tools button{font-size:14px;padding:6px 10px;min-height:36px;background:transparent;border-color:transparent}
+.image-workspace .image-tools [aria-pressed=true],.image-workspace .image-canvas-tools [aria-pressed=true]{background:var(--sage-soft);border-color:var(--sage);color:var(--ink)}
+.image-workspace .image-canvas-tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;flex-shrink:0}
+.image-workspace .image-tool-group{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.image-workspace .image-canvas-tools button,.image-workspace .image-canvas-tools summary{font-size:13px;padding:5px 8px;min-height:36px}
+.image-workspace .image-canvas-tools label{display:flex;gap:4px;align-items:center;font-size:13px}
+.image-workspace .image-canvas-tools input{width:60px;min-height:36px;padding:5px;font-size:14px}
+.image-workspace .image-tool-more{position:relative;border:0;padding:0;margin:0}
+.image-workspace .image-tool-more>summary{border:1px solid var(--line);border-radius:var(--r-sm);cursor:pointer;margin:0}
+.image-workspace .image-tool-more>div{position:absolute;right:0;top:100%;z-index:5;padding:8px;min-width:130px;background:var(--paper);border:var(--desk-border);border-radius:var(--r-sm);box-shadow:var(--shadow)}
+.image-workspace .image-tool-more button{display:block;width:100%;margin:4px 0}
+.image-workspace .image-outpaint-controls>div{right:auto;left:0;width:min(360px,75vw);padding:12px;max-height:55dvh;overflow:auto}
+.image-workspace .image-outpaint-controls .field{display:flex;flex-direction:column;align-items:stretch;gap:4px;margin:0}
+.image-workspace .image-outpaint-controls input,.image-workspace .image-outpaint-controls select{width:100%;min-width:0;min-height:36px;font-size:14px}
+.image-workspace .image-outpaint-controls .split{gap:8px;margin-bottom:8px}
+.image-workspace .image-outpaint-controls .field small{font-size:11px;line-height:1.4}
+.image-workspace .image-outpaint-controls .helper{font-size:12px;margin:8px 0 0}
+.image-workspace .image-viewport{flex:1;min-height:100px;position:relative;overflow:auto;background:repeating-conic-gradient(var(--paper-2) 0% 25%,var(--canvas) 0% 50%) 50%/20px 20px;border:1px solid var(--line);border-radius:var(--r-sm);display:grid;place-items:center;padding:10px;touch-action:none}
+.image-workspace .image-viewport canvas{display:block;max-width:none;touch-action:none}
+.image-workspace .image-viewport.is-empty{background:var(--paper-2);touch-action:auto}
+.image-workspace .image-editor-empty{display:flex;align-items:center;gap:16px;padding:8px;text-align:left}
+.image-workspace .image-editor-empty img{width:clamp(76px,25%,150px);height:auto;margin:0;flex-shrink:0;mix-blend-mode:multiply}
+.image-workspace .image-editor-empty h3{font-size:18px;margin:0 0 8px}
+.image-workspace .image-editor-empty p{font-size:14px;margin:0;color:var(--muted)}
+.image-workspace .image-editor-empty button{padding:4px 0;font-size:14px;min-height:36px}
+.image-workspace .image-canvas-caption{font-size:12px;color:var(--muted);flex-shrink:0;line-height:1.5}
+.image-workspace .image-canvas-caption small{display:inline;font-size:12px}
+.image-workspace .image-prompt{flex-shrink:0}
+.image-workspace .image-prompt .row{gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.image-workspace .image-prompt label{font-size:14px;font-weight:500}
+.image-workspace .image-prompt select{min-height:36px;max-width:210px;font-size:13px;padding:6px 8px}
+.image-workspace .image-prompt textarea{width:100%;font-size:15px;line-height:1.7;min-height:64px;height:64px;resize:vertical;padding:8px 12px}
+.image-workspace .property-panel h3{font-size:18px;margin:0 0 12px}
+.image-workspace .property-panel details{border-top:1px solid var(--line);padding:12px 0;margin:0}
+.image-workspace .property-panel summary{cursor:pointer;font-size:14px;margin-bottom:10px}
+.image-workspace .property-panel small{font-size:12px;overflow-wrap:anywhere}
+.image-workspace .property-panel input,.image-workspace .property-panel select{width:100%;min-width:0}
+.image-workspace .property-panel pre{font-size:12px;max-height:220px;overflow:auto}
+.image-workspace .image-input{margin-bottom:20px}
+.image-workspace .image-source-card{display:grid;grid-template-columns:76px minmax(0,1fr);gap:10px;align-items:center;padding:10px;margin-bottom:12px;background:var(--paper-2);border-radius:var(--r-sm)}
+.image-workspace .image-source-card img{width:76px;height:84px;object-fit:contain;border-radius:6px}
+.image-workspace .image-source-card strong{font-size:14px;font-weight:500;overflow-wrap:anywhere}
+.image-workspace .image-source-card small{display:block;margin-top:4px;color:var(--muted)}
+.image-workspace .image-pads{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.image-workspace .image-facts{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;font-size:14px;margin:0 0 20px}
+.image-workspace .image-facts dt{color:var(--muted)}
+.image-workspace .image-facts dd{margin:0;text-align:right;overflow-wrap:anywhere}
+.image-workspace .image-run-source{margin:0 0 16px}
+.image-workspace .image-run-source img{max-height:160px;width:100%;object-fit:contain;background:var(--paper-2);border-radius:var(--r-sm)}
+.image-workspace .image-run-source figcaption{font-size:12px;overflow-wrap:anywhere;margin-top:6px}
+.image-workspace .image-run-prompt{font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}
+.image-workspace .savebar #image-action-hint{display:block;font-size:12px;color:var(--muted);line-height:1.5}
+.image-workspace #image-feedback{font-size:14px;margin:0 0 8px}
+.image-workspace #image-run-state:empty{display:none}
+.image-workspace #image-run-state{flex-shrink:0;max-height:130px;overflow:auto}
+.image-workspace .image-results-empty{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:24px;background:var(--paper-2);border-radius:var(--r-sm)}
+.image-workspace .image-results-empty img{width:min(200px,65%);height:auto;margin:0 auto 12px;mix-blend-mode:multiply}
+.image-workspace .image-results-empty h3{font-size:20px;margin:0 0 8px}
+.image-workspace .image-results-empty p{font-size:14px;margin:0;color:var(--muted)}
+/* Also used inside the shared media chooser dialog. */
+.image-candidates{display:flex;gap:10px;overflow-x:auto;flex-shrink:0;padding:4px 0}
+.image-candidates button{min-width:120px;max-width:160px;padding:8px}
+.image-candidate{flex:0 0 auto;display:flex;flex-direction:column;gap:4px;max-width:160px}
+.image-candidate>small{font-size:11px;color:var(--muted)}
+.image-candidates .image-candidate>[data-record-remove]{padding:3px 8px;min-width:0;align-self:flex-end;font-size:12px}
+.removed-candidate-preview{width:54px;height:54px;object-fit:contain}
+.image-candidates img{width:100%;height:72px;object-fit:contain;border-radius:6px}
+.image-candidates small{display:block;font-size:12px}
+.image-candidates [aria-pressed=true]{border-color:var(--sage);background:var(--sage-soft)}
+.image-workspace .image-compare{min-height:160px;display:flex;align-items:center;justify-content:center;gap:12px;flex:1;background:var(--paper-2);border-radius:var(--r-sm);padding:12px;overflow:auto}
+.image-workspace .image-compare img{max-width:100%;max-height:100%;object-fit:contain;min-width:0}
+.image-workspace .image-compare.split>img,.image-workspace .image-compare.split>figure{max-width:49%;flex:1}
+.image-workspace .image-compare figure{margin:0;text-align:center;font-size:12px}
+.image-workspace .review-actions{font-size:14px}
+@media(max-width:850px),(max-height:620px){
+  .image-workspace .image-asset-desk .desk-canvas{min-height:520px}
+  .image-workspace .image-asset-desk .desk-inspector{max-height:none}
+  .image-workspace .image-viewport{min-height:260px}
+  .image-workspace .image-task-toggle{display:block;width:100%;text-align:left;font-size:14px;white-space:normal}
+  .image-workspace .image-task-list{display:none;margin-top:8px;max-height:200px;overflow:auto}
+  .image-workspace .image-task-list.is-open{display:block}
+  .image-workspace .image-task{margin-bottom:4px}
+  .image-workspace .savebar{position:static;gap:8px;margin-top:16px}
+  .image-workspace .savebar .row{display:flex;width:auto;justify-content:flex-end}
+  .image-workspace .savebar .row button{width:auto;flex:none}
+  .image-workspace .savebar .row{flex-wrap:wrap;gap:8px}
+  .image-workspace .image-compare{min-height:260px}
+  .image-workspace .image-compare img{max-height:50dvh}
+}
+
+.image-workspace .image-tools .inspector-toggle{margin-left:auto;font-size:13px;padding:4px 8px}
+.image-workspace #image-task-name{font-size:13px;padding:6px 4px;min-height:36px;white-space:normal}
+.image-workspace #image-mask-state{margin-left:8px}

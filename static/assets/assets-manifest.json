@@ -1,0 +1,96 @@
+{
+  "version": 2,
+  "product": "时间森林H3导演工作台",
+  "assets": [
+    {
+      "path": "brand/brand-mark.svg",
+      "bytes": 590,
+      "sha256": "6c5a613c6864ee598c8d5d17936cfbf18fe2160f1a7546bba991fb7de6ab66ca"
+    },
+    {
+      "path": "brand/favicon.svg",
+      "bytes": 334,
+      "sha256": "2a3eb9112b9b8fc72c5ff6ceb5efeaa0d758edcd705f166455b9bc9f169f823c"
+    },
+    {
+      "path": "empty/empty-projects.svg",
+      "bytes": 1225,
+      "sha256": "734cdca7e129837c31f485834e830b3f077a64fac303befff28e69623a33d2ca"
+    },
+    {
+      "path": "empty/empty-shot.svg",
+      "bytes": 701,
+      "sha256": "8c215cef157265bbff2d98daa2c43b091288a5375556e04f3b89a01f5409b70d"
+    },
+    {
+      "path": "fonts/CormorantGaramond-500.ttf",
+      "bytes": 290496,
+      "sha256": "1724047c8988ca5155bff667bc48fa52e97d57aabc6b42eebbf986f21a4be20b"
+    },
+    {
+      "path": "fonts/CormorantGaramond-600.ttf",
+      "bytes": 290392,
+      "sha256": "69e7ae35cba23d962227b86f99217c250e642e4c6f6104b4f3ec465039e4e2d8"
+    },
+    {
+      "path": "fonts/cormorantgaramond-OFL.txt",
+      "bytes": 4387,
+      "sha256": "60700d351cac4650c51f3f9db318d2a420f8b45052dba2715eb5fec41f0f6956"
+    },
+    {
+      "path": "fonts/fonts.css",
+      "bytes": 684,
+      "sha256": "3942309dfd9d6517f3c9186abc18a6faeb6888ec0e1eafd460c8216770685bb7"
+    },
+    {
+      "path": "fonts/Onest-400.ttf",
+      "bytes": 90296,
+      "sha256": "5d27bd7fe4b79e94bbe64e7eed75a2ab9921dd603b2cf02ceb9a19150de48f2c"
+    },
+    {
+      "path": "fonts/Onest-500.ttf",
+      "bytes": 90544,
+      "sha256": "24744bba5ddd417b44ab201a5eae234ba3f1bacfc56d552e51799e5e3eec26c4"
+    },
+    {
+      "path": "fonts/Onest-600.ttf",
+      "bytes": 90568,
+      "sha256": "030d1bae9b38f45a1d821bf9d76006450982b41c3ab96cd0c72960e01e674436"
+    },
+    {
+      "path": "fonts/Onest-700.ttf",
+      "bytes": 90516,
+      "sha256": "bee38f5b47923dbb2f9d6856de95ed107d277e4568e42836dbe3e665c73bc468"
+    },
+    {
+      "path": "fonts/onest-OFL.txt",
+      "bytes": 4384,
+      "sha256": "071195d8806e226faeee60259c28ca67b458227af5195a73f5cfcab06e3003bc"
+    },
+    {
+      "path": "hero/hero-director-desk-mobile.webp",
+      "bytes": 93418,
+      "sha256": "5f7beddf79588386805d768976689f2724ead25193224ca8f9c918cc17d6f631"
+    },
+    {
+      "path": "hero/hero-director-desk.webp",
+      "bytes": 166044,
+      "sha256": "7b539aabba927eb9e16bea1c35fa613c0abeb847146e33d1cb69081d6dc92059"
+    },
+    {
+      "path": "modes/mode-r2v.webp",
+      "bytes": 93438,
+      "sha256": "3f2c30f12aac658ee47e6f482848ec5ba72b8b712b59ac6026b936bfbfdf8436"
+    },
+    {
+      "path": "modes/mode-rv2v.webp",
+      "bytes": 87442,
+      "sha256": "2c5226597c61bc16bd85b4973465dc3655ddd1cdced40e04caf10edc5159e752"
+    },
+    {
+      "path": "modes/mode-t2v.webp",
+      "bytes": 72818,
+      "sha256": "02cfcf24fcdf793c5e7a936a7b63107992a514349e7549a37b652ab0a1dafc7a"
+    }
+  ]
+}

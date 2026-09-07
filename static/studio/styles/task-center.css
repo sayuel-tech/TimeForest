@@ -1,0 +1,25 @@
+#global-tasks { font-size: 13px; padding: 9px 14px; white-space: nowrap; }
+#global-tasks.has-attention { border-color: var(--sage); color: var(--sage); }
+#task-center { width: min(780px, calc(100vw - 32px)); max-height: calc(100dvh - 40px); padding: 28px; }
+#task-center .task-center-heading, #task-center .task-card-heading { display: flex; align-items: start; justify-content: space-between; gap: 16px; }
+#task-center h2 { margin: 4px 0 8px; }
+#task-center h3 { margin: 4px 0; font-size: 21px; }
+#task-center p { margin: 8px 0; }
+#task-center [data-close] { padding: 6px 14px; font-size: 23px; }
+#task-center .task-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; padding: 18px 0; border-bottom: 1px solid var(--line); }
+#task-center select { width: auto; padding: 8px; }
+#task-center [data-task-confirm] { padding: 18px; margin: 16px 0; background: #e1e9e0; border-radius: 12px; }
+#task-center .task-card { padding: 20px 0; border-bottom: 1px solid #d7cdbd; overflow-wrap: anywhere; }
+#task-center .task-card.needs-attention { border-left: 3px solid var(--sage); padding-left: 16px; }
+#task-center .task-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+#task-center .task-actions button, #task-center .task-actions .btn { padding: 9px 13px; font-size: 14px; }
+#task-center .task-note, #task-center small { color: var(--muted); }
+#task-center progress { width: 100%; accent-color: var(--sage); height: 6px; }
+#task-center pre { white-space: pre-wrap; max-height: 200px; overflow: auto; }
+#task-center .task-blockers { margin: 10px 0; font-size: 13px; }
+#task-center .task-empty { padding: 60px 20px; text-align: center; color: var(--muted); }
+@media(max-width:700px) {
+  #task-center { padding: 18px; }
+  header nav { height: auto; min-height: 80px; flex-wrap: wrap; padding: 12px 16px; gap: 10px; }
+  .nav-end { flex-wrap: wrap; gap: 12px; }
+}

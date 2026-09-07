@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "agents_file": "AGENTS.md",
+  "state_doc": "docs/maintenance-baseline.md",
+  "receipt_file": "docs/governance/context-review.json",
+  "version_source": {
+    "label": "静态入口版本",
+    "path": "static/index.html",
+    "pattern": "(?:src|href)=\"/static/studio/(?:app\\.js|style\\.css)\\?v=([0-9][0-9A-Za-z_.-]*)\"",
+    "expected_matches": 2
+  },
+  "required_files": [
+    "AGENTS.md",
+    "PROJECT_GUIDE.md",
+    "static/index.html",
+    "static/studio/app/mode-registry.js",
+    "docs/maintenance-baseline.md",
+    "docs/frontend/README.md",
+    "docs/frontend/parameter-map.md",
+    "docs/product/module-contracts.md",
+    "docs/frontend/parameter-and-interaction-contract.md",
+    "docs/governance/workflow-evolution-contract.md",
+    "docs/governance/context-maintenance.md",
+    "docs/governance/checks-and-release.md",
+    "tools/context_guard.py",
+    "README.md",
+    "docs/frontend/adding-a-mode.md",
+    "docs/image-assets.md",
+    "docs/frontend/image-workspace-ui.md",
+    "docs/asset-library-architecture.md",
+    "docs/asset-library-maintenance.md",
+    "docs/local-model-catalog.md",
+    "docs/project-archive-deletion.md",
+    "docs/github-sharing.md",
+    "docs/image-assets-art.md",
+    "docs/prompts/swap-template-v3.md",
+    "tools/test_context_guard.py",
+    "tools/check_repository.py",
+    "docs/task-queue.md",
+    "docs/director-launcher.md",
+    "docs/candidate-records.md",
+    "docs/recycle-bin.md",
+    "docs/release-distribution.md"
+  ],
+  "instruction_globs": [
+    "AGENTS.override.md",
+    "static/**/AGENTS.md",
+    "static/**/AGENTS.override.md",
+    "h3ui/**/AGENTS.md",
+    "h3ui/**/AGENTS.override.md",
+    "tools/**/AGENTS.md",
+    "tools/**/AGENTS.override.md",
+    "docs/**/AGENTS.md",
+    "docs/**/AGENTS.override.md",
+    "tests/**/AGENTS.md",
+    "tests/**/AGENTS.override.md"
+  ],
+  "groups": [
+    {
+      "id": "frontend",
+      "sources": [
+        "static/index.html",
+        "static/studio/app.js",
+        "static/studio/app/*.js",
+        "static/studio/ui/*.js",
+        "static/studio/core/*.js",
+        "static/studio/modes/**/*.js",
+        "static/studio/features/**/*.js",
+        "static/studio/styles/*.css",
+        "static/styles/tokens.css",
+        "static/studio/style.css",
+        "static/studio/pages/**/*.js",
+        "static/studio/contracts/*.js",
+        "static/studio/design-system.html"
+      ],
+      "docs": [
+        "PROJECT_GUIDE.md",
+        "docs/maintenance-baseline.md",
+        "docs/frontend/README.md",
+        "docs/frontend/image-workspace-ui.md",
+        "docs/frontend/parameter-and-interaction-contract.md",
+        "docs/product/module-contracts.md",
+        "docs/frontend/adding-a-mode.md",
+        "docs/frontend/parameter-map.md",
+        "docs/image-assets-art.md",
+        "docs/task-queue.md",
+        "docs/candidate-records.md",
+        "docs/recycle-bin.md"
+      ]
+    },
+    {
+      "id": "workflow-and-model-discovery",
+      "sources": [
+        "h3ui/studio*.py",
+        "h3ui/image_studio/*.py",
+        "h3ui/generation/*.py",
+        "h3ui/comfy.py",
+        "h3ui/studio_sources/dance.json",
+        "h3ui/studio_sources/official_r2v.json",
+        "h3ui/studio_sources/official_t2v.json",
+        "h3ui/studio_sources/wenxi.json",
+        "h3ui/image_studio/sources/krea-edit.json",
+        "h3ui/prompts.py",
+        "h3ui/swap_template_v2.py",
+        "h3ui/swap_template_v3.py",
+        "h3ui/segmenter.py",
+        "h3ui/studio_sources/manifest.json",
+        "h3ui/studio_sources/impact.json"
+      ],
+      "docs": [
+        "PROJECT_GUIDE.md",
+        "docs/maintenance-baseline.md",
+        "docs/frontend/parameter-map.md",
+        "docs/image-assets.md",
+        "docs/local-model-catalog.md",
+        "docs/governance/workflow-evolution-contract.md",
+        "docs/prompts/swap-template-v3.md",
+        "docs/governance/checks-and-release.md",
+        "docs/task-queue.md",
+        "docs/candidate-records.md",
+        "docs/recycle-bin.md"
+      ]
+    },
+    {
+      "id": "assets-and-tasks",
+      "sources": [
+        "h3ui/asset_library/*.py",
+        "h3ui/local_tasks/*.py",
+        "h3ui/jobs.py",
+        "h3ui/projects.py",
+        "h3ui/routes.py",
+        "h3ui/media.py",
+        "h3ui/task_center.py"
+      ],
+      "docs": [
+        "PROJECT_GUIDE.md",
+        "docs/maintenance-baseline.md",
+        "docs/asset-library-architecture.md",
+        "docs/asset-library-maintenance.md",
+        "docs/project-archive-deletion.md",
+        "docs/image-assets.md",
+        "docs/task-queue.md",
+        "docs/candidate-records.md",
+        "docs/recycle-bin.md"
+      ]
+    },
+    {
+      "id": "entry-and-maintenance",
+      "sources": [
+        "run.py",
+        "h3ui/__init__.py",
+        "h3ui/config.py",
+        "requirements.txt",
+        "config.example.json",
+        "start.bat",
+        "setup.bat",
+        "tools/*.py",
+        "tests/*.py",
+        "tests/*.mjs",
+        "tools/*.ps1",
+        "tools/*.cmd",
+        "tests/*.ps1",
+        ".gitignore",
+        ".gitattributes"
+      ],
+      "docs": [
+        "README.md",
+        "PROJECT_GUIDE.md",
+        "docs/maintenance-baseline.md",
+        "docs/governance/context-maintenance.md",
+        "docs/governance/checks-and-release.md",
+        "docs/github-sharing.md",
+        "docs/asset-library-maintenance.md",
+        "docs/director-launcher.md",
+        "docs/release-distribution.md"
+      ]
+    }
+  ]
+}

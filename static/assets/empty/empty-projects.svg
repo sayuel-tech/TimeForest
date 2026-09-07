@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" role="img" aria-labelledby="title desc">
+  <title id="title">等待创作的空项目档案</title><desc id="desc">一张放在森林工作桌上的空白分镜卡和胶片</desc>
+  <rect width="640" height="300" rx="28" fill="#f0e9dc"/>
+  <path d="M0 235c82-39 151-35 226-4 84 34 158 36 246-7 64-31 116-28 168-5v81H0z" fill="#dce8df"/>
+  <path d="M95 222c38-65 35-127 30-185M105 163c-36-16-54-36-62-62M115 128c35-20 54-45 62-76M534 238c-11-68-2-128 23-183M542 165c34-20 52-43 57-70M539 131c-26-20-39-44-39-70" fill="none" stroke="#6f9284" stroke-width="4" stroke-linecap="round" opacity=".65"/>
+  <g transform="translate(205 55) rotate(-3 115 90)"><rect width="230" height="178" rx="12" fill="#f8f4ea" stroke="#cec2ae" stroke-width="3"/><rect x="25" y="24" width="180" height="92" rx="8" fill="#e9e1d2"/><path d="M43 98l42-38 30 26 25-19 47 31" fill="none" stroke="#9eb5bd" stroke-width="5"/><path d="M28 139h118M28 155h78" stroke="#cec2ae" stroke-width="6" stroke-linecap="round"/></g>
+  <path d="M121 244c91 20 171 20 250 1 55-14 105-15 153-3" fill="none" stroke="#201e19" stroke-width="12" stroke-dasharray="5 13" stroke-linecap="round" opacity=".7"/>
+</svg>

@@ -1,0 +1,254 @@
+:root {
+  --sans: Onest, "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  --serif: EditorialSerif, "Noto Serif SC", "Songti SC", serif;
+  --canvas: #e9e1d2;
+  --paper: #f8f4ea;
+  --paper-2: #f0e9dc;
+  --ink: #25271f;
+  --muted: #645f55;
+  --sage: #466c5b;
+  --sage-soft: #dfe8df;
+  --line: #d9cfbe;
+  --danger: #943f36;
+  --shadow: 0 2px 5px #30291905, 0 18px 48px #30291912;
+  --motion-fast: 160ms;
+  --motion-normal: 220ms;
+  --motion-reveal: 500ms;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 100px;
+}
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--canvas);
+  font: 15px/1.7 var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+a {
+  color: inherit;
+  text-underline-offset: 4px;
+}
+button,
+a,
+input,
+textarea,
+select {
+  touch-action: manipulation;
+}
+img,
+video {
+  display: block;
+  max-width: 100%;
+}
+video {
+  width: 100%;
+  max-height: 68vh;
+  object-fit: contain;
+  background: #20211e;
+  border-radius: 16px;
+}
+audio {
+  width: 100%;
+  height: 40px;
+}
+h1,
+h2,
+h3 {
+  font-family: var(--serif);
+  font-weight: 500;
+  line-height: 1.35;
+  margin: 0 0 20px;
+}
+h1 {
+  font-size: 48px;
+}
+h2 {
+  font-size: 32px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 15px;
+}
+p {
+  margin: 0 0 16px;
+}
+.muted,
+small,
+.helper {
+  color: var(--muted);
+}
+small,
+.helper {
+  font-size: 13px;
+  line-height: 1.65;
+}
+.eyebrow {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 0.13em;
+  color: var(--sage);
+  font-weight: 600;
+  line-height: 1.5;
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.between {
+  justify-content: space-between;
+}
+.split {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 20px;
+}
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.section {
+  margin: 64px 0;
+}
+.section-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+.section-head h2,
+.section-head h3 {
+  margin: 10px 0 0;
+}
+.grid3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.panel {
+  background: var(--paper);
+  padding: 28px;
+  border: 1px solid #fff4;
+  border-radius: 22px;
+  box-shadow: 0 1px 2px #30291904;
+  min-width: 0;
+}
+.empty {
+  text-align: center;
+  padding: 48px 28px;
+}
+.empty img {
+  width: min(240px, 75%);
+  margin: 0 auto 24px;
+}
+.empty h3 {
+  font-size: 24px;
+}
+hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 24px 0;
+}
+[hidden] {
+  display: none !important;
+}
+:focus-visible {
+  outline: 3px solid var(--sage);
+  outline-offset: 4px;
+}
+pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: 13px/1.7 var(--mono);
+  max-height: 420px;
+  overflow: auto;
+}
+.loader {
+  padding: 100px 24px;
+  text-align: center;
+  color: var(--muted);
+}
+@media (max-width: 760px) {
+  .grid3 {
+    grid-template-columns: 1fr 1fr;
+  }
+  .split {
+    grid-template-columns: 1fr;
+  }
+  .section {
+    margin: 40px 0;
+  }
+  .section-head {
+    align-items: start;
+    flex-direction: column;
+    gap: 10px;
+  }
+  h1 {
+    font-size: 36px;
+  }
+  h2 {
+    font-size: 28px;
+  }
+  .panel {
+    padding: 22px;
+  }
+}
+@media (max-width: 520px) {
+  .grid3 {
+    grid-template-columns: 1fr;
+  }
+  .panel {
+    padding: 20px;
+  }
+  h1 {
+    font-size: 32px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+.page-hidden *,
+.page-hidden *::before,
+.page-hidden *::after {
+  animation-play-state: paused !important;
+}
+.image-unavailable {
+  background: var(--paper-2);
+  color: var(--muted);
+  padding: 20px;
+  object-fit: contain;
+}
+h1,
+h2,
+h3,
+h4,
+.notice {
+  overflow-wrap: anywhere;
+}

@@ -1,0 +1,76 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# 机器特定配置(提交 config.example.json,不提交 config.json)
+config.json
+
+# 运行时数据(上传的素材、切片、生成结果)
+data/
+data_v5/
+h3ui/studio_sources/object_info.json
+
+# 提示词模板运行文件(默认模板内置在 h3ui/prompts.py, 此文件是本地覆盖层)
+h3ui/templates/prompts.json
+
+# 日志
+*.log
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local secrets and developer environments
+/.runtime/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+node_modules/
+.pytest_cache/
+.ruff_cache/
+.cache/
+coverage/
+
+# Asset library, inference weights, databases, generated media and backups
+/TimeForestAssets/
+/asset_library/
+/ComfyUI/
+/input/
+/output/
+/backups/
+/tmp/
+/temp/
+*.sqlite
+*.sqlite3
+*.sqlite3-*
+*.db
+*.db-*
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+*.gguf
+*.tmp
+*.bak
+*.log.*
+h3ui/studio_sources/compiled-preview/
+h3ui/studio_sources/engine_catalog.local.json
+
+# Machine configuration snapshots created by offline library migration
+config.json.before-library-*.json
+
+# Separately distributed companion workflows and archives
+/h3ui/studio_sources/dance.json
+/h3ui/studio_sources/impact.json
+/h3ui/studio_sources/official_r2v.json
+/h3ui/studio_sources/official_t2v.json
+/h3ui/studio_sources/wenxi.json
+/h3ui/image_studio/sources/krea-edit.json
+*.zip
+*.7z
+*.rar

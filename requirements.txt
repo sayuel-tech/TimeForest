@@ -1,0 +1,12 @@
+# Python 3.10+ required.
+# Install with:  pip install -r requirements.txt
+# (setup.bat does this automatically into a .venv)
+flask>=3.0
+pillow>=10.0
+numpy>=1.26
+requests>=2.31
+websocket-client>=1.8,<2
+
+# ffmpeg / ffprobe must be installed separately and added to PATH.
+
+PyYAML>=6.0,<7

@@ -1,0 +1,30 @@
+[
+  {
+    "file": "official_t2v.json",
+    "url": "https://raw.githubusercontent.com/Comfy-Org/workflow_templates/main/templates/video_minimax_h3_t2v.json",
+    "sha256": "2400b01a7c8acae3fed038c0372f08bacb90d2cdf915febadbe7e3f9802506ea"
+  },
+  {
+    "file": "official_r2v.json",
+    "url": "https://raw.githubusercontent.com/Comfy-Org/workflow_templates/main/templates/video_minimax_h3_r2v.json",
+    "sha256": "14b30659a057547e02bdd4bbbdda3f8670aa6d7d81d1d8d99c4f9ad1e2eabc44"
+  },
+  {
+    "file": "dance.json",
+    "source": "H3_16G混合优化版跳舞.json",
+    "sha256": "4dd703003ed9e6f5b3677d69d1c20d0033ba6c22c694d8fb90e639ce7158b1b3",
+    "provenance": "user-provided workflow snapshot"
+  },
+  {
+    "file": "impact.json",
+    "source": "Impact_V6_双采_整合提示词版本.json",
+    "sha256": "fbff02133186206efa947c0be1f4d8b007a104c36a67272d876f5db48a8b587e",
+    "provenance": "user-provided workflow snapshot"
+  },
+  {
+    "file": "wenxi.json",
+    "source": "【MINIMAX-H3】八月最强文戏-高配版.json",
+    "sha256": "a5d4ffafccd615162671619b405d1af66573cb71cc7399e520665f3a057edc13",
+    "provenance": "user-provided workflow snapshot"
+  }
+]

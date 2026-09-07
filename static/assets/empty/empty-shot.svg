@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 240" role="img" aria-labelledby="title desc">
+  <title id="title">尚未选择镜头</title><desc id="desc">森林轮廓中的空取景框</desc>
+  <rect width="520" height="240" rx="24" fill="#f0e9dc"/>
+  <path d="M0 190l68-66 42 40 77-106 69 91 44-45 83 78 52-69 85 76v51H0z" fill="#dce8df"/>
+  <rect x="143" y="39" width="234" height="151" rx="13" fill="none" stroke="#6f9284" stroke-width="5"/>
+  <path d="M171 65h42M171 65v32M349 65h-42M349 65v32M171 164h42M171 164v-32M349 164h-42M349 164v-32" fill="none" stroke="#b4834f" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="260" cy="115" r="18" fill="#9eb5bd" opacity=".75"/>
+</svg>

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>时间森林H3导演工作台</title>
+    <link rel="icon" href="/static/assets/brand/favicon.svg" />
+    <link rel="stylesheet" href="/static/studio/style.css?v=6.3.11" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a class="brand" href="#/"
+          ><img
+            src="/static/assets/brand/brand-mark.svg"
+            alt=""
+            width="40"
+            height="40"
+          /><span
+            ><b>时间森林H3导演工作台</b
+            ><small>Time Forest · Director Studio</small></span
+          ></a
+        >
+        <div class="nav-end">
+          <button id="global-tasks" type="button">任务列表</button><a href="#/archive">项目档案</a
+          ><a href="#/assets">资产库</a
+          ><span id="health" class="badge" role="status">连接中</span>
+        </div>
+      </nav>
+    </header>
+    <main id="app" class="page"></main>
+    <footer class="site-footer">
+      <span>TIME FOREST</span>每一个镜头，都值得认真完成。
+    </footer>
+    <dialog id="dialog"><div id="dialog-content"></div></dialog>
+    <div id="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="/static/studio/app.js?v=6.3.11"></script>
+  </body>
+</html>

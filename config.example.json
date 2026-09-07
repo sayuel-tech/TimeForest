@@ -1,0 +1,61 @@
+{
+  "host": "127.0.0.1",
+  "port": 5093,
+  "comfy_url": "http://127.0.0.1:8188",
+  "comfy_input_dir": "../ComfyUI/input",
+  "comfy_output_dir": "../ComfyUI/output",
+  "asset_library_dir": "../TimeForestAssets",
+  "media_workers": 2,
+  "model": {
+    "unet": "minimax_h3_hybrid_fl2va_ref2va_b25-49-int8.safetensors",
+    "clip": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+    "video_vae": "minimax_h3_video_vae_int8_convrot.safetensors",
+    "audio_vae": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  "output": {
+    "max_megapixels": 0.3,
+    "width": 416,
+    "height": 736
+  },
+  "segment": {
+    "raw_frames": 124,
+    "context_frames": 22,
+    "steps": 12,
+    "detect_cuts": true,
+    "scene_threshold": 0.45
+  },
+  "taper": {
+    "alpha": 0.45,
+    "alpha_end": 0.1,
+    "ramp_frames": 3
+  },
+  "gates": {
+    "max_abs_phase_offset": 2,
+    "min_phase_ncc": 0.3,
+    "max_seam_diff": 0.04,
+    "min_sharpness_ratio": 0.75,
+    "min_source_rms_difference": 8.0
+  },
+  "nodes": {
+    "initial": {
+      "ref2va": "20",
+      "source_video": "43",
+      "raw_output": "19",
+      "pass1_output": "223",
+      "random_noise": "12"
+    },
+    "taper": {
+      "ref2va": "20",
+      "source_video": "43",
+      "raw_output": "19",
+      "pass1_output": "223",
+      "random_noise": "12",
+      "context_video": "101",
+      "plan": "100"
+    }
+  },
+  "seed_base": 730000,
+  "default_profile": "dance16g",
+  "auto_concat": true,
+  "image_assets_enabled": true
+}
