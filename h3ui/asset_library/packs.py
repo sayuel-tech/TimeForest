@@ -9,6 +9,7 @@ from pathlib import Path, PurePosixPath
 
 from .media import digest, inspect
 from .store import encode, uid
+from . import pack_lineage
 
 
 def redact(value):
@@ -27,7 +28,7 @@ def redact(value):
 class Packs:
     def __init__(self,library):self.lib=library
 
-    def preview(self,data):
+    def preview(self,data,origins=None):
         snapshots={};excluded=[]
         def collect(aid,version=None):
             item=self.lib.store.get(aid,version);snap=item['snapshot'];key=snap['id']
@@ -43,6 +44,8 @@ class Packs:
         for snap in snapshots.values():
             snap['bindings']=[x for x in snap.get('bindings',[]) if x['version'] in snapshots]
             for m in snap['media']:
+                if data.get('lineage',True):m['portable_lineage']=pack_lineage.export_links(self.lib,snap,m,snapshots,origins)
+                else:m.pop('portable_lineage',None)
                 obj=self.lib.store.object(m['hash'])
                 files[obj['hash']]=dict(hash=obj['hash'],path='media/'+obj['hash']+obj['extension'],bytes=obj['bytes'])
             if snap.get('cover_hash'):
@@ -54,14 +57,15 @@ class Packs:
                 snap['provenance']={k:v for k,v in snap.get('provenance',{}).items() if k in ('type','project_name','candidate','seed','composite','operation')}
                 for m in snap['media']:m.pop('provenance',None)
         category_ids={c for snap in snapshots.values() for c in snap.get('categories',[])}
-        manifest=redact(dict(format='time-forest-assets',version=1,created=time.time(),assets=list(snapshots.values()),files=list(files.values()),
+        pack_lineage.validate(snapshots)
+        manifest=redact(dict(format='time-forest-assets',version=2,created=time.time(),assets=list(snapshots.values()),files=list(files.values()),
                              categories=[c for c in self.lib.store.catalog()['categories'] if c['id'] in category_ids]))
         token=uid()
         with self.lib.store.connect() as db:
             db.execute('INSERT INTO operations VALUES(?,?,?,?,?)',(token,'pack_plan','ready',encode(manifest),time.time()))
-        return dict(token=token,assets=[dict(id=x['asset_id'],name=x['name'],version=x['id']) for x in manifest['assets']],
+        return dict(token=token,pack_lineage_version=1,assets=[dict(id=x['asset_id'],name=x['name'],version=x['id']) for x in manifest['assets']],
                     files=len(files),bytes=sum(x['bytes'] for x in files.values()),excluded_bindings=excluded,
-                    note='仅含列出的媒体与勾选资料；采用相对路径并移除已识别的凭据字段和绝对路径。工作流附件不会执行。')
+                    note='仅含列出的媒体与勾选资料；来源关系只恢复包内固定资产，不额外收集上游素材或关联外部项目。采用相对路径并移除已识别凭据，工作流附件不会执行。新版素材包需要6.3.31或更新版本导入。')
 
     def export(self,data,progress):
         with self.lib.store.connect() as db:
@@ -91,14 +95,14 @@ class Packs:
         with self.lib.store.connect() as db:
             db.execute('INSERT INTO operations VALUES(?,?,?,?,?)',(token,'pack_upload','ready',encode({'path':str(path),'hash':digest(path)}),time.time()))
         return dict(token=token,assets=[dict(name=x['name'],version=x['id']) for x in preview['assets']],
-                    bytes=sum(x['bytes'] for x in preview['files']),note='将在本地创建独立资产身份和版本，核验文件哈希；不会安装模型、节点或运行工作流。')
+                    bytes=sum(x['bytes'] for x in preview['files']),note='将在本地创建独立资产身份和版本，核验文件哈希；仅恢复包内明确记录的来源关系，外部项目不关联本机项目。不会安装模型、节点或运行工作流。')
 
     def read_manifest(self,path):
         with zipfile.ZipFile(path) as archive:
             if len(archive.infolist())>2000 or archive.getinfo('manifest.json').file_size>20*1024**2:raise ValueError('素材包条目或清单过大')
             if len({x.filename for x in archive.infolist()})!=len(archive.infolist()):raise ValueError('素材包包含重复文件路径')
             manifest=json.loads(archive.read('manifest.json'))
-            if manifest.get('format')!='time-forest-assets' or manifest.get('version')!=1:raise ValueError('不支持的素材包格式')
+            if manifest.get('format')!='time-forest-assets' or manifest.get('version') not in (1,2):raise ValueError('不支持的素材包格式')
             if not 1<=len(manifest.get('assets',[]))<=128:raise ValueError('素材包资产数量不支持')
             if sum(x.file_size for x in archive.infolist())>self.lib.max_bytes*2:raise ValueError('解包后大小超出限制')
             for file in manifest['files']:
@@ -119,8 +123,12 @@ class Packs:
                 active.remove(vid);seen.add(vid)
             for snap in versions.values():
                 if not snap.get('media') or any(m['hash'] not in files for m in snap['media']):raise ValueError('素材包缺失媒体依赖')
+                if len({m['id'] for m in snap['media']})!=len(snap['media']):raise ValueError('素材包媒体身份重复')
+                if manifest['version']==1:
+                    for m in snap['media']:m.pop('portable_lineage',None)
                 if snap.get('cover_hash') and snap['cover_hash'] not in files:raise ValueError('素材包缺失封面依赖')
                 visit(snap['id'])
+            pack_lineage.validate(versions)
             return manifest
 
     def import_pack(self,data,progress):
@@ -156,10 +164,13 @@ class Packs:
             if vid in imported:return imported[vid]
             snap=copy.deepcopy(versions[vid]);bindings=[]
             for binding in snap.get('bindings',[]):
-                child=save(binding['version']);bindings.append({**binding,'asset':child['id'],'version':child['version']})
+                child=save(binding['version']);bindings.append({**binding,'asset':child['id'],'version':child['snapshot']['id']})
             snap['bindings']=bindings;snap['categories']=[known[x] for x in snap.get('categories',[]) if x in known]
+            for media in snap['media']:
+                media['provenance']=pack_lineage.imported_origin(versions[vid],media,registered['hash'],save)
+                media.pop('portable_lineage',None)
             snap['provenance']={'type':'portable_pack','original_version':vid,'original_asset':snap.get('asset_id'),'records':snap.get('provenance',{})}
-            result=self.lib.store.save(snap,objects=objects,key='pack-import:'+registered['hash']+':'+vid)
+            result=self.lib.store.save(snap,objects=objects,key='pack-import:'+registered['hash']+':'+vid,fixed_receipt=manifest['version']==2)
             self.lib.write_manifest(result);imported[vid]=result
             progress(.5+.5*len(imported)/len(versions),'恢复资产与固定版本绑定')
             return result

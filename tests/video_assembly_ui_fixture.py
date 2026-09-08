@@ -41,8 +41,8 @@ try{
   const canvas=document.createElement('canvas');canvas.width=32;canvas.height=48;canvas.getContext('2d').fillRect(0,0,32,48);
   const blob=await new Promise(resolve=>canvas.toBlob(resolve));const transfer=new DataTransfer();transfer.items.add(new File([blob],'测试角色.png',{type:'image/png'}));
   let inputFile=root.querySelector('[data-reference-file="image"]');inputFile.files=transfer.files;inputFile.dispatchEvent(new Event('change',{bubbles:true}));
-  await wait(()=>settled()&&root.querySelector('[data-reference-purpose]'));
-  input('[data-reference-purpose]','costume');input('[data-reference-subject]','2');input('[data-prompt]','<Picture 1>服装参考，继续向前行走');
+  await wait(()=>document.querySelector('#dialog').open&&document.querySelector('[data-reference-purpose]'));
+  input('[data-reference-purpose]','costume');input('[data-reference-subject]','2');await click('[data-reference-apply]');await wait(()=>settled()&&root.querySelector('[data-reference-edit]'));input('[data-prompt]','<Picture 1>服装参考，继续向前行走');
   await click('[data-save]');await wait(settled);let saved=await get(),first=saved.assembly.clips[0].extensions[0];
   assert(first.references[0].purpose==='costume'&&first.references[0].subject==='2','reference draft not saved');
   let preflight=await fetch('/api/v5/assembly/'+pid+'/preflight/'+first.id).then(r=>r.json());assert(preflight.input_inventory[0].tag==='<Picture 1>','reference not bound');

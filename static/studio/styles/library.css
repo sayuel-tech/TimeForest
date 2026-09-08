@@ -402,3 +402,20 @@ dialog:has(.library-picker) {
 .recycle-actions {display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:13px}
 .recycle-actions button {min-height:36px;padding:6px 14px}
 @media(max-width:700px){.recycle-item{flex-wrap:wrap;gap:10px}.recycle-actions{width:100%;justify-content:flex-end}.recycle-item>img,.recycle-icon{width:52px;height:52px}}
+
+/* Shared asset provenance and picker preview; mode adapters do not restyle it. */
+.asset-origin { margin-block: var(--space-4, 1rem); padding-block: 1rem; border-top: 1px solid var(--line, #d4cbbb); }
+.asset-origin section + section { margin-top: 1rem; }
+.asset-origin dl { display:grid; grid-template-columns:minmax(5rem,auto) minmax(0,1fr); gap:.5rem 1rem; }
+.asset-origin dd { margin:0; overflow-wrap:anywhere; }
+.asset-origin pre { white-space:pre-wrap; overflow-wrap:anywhere; max-height:18rem; overflow:auto; }
+.asset-lineage { margin-block:1rem; }
+.asset-lineage ol { padding-inline-start:1.5rem; }
+.asset-lineage li { padding-block:.75rem; border-bottom:1px solid var(--line, #d4cbbb); overflow-wrap:anywhere; }
+.asset-lineage li p { margin-block:.4rem; }
+.library-pick-entry { min-width:0; }
+.library-pick-entry > button { width:100%; }
+.library-pick-entry details { padding:.5rem; }
+.library-pick-entry video,.library-pick-entry img { max-width:100%; max-height:16rem; object-fit:contain; }
+.library-pick-entry audio { max-width:100%; }
+.library-pick-entry [data-preview-content] { max-height:32rem; overflow:auto; }

@@ -3,6 +3,8 @@ import copy,hashlib,json,os,shutil,threading,time,uuid
 from pathlib import Path
 from flask import Blueprint,current_app,jsonify,request,send_from_directory
 from .studio_store import StudioStore,Conflict
+from .prompt_library.service import capture as capture_prompts
+from .prompt_library.provenance import sources as prompt_sources
 from .comfy import ComfyCancelled
 from .studio_plan import story_plan,frames,geometry
 from .studio_recipes import Recipes,RECIPES,defaults
@@ -128,7 +130,7 @@ class Studio(StoryExecution,SourcePreparation):
         if self.jobs.is_busy(pid):raise Conflict('已有任务运行；编辑内容仍可保留在页面草稿，暂停后再保存')
         p=self.store.get(pid)
         if int(data.get('revision',0))!=p['revision']:raise Conflict('项目版本已变化，请刷新再保存')
-        q=copy.deepcopy(p);q['name']=str(data.get('name',p['name']))[:120];q['review']=data.get('review',p['review'])
+        q=copy.deepcopy(p);q['prompt_sources']=prompt_sources(data.get('prompt_sources',p.get('prompt_sources')));q['name']=str(data.get('name',p['name']))[:120];q['review']=data.get('review',p['review'])
         if q['review'] not in ['manual','automatic']:raise ValueError('审核方式不支持')
         if p['mode']=='swap':
             q['source_options']=source_options(data.get('source_options',p.get('source_options')))
@@ -157,6 +159,7 @@ class Studio(StoryExecution,SourcePreparation):
         for seg in q['segments']:
             seg.setdefault('asset_mode','auto')
             inc=byid.get(seg['id'],{})
+            seg['prompt_sources']=prompt_sources(inc.get('prompt_sources',seg.get('prompt_sources')))
             if p['mode']=='swap' and inc.get('boundary',seg['boundary'])!=seg['boundary']:raise ValueError('换人模式的场景边界由源视频切片确定，请重新准备素材；不能只改标记而不改切片')
             for key in editable:
                 if key in inc:seg[key]=copy.deepcopy(inc[key])
@@ -175,6 +178,7 @@ class Studio(StoryExecution,SourcePreparation):
                 if i>=len(prior) and i<len(incoming):
                     for key in editable:
                         if key in incoming[i]:seg[key]=copy.deepcopy(incoming[i][key])
+                seg['prompt_sources']=prompt_sources(incoming[i].get('prompt_sources',seg.get('prompt_sources'))) if i<len(incoming) else seg.get('prompt_sources',{})
                 seg.update(item);q['segments'].append(seg)
             if len(prior)>len(planned):q.setdefault('removed_drafts',[]).extend(prior[len(planned):])
             if [(x['raw'],x['deliver']) for x in p['segments']]!=[(x['raw'],x['deliver']) for x in q['segments']]:summary.append('时间线已重新规划，正文按片段保留；移除段归档为草稿')
@@ -326,10 +330,12 @@ class Studio(StoryExecution,SourcePreparation):
         aid=uid();seed=str(int.from_bytes(os.urandom(7),'big')%(2**52)) if seg['seed_mode']=='random' else str(seg['seed']);seg['actual_seed']=seed
         compiled=self.recipes.compile(p,seg,assets,studio_prompts.build(p,seg,assets),aid,previous)
         if compiled['issues']:raise ValueError('; '.join(compiled['issues']))
+        from .generation.source_lineage import capture
+        source_lineage=capture(self,p,seg,assets,previous)
         directory=self.store.directory(pid)/'segments'/seg['id']/'attempts'/aid;directory.mkdir(parents=True)
-        dump(directory/'workflow.json',compiled['workflow']);dump(directory/'manifest.json',dict(settings=p['settings'],segment=seg,compiled=compiled,previous=previous,revision=p['revision']))
+        dump(directory/'workflow.json',compiled['workflow']);dump(directory/'manifest.json',dict(settings=p['settings'],segment=seg,compiled=compiled,previous=previous,revision=p['revision'],source_lineage=source_lineage))
         (directory/'prompt.txt').write_text(studio_prompts.build(p,seg,assets),encoding='utf-8')
-        attempt=dict(id=aid,status='submitting',seed=seed,created=time.time(),directory=str(directory),prompt_id=None)
+        attempt=dict(id=aid,status='submitting',seed=seed,created=time.time(),directory=str(directory),prompt_id=None,source_lineage=source_lineage)
         def start(q):q['segments'][index]['attempts'].append(attempt);q['segments'][index].update(status='generating',last_seed=seed);q.update(status='generating',error=None)
         self.store.mutate(pid,start)
         watch=ProgressWatch(self.comfy.url,'time-forest-'+aid,compiled['workflow'],directory,self.store.directory(pid),seg.get('story_index',index),seg.get('story_task',0),seg.get('story_task_total',1))
@@ -541,7 +547,11 @@ def upload(pid):
 def change(pid):return jsonify(service().edit_plan(pid,request.get_json()))
 
 @bp.post('/projects/<pid>/draft')
-def save_authoring_draft(pid):return jsonify(service().drafts.save(pid,request.get_json()))
+def save_authoring_draft(pid):
+    saved=service().drafts.save(pid,request.get_json())
+    p=service().store.get(pid)
+    collected=capture_prompts({**p,**saved['body'],'revision':saved['revision'],'updated_at':saved['updated']},'draft')
+    return jsonify({**saved,'prompt_collection':collected.get('prompt_collection')})
 
 @bp.post('/projects/<pid>/draft/discard')
 def discard_authoring_draft(pid):
@@ -549,7 +559,7 @@ def discard_authoring_draft(pid):
 @bp.post('/projects/<pid>/apply')
 def apply(pid):
     if service().jobs.is_busy(pid):raise Conflict('任务运行中，暂不能应用设置')
-    return jsonify(service().snapshot(service().store.apply(pid,request.get_json()['token'])))
+    return jsonify(service().snapshot(capture_prompts(service().store.apply(pid,request.get_json()['token']))))
 @bp.get('/projects/<pid>/preflight')
 def preflight(pid):return jsonify(service().preflight(pid))
 @bp.post('/projects/<pid>/input-preview')

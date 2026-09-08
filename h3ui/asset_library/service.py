@@ -14,6 +14,14 @@ from .store import LibraryStore, uid, encode
 
 
 class Library:
+    def complete_usage(self, project, entries, operation, used_at=None):
+        from .usage import complete
+        return complete(self, project, entries, operation, used_at)
+
+    def record_usage(self, project, entries, operation, used_at=None):
+        from .usage import record
+        return record(self, project, entries, operation, used_at)
+
     def __init__(self, root, cfg=None):
         self.store = LibraryStore(root)
         self.root = self.store.root
@@ -120,7 +128,7 @@ class Library:
             except OSError:
                 pass
 
-    def public(self, item, compact=False):
+    def public(self, item, compact=False, objects=None):
         item = copy.deepcopy(item)
         if compact:
             for field in ('record_prompt', 'description'):
@@ -129,7 +137,7 @@ class Library:
         for entry in item['snapshot']['media']:
             if compact:
                 entry.pop('provenance', None)
-            obj = self.store.object(entry['hash'])
+            obj = self.store.object(entry['hash']) if objects is None else objects[entry['hash']]
             entry['meta'] = {k: v for k, v in obj.items() if k not in ('path', 'generation_records')}
             entry['url'] = f"/api/v5/library/media/{entry['hash']}"
             if (self.root / 'previews' / entry['hash'] / 'cover.png').is_file():
@@ -140,7 +148,8 @@ class Library:
 
     def query(self, filters):
         result = self.store.query(filters)
-        result['items'] = [self.public(x, compact=True) for x in result['items']]
+        objects=self.store.objects(m['hash'] for x in result['items'] for m in x['snapshot']['media'])
+        result['items'] = [self.public(x, compact=True, objects=objects) for x in result['items']]
         return result
 
     def update(self, aid, revision, changes):

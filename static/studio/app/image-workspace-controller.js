@@ -1,3 +1,13 @@
+import {addRecordButton,recordSource} from '../features/prompt-library/records.js';
+import {promptCollectionNotice} from '../features/prompt-library/collection.js';
+import {bindImagePrompts} from '../features/prompt-library/adapters.js';
+import {sourceTarget} from '../core/source-target.js';
+import {showSourceNavigation} from '../ui/source-navigation.js';
+import {uncertainMutation,requireKnownStatus} from '../core/async-state.js';
+import {watchProject} from '../core/progress-channel.js';
+import {asyncFeedback} from '../ui/async-feedback.js';
+import {bindWorkspaceSteps} from '../ui/workspace-chrome.js';
+import {draftStatus} from '../ui/draft-status.js';
 import * as ui from '../ui/primitives.js';
 import {recordConfirmation} from '../ui/candidate-records.js';
 import {bindWorkbench,fitWorkbench} from '../ui/workbench.js';
@@ -17,8 +27,14 @@ const presetNames={single:['修改服装','更换背景'],dual:['整体人物替
 export function mountWorkspace(root,project,catalog){
   const session=new ImageSession(project);let canvas=null,page=sessionStorage.getItem('image-page:'+project.id)||'edit',geom=null,geomSource=null,serial=0,timer=null,selection=null,submitKey=null;
   const view={root,inspectorTab:'assets',inspectorHidden:false,tasksOpen:false,saveTarget:'new',assetName:'',feedback:'',error:false};
+  const sourceLocation=sourceTarget(project);
+  let viewingTask=sourceLocation?.state==='found'?sourceLocation.task:null;
+  if(sourceLocation?.state==='found'){page=sourceLocation.page;selection=sourceLocation.output;view.inspectorTab=page==='results'?'result':'assets';}
+  session.root=root;
+  const asyncStatus=asyncFeedback(root,session.controller.signal);
+  session.transferProgress=asyncStatus.transfer;session.connection=asyncStatus.connection;
   const base='/image-projects/'+project.id;
-  const task=()=>session.project.tasks.find(t=>t.id===session.project.current_task)||session.project.tasks[0];
+  const task=()=>session.project.tasks.find(t=>t.id===(viewingTask||session.project.current_task))||session.project.tasks[0];
   const input=id=>session.project.inputs.find(i=>i.id===id);
   const request=(path,method='GET',body)=>session.request(base+path,method,body);
   const context=()=>({project:session.project,task:task(),catalog,page,selection,view:Object.assign(view,{dirty:session.dirty}),presetNames});
@@ -34,10 +50,11 @@ export function mountWorkspace(root,project,catalog){
   }
   function refreshChrome(){
     const saveState=root.querySelector('#image-save-state');
-    if(saveState)saveState.textContent=busy()?'正在处理，请稍候…':session.dirty?'有未保存修改':'草稿已保存';
+    if(saveState)saveState.textContent=draftStatus({dirty:session.dirty,working:busy()});
     for(const el of root.querySelectorAll('[data-action-disabled]')){el.disabled=false;delete el.dataset.actionDisabled;}
     if(!task()){
-      root.setAttribute('aria-busy',String(Boolean(busy())));
+      asyncStatus.render();
+    root.setAttribute('aria-busy',String(Boolean(busy())));
       const add=root.querySelector('#image-new');if(add)add.disabled=Boolean(busy());return;
     }
     const generate=root.querySelector('#image-generate'),reason=generationReason(session.project,task());
@@ -52,6 +69,7 @@ export function mountWorkspace(root,project,catalog){
     if(maskState){maskState.textContent=(canvas?.changed?(canvas.lastAction==='clear'?'已清空标注':'标注已修改')+'，尚未保存':task().mask?'已保存标注':'尚未标注')+' · 区域外可能变化。';}
     const status=root.querySelector('#image-task-status');if(status)status.textContent=taskStatus(session.project,task());
     const title=root.querySelector('#image-project-title');if(title){title.textContent=session.project.name;title.title=session.project.name;}
+    asyncStatus.render();
     root.setAttribute('aria-busy',String(Boolean(busy())));
     if(busy())root.querySelectorAll('button,input,select,textarea').forEach(el=>{if(!el.disabled&&!el.matches('[data-copy-error]')){el.dataset.actionDisabled='true';el.disabled=true;}});
   }
@@ -62,7 +80,7 @@ export function mountWorkspace(root,project,catalog){
     root.querySelector(`#property-${id}`)?.scrollIntoView({block:'nearest'});
   }
   async function action(fn){
-    if(busy())return;
+    if(busy()||session.disposed)return;
     session.actionPending=true;feedback('');refreshChrome();
     try{await fn();}catch(e){if(!session.disposed&&e.name!=='AbortError')feedback(e,true);}
     finally{session.actionPending=false;if(!session.disposed)refreshChrome();}
@@ -79,14 +97,14 @@ export function mountWorkspace(root,project,catalog){
     const lastSeed=session.project.runs.filter(r=>r.task===taskId&&r.seed!==null&&r.seed!==undefined).at(-1)?.seed;
     await openImageSettings({task:current,catalog,lastSeed,signal:session.controller.signal,
       request:(...args)=>session.request(...args),onCatalog:next=>{catalog=next;},
-      onApply:next=>{
+      onApply:async(next,saveNow)=>{
         if(session.disposed||task().id!==taskId)throw new Error('当前编辑任务已变化，请重新打开制作参数。');
         // Keep the existing canvas, unsaved mask, prompt and outer draft alive.
         task().settings=next.settings;task().models=next.models;mark();
         root.querySelectorAll('[data-setting]').forEach(el=>{
           el.value=task().settings[el.dataset.setting];el.setCustomValidity('');
         });
-        void geometry();
+        if(saveNow){await save();render();}else void geometry();
       }});
   }
   async function geometry(){
@@ -100,12 +118,14 @@ export function mountWorkspace(root,project,catalog){
     if(session.disposed)return;
     sessionStorage.setItem('image-page:'+project.id,page);canvas?.dispose();canvas=null;
     const t=task();selection=chosenOutput(session.project,t,selection)?.id;
-    root.className='page project-page image-workspace';root.innerHTML=renderImageWorkspace(context());
+    root.className='page project-page image-workspace';root.innerHTML=renderImageWorkspace(context());showSourceNavigation(root,sourceLocation);
     root.querySelector('.desk-rail')?.setAttribute('aria-label','编辑任务');
     root.querySelector('.desk-inspector')?.setAttribute('aria-label','图片属性');
     root.querySelector('.property-tabs')?.setAttribute('aria-label','图片属性');
     if(!t){root.querySelector('#image-new').onclick=()=>void action(async()=>{newTask('single');render();});refreshChrome();return;}
-    bind();bindWorkbench(view);
+    bind();bindImagePrompts({root,session,task:t,changed:mark,render});
+    promptCollectionNotice(root,session);
+    if(selection)addRecordButton(root.querySelector('#image-reroll')||root.querySelector('#image-quick-ingest'),{path:'/records/'+project.id+'?output='+encodeURIComponent(selection),signal:session.controller.signal,apply:row=>{if(session.disposed||task()!==t||busy())throw new Error('目标已变化或正在操作，请重新打开');t.prompt=row.content.text;recordSource(t,"prompt",row);mark();page='edit';render();}});bindWorkspaceSteps(root);bindWorkbench(view);
     if(page==='edit'&&t.submode==='text')void geometry();
     if(page==='edit'&&t.submode!=='text'&&t.A){
       canvas=new ImageCanvas(root.querySelector('.image-viewport'),{image:input(t.A).url,mask:input(t.mask)?.url,mode:t.submode,settings:t.settings,geometry:geom,onChange:mark,onPad:(edge,value)=>{t.settings[edge]=value;mark();const field=root.querySelector(`[data-setting="${edge}"]`);if(field)field.value=value;void geometry();}});
@@ -116,7 +136,7 @@ export function mountWorkspace(root,project,catalog){
   function bind(){
     const bindAction=(selector,fn)=>root.querySelector(selector)?.addEventListener('click',()=>void action(fn));
     root.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>action(async()=>{await flushMask();page=b.dataset.page;view.inspectorTab=page==='edit'?'assets':'result';render();}));
-    root.querySelectorAll('[data-task]').forEach(b=>b.onclick=()=>action(async()=>{await flushMask();session.project.current_task=b.dataset.task;selection=null;geom=null;view.assetName='';view.tasksOpen=false;mark();render();}));
+    root.querySelectorAll('[data-task]').forEach(b=>b.onclick=()=>action(async()=>{await flushMask();viewingTask=null;session.project.current_task=b.dataset.task;selection=null;geom=null;view.assetName='';view.tasksOpen=false;mark();render();}));
     root.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>action(async()=>{await flushMask();const t=task();if(b.dataset.tool===t.submode)return;
       if(t.submode==='text'||b.dataset.tool==='text'){newTask(b.dataset.tool);}else if(session.project.runs.some(r=>r.task===t.id)){newTask(b.dataset.tool,t.A);}else{t.submode=b.dataset.tool;t.mask=null;t.B=null;mark();}geom=null;render();}));
     root.querySelectorAll('[data-upload-trigger]').forEach(b=>b.onclick=()=>root.querySelector(`[data-upload="${b.dataset.uploadTrigger}"]`)?.click());
@@ -138,7 +158,7 @@ export function mountWorkspace(root,project,catalog){
       if(!await ui.confirm('废弃「'+current.name+'」？','该任务及其候选将退出工作列表，并取消该任务的结果选用。已入库资产和视频引用保留，可在回收站“项目移除的”恢复。确认后保存当前草稿并废弃。','废弃任务'))return;
       if(session.disposed)return;
       await save();session.project=await request('/tasks/'+tid+'/discard','POST',{revision:session.project.revision});
-      selection=null;submitKey=null;geom=null;view.assetName='';view.tasksOpen=true;view.inspectorTab='assets';page='edit';render();ui.toast('编辑任务已废弃');
+      viewingTask=null;selection=null;submitKey=null;geom=null;view.assetName='';view.tasksOpen=true;view.inspectorTab='assets';page='edit';render();ui.toast('编辑任务已废弃');
     });
     bindAction('#image-task-name',async()=>{const name=await askText('任务名称',task().name);if(name){await flushMask();task().name=name;mark();render();}});
     root.querySelector('#image-prompt')?.addEventListener('input',e=>{task().prompt=e.target.value;mark();});
@@ -150,7 +170,15 @@ export function mountWorkspace(root,project,catalog){
       catch(error){task().settings[key]=el.value;error.kind='input';el.setCustomValidity(error.message);mark();feedback(error,true);}
     });
     root.querySelectorAll('[data-upload]').forEach(el=>el.onchange=()=>action(async()=>{if(!el.files[0])return;await flushMask();const t=task(),role=el.dataset.upload,form=new FormData();form.append('file',el.files[0]);const ref=await request('/inputs','POST',form);ref.url=`/api/v5/projects/${project.id}/files/image_inputs/${ref.id}/image.png`;session.project.inputs.push(ref);t[role]=ref.id;if(role==='A')t.mask=null;mark();render();}));
-    root.querySelectorAll('[data-library]').forEach(el=>el.onclick=()=>action(async()=>{await flushMask();const item=await pickLibraryAsset({kind:'image',title:'选择图'+el.dataset.library});if(!item)return;await attachLibrary(item,el.dataset.library);render();}));
+    root.querySelectorAll('[data-library]').forEach(el=>el.onclick=()=>action(async()=>{const item=await pickLibraryAsset({signal:session.controller.signal,kind:'image',title:'选择图'+el.dataset.library});if(!item)return;await flushMask();await attachLibrary(item,el.dataset.library);render();}));
+    root.querySelectorAll('[data-remove-input]').forEach(button=>button.onclick=()=>action(async()=>{
+      const role=button.dataset.removeInput,t=task();
+      if(!await ui.confirm('移除图 '+role+' 的引用？','只移除当前任务的输入引用，原文件、资产库和已有候选保留。'+(role==='A'?'该底图上的标注会一并清空。':''),'移除引用'))return;
+      if(session.disposed)return;
+      if(role==='B')await flushMask();
+      t[role]=null;if(role==='A'){t.mask=null;geom=null;}
+      mark();render();
+    }));
     bindAction('#image-swap',async()=>{await flushMask();const t=task();[t.A,t.B]=[t.B,t.A];t.mask=null;mark();render();});
     root.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{if(!canvas)return;const type=b.dataset.view;if(type==='fit')canvas.fit();else canvas.setZoom(type==='actual'?1:canvas.zoom*(type==='plus'?1.25:.8));});
     root.querySelectorAll('[data-pen]').forEach(b=>b.onclick=()=>{if(canvas)canvas.tool=b.dataset.pen;root.querySelectorAll('[data-pen]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));});
@@ -167,7 +195,7 @@ export function mountWorkspace(root,project,catalog){
     root.querySelector('#image-target-ratio')?.addEventListener('change',applyRatio);root.querySelector('#image-anchor')?.addEventListener('change',applyRatio);
     bindAction('#image-reroll',generateImage);
     bindAction('#image-quick-ingest',async()=>{if(catalog.quick_ingest_preserves_selection!==true)throw new Error('当前后台未加载快捷入库，请重启导演台后刷新页面');await ingest(false,false);render();});
-    bindAction('#image-continue',async()=>{await save();session.project=await request('/outputs/'+selection+'/continue','POST',{revision:session.project.revision});page='edit';selection=null;view.inspectorTab='assets';view.assetName='';render();});
+    bindAction('#image-continue',async()=>{await save();session.project=await request('/outputs/'+selection+'/continue','POST',{revision:session.project.revision});viewingTask=null;page='edit';selection=null;view.inspectorTab='assets';view.assetName='';render();});
     bindFooter();
     bindRunButtons();
     root.querySelectorAll('[data-record-remove],[data-record-restore]').forEach(b=>b.onclick=()=>action(async()=>{
@@ -180,7 +208,7 @@ export function mountWorkspace(root,project,catalog){
     root.querySelectorAll('[data-output]').forEach(b=>b.onclick=()=>{selection=b.dataset.output;view.assetName='';render();});
     bindAction('#image-compare-toggle',async()=>{const box=root.querySelector('.image-compare');if(box.querySelector('[data-original]')){box.querySelector('[data-original]').remove();box.classList.remove('split');root.querySelector('#image-compare-toggle').setAttribute('aria-pressed','false');return;}const run=session.project.runs.find(r=>r.id===session.project.outputs.find(o=>o.id===selection)?.run),source=input(run?.snapshot.A||task().A);if(source){const g=run?.geometry;const aligned=run?.snapshot.submode==='outpaint'&&g;const original=aligned?`<div style="position:relative;aspect-ratio:${g.canvas[0]}/${g.canvas[1]};background:#cad2de;width:100%"><img src="${ui.esc(source.url)}" alt="原图在扩展画布中的位置" style="position:absolute;left:${g.offset[0]/g.canvas[0]*100}%;top:${g.offset[1]/g.canvas[1]*100}%;width:${g.work[0]/g.canvas[0]*100}%;height:${g.work[1]/g.canvas[1]*100}%"></div>`:`<img src="${ui.esc(source.url)}" alt="运行时图A">`;box.insertAdjacentHTML('afterbegin',`<figure data-original>${original}<figcaption>${aligned?'图A在扩展画布中的位置':'原图A（按原始比例）'}</figcaption></figure>`);box.classList.add('split');root.querySelector('#image-compare-toggle').setAttribute('aria-pressed','true');}});
   }
-  async function generateImage(){if(task().submode==='text'&&catalog.text_to_image_version!==1)throw new Error('请重启导演台后刷新页面以加载文生图');const reason=generationReason(session.project,task());if(reason)throw new Error(reason);await save();submitKey ||= crypto.randomUUID();await request('/tasks/'+task().id+'/generate','POST',{revision:session.project.revision,key:submitKey});submitKey=null;await session.reload();page='results';view.inspectorTab='result';render();}
+  async function generateImage(){requireKnownStatus(session);try{if(task().submode==='text'&&catalog.text_to_image_version!==1)throw new Error('请重启导演台后刷新页面以加载文生图');const reason=generationReason(session.project,task());if(reason)throw new Error(reason);await save();submitKey ||= crypto.randomUUID();await request('/tasks/'+task().id+'/generate','POST',{revision:session.project.revision,key:submitKey});submitKey=null;await session.reload();page='results';view.inspectorTab='result';render();}catch(error){uncertainMutation(session,error);throw error;}}
   function bindFooter(){
     const bindAction=(selector,fn)=>root.querySelector(selector)?.addEventListener('click',()=>void action(fn));
     root.querySelectorAll('.savebar [data-page]').forEach(b=>b.onclick=()=>action(async()=>{await flushMask();page=b.dataset.page;view.inspectorTab=page==='edit'?'assets':'result';render();}));
@@ -192,38 +220,29 @@ export function mountWorkspace(root,project,catalog){
     bindAction('#image-send',async()=>{const out=session.project.outputs.find(o=>o.id===selection);let asset;if(out.library)asset=await libraryApi(`/assets/${out.library.asset}?version=${out.library.version}`);else{if(!(await ui.confirm('先保存到资产库','这张候选将保存为独立资产，随后选择目标视频项目。','保存并继续')))return;asset=await ingest(false);}if(asset)await sendToVideo(asset,session.controller.signal);});
   }
   function bindRunButtons(){bindErrorFeedback(root);root.querySelectorAll('[data-reconcile]').forEach(b=>b.onclick=()=>action(async()=>{await request('/runs/'+b.dataset.reconcile+'/reconcile','POST',{});ui.toast('正在核对原任务，不会重新提交');}));root.querySelectorAll('[data-cancel]').forEach(b=>b.onclick=()=>action(async()=>{await request('/runs/'+b.dataset.cancel+'/cancel','POST',{});await session.reload();render();}));}
-  function newTask(mode,A=null){const t={id:crypto.randomUUID(),name:'编辑任务 '+(session.project.tasks.length+1),submode:mode,A,B:null,mask:null,prompt:'',settings:structuredClone(catalog.defaults),models:{...catalog.models}};session.project.tasks.push(t);session.project.current_task=t.id;mark();page='edit';selection=null;view.assetName='';view.inspectorTab='assets';}
+  function newTask(mode,A=null){viewingTask=null;const t={id:crypto.randomUUID(),name:'编辑任务 '+(session.project.tasks.length+1),submode:mode,A,B:null,mask:null,prompt:'',settings:structuredClone(catalog.defaults),models:{...catalog.models}};session.project.tasks.push(t);session.project.current_task=t.id;mark();page='edit';selection=null;view.assetName='';view.inspectorTab='assets';}
   async function attachLibrary(item,role,mediaId){
     const pictures=item.snapshot.media.filter(m=>m.meta.kind==='image');let media=pictures.find(m=>m.id===mediaId)||pictures.find(m=>m.role==='primary')||pictures[0];if(!media)throw new Error('此版本没有图片');
     if(pictures.length>1&&!mediaId){const selected=await chooseMedia(pictures);if(!selected)return;media=pictures.find(m=>m.id===selected);}
     const ref=await request('/library-input','POST',{asset:item.id,version:item.version,media:media.id});ref.url=`/api/v5/projects/${project.id}/files/image_inputs/${ref.id}/image.png`;if(!input(ref.id))session.project.inputs.push(ref);task()[role]=ref.id;if(role==='A')task().mask=null;mark();
   }
-  async function ingest(existing,selectOutput=true){await save();let target=null;if(existing){target=await pickLibraryAsset({kind:'image',title:'选择要添加新版本的资产'});if(!target)return null;if(!(await ui.confirm('添加资产版本',`目标：${target.snapshot.name}。当前版本 ${target.version.slice(0,8)}；原媒体保留，新图片成为当前版本的主媒体。`,'添加版本')))return null;}
+  async function ingest(existing,selectOutput=true){await save();let target=null;if(existing){target=await pickLibraryAsset({signal:session.controller.signal,kind:'image',title:'选择要添加新版本的资产'});if(!target)return null;if(!(await ui.confirm('添加资产版本',`目标：${target.snapshot.name}。当前版本 ${target.version.slice(0,8)}；原媒体保留，新图片成为当前版本的主媒体。`,'添加版本')))return null;}
     const asset=await request('/outputs/'+selection+'/library','POST',{asset:target?.id,revision:target?.revision,name:target?.snapshot.name||(view.assetName.trim()||task().name),select_output:selectOutput});await session.reload();ui.toast('已保存到资产库');return asset;}
   async function askText(title,value){return new Promise(resolve=>{const d=ui.modal(`<h2>${title}</h2><input maxlength="120" value="${ui.esc(value)}"><div class="dialog-actions"><button id="text-cancel">取消</button><button id="text-ok" class="primary">确定</button></div>`);d.oncancel=()=>resolve(null);d.querySelector('#text-cancel').onclick=()=>{d.close();resolve(null);};d.querySelector('#text-ok').onclick=()=>{const v=d.querySelector('input').value.trim();d.close();resolve(v);};});}
   async function chooseMedia(pictures){return new Promise(resolve=>{const d=ui.modal(`<h2>选择这个版本中的图片</h2><div class="image-candidates">${pictures.map(m=>`<button data-media-choice="${m.id}"><img src="${ui.esc(m.preview_url||m.url)}" alt="${ui.esc(m.name)}"><small>${ui.esc(m.name)}</small></button>`).join('')}</div><button id="media-cancel">取消</button>`);d.oncancel=()=>resolve(null);d.querySelector('#media-cancel').onclick=()=>{d.close();resolve(null);};d.querySelectorAll('[data-media-choice]').forEach(b=>b.onclick=()=>{d.close();resolve(b.dataset.mediaChoice);});});}
-  async function poll(){
+  const receive=p=>{
+    const changed=session.receive(p);
     if(session.disposed)return;
-    try{
-      if(!busy()&&session.project.busy){
-        const previous=session.project.outputs.length;
-        await session.reload();
-        if(!session.disposed){
-          if(page!=='edit'&&session.project.outputs.length!==previous)render();
-          else{
-            const box=root.querySelector('#image-run-state');
-            if(box){box.innerHTML=imageRunStatus(session.project,task());bindRunButtons();}
-            root.querySelector('.savebar').innerHTML=imageActionBar(context());bindFooter();refreshChrome();
-          }
-        }
-      }
-    }catch(error){if(!session.disposed&&error.name!=='AbortError')feedback({kind:error.kind||'website',message:'暂时无法更新运行状态，请查看错误详情；请勿重复提交。',raw:error.raw??error.message},true);}
-    finally{if(!session.disposed)timer=setTimeout(poll,3000);}
-  }
+    if(changed){render();return;}
+    const box=root.querySelector('#image-run-state');
+    if(box&&task()){box.innerHTML=imageRunStatus(session.project,task());bindRunButtons();}
+    refreshChrome();
+  };
   const resize=()=>fitWorkbench(root);window.addEventListener('resize',resize);
-  render();void poll();
+  render();
+  const stopPoll=watchProject({get project(){return session.project;},get version(){return session.version;},get working(){return busy();},get disposed(){return session.disposed;},get awaitingStatus(){return session.awaitingStatus;},set awaitingStatus(value){session.awaitingStatus=value;},controller:session.controller,request:session.request.bind(session),receive,connection:asyncStatus.connection,emit(){}},()=>{});
   const stopClocks=ui.watchClocks(root);
   const incoming=new URLSearchParams(location.hash.split('?')[1]||'');
   if(incoming.get('asset'))void action(async()=>{const item=await libraryApi('/assets/'+encodeURIComponent(incoming.get('asset'))+'?version='+encodeURIComponent(incoming.get('version')||''));await attachLibrary(item,'A',incoming.get('media'));await save();render();history.replaceState(null,'','#/p/'+project.id);});
-  return {session,dispose(){clearTimeout(timer);stopClocks();serial++;canvas?.dispose();window.removeEventListener('resize',resize);session.dispose();}};
+  return {session,saveBeforeLeave:async()=>{await save();return !session.dirty;},dispose(){stopPoll();clearTimeout(timer);stopClocks();serial++;canvas?.dispose();window.removeEventListener('resize',resize);session.dispose();}};
 }

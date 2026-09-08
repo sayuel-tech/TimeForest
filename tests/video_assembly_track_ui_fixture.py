@@ -24,7 +24,8 @@ try{
  await click('[data-step="1"]');await click('[data-extension]');await click('[data-select]');await wait(settled);
  assert(root.querySelectorAll('[data-track]').length===2,'selected candidate absent from track');
  assert(root.querySelector('[data-track="'+key+'"]').textContent.includes('已选续接'),'selected slot label');
- await click('[data-select]');await wait(settled);assert(root.querySelectorAll('[data-track]').length===2,'reselect duplicates track');
+ assert(root.querySelector('[data-select]').disabled,'selected result still offers duplicate selection');
+ root.querySelector('[data-select]').click();await wait(settled);assert(root.querySelectorAll('[data-track]').length===2,'reselect duplicates track');
  await click('[data-move="-1"]');await wait(settled);
  assert((await get()).assembly.track_order[0]===key,'arrow did not persist independent order');
  await click('[data-reload]');await wait(settled);

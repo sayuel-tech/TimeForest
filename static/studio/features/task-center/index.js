@@ -1,10 +1,8 @@
+import {TASK_STATES as states} from '../../core/task-state.js';
 import {api} from '../../core/api-client.js';
 import {esc} from '../../ui/primitives.js';
 import {errorFeedback, bindErrorFeedback} from '../../ui/error-feedback.js';
 
-const states={waiting:'等待通道',queued:'排队中',submitting:'提交中',running:'执行中',
-  stopping:'正在停止',unknown:'待确认提交',success:'已完成',done:'已完成',complete:'已完成',
-  accepted:'已完成',needs_review:'等待审核',interrupted:'已中断',failed:'未完成',cancelled:'已取消'};
 const actions={recover:'查询恢复',cancel:'取消排队',pause:'停止后续执行',stop:'停止当前生成',close:'结束等待并保留记录'};
 
 export function confirmation(task,action) {
@@ -23,7 +21,7 @@ export function visibleTasks(tasks,filter) {
 export function taskCard(task,index) {
   const progress=Number.isFinite(task.progress)?`<progress max="1" value="${Math.max(0,Math.min(1,task.progress))}" aria-label="任务进度"></progress>`:'';
   return `<article class="task-card ${task.attention?'needs-attention':''}" data-task-row="${index}">
-    <div class="task-card-heading"><div><small>${esc(task.kind==='image'?'图片资产创作':task.kind==='video'?'视频制作':'本地处理')}</small><h3>${esc(task.name)}</h3></div><span class="badge">${esc(task.stop_requested&&task.active?'停止已请求':states[task.state]||task.state)}</span></div>
+    <div class="task-card-heading"><div><small>${esc(task.kind==='image'?'图片资产创作':task.kind==='video'?'视频制作':task.kind==='assembly'?'视频接续':'本地处理')}</small><h3>${esc(task.name)}</h3></div><span class="badge">${esc(task.stop_requested&&task.active?'停止已请求':states[task.state]||task.state)}</span></div>
     <p>${esc(task.title)} <small>· ${esc(task.id.slice(0,8))}</small></p>
     <p class="task-note">${esc(task.note||'任务记录已保留')}</p>${progress}
     ${task.seed!==undefined&&task.seed!==null?`<small>种子 ${esc(task.seed)}</small>`:''}
@@ -43,6 +41,7 @@ export function mountTaskCenter() {
     <div class="task-toolbar"><label>显示 <select data-filter><option value="active">当前队列</option><option value="attention">待确认占用</option></select></label><button type="button" data-refresh>刷新</button><small data-summary role="status"></small></div>
     <div data-task-error role="alert"></div><div data-task-confirm hidden></div><div data-task-list></div><small data-history></small>`;
   document.body.append(dialog);
+  let disposed=false,readSerial=0;const controller=new AbortController();
   let tasks=[],renderedTasks=[],filter='active',pending=null,busy=false,loading=false,last='',opener=null;
   const list=dialog.querySelector('[data-task-list]'),error=dialog.querySelector('[data-task-error]'),confirm=dialog.querySelector('[data-task-confirm]');
   function render(){
@@ -54,10 +53,12 @@ export function mountTaskCenter() {
     list.inert=value;dialog.querySelector('[data-filter]').disabled=value;dialog.querySelector('[data-refresh]').disabled=value;
   }
   async function refresh(manual=false){
-    if(loading||pending||busy)return;
+    if(disposed||loading||pending||busy)return;
+    const serial=++readSerial;
     loading=true;
     try{
-      const data=await api('/tasks');
+      const data=await api('/tasks','GET',undefined,controller.signal);
+      if(disposed||serial!==readSerial||busy||pending)return;
       if(data.version!==1||!Array.isArray(data.tasks))throw new Error('任务列表后台尚未更新，请重启时间森林网站后刷新。');
       tasks=data.tasks;
       button.textContent=`任务列表${data.active_count?' · '+data.active_count:''}`;
@@ -69,6 +70,7 @@ export function mountTaskCenter() {
       // Do not replace controls while the user has keyboard focus within a row.
       if(dialog.open&&!pending&&!busy&&(manual||!list.contains(document.activeElement)))render();
     }catch(e){
+      if(disposed||serial!==readSerial||e.name==="AbortError")return;
       if(e.status===404)e=new Error('任务列表后台尚未更新，请重启时间森林网站后刷新。');
       button.textContent='任务列表 · 连接待检查';
       if(dialog.open){error.innerHTML=errorFeedback(e);bindErrorFeedback(error);}
@@ -85,22 +87,25 @@ export function mountTaskCenter() {
     if(e.target.closest('[data-task-link]')){if(busy||pending){e.preventDefault();return;}dialog.close();return;}
     const action=e.target.closest('[data-task-action]');
     if(action&&!pending&&!busy){
+      readSerial++;
       pending={task:renderedTasks[Number(action.dataset.taskIndex)],action:action.dataset.taskAction};
       confirm.innerHTML=`<p>${esc(confirmation(pending.task,pending.action))}</p><div class="task-actions"><button type="button" data-no>返回</button><button type="button" class="primary" data-yes>确认${actions[pending.action]}</button></div>`;
       confirm.hidden=false;lock(true);confirm.querySelector('[data-no]').focus();
     }
     if(e.target.closest('[data-no]')&&!busy){clearConfirmation();dialog.querySelector('[data-filter]').focus();}
     if(e.target.closest('[data-yes]')&&pending&&!busy){
-      busy=true;confirm.querySelectorAll('button').forEach(b=>b.disabled=true);
+      if(disposed)return;
+      busy=true;readSerial++;confirm.querySelectorAll('button').forEach(b=>b.disabled=true);
       try{
         const {task,action}=pending;
-        const result=await api('/tasks/action','POST',{kind:task.kind,id:task.id,project:task.project,action,confirmed:true});
+        const result=await api('/tasks/action','POST',{kind:task.kind,id:task.id,project:task.project,action,confirmed:true},controller.signal);
+        if(disposed)return;
         error.innerHTML=`<p class="notice" role="status">${esc(result.message)}</p>`;
-      }catch(err){error.innerHTML=errorFeedback(err);bindErrorFeedback(error);}
-      finally{busy=false;clearConfirmation();await refresh();dialog.querySelector('[data-refresh]').focus();}
+      }catch(err){if(disposed)return;error.innerHTML=errorFeedback(err);bindErrorFeedback(error);}
+      finally{busy=false;if(disposed)return;clearConfirmation();await refresh();dialog.querySelector('[data-refresh]').focus();}
     }
   });
   refresh();
   const timer=setInterval(()=>{if(!document.hidden)refresh();},5000);
-  return ()=>{clearInterval(timer);dialog.remove();button.onclick=null;};
+  return ()=>{disposed=true;readSerial++;controller.abort();clearInterval(timer);dialog.remove();button.onclick=null;};
 }

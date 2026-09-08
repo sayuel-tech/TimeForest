@@ -1,3 +1,4 @@
+from ..prompt_library.provenance import sources as prompt_sources
 """Versioned sequence operations; immutable source and execution snapshots."""
 import copy
 import json
@@ -88,6 +89,7 @@ class Assembly(References):
         p['assembly_track_version']=1
         p['assembly_source_parameters_version']=1
         p['assembly_tail_preparation_version']=2
+        p['library_usage_version']=1
         p['assembly']['track_order']=track.order(p)
         return p
 
@@ -101,6 +103,16 @@ class Assembly(References):
                     r=self.find_run(p,e.get('selected'),required=False)
                     total+=r['report']['duration'] if r and r.get('report') else float(e['seconds'])
         return total
+
+    def sync_library_usage(self,p):
+        for c in p['assembly']['clips']:
+            ref=c.get('provenance',{})
+            if c.get('library_used_at') and ref.get('type')=='library':
+                self.lib.complete_usage(p['id'],[dict(id=c['id'],reference=ref)],'assembly-video:'+p['id']+':'+c['id'],c['library_used_at'])
+        for ref in p['assembly'].get('references',[]):
+            if ref.get('library_used_at') and ref.get('library_reference'):
+                self.lib.complete_usage(p['id'],[dict(id=ref['id'],reference=ref['library_reference'])],
+                                      'assembly-reference:'+p['id']+':'+ref['id'],ref['library_used_at'])
 
     def find_clip(self,p,cid):
         c=next((c for c in p['assembly']['clips'] if c['id']==cid),None)
@@ -167,7 +179,7 @@ class Assembly(References):
             with self.lock:
                 if event.is_set(): raise media.Cancelled('已取消导入，原视频保留')
                 current=self.get(pid)
-                current['assembly']['clips'].append(dict(id=cid,name=name,file=str(destination),cover=str(cover),start=0.,end=meta['duration'],meta=meta,provenance=provenance,source_parameters=source_records,extensions=[]))
+                current['assembly']['clips'].append(dict(id=cid,name=name,file=str(destination),cover=str(cover),start=0.,end=meta['duration'],meta=meta,provenance=provenance,source_parameters=source_records,extensions=[],library_used_at=time.time() if reference else None))
                 if not current['assembly']['canvas_set']:
                     current['assembly']['output'].update(width=math.ceil(meta['width']/2)*2,height=math.ceil(meta['height']/2)*2)
                     current['assembly']['canvas_set']=True
@@ -179,6 +191,7 @@ class Assembly(References):
             self.update_run(pid,rid,state='cancelled' if isinstance(error,media.Cancelled) else 'failed',error=str(error),finished=time.time())
             raise
         finally: self.controls.pop(rid,None)
+        self.sync_library_usage(self.get(pid))
         return self.snapshot(pid)
 
     def invalidate(self,clip,after=-1):
@@ -215,6 +228,7 @@ class Assembly(References):
                     if draft['seed_mode'] not in ('fixed','random'): raise ValueError('种子模式无效')
                     if draft.get('sound','native') not in ('native','mute'): raise ValueError('声音选项无效')
                     e['references']=self.reference_bindings(p,draft.get('references',e.get('references',[])))
+                    e['prompt_sources']=prompt_sources(draft.get('prompt_sources',e.get('prompt_sources')))
                     e.update(recipe=recipe,configurations=configs,prompt=str(draft['prompt'])[:50000],seconds=seconds,
                              seed_mode=draft['seed_mode'],seed=seed,sound=draft.get('sound','native'))
                     self.reference_assets(p,e)
@@ -232,7 +246,9 @@ class Assembly(References):
                 a['track_order']=[key for key in track_order if key in available]
             p.update(name=str(data.get('name',p['name']))[:120],duration=self.duration(p))
             a['draft_revision']=a.get('draft_revision',1)+1
-            self.store.save(p,p['revision']);return self.snapshot(pid)
+            self.store.save(p,p['revision'])
+            self.sync_library_usage(self.get(pid))
+            return self.snapshot(pid)
 
     def add_extension(self,pid,data):
         with self.lock:

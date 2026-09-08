@@ -39,6 +39,8 @@ coverage/
 # Asset library, inference weights, databases, generated media and backups
 /TimeForestAssets/
 /asset_library/
+/prompt_library/
+/prompt_receipts/
 /ComfyUI/
 /input/
 /output/
@@ -64,7 +66,7 @@ h3ui/studio_sources/engine_catalog.local.json
 # Machine configuration snapshots created by offline library migration
 config.json.before-library-*.json
 
-# Separately distributed companion workflows and archives
+# Workflows are installed from the matching GitHub Release attachment.
 /h3ui/studio_sources/dance.json
 /h3ui/studio_sources/impact.json
 /h3ui/studio_sources/official_r2v.json

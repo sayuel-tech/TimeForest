@@ -220,9 +220,38 @@
 
 /* Shared step actions and reference controls, owned by the workspace UI. */
 .workspace-support{min-width:0;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.workspace-actions{margin-left:auto;justify-content:flex-end;flex-wrap:wrap}
+.project-page .savebar .workspace-actions{display:flex;margin-left:auto;justify-content:flex-end;flex-wrap:wrap;gap:8px}
+.project-page .savebar .workspace-actions:empty{display:none}
+.project-page .savebar button{white-space:normal}
+.project-page [data-workspace-steps]{overflow-x:auto}
+.project-page [data-workspace-step]{flex-shrink:0}
+.project-page [data-workspace-step]:focus-visible{outline:2px solid var(--sage);outline-offset:-2px;border-radius:4px}
 .import-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .import-options>*{min-width:0;width:100%;box-sizing:border-box}
 .property-tabs{overflow-x:auto}
 .property-tabs>button{flex-shrink:0;min-width:64px}
-@media(max-width:760px){.workspace-actions{width:100%}.workspace-support{width:100%}}
+@media(max-width:760px){
+  .project-page .savebar{position:static;flex-direction:column;align-items:stretch;gap:10px}
+  .project-page .savebar .workspace-actions,.workspace-support{width:100%}
+  .project-page .project-head{flex-wrap:wrap}
+  .project-page .project-head>div:first-child{min-width:0;flex:1}
+}
+
+/* Result viewing, choosing and collection are distinct shared action groups. */
+.result-actions{align-items:flex-start}
+.result-note{flex-basis:100%;font-size:12px;color:var(--muted)}
+.result-interactions,.result-actions .row{display:flex;flex-wrap:wrap;gap:8px;min-width:0}
+.result-collect{margin-left:auto;justify-content:flex-end}
+.candidate-state{display:flex;flex-wrap:wrap;gap:4px;font-size:11px;color:var(--sage)}
+.candidate-state:empty{display:none}
+.candidate-state .badge{font-size:11px;padding:2px 6px}
+.result-candidates{display:flex;gap:10px;overflow-x:auto;flex-shrink:0;padding:4px 0;margin:12px 0}
+.result-candidate{flex:0 0 160px;min-width:0;display:flex;flex-direction:column;gap:4px}
+.result-candidate .candidate-choice{display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-height:72px;text-align:left;padding:10px;width:100%}
+.candidate-choice[aria-pressed=true]{border-color:var(--sage);background:var(--sage-soft)}
+.candidate-choice img{width:100%;height:72px;object-fit:contain;border-radius:6px}
+.result-candidate>small{font-size:11px;color:var(--muted)}
+.result-candidate>button.quiet{align-self:flex-end;padding:4px 8px;font-size:12px}
+.attempt>summary{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.attempt .result-actions{margin-top:10px}
+@media(max-width:760px){.result-collect{width:100%}.result-actions button,.result-actions .btn{white-space:normal}}

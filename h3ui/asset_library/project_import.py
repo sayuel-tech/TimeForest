@@ -41,6 +41,18 @@ class ProjectImport:
         p = st.store.get(pid)
         if p['revision'] != data.get('revision'):
             raise Conflict('项目已变化，请保存编排后重新选择资产')
+        # Validate the unsaved workspace through the existing planner without publishing it.
+        # Confirmation commits this draft and the asset references in the same staged change.
+        draft_project = copy.deepcopy(p)
+        draft_summary = []
+        if data.get('draft') is not None:
+            if not isinstance(data['draft'], dict):
+                raise ValueError('项目草稿格式错误')
+            sandbox = copy.copy(st)
+            sandbox.store = PreviewStore(st.store, [])
+            sandbox.edit_plan(pid, data['draft'])
+            draft_project = sandbox.store.plan['project']
+            draft_summary = sandbox.store.plan['summary']
         root = lib.store.get(data['asset'], data.get('version'))
         if root.get('deleted'):
             raise ValueError('该资产已在回收站，请恢复后再建立新引用')
@@ -100,8 +112,8 @@ class ProjectImport:
             new_assets.append(projected)
         if not new_assets and not errors:
             errors.append('请选择至少一项媒体；取消选择不会改变当前素材')
-        q = copy.deepcopy(p)
-        summary = []
+        q = draft_project
+        summary = draft_summary
         if source:
             if len(new_assets) != 1 and not errors:
                 errors.append('一次请选择一个源视频')
@@ -113,7 +125,7 @@ class ProjectImport:
             seg = next((s for s in q['segments'] if s['id'] == data.get('segment')), None)
             if seg is None:
                 raise ValueError('片段不存在，请先准备源视频或片段')
-            original = self.st.resolve(p, next(s for s in p['segments'] if s['id'] == seg['id']))
+            original = self.st.resolve(q, seg)
             replace = set(data.get('replace', []))
             if replace - {a['id'] for a in original}:
                 raise ValueError('待替换素材不在本段引用中')
@@ -124,7 +136,7 @@ class ProjectImport:
                 errors.append(f'当前模式最多{ad.max_images}张参考图。请取消额外绑定图，或明确选择替换已有图')
             if len(audios) > 3 or sum(a.get('duration', 0) for a in audios) > 15.05:
                 errors.append('参考声音超过3项或总时长15秒；请取消部分声音或先裁切')
-            if p['mode'] == 'swap' and audios and p['settings']['audio_policy'] == 'source':
+            if p['mode'] == 'swap' and audios and q['settings']['audio_policy'] == 'source':
                 if data.get('audio_policy') == 'native':
                     q['settings']['audio_policy'] = 'native'
                     summary.append('声音策略将由源视频原声改为模型生成，仅参考声线与说话方式')
@@ -187,12 +199,13 @@ class ProjectImport:
                     asset.update(duration=actual['duration'], has_audio=actual.get('has_audio'))
             with st.store.connect() as db:
                 db.execute('UPDATE changes SET body=? WHERE token=? AND applied=0', (encode(plan), token))
-            st.store.apply(pid, token)
+            saved=st.store.apply(pid, token)
+            # Local import tasks do not have a Flask request context. Capture the
+            # committed draft here before the independent asset usage receipt.
+            prompts=getattr(st,'prompt_library',None)
+            if prompts is not None: prompts.capture(saved)
         # Cross-store completion is idempotent: the project transaction has already committed.
-        with lib.store.connect() as db:
-            for asset in plan['assets_to_add']:
-                ref = asset['library_reference']
-                db.execute('INSERT OR REPLACE INTO refs VALUES(?,?,?,?,?)', (pid + ':' + asset['id'], ref['asset'], ref['version'], pid, encode(ref)))
-                db.execute('UPDATE assets SET used=? WHERE id=?', (time.time(), ref['asset']))
+        lib.complete_usage(pid, [dict(id=a['id'],reference=a['library_reference']) for a in plan['assets_to_add']],
+                         'project:'+pid+':'+token)
         progress(1, '项目已引用固定版本素材')
         return dict(project=pid, revision=st.store.get(pid)['revision'], source_asset=plan['assets_to_add'][0]['id'] if plan['source_import'] else None)

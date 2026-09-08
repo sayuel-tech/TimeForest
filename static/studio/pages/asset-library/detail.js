@@ -1,3 +1,6 @@
+import {mountAssetOrigin} from '../../features/asset-picker/origin-view.js';
+import {projectOriginLink} from '../../ui/asset-origin.js';
+import {bindTimeline} from "./media-timeline.js";
 import * as ui from "../../ui/primitives.js";
 import { libraryApi } from "../../features/asset-picker/library-client.js";
 import {
@@ -41,7 +44,7 @@ export async function mountDetail(root, aid, params, signal) {
   const draftKey = "tf-library-draft:" + aid;
   let draft = structuredClone(asset.snapshot),
     dirty = false,
-    currentMedia = primaryMedia(asset).id;
+    currentMedia = asset.snapshot.media.some(m=>m.id===params.get('media'))?params.get('media'):primaryMedia(asset).id;
   const cached = localStorage.getItem(draftKey);
   let stale = false;
   if (cached && !historical) {
@@ -100,13 +103,14 @@ export async function mountDetail(root, aid, params, signal) {
       asset.snapshot.media.find((x) => x.id === currentMedia) ||
       primaryMedia(asset);
     const back = sessionStorage.getItem("tf-library-list") || "#/assets";
-    root.innerHTML = `<div class="library-header"><div><a href="${ui.esc(back)}">← 返回资产库</a><h1>${ui.esc(draft.name)}</h1><p>${ui.esc(mediaSummary(media))}${historical ? " · 历史版本，只读" : ""}</p></div><div class="library-toolbar"><a class="btn" href="${ui.esc(media.url)}?download=1">导出原件</a>${media.meta.kind === 'image' ? '<button id="library-create-image">用这张图创作</button>' : ''}${!historical ? `<button id="library-trash">${asset.deleted ? "从回收站恢复" : "移入回收站"}</button>` : `<a class="btn" href="#/assets/${aid}">查看当前版本</a>`}</div></div><div class="library-detail"><div class="library-preview-panel">${mediaPlayer(media)}<div class="library-media-strip">${asset.snapshot.media.map((m, i) => `<button data-media="${m.id}" aria-pressed="${m.id === currentMedia}">${m.role === "primary" ? "主媒体" : "备选 " + i} · ${ui.esc(m.meta.kind)}</button>`).join("")}</div><p class="helper">${ui.esc(mediaSummary(media))}${media.meta.fps ? " · 原始帧率 " + ui.esc(media.meta.fps) : ""}${media.meta.time_base ? " · 时基 " + ui.esc(media.meta.time_base) : ""}${media.meta.alpha ? " · 原件保留透明通道" : ""}</p>${["video", "audio"].includes(media.meta.kind) ? `<div class="library-time-controls">${ui.field("入点（秒）", '<input id="library-in" type="number" min="0" value="0" step=".001">')}${ui.field("出点（秒）", `<input id="library-out" type="number" min="0" step=".001" value="${media.meta.duration}">`)}<button id="mark-in">当前位置作入点</button><button id="mark-out">当前位置作出点</button><button id="loop-range" aria-pressed="false">循环选段</button></div><p class="helper">这里只标记使用区间，不修改原件。原始长度 ${ui.fmt(media.meta.duration)} 秒。</p>` : ""}<div id="library-derive-tools"></div>${!historical ? `<label class="btn">添加备选媒体<input id="library-alternate" type="file" hidden accept="image/*,audio/*,video/*"></label>` : ""}</div><div><form id="library-editor-form" class="library-editor"><span class="eyebrow">ASSET NOTES</span><h2>留给下一次创作的资料</h2>${stale ? '<div class="notice">库中版本已经变化。保留了你之前的草稿；请核对后再保存，会建立新版本。</div>' : ""}${ui.field("自定义名称", `<input name="name" required maxlength="160" value="${ui.esc(draft.name)}">`)}<span>用途分类（可以多选）</span><div class="library-checks">${catalog.categories.map((c) => `<label><input type="checkbox" name="category" value="${c.id}" ${draft.categories.includes(c.id) ? "checked" : ""}>${ui.esc(c.name)}</label>`).join("")}</div>${ui.field("标签", `<input name="tags" value="${ui.esc((draft.tags || []).join(", "))}">`, "用逗号分隔，例如：舞者、灰色针织、侧面。")}<div class="library-toolbar"><label><input name="favorite" type="checkbox" ${draft.favorite ? "checked" : ""}> 收藏</label><select name="state" aria-label="选用状态">${ui.opts(
+    root.innerHTML = `<div class="library-header"><div><a href="${ui.esc(back)}">← 返回资产库</a><h1>${ui.esc(draft.name)}</h1><p>${ui.esc(mediaSummary(media))}${historical ? " · 历史版本，只读" : ""}</p></div><div class="library-toolbar"><a class="btn" href="${ui.esc(media.url)}?download=1">导出原件</a>${media.meta.kind === 'image' ? '<button id="library-create-image">用这张图创作</button>' : ''}${!historical ? `<button id="library-trash">${asset.deleted ? "从回收站恢复" : "移入回收站"}</button>` : `<a class="btn" href="#/assets/${aid}">查看当前版本</a>`}</div></div><div class="library-detail"><div class="library-preview-panel">${mediaPlayer(media)}<div class="library-media-strip">${asset.snapshot.media.map((m, i) => `<button data-media="${m.id}" aria-pressed="${m.id === currentMedia}">${m.role === "primary" ? "主媒体" : "备选 " + i} · ${ui.esc(m.meta.kind)}</button>`).join("")}</div><p class="helper">${ui.esc(mediaSummary(media))}${media.meta.fps ? " · 原始帧率 " + ui.esc(media.meta.fps) : ""}${media.meta.time_base ? " · 时基 " + ui.esc(media.meta.time_base) : ""}${media.meta.alpha ? " · 原件保留透明通道" : ""}</p>${["video", "audio"].includes(media.meta.kind) ? `<div class="library-time-controls">${ui.field("入点（秒）", '<input id="library-in" type="number" min="0" value="0" step=".001">')}${ui.field("出点（秒）", `<input id="library-out" type="number" min="0" step=".001" value="${media.meta.duration}">`)}<button id="mark-in">当前位置作入点</button><button id="mark-out">当前位置作出点</button><button id="loop-range" aria-pressed="false">循环选段</button></div><p class="helper">这里只标记使用区间，不修改原件。原始长度 ${ui.fmt(media.meta.duration)} 秒。</p>` : ""}<div id="library-asset-origin"></div><div id="library-derive-tools"></div>${!historical ? `<label class="btn">添加备选媒体<input id="library-alternate" type="file" hidden accept="image/*,audio/*,video/*"></label>` : ""}</div><div><form id="library-editor-form" class="library-editor"><span class="eyebrow">ASSET NOTES</span><h2>留给下一次创作的资料</h2>${stale ? '<div class="notice">库中版本已经变化。保留了你之前的草稿；请核对后再保存，会建立新版本。</div>' : ""}${ui.field("自定义名称", `<input name="name" required maxlength="160" value="${ui.esc(draft.name)}">`)}<span>用途分类（可以多选）</span><div class="library-checks">${catalog.categories.map((c) => `<label><input type="checkbox" name="category" value="${c.id}" ${draft.categories.includes(c.id) ? "checked" : ""}>${ui.esc(c.name)}</label>`).join("")}</div>${ui.field("标签", `<input name="tags" value="${ui.esc((draft.tags || []).join(", "))}">`, "用逗号分隔，例如：舞者、灰色针织、侧面。")}<div class="library-toolbar"><label><input name="favorite" type="checkbox" ${draft.favorite ? "checked" : ""}> 收藏</label><select name="state" aria-label="选用状态">${ui.opts(
       [
         ["candidate", "备选"],
         ["selected", "已选用"],
       ],
       draft.state || "candidate",
-    )}</select></div>${ui.field("生成这个资产时使用的 PROMPT", `<textarea name="record_prompt" maxlength="200000" placeholder="记录生成这份素材时使用的提示词…">${ui.esc(draft.record_prompt)}</textarea>`, "仅作资料记录，不会自动进入制作流程或工作流。")}<button type="button" data-copy="record_prompt">复制资料 PROMPT</button>${ui.field("设定说明", `<textarea name="description" maxlength="200000" placeholder="角色背景、服装设定、素材用途或使用备注…">${ui.esc(draft.description)}</textarea>`, "仅作资产说明；需要制作时请自行复制到片段正文。")}<button type="button" data-copy="description">复制设定</button><details open><summary>默认绑定素材 · ${(draft.bindings || []).length} 项</summary><p class="helper">选择角色时可一并引用其声线和其他素材。每次创作都可以取消或替换；当前工作流不支持的输入会提示处理。</p><div>${(draft.bindings || []).map((b, i) => `<div class="library-binding" data-binding="${i}"><a href="#/assets/${ui.esc(b.asset)}?version=${ui.esc(b.version)}">${ui.esc(b.label || b.asset)}</a><div class="library-toolbar"><select aria-label="绑定用途">${ui.opts(purposes, b.purpose)}</select><label><input type="checkbox" ${b.default !== false ? "checked" : ""}>默认带入</label><button type="button" data-remove-binding="${i}">解除绑定</button></div><small>固定版本 ${ui.esc(b.version.slice(0, 8))}</small></div>`).join("")}</div><button type="button" id="add-binding">＋ 绑定库内资产</button></details><details><summary>历史版本与来源</summary><p>${(media.provenance || asset.snapshot.provenance)?.metadata_status === "present" ? "已保存真实生成记录" : "原文件未提供完整生成记录"}；以下记录独立保存，编辑上方资料不会修改它。</p><div class="library-toolbar">${asset.versions.map((v) => `<a href="#/assets/${aid}?version=${v.id}">${ui.esc(new Date(v.created * 1000).toLocaleString())}</a>`).join("")}</div><pre>${ui.esc(JSON.stringify(media.provenance || asset.snapshot.provenance, null, 2))}</pre><div id="library-source-exports"></div></details><details><summary>所在合集</summary>${catalog.collections.map((c) => `<label class="library-binding"><span>${ui.esc(c.name)}</span><button type="button" data-collection="${c.id}">${asset.collections?.includes(c.id) ? "从合集移除" : "加入合集"}</button></label>`).join("") || "<p>可以在“分类与合集”页面新建合集。</p>"}</details></form>${!historical ? `<div class="library-save"><small id="library-save-state">${dirty ? "已恢复本机未保存草稿" : "资料已保存"}</small><button form="library-editor-form" class="primary">保存资料版本</button></div>` : ""}</div></div>`;
+    )}</select></div>${ui.field("生成这个资产时使用的 PROMPT", `<textarea name="record_prompt" maxlength="200000" placeholder="记录生成这份素材时使用的提示词…">${ui.esc(draft.record_prompt)}</textarea>`, "仅作资料记录，不会自动进入制作流程或工作流。")}<button type="button" data-copy="record_prompt">复制资料 PROMPT</button>${ui.field("设定说明", `<textarea name="description" maxlength="200000" placeholder="角色背景、服装设定、素材用途或使用备注…">${ui.esc(draft.description)}</textarea>`, "仅作资产说明；需要制作时请自行复制到片段正文。")}<button type="button" data-copy="description">复制设定</button><details open><summary>默认绑定素材 · ${(draft.bindings || []).length} 项</summary><p class="helper">选择角色时可一并引用其声线和其他素材。每次创作都可以取消或替换；当前工作流不支持的输入会提示处理。</p><div>${(draft.bindings || []).map((b, i) => `<div class="library-binding" data-binding="${i}"><a href="#/assets/${ui.esc(b.asset)}?version=${ui.esc(b.version)}">${ui.esc(b.label || b.asset)}</a><div class="library-toolbar"><select aria-label="绑定用途">${ui.opts(purposes, b.purpose)}</select><label><input type="checkbox" ${b.default !== false ? "checked" : ""}>默认带入</label><button type="button" data-remove-binding="${i}">解除绑定</button></div><small>固定版本 ${ui.esc(b.version.slice(0, 8))}</small></div>`).join("")}</div><button type="button" id="add-binding">＋ 绑定库内资产</button></details><details><summary>历史版本与来源</summary><p>${(media.provenance || asset.snapshot.provenance)?.metadata_status === "present" ? "已保存真实生成记录" : "未记录完整执行图；不代表没有来源信息"}；以下记录独立保存，编辑上方资料不会修改它。</p><div class="library-toolbar">${asset.versions.map((v) => `<a href="#/assets/${aid}?version=${v.id}">${ui.esc(new Date(v.created * 1000).toLocaleString())}</a>`).join("")}</div><pre>${ui.esc(JSON.stringify(media.provenance || asset.snapshot.provenance, null, 2))}</pre><div id="library-source-exports"></div></details><details><summary>所在合集</summary>${catalog.collections.map((c) => `<label class="library-binding"><span>${ui.esc(c.name)}</span><button type="button" data-collection="${c.id}">${asset.collections?.includes(c.id) ? "从合集移除" : "加入合集"}</button></label>`).join("") || "<p>可以在“分类与合集”页面新建合集。</p>"}</details></form>${!historical ? `<div class="library-save"><small id="library-save-state">${dirty ? "已恢复本机未保存草稿" : "资料已保存"}</small><button form="library-editor-form" class="primary">保存资料版本</button></div>` : ""}</div></div>`;
+    void mountAssetOrigin(root.querySelector('#library-asset-origin'), {asset:aid,version:asset.snapshot.id,media:media.id,supported:asset.asset_origin_version===1}, signal);
     const form = root.querySelector("#library-editor-form");
     if (historical)
       form
@@ -182,6 +186,7 @@ export async function mountDetail(root, aid, params, signal) {
     root.querySelector("#add-binding").onclick = async () => {
       gather();
       const item = await pickLibraryAsset({
+        signal,
         title: "为这项资产绑定素材",
         exclude: [aid],
       });
@@ -284,6 +289,7 @@ export async function mountDetail(root, aid, params, signal) {
       cover.onclick = async () => {
         if (dirty) return ui.toast("请先保存资料草稿，再选择封面");
         const selected = await pickLibraryAsset({
+        signal,
           title: "选择封面图片（不改变生成输入）",
           kind: "image",
         });
@@ -306,7 +312,7 @@ export async function mountDetail(root, aid, params, signal) {
       };
     }
     const references = document.createElement("details");
-    references.innerHTML = `<summary>引用这项资产的项目 · ${(asset.references || []).length}</summary><p class="helper">以下为历史引用登记；项目执行使用固定副本，库更新不会自动替换。已删除的项目可能仍保留历史登记。</p>${(asset.references || []).map((r) => `<p><a href="#/p/${ui.esc(r.project)}">查看引用项目</a> · 版本 ${ui.esc(r.version.slice(0, 8))}</p>`).join("")}`;
+    references.innerHTML = `<summary>使用过这项资产的项目 · ${(asset.references || []).length}</summary><p class="helper">以下为历史引用登记；项目执行使用固定副本，库更新不会自动替换。已删除的项目可能仍保留历史登记。</p>${(asset.references || []).map((r) => `<p>${asset.reference_projects?.[r.project]?projectOriginLink(asset.reference_projects[r.project]):`项目 ${ui.esc(r.project)} · 当前状态未核对`} · 版本 ${ui.esc(r.version.slice(0, 8))}</p>`).join("")}`;
     root.querySelector(".library-editor").append(references);
     if (Object.keys(records).length) {
       const full = document.createElement("button");
@@ -316,7 +322,7 @@ export async function mountDetail(root, aid, params, signal) {
         ui.download(records, asset.name + "-generation-records.json");
       exports.append(full);
     }
-    bindTimeline(media);
+    bindTimeline(root,media);
     root.querySelector('#library-create-image')?.addEventListener('click', async () => {
       if (dirty && !(await ui.confirm('使用已保存的资产版本', '当前资料草稿不会进入图片创作。使用当前查看的固定图片版本继续？', '继续'))) return;
       try {
@@ -331,61 +337,6 @@ export async function mountDetail(root, aid, params, signal) {
     packButton.onclick = () =>
       exportPack([{ ...asset, version: asset.snapshot.id }], signal);
     root.querySelector(".library-header .library-toolbar").append(packButton);
-  }
-  function bindTimeline(media) {
-    const player = root.querySelector(".library-player");
-    if (!player) return;
-    const input = root.querySelector("#library-in"),
-      output = root.querySelector("#library-out");
-    let loop = false;
-    const range = () => {
-      const start = Number(input.value),
-        end = Number(output.value);
-      if (
-        !Number.isFinite(start) ||
-        !Number.isFinite(end) ||
-        start < 0 ||
-        end <= start ||
-        end > media.meta.duration + 0.01
-      )
-        throw new Error("请选择有效的入点与出点");
-      return { start, end };
-    };
-    root.querySelector("#mark-in").onclick = () =>
-      (input.value = ui.fmt(player.currentTime));
-    root.querySelector("#mark-out").onclick = () =>
-      (output.value = ui.fmt(player.currentTime));
-    root.querySelector("#loop-range").onclick = async (e) => {
-      try {
-        const r = range();
-        loop = !loop;
-        e.target.setAttribute("aria-pressed", String(loop));
-        e.target.textContent = loop ? "停止循环" : "循环选段";
-        if (loop) {
-          player.currentTime = r.start;
-          await player.play();
-        }
-      } catch (error) {
-        ui.toast(error.message);
-      }
-    };
-    player.ontimeupdate = () => {
-      if (loop) {
-        try {
-          const r = range();
-          if (player.currentTime >= r.end || player.currentTime < r.start)
-            player.currentTime = r.start;
-        } catch {
-          loop = false;
-        }
-      }
-    };
-    player.onended = () => {
-      if (loop) {
-        player.currentTime = Number(input.value);
-        void player.play().catch(() => {});
-      }
-    };
   }
   draw();
   return { dirty: () => dirty };

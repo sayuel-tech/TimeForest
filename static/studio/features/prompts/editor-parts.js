@@ -1,3 +1,5 @@
+import {bindVideoPrompts} from '../prompt-library/adapters.js';
+import {draftStatus} from '../../ui/draft-status.js';
 import {workspaceActions} from '../../ui/workspace-actions.js';
 import {bindWorkbench} from '../../ui/workbench.js';
 import {mediaPlayer} from '../../ui/media-player.js';
@@ -23,7 +25,7 @@ export function projectSummary(ctx) {
   }<button id="drafts" class="quiet">找回移出的片段内容</button></details><p id="duration-preview" class="preview-note" role="status"></p>`;
 }
 export function savebar(ctx) {
-  return workspaceActions({support:`<span id="save-state">${ctx.dirty ? "有未保存修改" : "已保存 · 版本 " + ctx.project.revision}</span>`,actions:`<button id="save" class="quiet">保存草稿</button><button id="preflight" data-auto-save data-saved-label="检查工作流" data-dirty-label="保存并检查">检查工作流</button><button id="review-go" class="primary">进入制作 <span aria-hidden="true">→</span></button>`});
+  return workspaceActions({support:`${ctx.project.mode==='swap'?'<button id="back-source" class="quiet">返回上一步</button>':''}<span id="save-state" role="status">${draftStatus(ctx)}</span><button id="save" class="quiet">保存草稿</button>`,actions:`<button id="preflight" data-auto-save data-saved-label="检查工作流" data-dirty-label="保存并检查">检查工作流</button><button id="review-go" class="primary">进入制作 <span aria-hidden="true">→</span></button>`});
 }
 export function shotNavigation(ctx, title = "片段目录") {
   return `<div class="section-caption"><span class="eyebrow">SHOT INDEX</span><h3>${title}</h3></div><div class="shot-nav">${ctx.project.segments.map((s, i) => `<button data-focus-shot="${i}" class="${i === ctx.shot ? "active" : ""}"><span>P${String(i + 1).padStart(2, "0")}</span><span>${fmt((s.requested_frames ?? s.deliver) / 24)}秒</span>${status(s.status)}</button>`).join("")}</div>`;
@@ -40,6 +42,7 @@ export function sourcePlayer(ctx) {
     : `<div class="source-empty"><span class="frame-icon" aria-hidden="true">＋</span><h3>先放入一段表演</h3><p>上传参考视频后，自动准备片段与换人提示词。</p></div>`;
 }
 export function bindEditor(ctx) {
+  bindVideoPrompts(ctx);
   bindInputInventory(ctx);
   const root = ctx.root,
     p = ctx.project;
@@ -136,6 +139,6 @@ export function bindEditor(ctx) {
 }
 export function resultPlayer(s) {
   return s.delivery_url
-    ? mediaPlayer(s.delivery_url,"本段选用结果")
+    ? mediaPlayer(s.delivery_url,s.status==='needs_review'?'本段待审核结果':'本段选用结果')
     : `<div class="empty result-empty"><img src="/static/assets/empty/empty-shot.svg" alt=""><h3>画面正在等待你的故事</h3><p>生成后的选用结果会显示在这里。</p></div>`;
 }

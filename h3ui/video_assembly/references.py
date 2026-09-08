@@ -1,5 +1,6 @@
 """Fixed project-owned reference media; draft bindings never rewrite run inputs."""
 import copy
+import time
 from pathlib import Path
 from werkzeug.datastructures import FileStorage
 from ..studio_inputs import inventory, public_inventory, validate
@@ -55,6 +56,7 @@ class References:
                 with Path(path).open('rb') as stream:
                     a=self.st.jobs.run_inline('assembly_reference',pid,lambda:self.st.upload(pid,FileStorage(stream=stream,filename='reference'+obj['extension']),kind,purpose,subject))
                 a['name']=item['name'];a['library_reference']=dict(asset=item['id'],version=item['snapshot']['id'],media=m['id'],hash=m['hash'])
+                a['library_used_at']=time.time()
             else:
                 kind=data.get('kind')
                 if kind not in ('image','audio') or upload is None: raise ValueError('请选择图片或参考声音')
@@ -65,6 +67,7 @@ class References:
             self.reference_assets(p,e)
             p['assembly']['draft_revision']=p['assembly'].get('draft_revision',1)+1
             self.store.save(p,p['revision'])
+            self.sync_library_usage(self.get(pid))
             return self.snapshot(pid)
 
     def reference_snapshot(self,p):

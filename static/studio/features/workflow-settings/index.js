@@ -1,5 +1,5 @@
-import { esc, field, toast } from "../../ui/primitives.js";
-import { openProductionSettings, productionSettingsActions, productionGroups as groups, productionSettingsMarkup, bindSettingsNavigation, parameterField } from "../../ui/production-settings.js";
+import { esc, toast } from "../../ui/primitives.js";
+import { openProductionSettings, productionSettingsActions, productionGroups as groups, productionSettingsMarkup, bindSettingsNavigation, parameterField, parameterLoras, validateSettingsInputs } from "../../ui/production-settings.js";
 import {
   visibleParameters,
   choicesFor,
@@ -12,7 +12,8 @@ export function createFeature(ctx) {
     const original = structuredClone(ctx.project.settings);
     let candidate = structuredClone(original);
     let selectedGroup="core";
-    const {dialog, content} = openProductionSettings({signal:ctx.session.controller?.signal});
+    const surface = openProductionSettings({signal:ctx.session.controller?.signal});
+    const {dialog, content} = surface;
     const recipe = () =>
       ctx.catalog.recipes.find((r) => r.id === candidate.recipe);
     function input(f) {
@@ -70,7 +71,7 @@ export function createFeature(ctx) {
         const fs = fields.filter((f) => f.group === group),
           loras = group === "lora" && r.capabilities.lora_slots;
         if (!fs.length && !loras) return null;
-        const html = `<div class="settings-grid">${fs.map(input).join("")}</div>${loras ? `<p id="lora-state" class="helper"></p><div class="lora-slots">${candidate.loras.map((l, i) => `<fieldset><legend>LoRA ${i + 1}</legend>${parameterField({type:"model",key:"lora"+i,label:"LoRA 文件"},l.file,{attributes:`data-lora="${i}" data-key="file"`,options:ctx.catalog.loras})}<div class="split">${field("强度", `<input type="number" min="-10" max="10" step=".05" data-lora="${i}" data-key="strength" value="${l.strength}">`)}<label class="check"><input type="checkbox" data-lora="${i}" data-key="bypass" ${l.bypass ? "checked" : ""}>Bypass · 跳过本槽</label></div></fieldset>`).join("")}</div>` : ""}`;
+        const html = `<div class="settings-grid">${fs.map(input).join("")}</div>${loras ? `<p id="lora-state" class="helper"></p>${parameterLoras(candidate.loras,ctx.catalog.loras,{step:.05})}` : ""}`;
         return {key:group, title, html};
       }).filter(Boolean);
       content.innerHTML = productionSettingsMarkup({
@@ -78,29 +79,17 @@ export function createFeature(ctx) {
         directory: `<details class="engine-directory"><summary>本地模型目录</summary><p>刷新页面或点击下方按钮会重新扫描本地模型目录，无需启动ComfyUI。你的文件选择会原样提交；不兼容时显示ComfyUI返回的错误。${ctx.catalog.local_models?.updated ? ` 上次扫描：${new Date(ctx.catalog.local_models.updated * 1000).toLocaleString()}` : ""}</p>${(ctx.catalog.local_models?.errors || []).map(e => `<p class="notice error">${esc(e)}</p>`).join("")}<button id="connect-engine" type="button">刷新本地模型列表</button></details>`,
         summary: `<div class="settings-summary"><strong id="geometry-preview"></strong><p id="sampling-preview"></p><details><summary>工作流说明与适用范围</summary><p>${esc(r.description)}</p><p>${esc(r.capabilities.verification)}</p></details></div>`,
         sections,
-        actions: productionSettingsActions([{role:"reset",id:"reset-settings",label:"恢复默认"},{role:"cancel",id:"cancel-settings",label:"取消"},{role:"apply",id:"apply-settings",label:"应用到项目草稿",primary:true}]),
-        footer: '进入制作或生成时自动保存。涉及工作流、模型或已有结果的变化，会先展示影响并请你确认。',
+        actions: productionSettingsActions([{role:"reset",id:"reset-settings",label:"恢复默认"},{role:"cancel",id:"cancel-settings",label:"取消"},{role:"apply",id:"apply-settings",label:"应用"},{role:"save",id:"save-settings",label:"保存",primary:true}]),
+        footer: '应用到当前项目草稿；保存会持久化当前项目的全部草稿。涉及已有结果的变化仍需确认。恢复默认仅改变本弹窗，取消可放弃。',
       });
       bindSettingsNavigation(content, selectedGroup, key => { selectedGroup = key; });
       const connect = content.querySelector("#connect-engine");
       if (connect)
-        connect.onclick = async () => {
-          connect.disabled = true;
-          connect.textContent = "正在扫描…";
-          try {
-            const next = await ctx.api("/catalog");
-            if (ctx.session.disposed || !dialog.open) return;
-            Object.assign(ctx.catalog, next);
-            draw();
-          } catch (error) {
-            toast(error.message);
-          } finally {
-            if (dialog.open) {
-              connect.disabled = false;
-              connect.textContent = "刷新本地模型列表";
-            }
-          }
-        };
+        connect.onclick = () => surface.run(async () => {
+          const next = await ctx.api("/catalog");
+          if (!surface.alive() || ctx.session.disposed) return false;
+          Object.assign(ctx.catalog, next);draw();
+        });
       content.querySelectorAll("[data-param]").forEach(
         (el) =>
           (el.onchange = () => {
@@ -133,46 +122,30 @@ export function createFeature(ctx) {
             syncSummary();
           }),
       );
-      content.querySelector("#cancel-settings").onclick = () => dialog.close();
+      content.querySelector("#cancel-settings").onclick = surface.cancel;
       content.querySelector("#reset-settings").onclick = () => {
         candidate = structuredClone(r.defaults);
         draw();
       };
-      content.querySelector("#apply-settings").onclick = () => {
-        const errors = [];
-        for (const el of content.querySelectorAll('input[type="number"]'))
-          if (!el.checkValidity())
-            errors.push(
-              (el.closest("label")?.querySelector("span")?.textContent ||
-                "参数") + "：数值不在允许范围内",
-            );
-        if (
-          r.capabilities.sampler_structure === "split_schedule" &&
-          !(
-            Number(candidate.split_step) >= 1 &&
-            Number(candidate.split_step) < Number(candidate.steps)
-          )
-        )
-          errors.push("一采切点必须小于总步数，两采均至少保留1步");
-        if (errors.length) {
-          content.querySelector("#parameter-errors").innerHTML =
-            `<div class="notice error">${[...new Set(errors)].map(esc).join("<br>")}</div>`;
-          content
-            .querySelector("#parameter-errors")
-            .scrollIntoView({ block: "center" });
-          return;
-        }
+      const validate = () => {
+        validateSettingsInputs(content);
+        if (r.capabilities.sampler_structure === "split_schedule" && !(Number(candidate.split_step)>=1 && Number(candidate.split_step)<Number(candidate.steps)))
+          throw Object.assign(new Error("一采切点必须小于总步数，两采均至少保留1步"),{kind:'input'});
+      };
+      const commit = saveNow => surface.run(async () => {
         ctx.project.settings = structuredClone(candidate);
         ctx.setDirty();
-        dialog.close();
+        if (ctx.project.storyboard_version && candidate.render_cap !== original.render_cap) ctx.schedulePreview();
+        if (saveNow) {
+          const saved = await ctx.persistDraft();
+          if (!saved) return false;
+          toast("草稿已保存");
+        } else toast("已应用到草稿，尚未保存");
         ctx.renderProject();
-        if (
-          ctx.project.storyboard_version &&
-          candidate.render_cap !== original.render_cap
-        )
-          ctx.schedulePreview();
-        toast("参数已放入草稿；进入制作或生成时自动保存");
-      };
+        return true;
+      }, {closeOnSuccess:true, validate});
+      content.querySelector("#apply-settings").onclick = () => commit(false);
+      content.querySelector("#save-settings").onclick = () => commit(true);
       syncSummary();
     }
     draw();

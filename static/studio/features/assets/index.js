@@ -1,3 +1,4 @@
+import {chooseReferenceMetadata} from '../../ui/reference-metadata.js';
 import {referenceAssetCard} from '../../ui/reference-assets.js';
 import { useLibrary } from "../asset-picker/project-use.js";
 import { saveProjectMedia } from "../asset-picker/result-import.js";
@@ -102,6 +103,7 @@ export function createFeature(ctx) {
           "POST",
           fd,
         );
+        if(ctx.session.disposed)return;
         ctx.project.asset_library.push(a);
         if (ctx.project.mode === "swap" && kind === "image") {
           // Replace the active character reference; retain files and audio references.
@@ -119,7 +121,7 @@ export function createFeature(ctx) {
       ctx.renderProject();
       ctx.toast("素材已加入本段；进入制作时自动保存");
     } catch (e) {
-      ctx.toast(e.message);
+      if(!ctx.session.disposed&&e.name!=="AbortError")ctx.toast(e.message);
     } finally {
       ctx.working = false;
       ctx.syncDraftActions();
@@ -127,50 +129,8 @@ export function createFeature(ctx) {
     }
   }
   function assetInfo(kind, initial = {}) {
-    return new Promise((resolve) => {
-      const d = ctx.modal(
-        `<h2>这份素材用来做什么？</h2>${ctx.field(
-          "用途",
-          `<select id="asset-purpose">${ctx.opts(
-            kind === "audio"
-              ? [["voice", "只参考音色与说话方式"]]
-              : [
-                  ["character", "角色 / 同一角色多视图"],
-                  ["face", "脸部特写"],
-                  ["costume", "服装"],
-                  ["scene", "场景"],
-                  ["palette", "色系 / 风格"],
-                  ["prop", "道具"],
-                ],
-            initial.purpose || (kind === "audio" ? "voice" : "character"),
-          )}</select>`,
-        )}${ctx.field("角色ID", `<input id="asset-subject" inputmode="numeric" value="${ctx.esc(initial.subject ?? "1")}">`, "同一个角色使用相同数字；第二个角色填写2。场景、色系和道具不需要角色ID。")}<div class="dialog-actions"><button id="asset-cancel">取消</button><button id="asset-ok" class="primary">确认素材信息</button></div>`,
-      );
-      const done = (x) => {
-        d.close();
-        resolve(x);
-      };
-      ctx.$("#asset-cancel").onclick = () => done(null);
-      const syncSubject = () => {
-        const needed = ["character", "face", "costume", "voice"].includes(
-          ctx.$("#asset-purpose").value,
-        );
-        ctx.$("#asset-subject").disabled = !needed;
-      };
-      ctx.$("#asset-purpose").onchange = syncSubject;
-      syncSubject();
-      ctx.$("#asset-ok").onclick = () =>
-        done({
-          purpose: ctx.$("#asset-purpose").value,
-          subject: ctx.$("#asset-subject").disabled
-            ? ""
-            : ctx.$("#asset-subject").value,
-        });
-      d.oncancel = (e) => {
-        e.preventDefault();
-        done(null);
-      };
-    });
+    return chooseReferenceMetadata({kind,initial,signal:ctx.session.controller.signal,
+      title:initial.id?'修改素材用途':'确认素材用途',applyLabel:initial.id?'应用修改':'确认添加'});
   }
   async function editAsset(sid, aid) {
     const s = ctx.project.segments.find((x) => x.id === sid),
@@ -190,7 +150,7 @@ export function createFeature(ctx) {
       ctx.setDirty();
       ctx.renderProject();
     } catch (e) {
-      ctx.toast(e.message);
+      if(!ctx.session.disposed&&e.name!=="AbortError")ctx.toast(e.message);
     } finally {
       ctx.working = false;
     }

@@ -69,6 +69,22 @@ class LibraryStore:
         finally:
             db.close()
 
+    def import_receipts(self, keys):
+        """Read existing completed imports, including trash, without rewriting project data."""
+        found = {}
+        keys = list(set(keys))
+        with self.connect() as db:
+            for offset in range(0, len(keys), 500):
+                batch = keys[offset:offset + 500]
+                rows = db.execute("SELECT key,body FROM operations WHERE state='done' AND key IN (" + ','.join('?' for _ in batch) + ')', batch)
+                candidates = {row['key']: json.loads(row['body']).get('asset') for row in rows}
+                ids = list(set(a for a in candidates.values() if a))
+                if not ids:
+                    continue
+                assets = {row['id']: row['deleted'] for row in db.execute('SELECT id,deleted FROM assets WHERE id IN (' + ','.join('?' for _ in ids) + ')', ids)}
+                found.update({key: dict(asset=aid, asset_removed=bool(assets[aid])) for key, aid in candidates.items() if aid in assets})
+        return found
+
     def path(self, relative):
         path = (self.root / relative).resolve()
         if self.root not in path.parents:
@@ -81,6 +97,17 @@ class LibraryStore:
         if not row:
             raise KeyError('媒体对象不存在')
         return dict(hash=row['hash'], path=row['path'], bytes=row['bytes'], **json.loads(row['meta']))
+
+    def objects(self, hashes):
+        keys=list(set(hashes));result={}
+        if not keys:return result
+        with self.connect() as db:
+            for offset in range(0,len(keys),500):
+                batch=keys[offset:offset+500]
+                rows=db.execute('SELECT * FROM objects WHERE hash IN ('+','.join('?' for _ in batch)+')',batch)
+                result.update({r['hash']:dict(hash=r['hash'],path=r['path'],bytes=r['bytes'],**json.loads(r['meta'])) for r in rows})
+        if len(result)!=len(keys):raise KeyError('媒体对象不存在')
+        return result
 
     def get(self, aid, version=None):
         with self.connect() as db:
@@ -147,19 +174,25 @@ class LibraryStore:
             total = db.execute('SELECT count(*)' + sql, params).fetchone()[0]
             rows = db.execute('SELECT a.*,v.body' + sql + ' ORDER BY ' + order + ' LIMIT ? OFFSET ?', params + [limit, (page - 1) * limit]).fetchall()
             items = [{**{k: r[k] for k in r.keys() if k != 'body'}, 'snapshot': json.loads(r['body'])} for r in rows]
-            for item in items:
-                item['snapshot']['categories'] = [r[0] for r in db.execute('SELECT category FROM asset_categories WHERE asset=?', (item['id'],))]
+            categories={item['id']:[] for item in items}
+            if items:
+                for row in db.execute('SELECT asset,category FROM asset_categories WHERE asset IN ('+','.join('?' for _ in items)+')',list(categories)):
+                    categories[row['asset']].append(row['category'])
+            for item in items:item['snapshot']['categories']=categories[item['id']]
         return dict(items=items,
                     page=page, limit=limit, total=total)
 
-    def save(self, data, aid=None, expected=None, objects=(), key=None):
+    def save(self, data, aid=None, expected=None, objects=(), key=None, fixed_receipt=False):
         """Commit object metadata and one immutable version in the same transaction."""
         with self.lock, self.connect() as db:
             db.execute('BEGIN IMMEDIATE')
             if key:
                 done = db.execute("SELECT body FROM operations WHERE key=? AND state='done'", (key,)).fetchone()
                 if done:
-                    return self.get(json.loads(done[0])['asset'])
+                    receipt=json.loads(done[0])
+                    if fixed_receipt and not receipt.get('version'):
+                        raise ValueError('素材包导入回执缺少固定版本，未改用当前版本')
+                    return self.get(receipt['asset'],receipt.get('version') if fixed_receipt else None)
             old = db.execute('SELECT * FROM assets WHERE id=?', (aid,)).fetchone() if aid else None
             if aid and (not old or old['revision'] != expected):
                 raise Conflict('资产已更新，请重新载入后保存；草稿仍保留')
@@ -210,7 +243,9 @@ class LibraryStore:
             db.executemany('INSERT INTO asset_categories VALUES(?,?)', [(aid, x) for x in cats])
             db.executemany('INSERT INTO tags VALUES(?,?)', [(aid, x) for x in tags])
             if key:
-                db.execute('INSERT OR REPLACE INTO operations VALUES(?,?,?,?,?)', (key, 'import', 'done', encode({'asset': aid}), now))
+                receipt=dict(asset=aid)
+                if fixed_receipt:receipt['version']=version
+                db.execute('INSERT OR REPLACE INTO operations VALUES(?,?,?,?,?)', (key, 'import', 'done', encode(receipt), now))
         return self.get(aid)
 
     def _validate_bindings(self, db, owner, bindings):

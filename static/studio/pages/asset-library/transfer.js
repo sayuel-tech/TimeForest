@@ -6,19 +6,24 @@ import {
 
 export function exportPack(assets, signal) {
   const d = ui.scopedModal(
-    `<h2>导出便携素材包</h2><p>选中 ${assets.length} 项资产。先查看将包含的完整清单，再创建本地ZIP。</p><form id="pack-form"><div class="library-checks"><label><input type="checkbox" name="bindings">一并包含启用的绑定素材</label><label><input type="checkbox" name="documents" checked>包含资料PROMPT与设定</label><label><input type="checkbox" name="workflows">包含已有来源工作流</label></div><button>预览素材包</button></form><div id="pack-report" role="status"></div><div class="dialog-actions"><button id="pack-close">收起</button><button id="pack-export" class="primary" disabled>创建素材包</button></div>`,
+    `<h2>导出便携素材包</h2><p>选中 ${assets.length} 项资产。先查看将包含的完整清单，再创建本地ZIP。</p><form id="pack-form"><div class="library-checks"><label><input type="checkbox" name="bindings">一并包含启用的绑定素材</label><label><input type="checkbox" name="documents" checked>包含资料PROMPT与设定</label><label><input type="checkbox" name="lineage" checked>保留来源关系（仅恢复包内素材）</label><label><input type="checkbox" name="workflows">包含已有来源工作流</label></div><button>预览素材包</button></form><div id="pack-report" role="status"></div><div class="dialog-actions"><button id="pack-close">收起</button><button id="pack-export" class="primary" disabled>创建素材包</button></div>`,
   );
   let plan = null;
+  let previewRevision = 0;
   d.querySelector("#pack-close").onclick = () => d.close();
   d.querySelector("form").onchange = () => {
+    previewRevision++;
     plan = null;
     d.querySelector("#pack-export").disabled = true;
   };
   d.querySelector("form").onsubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
+    const revision = ++previewRevision;
+    plan = null;
+    d.querySelector("#pack-export").disabled = true;
     try {
-      plan = await libraryApi(
+      const result = await libraryApi(
         "/pack-plan",
         "POST",
         {
@@ -26,14 +31,19 @@ export function exportPack(assets, signal) {
           bindings: form.elements.bindings.checked,
           documents: form.elements.documents.checked,
           workflows: form.elements.workflows.checked,
+          lineage: form.elements.lineage.checked,
         },
         signal,
       );
+      if (!d.open || signal?.aborted || revision !== previewRevision) return;
+      if (result.pack_lineage_version !== 1)
+        throw new Error("当前后台未支持素材包来源关系，请保存编辑并结束任务后重启导演台，再重新预览。");
+      plan = result;
       d.querySelector("#pack-report").innerHTML =
         `<p>${plan.assets.map((a) => ui.esc(a.name)).join("、")}</p><p>${plan.files} 份媒体 · ${ui.bytes(plan.bytes)} · 未带入 ${plan.excluded_bindings.length} 项绑定</p><p class="helper">${ui.esc(plan.note)}</p>`;
       d.querySelector("#pack-export").disabled = false;
     } catch (error) {
-      ui.toast(error.message);
+      if (d.open && !signal?.aborted && revision === previewRevision) ui.toast(error.message);
     }
   };
   d.querySelector("#pack-export").onclick = async (e) => {

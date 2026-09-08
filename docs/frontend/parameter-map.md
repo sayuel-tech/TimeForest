@@ -71,7 +71,7 @@
 
 适配ID为image_assets/text，TEXT_ADAPTER_REVISION=1。原krea-edit.json只有四个编辑分组，没有现成文生图分组；文件保持不变，source_hash沿用其SHA256，plugin_version沿用86f886dac23013d88996e3a2e99093ba44d322fb来源记录。新增编译规则在内存中派生原单图输出27链，运行snapshot额外固定adapter_revision，实际提交图另存graph_hash；这些是来源/结构记录，不是已验证环境声明。
 
-本地依据：<ComfyUI根目录>/custom_nodes/comfyui-krea2edit/__init__.py说明原生Krea2模型forward为文生图，编辑补丁另外拼接参考图条件，GroundedEncode在无图时转原生文本编码。本机启动脚本指向的ComfyUI源码目录为<ComfyUI根目录>；nodes.py的CLIPLoader支持type=krea2，CLIPTextEncode使用其原生tokenize/encode；comfy/text_encoders/krea2.py提供Krea文本模板和编码。只读取源码，没有运行脚本、插件或模型。
+本地依据：<本地ComfyUI目录>。本机启动脚本指向的ComfyUI源码目录为<本地用户目录>；nodes.py的CLIPLoader支持type=krea2，CLIPTextEncode使用其原生tokenize/encode；comfy/text_encoders/krea2.py提供Krea文本模板和编码。只读取源码，没有运行脚本、插件或模型。
 
 | 文生图实际输入 | 编译落点与固定行为 |
 |---|---|

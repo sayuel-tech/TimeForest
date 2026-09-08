@@ -40,7 +40,7 @@ def unexpected(exc):
 
 @bp.get('/catalog')
 def catalog():
-    return jsonify(**library().store.catalog(), storage=library().storage())
+    return jsonify(**library().store.catalog(), storage=library().storage(), library_usage_version=1, asset_import_draft_version=1)
 
 
 @bp.get('/assets')
@@ -53,7 +53,39 @@ def detail(aid):
     lib = library()
     with lib.store.connect() as db:
         refs = [dict(r) for r in db.execute('SELECT project,version FROM refs WHERE asset=? GROUP BY project,version', (aid,))]
-    return jsonify(**lib.public(lib.store.get(aid, request.args.get('version'))), versions=lib.store.versions(aid), references=refs)
+    from .origins import AssetOrigins
+    origins = AssetOrigins(lib, current_app.config['STUDIO'], current_app.config.get('IMAGE_STUDIO'))
+    reference_projects = {ref['project']: origins.project(ref['project']) for ref in refs}
+    return jsonify(**lib.public(lib.store.get(aid, request.args.get('version'))), versions=lib.store.versions(aid), references=refs, reference_projects=reference_projects, asset_origin_version=1)
+
+
+@bp.get('/assets/<aid>/origin')
+def origin(aid):
+    from .origins import AssetOrigins
+    if not request.args.get('version') or not request.args.get('media'):
+        raise ValueError('查看来源需要确切资产版本和媒体')
+    return jsonify(AssetOrigins(library(), current_app.config['STUDIO'], current_app.config.get('IMAGE_STUDIO'))
+                   .read(aid, request.args['version'], request.args['media']))
+
+
+@bp.get('/assets/<aid>/descendants')
+def asset_descendants(aid):
+    from .origins import AssetOrigins
+    from .descendants import descendants
+    if not request.args.get('version') or not request.args.get('media'):
+        raise ValueError('查看下游需要确切资产版本和媒体')
+    origins=AssetOrigins(library(),current_app.config['STUDIO'],current_app.config.get('IMAGE_STUDIO'))
+    return jsonify(descendants(origins,aid,request.args['version'],request.args['media'],request.args.get('cursor','0:0'),request.args.get('upper')))
+
+
+@bp.get('/assets/<aid>/generation-descendants')
+def asset_generation_descendants(aid):
+    from .origins import AssetOrigins
+    from .generation_descendants import generation_descendants
+    if not request.args.get('version') or not request.args.get('media'):
+        raise ValueError('查看下游需要确切资产版本和媒体')
+    origins=AssetOrigins(library(),current_app.config['STUDIO'],current_app.config.get('IMAGE_STUDIO'))
+    return jsonify(generation_descendants(origins,aid,request.args['version'],request.args['media'],request.args.get('cursor'),request.args.get('before')))
 
 
 @bp.post('/uploads')
@@ -191,7 +223,7 @@ def derive_media():
 
 @bp.get('/projects/<pid>/outputs')
 def project_outputs(pid):
-    return jsonify(items=library().results.outputs(pid))
+    return jsonify(items=library().results.outputs(pid), result_receipts_version=1)
 
 
 @bp.post('/project-results')
@@ -213,7 +245,9 @@ def scan_import():
 
 @bp.post('/pack-plan')
 def pack_plan():
-    return jsonify(library().packs.preview(request.get_json()))
+    from .origins import AssetOrigins
+    lib=library()
+    return jsonify(lib.packs.preview(request.get_json(),AssetOrigins(lib,current_app.config['STUDIO'],current_app.config.get('IMAGE_STUDIO'))))
 
 
 @bp.post('/pack-export')

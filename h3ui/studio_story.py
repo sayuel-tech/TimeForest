@@ -125,12 +125,16 @@ class TaskStore:
     def get(self,pid):
         p=self.parent.get(pid);a=self._attempt(p)
         return {**p,'segments':a['tasks'],'review':'automatic','storyboard_version':0,
-                '_task_execution':True,'_story_previous':a.get('previous')}
+                '_task_execution':True,'_story_previous':a.get('previous'),
+                '_story_source_lineage':a.get('source_lineage',{}),
+                '_story_owner':dict(segment=p['segments'][self.index]['id'],run=self.aid)}
     def mutate(self,pid,fn):
         def update(p):
             a=self._attempt(p)
             view={**copy.deepcopy(p),'segments':a['tasks'],'review':'automatic','storyboard_version':0,
-                  '_task_execution':True,'_story_previous':a.get('previous')}
+                  '_task_execution':True,'_story_previous':a.get('previous'),
+                  '_story_source_lineage':a.get('source_lineage',{}),
+                  '_story_owner':dict(segment=p['segments'][self.index]['id'],run=self.aid)}
             fn(view);a['tasks']=view['segments']
             if view.get('error'):a['error']=view['error']
             a['completed_tasks']=sum(t['status'] in ['done','accepted'] for t in a['tasks'])
@@ -180,11 +184,13 @@ class StoryExecution:
             if s['seed_mode']=='fixed':t['seed']=str((int(s['seed'])+i)%9007199254740992)
         directory=self.store.directory(pid)/'segments'/s['id']/'attempts'/aid
         directory.mkdir(parents=True)
-        manifest=dict(settings=p['settings'],segment=s,previous=previous,revision=p['revision'])
+        from .generation.source_lineage import capture
+        source_lineage=capture(self,p,s,self.resolve(p,s),previous)
+        manifest=dict(settings=p['settings'],segment=s,previous=previous,revision=p['revision'],source_lineage=source_lineage)
         (directory/'manifest.json').write_text(json.dumps(manifest,ensure_ascii=False),encoding='utf-8')
         (directory/'prompt.txt').write_text(studio_prompts.build(p,s,self.resolve(p,s)),encoding='utf-8')
         attempt=dict(id=aid,status='submitting',seed=s['seed'] if s['seed_mode']=='fixed' else None,
-                     created=time.time(),directory=str(directory),tasks=tasks,previous=previous,completed_tasks=0)
+                     created=time.time(),directory=str(directory),tasks=tasks,previous=previous,completed_tasks=0,source_lineage=source_lineage)
         def start(q):
             q['segments'][index]['attempts'].append(attempt)
             q['segments'][index].update(status='generating');q.update(status='generating',error=None)

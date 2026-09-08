@@ -98,12 +98,12 @@ flowchart LR
 
 `tests/image_parameter_ui_fixture.py --real-image-api` 用真实图片路由、临时 SQLite 和真实目录扫描假文件提供图片界面检查，catalog 原样交给前端；三视频为合成 API 对照。不加选项时保留原内存 API、模拟目录/错误/保存/运行记录模式。两种模式都不读取生产项目或连接生成引擎，`tests/test_image_api_ui_contract.py` 另检查真实接口到前端及保存/编译的衔接。具体检查结果、实际旧后台重载状态与待用户体验项见[维护基线](../maintenance-baseline.md)。历史5094浏览器验收不表示本轮启动了该服务；生产项目不用于测试写入。
 
-详细证据和备份位于 `<本地历史归档>`。参阅其中 `checks/验收记录.md` 与 `发布与回退.md`。当前维护目录与归档边界见 [维护基线](../maintenance-baseline.md)。
+详细证据和备份位于 `<本地维护归档>`。参阅其中 `checks/验收记录.md` 与 `发布与回退.md`。当前维护目录与归档边界见 [维护基线](../maintenance-baseline.md)。
 
 
 ## 导演工作区 V3 接入规范
 
-历史实施及验收见 [V3 实施记录](<本地历史归档>)。该记录的静态入口 6.2.4 是历史版本；当前版本只在维护基线登记。视频输入契约仍为 input_contract_version=2，图片项目 API 快照另有 image_contract_version=1，不将其混作单次生成运行快照字段。
+历史实施及验收见 [V3 实施记录](<本地维护归档>)。该记录的静态入口 6.2.4 是历史版本；当前版本只在维护基线登记。视频输入契约仍为 input_contract_version=2，图片项目 API 快照另有 image_contract_version=1，不将其混作单次生成运行快照字段。
 
 | 公共层 | 责任 |
 |---|---|
@@ -138,3 +138,11 @@ flowchart LR
 ## 6.3.13公共界面归属
 
 完整制作参数、步骤底栏、视频导入/参考卡片的唯一入口与各模式适配见[公共组件说明](shared-ui.md)。公共容器和样式不再依赖调用方拼装；原三视频/图片事务与拼接独立草稿保持。
+
+## 资产页职责与跨模式转入（6.3.21）
+
+资产列表 index.js 管理路由、加载、选择状态与重绘；批量收藏/分类/标签/合集/回收/比较交给同目录 batch-actions.js，简单输入交给 input-dialog.js。详情 detail.js 保留资料草稿、版本与操作编排；入出点和循环预览交给 media-timeline.js。拆分保持现有标记和样式，未重新设计资产页。
+
+图片转入目标由 features/asset-picker/destinations.js 按模式声明分镜或续写段；assembly-use.js 复用 scopedModal，通过接续真实 references API 确认。保存与使用登记的跨库失败由 ImageSession 保留 apply token；明确校验/冲突失败不重用无效 token。接续已提交但登记失败的弹窗禁止重复确认并显示恢复路径。相关浏览器检查见 tests/library_transfer_ui_fixture.py。
+
+提示词库现已作为全局工具页接入#/prompts；公共工具壳ui/prompt-editor.js与features/prompt-library业务协调分层，五模式通过adapters连接原草稿/保存。用户使用、独立存储、版本、失败补记、生成记录与未来调用方约定见[现行说明](../prompt-library.md)。

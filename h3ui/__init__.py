@@ -28,6 +28,13 @@ def create_app(config_path: str | None = None, *, recover_tasks: bool = True):
     from .studio import Studio, bp as studio_bp
     app.config['STUDIO'] = Studio(ctx)
     app.register_blueprint(studio_bp)
+    from .prompt_library.service import Library as PromptLibrary
+    from .prompt_library.routes import bp as prompt_bp
+    from .config import resolve_path
+    prompt_root=resolve_path(cfg,'prompt_library_dir') if cfg.get('prompt_library_dir') else app.config['STUDIO'].root/'prompt_library'
+    app.config['PROMPT_LIBRARY']=PromptLibrary(prompt_root,app.config['STUDIO'].root/'prompt_receipts',cfg)
+    app.config['STUDIO'].prompt_library=app.config['PROMPT_LIBRARY']
+    app.register_blueprint(prompt_bp)
     from .asset_library.service import Library
     from .asset_library.routes import bp as library_bp
     from .config import resolve_path

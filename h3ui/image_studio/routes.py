@@ -1,14 +1,18 @@
+from ..prompt_library.service import capture as capture_prompts
 """Image-only actions; shared project directory routes remain in studio.py."""
 from flask import Blueprint,current_app,jsonify,request
 from . import compiler
 from ..studio_store import Conflict
 from .runner import error_fields
+from ..asset_library.usage import UsageRegistrationPending
 
 bp=Blueprint('image_studio',__name__,url_prefix='/api/v5/image-projects')
 def service():return current_app.config['IMAGE_STUDIO']
 
 @bp.errorhandler(Exception)
 def error(exc):
+    if isinstance(exc,UsageRegistrationPending):
+        return jsonify(error=str(exc),error_raw=str(exc.__cause__),error_kind='website',code='LIBRARY_USAGE_PENDING'),503
     detail=error_fields(exc)
     return jsonify(error=detail.pop('note'), **detail),409 if isinstance(exc,Conflict) else 404 if isinstance(exc,KeyError) else 400
 
@@ -23,8 +27,9 @@ def plan(pid):return jsonify(service().plan(pid,request.get_json()))
 
 @bp.post('/<pid>/apply')
 def apply(pid):
-    service().store.apply(pid,request.get_json()['token'])
-    return jsonify(service().snapshot(pid))
+    with service().store.lock:
+        service().apply(pid,request.get_json()['token'])
+        return jsonify(capture_prompts(service().snapshot(pid)))
 
 @bp.post('/<pid>/inputs')
 def upload(pid):return jsonify(service().upload(pid,request.files['file'],request.form.get('source')))

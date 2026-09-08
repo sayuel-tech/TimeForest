@@ -1,3 +1,4 @@
+import {uncertainMutation,requireKnownStatus} from './async-state.js';
 import { finishesReview } from "./export-lifecycle.js";
 
 /** Shared command gate: save → confirm impact → submit. Views never queue directly. */
@@ -44,6 +45,7 @@ export class ProjectCommands {
   async submitSource(assetId, continueTo = null) {
     const s = this.session;
     if (s.disposed) return false;
+    requireKnownStatus(s);
     if (!assetId) throw new Error("请先上传源视频");
     s.project.source_progress = {
       started: Date.now() / 1000,
@@ -61,6 +63,7 @@ export class ProjectCommands {
       await s.reload();
       return true;
     } catch (error) {
+      if(uncertainMutation(s,error)){s.project.source_progress.phase="准备提交结果待确认";s.emit("progress");throw error;}
       Object.assign(s.project.source_progress, {
         active: false,
         finished: Date.now() / 1000,
@@ -74,6 +77,7 @@ export class ProjectCommands {
   async run(path, body = {}) {
     return this.perform(async () => {
       const s = this.session;
+      requireKnownStatus(s);
       if (s.dirty) {
         if (
           path === "/generate" ||
@@ -125,7 +129,9 @@ export class ProjectCommands {
         if (finalApproval && !s.disposed) startExport();
         await s.reload();
       } catch (error) {
-        if (
+        const uncertain=uncertainMutation(s,error);
+        if (uncertain&&s.project.runtime){s.project.runtime.phase="提交结果待确认";s.emit("progress");}
+        if (!uncertain &&
           ["正在提交制作任务", "正在提交合成任务"].includes(
             s.project.runtime?.phase,
           )

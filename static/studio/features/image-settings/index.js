@@ -1,9 +1,10 @@
-import { esc } from '../../ui/primitives.js';
+import {imageProductionGroups} from '../../ui/production-settings.js';
+import { esc, toast } from '../../ui/primitives.js';
 import { assertImageCatalog } from '../../core/image-catalog.js';
 import { errorFeedback, bindErrorFeedback } from '../../ui/error-feedback.js';
 import { openProductionSettings, productionSettingsActions, productionGroups, productionSettingsMarkup, bindSettingsNavigation, parameterField, seedFields } from '../../ui/production-settings.js';
 
-const groups = { ...productionGroups, sampling: '采样', assets: '参考图' };
+const groups = imageProductionGroups;
 const inputError = message => Object.assign(new Error(message), {kind:'input'});
 
 /** Only the curated contract for the current tool is eligible for editing. */
@@ -84,7 +85,7 @@ export function createImageSettingsDraft({ task, catalog, request, onApply = () 
       onCatalog(next);
       return true;
     },
-    async apply() {
+    async apply(saveNow = false) {
       if (!isActive()) return null;
       const result = structuredClone(candidate);
       const errors = [];
@@ -95,7 +96,7 @@ export function createImageSettingsDraft({ task, catalog, request, onApply = () 
         } catch (error) { errors.push(error.message); }
       }
       if (errors.length) throw inputError(errors.join('\n'));
-      await onApply(result);
+      await onApply(result, saveNow);
       active = false;
       return result;
     },
@@ -135,112 +136,59 @@ function modelRefreshLabel(catalog) {
 }
 
 /** Resolve with parameters after Apply, or null after cancel/close/Esc/disposal. */
-export function openImageSettings({ task, catalog, request, onApply, onCatalog, signal, lastSeed }) {
-  if (signal?.aborted) return Promise.resolve(null);
-  return new Promise(resolve => {
-    const draft = createImageSettingsDraft({task, catalog, request, onApply, onCatalog, signal});
-    const {dialog, content} = openProductionSettings();
-    let selectedGroup = 'core', settled = false, refreshing = false, applying = false;
-    const alive = () => !settled && draft.active && dialog.open;
-    function finish(result = null) {
-      if (settled) return;
-      settled = true;draft.cancel();signal?.removeEventListener('abort', cancel);
-      dialog.removeEventListener('close', onClosed);dialog.oncancel = null;
-      dialog.close();resolve(result);
+export async function openImageSettings({ task, catalog, request, onApply, onCatalog, signal, lastSeed }) {
+  if (signal?.aborted) return null;
+  const draft=createImageSettingsDraft({task,catalog,request,onApply,onCatalog,signal});
+  const surface=openProductionSettings({signal,onCancel:()=>draft.cancel()});
+  const {content}=surface;
+  let selectedGroup='core', result=null;
+  function draw() {
+    if (!surface.alive()) return;
+    const current=draft.catalog, fields=draft.fields();
+    const render=field=>renderField(field,draft.get(field),current,{mode:draft.seedMode,seed:draft.seedValue,lastSeed});
+    const sections=Object.entries(groups).map(([key,title])=>{
+      const selected=fields.filter(field=>field.group===key);
+      const usual=selected.filter(field=>!field.advanced), advanced=selected.filter(field=>field.advanced);
+      let html=`<div class="settings-grid">${usual.map(render).join('')}</div>`;
+      if(key==='core')html=`<p class="helper">当前工作流：Krea 图片创作 · ${esc(current.tools?.[task.submode]||task.submode)}。</p>${html}`;
+      if(advanced.length)html+=`<details><summary>更多${esc(title)}参数</summary><div class="settings-grid">${advanced.map(render).join('')}</div></details>`;
+      return selected.length?{key,title,html}:null;
+    }).filter(Boolean);
+    content.innerHTML=productionSettingsMarkup({
+      scope:`当前图片任务草稿 · ${task.name||task.id} · ${current.tools?.[task.submode]||task.submode}`,
+      directory:directoryMarkup(current,task.submode), sections,
+      actions:productionSettingsActions([{role:'reset',id:'image-reset-defaults',label:'恢复默认'},{role:'cancel',id:'cancel-settings',label:'取消'},{role:'apply',id:'apply-settings',label:'应用'},{role:'save',id:'save-settings',label:'保存',primary:true}]),
+      footer:'应用只更新当前任务的参数草稿；保存会持久化当前图片项目的全部草稿与画布标注。恢复默认仅改变本弹窗，取消可放弃。'
+    });
+    bindSettingsNavigation(content,selectedGroup,key=>selectedGroup=key);bindErrorFeedback(content);
+    content.querySelector('#image-reset-defaults').onclick=()=>surface.run(()=>{
+      draft.resetDefaults();draw();
+      content.querySelector('#parameter-errors').innerHTML='<p class="notice" role="status">当前工具的模型和制作参数已恢复默认；应用后才写入草稿，取消可放弃。</p>';
+    });
+    for(const field of fields.filter(field=>field.type!=='seed')){
+      const attr=field.scope==='models'?'data-model':'data-setting';
+      const element=content.querySelector(`[${attr}="${field.key}"]`);
+      element.oninput=()=>draft.set(field,element.value);element.onchange=element.oninput;
     }
-    const cancel = () => finish(null);
-    // A queued close event from the previous dialog can arrive after reopening.
-    const onClosed = () => { if (!dialog.open) cancel(); };
-    const showError = (error, fallback = '参数操作失败') => {
-      const box = content.querySelector('#parameter-errors');
-      box.innerHTML = errorFeedback(error, fallback);bindErrorFeedback(box);
-      box.scrollIntoView({block:'nearest'});
-    };
-    function draw() {
-      const current = draft.catalog, fields = draft.fields();
-      const render = field => renderField(field, draft.get(field), current, {mode:draft.seedMode,seed:draft.seedValue,lastSeed});
-      const sections = Object.entries(groups).map(([key,title]) => {
-        const selected = fields.filter(field => field.group === key);
-        const usual = selected.filter(field => !field.advanced), advanced = selected.filter(field => field.advanced);
-        let html = `<div class="settings-grid">${usual.map(render).join('')}</div>`;
-        if (key === 'core') html = `<p class="helper">当前工作流：Krea 图片创作 · ${esc(current.tools?.[task.submode] || task.submode)}。</p>${html}`;
-        if (advanced.length) html += `<details><summary>更多${esc(title)}参数</summary><div class="settings-grid">${advanced.map(render).join('')}</div></details>`;
-        return selected.length ? {key,title,html} : null;
-      }).filter(Boolean);
-      content.innerHTML = productionSettingsMarkup({
-        scope: `当前图片任务草稿 · ${task.name || task.id} · ${current.tools?.[task.submode] || task.submode}`,
-        directory: directoryMarkup(current, task.submode), sections,
-        actions: productionSettingsActions([{role:"reset",id:"image-reset-defaults",label:"恢复默认"},{role:"cancel",id:"cancel-settings",label:"取消"},{role:"apply",id:"apply-settings",label:"应用到任务草稿",primary:true}]),
-        footer: '应用只更新当前图片任务草稿。使用「保存草稿」持久保存；生成图片时自动保存。素材、画布标注、候选与资产保持原有流程。',
-      });
-      bindSettingsNavigation(content, selectedGroup, key => { selectedGroup = key; });
-      bindErrorFeedback(content);
-      content.querySelector('#image-reset-defaults').onclick=()=>{
-        if (!alive() || refreshing || applying) return;
-        try {
-          if(draft.resetDefaults()) {
-            draw();
-            content.querySelector('#parameter-errors').innerHTML='<p class="notice" role="status">当前工具的模型和制作参数已恢复默认，种子也随之恢复。应用后才写入任务草稿；取消可放弃。本次未改原图、指令或候选。</p>';
-          }
-        } catch(error) {showError(error,'默认参数未恢复');}
-      };
-      for (const field of fields.filter(field => field.type !== 'seed')) {
-        const attr = field.scope === 'models' ? 'data-model' : 'data-setting';
-        const element = content.querySelector(`[${attr}="${field.key}"]`);
-        element.oninput = () => {
-          draft.set(field, element.value);
-          if (field.type === 'model') {
-            element.title = element.value;
-            const presence = content.querySelector(`[data-model-presence="${field.key}"]`);
-            if (presence) presence.hidden = !element.value || (draft.catalog.choices?.[field.key] || []).includes(element.value);
-          }
-        };
-        element.onchange = element.oninput;
+    const mode=content.querySelector('[data-seed-mode]'),seed=content.querySelector('[data-seed]');
+    if(mode&&seed){mode.onchange=()=>{draft.setSeedMode(mode.value);seed.disabled=mode.value==='random';};seed.oninput=()=>draft.setSeedValue(seed.value);seed.onchange=seed.oninput;}
+    const refresh=sync=>surface.run(async()=>{
+      if(await draft.refresh(sync)&&surface.alive()){
+        draw();const current=draft.catalog;
+        if(sync&&current.node_catalog?.error)surface.showError({message:'节点能力同步失败，保留当前参数和目录缓存',raw:current.node_catalog.error,kind:current.node_catalog.error_kind||'website'});
+        else if(current.local_models?.errors?.length)surface.showError({message:'模型目录读取不完整，保留当前选择',raw:current.local_models.errors.join('\n'),kind:'website'});
       }
-      const mode = content.querySelector('[data-seed-mode]'), seed = content.querySelector('[data-seed]');
-      if (mode && seed) {
-        mode.onchange = () => { draft.setSeedMode(mode.value);seed.disabled = mode.value === 'random'; };
-        seed.oninput = () => { draft.setSeedValue(seed.value); };seed.onchange = seed.oninput;
-      }
-      const refresh = async (syncNodes) => {
-        if (!alive() || refreshing || applying) return;
-        refreshing = true;
-        content.querySelectorAll('#image-refresh-models,#image-sync-nodes').forEach(button => { button.disabled = true; });
-        content.querySelector('#apply-settings').disabled = true;
-        content.querySelector(syncNodes ? '#image-sync-nodes' : '#image-refresh-models').textContent = syncNodes ? '正在同步…' : modelRefreshLabel(draft.catalog).includes('远程') ? '正在读取缓存…' : '正在扫描…';
-        try {
-          if (await draft.refresh(syncNodes) && alive()) {
-            draw();
-            const current = draft.catalog;
-            if (syncNodes && current.node_catalog?.error)
-              showError({message:'节点能力同步失败，保留当前参数和目录缓存',raw:current.node_catalog.error,kind:current.node_catalog.error_kind || 'website'});
-            else if (current.local_models?.errors?.length)
-              showError({message:'模型目录读取不完整，保留当前选择',raw:current.local_models.errors.join('\n'),kind:'website'});
-          }
-        }
-        catch (error) { if (alive()) showError(error, syncNodes ? '节点能力同步失败' : '本地模型目录读取失败'); }
-        finally {
-          refreshing = false;
-          if (alive()) {
-            content.querySelector('#image-refresh-models').disabled = false;content.querySelector('#image-refresh-models').textContent = modelRefreshLabel(draft.catalog);
-            content.querySelector('#image-sync-nodes').disabled = false;content.querySelector('#image-sync-nodes').textContent = '同步节点能力';
-            content.querySelector('#apply-settings').disabled = false;
-          }
-        }
-      };
-      content.querySelector('#image-refresh-models').onclick = () => refresh(false);
-      content.querySelector('#image-sync-nodes').onclick = () => refresh(true);
-      content.querySelector('#cancel-settings').onclick = cancel;
-      content.querySelector('#apply-settings').onclick = async () => {
-        if (!alive() || applying || refreshing) return;
-        applying = true;content.querySelector('#apply-settings').disabled = true;
-        try { const result = await draft.apply();finish(result); }
-        catch (error) { if (alive()) showError(error, '参数未应用'); }
-        finally { applying = false;if (alive()) content.querySelector('#apply-settings').disabled = false; }
-      };
-    }
-    dialog.oncancel = event => { event.preventDefault();cancel(); };
-    dialog.addEventListener('close', onClosed);signal?.addEventListener('abort', cancel, {once:true});
-    draw();
-  });
+    });
+    content.querySelector('#image-refresh-models').onclick=()=>refresh(false);
+    content.querySelector('#image-sync-nodes').onclick=()=>refresh(true);
+    content.querySelector('#cancel-settings').onclick=surface.cancel;
+    const commit=saveNow=>surface.run(async()=>{
+      result=await draft.apply(saveNow);
+      toast(saveNow?'草稿已保存':'已应用到草稿，尚未保存');
+      return result!==null;
+    },{closeOnSuccess:true});
+    content.querySelector('#apply-settings').onclick=()=>commit(false);
+    content.querySelector('#save-settings').onclick=()=>commit(true);
+  }
+  draw();await surface.closed;draft.cancel();return result;
 }

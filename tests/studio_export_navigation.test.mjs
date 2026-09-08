@@ -111,7 +111,8 @@ test("automatic export follows state edges once and catches completion between p
   );
 });
 
-test("final cut renders an indeterminate export bar, elapsed time, result and failure without sampling counters", () => {
+test("final cut renders an indeterminate export bar, elapsed time, result and failure without sampling counters", (t) => {
+  t.mock.timers.enable({apis:['Date'],now:13000});
   const ctx = {
     project: {
       status: "assembling",
@@ -124,12 +125,11 @@ test("final cut renders an indeterminate export bar, elapsed time, result and fa
       },
     },
     esc: String,
-    elapsed: () => "00:12",
   };
   const feature = createFeature(ctx);
   const running = feature.exportProgressCard();
   assert.match(running, /<progress aria-label="正在合成/);
-  assert.match(running, /00:12/);
+  assert.match(running, /0分 12秒/);
   assert.doesNotMatch(running, /6 \/ 20|value=/);
   ctx.project.status = "complete";
   ctx.project.export = { url: "done.mp4" };

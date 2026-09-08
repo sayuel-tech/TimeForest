@@ -1,11 +1,11 @@
 import {esc} from './primitives.js';
 
 /** A visible play command supplements native controls; state belongs to the media. */
-export function mediaPlayer(url, label, note = '') {
+export function mediaPlayer(url, label, note = '', {id='',className=''}={}) {
   if (!url) return `<div class="media-unavailable" role="status">${esc(label)}暂不可用，请检查源视频或重新准备片段。</div>`;
   return `<section class="media-player" data-media-player>
     <div class="media-toolbar"><button type="button" data-media-play aria-label="播放${esc(label)}">▶ 播放</button><span data-media-status role="status">正在读取视频信息…</span><button type="button" data-media-retry hidden>重新加载</button><a href="${esc(url)}" target="_blank" rel="noreferrer" class="quiet">独立打开</a></div>
-    <video controls preload="metadata" playsinline src="${esc(url)}" aria-label="${esc(label)}"></video>
+    <video ${id?`id="${esc(id)}"`:''} ${className?`class="${esc(className)}"`:''} controls preload="metadata" playsinline src="${esc(url)}" aria-label="${esc(label)}"></video>
     <input class="media-seek" type="range" min="0" max="1" step=".05" value="0" disabled data-media-seek aria-label="${esc(label)}播放位置">
     ${note ? `<p class="media-note">${esc(note)}</p>` : ''}
   </section>`;
@@ -22,6 +22,7 @@ export function bindMediaPlayers(root) {
     play.setAttribute('aria-label',(video.paused?'播放':'暂停')+video.getAttribute('aria-label'));
     box.querySelector('[data-media-status]').textContent=message;
     box.querySelector('[data-media-retry]').hidden=!video.error;
+    box.querySelector('.media-toolbar a').href=video.currentSrc||video.src;
   };
   listen('click',async e=>{
     const button=e.target.closest('[data-media-play],[data-media-retry]');if(!button)return;

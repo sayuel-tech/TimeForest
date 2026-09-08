@@ -28,6 +28,34 @@ class LibraryTests(unittest.TestCase):
     def ingest(self, name='丹眉', **kw):
         return self.lib.ingest(self.image, name, **kw)
 
+    def test_list_batches_objects_and_categories_without_changing_public_items(self):
+        for i in range(12):
+            self.ingest(str(i),metadata={'categories':['character','palette']})
+        expected={a['id']:self.lib.public(a,compact=True) for a in self.lib.store.query({})['items']}
+        with patch.object(self.lib.store,'connect',wraps=self.lib.store.connect) as connections:
+            result=self.lib.query({})
+        self.assertEqual(connections.call_count,2)
+        self.assertEqual({a['id']:a for a in result['items']},expected)
+        self.assertEqual(result['total'],12)
+        self.assertEqual(self.lib.query({'category':'character'})['total'],12)
+        self.assertEqual(self.lib.query({'q':'no matching asset'})['items'],[])
+
+    def test_usage_registration_is_atomic_and_retries_keep_original_timestamp(self):
+        one=self.ingest();two=self.ingest('two')
+        def entry(item):
+            m=item['snapshot']['media'][0]
+            return dict(id=item['id'],reference=dict(asset=item['id'],version=item['version'],media=m['id'],hash=m['hash']))
+        entries=[entry(one),entry(two)];entries[1]['reference']['hash']='invalid'
+        with self.assertRaises(ValueError):self.lib.record_usage('project',entries,'atomic',used_at=100)
+        with self.lib.store.connect() as db:self.assertEqual(db.execute('SELECT count(*) FROM refs').fetchone()[0],0)
+        self.assertIsNone(self.lib.store.get(one['id'])['used'])
+        entries[1]=entry(two);self.lib.record_usage('project',entries,'atomic',used_at=100)
+        self.lib.record_usage('project',entries,'atomic',used_at=200)
+        self.assertEqual(self.lib.store.get(one['id'])['used'],100)
+        self.lib.record_usage('project',entries,'new-use',used_at=300)
+        self.lib.record_usage('project',entries,'late-retry',used_at=150)
+        self.assertEqual(self.lib.store.get(one['id'])['used'],300)
+
     def test_original_bytes_and_identity_are_separate(self):
         first = self.ingest(metadata={'categories': ['character', 'palette'], 'record_prompt': 'private original prompt'})
         second = self.ingest('另一个角色')

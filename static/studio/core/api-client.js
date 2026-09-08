@@ -1,3 +1,5 @@
+import {uploadForm} from './upload-client.js';
+
 export class ApiError extends Error {
   constructor(message, status, code, details = {}) {
     super(message);
@@ -9,7 +11,8 @@ export class ApiError extends Error {
 }
 
 /** API boundary. Mutations are never retried automatically. */
-export async function api(path, method = "GET", body, signal) {
+export async function api(path, method = "GET", body, signal, onProgress) {
+  if(method==="POST"&&body instanceof FormData&&onProgress)return uploadForm(path,body,onProgress,signal);
   return requestJson("/api/v5" + path, method, body, signal);
 }
 export function readLegacyProject(id, signal) {

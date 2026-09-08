@@ -1,3 +1,4 @@
+from ..prompt_library.provenance import sources as prompt_sources
 """Image projects: draft transactions, immutable runs, trusted asset transfers."""
 import copy
 import hashlib
@@ -173,6 +174,7 @@ class ImageStudio:
                 history=[r for r in self.store.all('runs',pid) if r['task']==tid]
                 if old and old['submode']!=raw['submode'] and history: raise Conflict('有历史结果的任务换工具请创建新任务')
                 task={k:copy.deepcopy(raw.get(k)) for k in ('name','submode','prompt','A','B','mask')}
+                task['prompt_sources']=prompt_sources(raw.get('prompt_sources',(old or {}).get('prompt_sources')))
                 task.update(id=tid,project=pid,name=str(task.get('name') or '编辑任务')[:120],
                             prompt=str(task.get('prompt') or '')[:20000],settings=compiler.settings(raw.get('settings')),
                             models={**self.models,**{k:str(v) for k,v in raw.get('models',{}).items() if k in self.models}},
@@ -191,8 +193,26 @@ class ImageStudio:
             live={tid for tid,t in previous.items() if not t.get('discarded_at')}
             if len(tasks)>100 or live-seen: raise ValueError('请通过废弃操作移除编辑任务，最多100个')
             if (tasks and data.get('current_task') not in seen) or (not tasks and data.get('current_task') is not None): raise ValueError('当前任务不存在')
+            uses=[]
+            for task in tasks:
+                old=previous.get(task['id'],{})
+                for role in ('A','B'):
+                    if task.get(role) and task[role]!=old.get(role):
+                        ref=self.store.get('inputs',task[role],pid)
+                        origin=ref.get('provenance',{})
+                        if all(k in origin for k in ('asset','version','media','hash')):
+                            uses.append(dict(id=ref['id'],reference=origin))
             return self.store.plan(pid,dict(name=str(data.get('name') or '图片资产')[:120],revision=data.get('revision'),
-                                             current_task=data['current_task'],tasks=tasks))
+                                             current_task=data['current_task'],tasks=tasks,library_usage=uses))
+
+    def apply(self,pid,token):
+        self.store.apply(pid,token)
+        # Read the frozen plan even on retry: the project commit may have succeeded
+        # before an independent library disk failure. Never re-apply task changes.
+        with self.store.connect() as db:
+            row=db.execute('SELECT body FROM image_changes WHERE project=? AND token=? AND applied=1',(pid,token)).fetchone()
+        if row:
+            self.lib.complete_usage(pid,json.loads(row[0]).get('library_usage',[]),'image:'+pid+':'+token)
 
     def active_task(self,pid,tid):
         task=self.store.get('tasks',tid,pid)
@@ -232,7 +252,9 @@ class ImageStudio:
         return inputs.prepare(self.store,pid,file.stream,file.filename,{'source':source} if source else None,mask=bool(source))
 
     def library_input(self,pid,data):
+        self.store.project(pid)
         item=self.lib.store.get(data['asset'],data['version'])
+        if item.get('deleted'):raise ValueError('请先恢复资产后再建立新引用')
         media=next((m for m in item['snapshot']['media'] if m['id']==data.get('media')),None)
         if not media: raise ValueError('请选择这个版本中的图片')
         obj=self.lib.store.object(media['hash'])
@@ -243,8 +265,6 @@ class ImageStudio:
         if not record:
             with self.lib.store.path(obj['path']).open('rb') as stream:
                 record=inputs.prepare(self.store,pid,stream,item['snapshot']['name'],ref)
-        with self.lib.store.connect() as db:
-            db.execute('INSERT OR REPLACE INTO refs VALUES(?,?,?,?,?)',(pid+':'+record['id'],ref['asset'],ref['version'],pid,encode(ref)))
         return record
 
     def preflight(self,pid,tid):

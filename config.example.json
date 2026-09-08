@@ -5,6 +5,7 @@
   "comfy_input_dir": "../ComfyUI/input",
   "comfy_output_dir": "../ComfyUI/output",
   "asset_library_dir": "../TimeForestAssets",
+  "prompt_model_families": [],
   "media_workers": 2,
   "model": {
     "unet": "minimax_h3_hybrid_fl2va_ref2va_b25-49-int8.safetensors",

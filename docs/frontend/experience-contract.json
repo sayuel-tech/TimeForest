@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "shared": {
+    "settings": "static/studio/ui/production-settings.js",
+    "models": "static/studio/ui/model-selector.js",
+    "workbench": "static/studio/ui/workbench.js",
+    "actions": "static/studio/ui/workspace-actions.js",
+    "references": "static/studio/ui/reference-assets.js",
+    "timing": "static/studio/ui/run-timing.js",
+    "errors": "static/studio/ui/error-feedback.js",
+    "candidates": "static/studio/ui/candidate-records.js",
+    "modal": "static/studio/ui/primitives.js",
+    "chrome": "static/studio/ui/workspace-chrome.js",
+    "results": "static/studio/ui/result-view.js",
+    "playback": "static/studio/ui/media-player.js",
+    "async": "static/studio/core/async-state.js",
+    "transfers": "static/studio/core/upload-client.js",
+    "taskStates": "static/studio/core/task-state.js",
+    "assetSelection": "static/studio/features/asset-picker/index.js",
+    "assetOrigins": "static/studio/ui/asset-origin.js",
+    "assetUsage": "h3ui/asset_library/usage.py",
+    "assetCollection": "h3ui/asset_library/service.py",
+    "promptEditing": "static/studio/ui/prompt-editor.js",
+    "promptCollection": "h3ui/prompt_library/service.py",
+    "promptRecords": "static/studio/features/prompt-library/records.js"
+  },
+  "baseline": {
+    "swap": {
+      "gap": "本地6.3.22—6.3.25四批共同层已实施，证据见experience-phase1/2/3/4；保留专属编辑器与业务执行。未作真实生成、长时大文件或生产网络故障验收，原九类及新增资产专项场景及用户日常体验未全部确认，不以代码接入代替整体体验认证。 本地6.3.26资产来源/预览已实施，见docs/asset-experience-20260908.md；不等于整个资产生命周期逐模式已全面验收。 本地6.3.27已增加确切来源定位及无副作用检查，见docs/asset-source-navigation-20260908.md；保留整体待验范围。 本地6.3.28添加/管理核心路径五模式真实API验证，见docs/asset-lifecycle-20260908.md；第三阶段派生追溯尚未完成。",
+      "review": "docs/ui-code-reuse-audit-20260908.md"
+    },
+    "image_story": {
+      "gap": "本地6.3.22—6.3.25四批共同层已实施，证据见experience-phase1/2/3/4；保留专属编辑器与业务执行。未作真实生成、长时大文件或生产网络故障验收，原九类及新增资产专项场景及用户日常体验未全部确认，不以代码接入代替整体体验认证。 本地6.3.26资产来源/预览已实施，见docs/asset-experience-20260908.md；不等于整个资产生命周期逐模式已全面验收。 本地6.3.27已增加确切来源定位及无副作用检查，见docs/asset-source-navigation-20260908.md；保留整体待验范围。 本地6.3.28添加/管理核心路径五模式真实API验证，见docs/asset-lifecycle-20260908.md；第三阶段派生追溯尚未完成。",
+      "review": "docs/ui-code-reuse-audit-20260908.md"
+    },
+    "text_story": {
+      "gap": "本地6.3.22—6.3.25四批共同层已实施，证据见experience-phase1/2/3/4；保留专属编辑器与业务执行。未作真实生成、长时大文件或生产网络故障验收，原九类及新增资产专项场景及用户日常体验未全部确认，不以代码接入代替整体体验认证。 本地6.3.26资产来源/预览已实施，见docs/asset-experience-20260908.md；不等于整个资产生命周期逐模式已全面验收。 本地6.3.27已增加确切来源定位及无副作用检查，见docs/asset-source-navigation-20260908.md；保留整体待验范围。 本地6.3.28添加/管理核心路径五模式真实API验证，见docs/asset-lifecycle-20260908.md；第三阶段派生追溯尚未完成。",
+      "review": "docs/ui-code-reuse-audit-20260908.md"
+    },
+    "image_assets": {
+      "gap": "本地6.3.22—6.3.25四批共同层已实施，证据见experience-phase1/2/3/4；保留专属编辑器与业务执行。未作真实生成、长时大文件或生产网络故障验收，原九类及新增资产专项场景及用户日常体验未全部确认，不以代码接入代替整体体验认证。 本地6.3.26资产来源/预览已实施，见docs/asset-experience-20260908.md；不等于整个资产生命周期逐模式已全面验收。 本地6.3.27已增加确切来源定位及无副作用检查，见docs/asset-source-navigation-20260908.md；保留整体待验范围。 本地6.3.28添加/管理核心路径五模式真实API验证，见docs/asset-lifecycle-20260908.md；第三阶段派生追溯尚未完成。",
+      "review": "docs/ui-code-reuse-audit-20260908.md"
+    },
+    "video_assembly": {
+      "gap": "本地6.3.22—6.3.25四批共同层已实施，证据见experience-phase1/2/3/4；保留专属编辑器与业务执行。未作真实生成、长时大文件或生产网络故障验收，原九类及新增资产专项场景及用户日常体验未全部确认，不以代码接入代替整体体验认证。 本地6.3.26资产来源/预览已实施，见docs/asset-experience-20260908.md；不等于整个资产生命周期逐模式已全面验收。 本地6.3.27已增加确切来源定位及无副作用检查，见docs/asset-source-navigation-20260908.md；保留整体待验范围。 本地6.3.28添加/管理核心路径五模式真实API验证，见docs/asset-lifecycle-20260908.md；第三阶段派生追溯尚未完成。",
+      "review": "docs/ui-code-reuse-audit-20260908.md"
+    }
+  },
+  "modes": {}
+}

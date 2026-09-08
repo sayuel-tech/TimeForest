@@ -1,14 +1,19 @@
+import {assetVersionLink} from '../../ui/asset-origin.js';
+import {candidateButton,resultActions,collectionActions} from '../../ui/result-view.js';
+import {workspaceHeader,workspaceSteps} from '../../ui/workspace-chrome.js';
+import {importOptions} from '../../ui/reference-assets.js';
 import {workspaceActionGroups} from '../../ui/workspace-actions.js';
 import {esc,field,opts} from '../../ui/primitives.js';
 import {runTiming,runStatusRow} from '../../ui/run-timing.js';
 import {workbench,propertyTabs} from '../../ui/workbench.js';
 import {imageParameters} from '../image-settings/index.js';
 import {errorFeedback} from '../../ui/error-feedback.js';
-import {parameterField,productionSettingsAction} from '../../ui/production-settings.js';
+import {parameterField} from '../../ui/production-settings.js';
 import {recordControl,removedRecords} from '../../ui/candidate-records.js';
 
 export const imageSteps=[['edit','图片与编辑'],['results','生成与挑选'],['use','保存与使用']];
-export const imageRunStates={waiting:'等待通道',submitting:'提交中',running:'生成中',unknown:'待确认提交',success:'已生成',failed:'未完成',cancelled:'已取消'};
+import {TASK_STATES} from '../../core/task-state.js';
+export const imageRunStates={...TASK_STATES,running:'生成中',success:'已生成'};
 const activeStates=new Set(['waiting','submitting','running','unknown']);
 
 export function chosenOutput(project,task,selection){
@@ -29,33 +34,32 @@ export function taskStatus(project,task){
 export function imageActionBar({project,task,page,selection,view}){
   const selected=chosenOutput(project,task,selection), reason=generationReason(project,task);
   let primary='',secondary='',hint='';
+  const back=page==='edit'?'':`<button data-page="${page==='results'?'edit':'results'}" class="quiet">返回上一步</button>`;
   if(page==='edit'){
     primary=`<button id="image-generate" class="primary" ${reason?'disabled':''}>生成图片</button>`;
     secondary='<button id="image-check" class="quiet">检查输入</button>';
     hint=reason||'生成时自动保存当前草稿。';
   }else if(page==='results'){
-    primary=selected?'<button id="image-select" class="primary">选定并继续 →</button>':`<button data-page="edit" class="primary">返回上一步</button>`;
-    secondary=selected?'<button data-page="edit" class="quiet">返回上一步</button>':'';
+    primary=selected?'<button id="image-select" class="primary">选定并继续 →</button>':'';
     hint=selected?'选定当前候选后，进入保存与使用。':'生成完成后在这里比较和挑选。';
   }else if(!selected){
-    primary='<button data-page="results" class="primary">返回生成与挑选</button>';
     hint='请先生成并选定一张图片。';
   }else if(!selected.selected){
     primary='<button id="image-select" class="primary">选定这张图片</button>';
     hint='这张候选尚未选定，选定后可保存为资产。';
   }else if(selected.library){
     primary='<button id="image-send" class="primary">用于视频项目 →</button>';
-    hint='图片已入库，可用于三个视频创作模式。';
+    hint='图片已入库，可用于视频创作或视频接续的参考素材。';
   }else{
     primary=`<button id="${view.saveTarget==='version'?'image-version':'image-ingest'}" class="primary">${view.saveTarget==='version'?'选择资产并添加版本':'保存为新资产'}</button>`;
     hint=view.saveTarget==='version'?'选择现有资产后确认添加版本，原媒体保留。':'保存后可复用到视频项目。';
   }
-  return workspaceActionGroups({support:`<div><span id="image-save-state" role="status">${view.dirty?'有未保存修改':'草稿已保存'}</span><small id="image-action-hint">${hint}</small></div>`,actions:`<button id="image-save" class="quiet">保存草稿</button>${secondary}${primary}`});
+  return workspaceActionGroups({support:`${back}<div><span id="image-save-state" role="status">${view.dirty?'有未保存修改':'草稿已保存'}</span><small id="image-action-hint">${hint}</small></div><button id="image-save" class="quiet">保存草稿</button>`,actions:`${secondary}${primary}`});
 }
 
 function mediaSlot(role,{task,project}){
   const ref=project.inputs.find(i=>i.id===task[role]);
-  return `<section class="image-input"><h3>图 ${role} · ${role==='A'?'待编辑底图':'人物／服装等参考'}</h3>${ref?`<div class="image-source-card"><a href="${esc(ref.url)}" target="_blank" rel="noopener"><img src="${esc(ref.url)}" alt="图${role}：${esc(ref.name)}"></a><div><strong>${esc(ref.name)}</strong><small>${ref.width} × ${ref.height}</small></div></div>${ref.alpha_flattened?'<p class="helper">透明区域在执行副本中使用白底，原件保留。</p>':''}`:'<p class="helper">尚未选择图片</p>'}<div class="asset-commands"><button data-upload-trigger="${role}">${ref?'更换图片':'本地图片'}</button><button data-library="${role}">从资产库选择</button><input type="file" accept="image/png,image/jpeg,image/webp,image/bmp,image/tiff" data-upload="${role}" aria-label="上传图${role}" hidden></div></section>`;
+  return `<section class="image-input"><h3>图 ${role} · ${role==='A'?'待编辑底图':'人物／服装等参考'}</h3>${ref?`<div class="image-source-card"><a href="${esc(ref.url)}" target="_blank" rel="noopener"><img src="${esc(ref.url)}" alt="图${role}：${esc(ref.name)}"></a><div><strong>${esc(ref.name)}</strong><small>${ref.width} × ${ref.height}</small></div></div>${assetVersionLink(ref.provenance)}<button class="quiet danger" data-remove-input="${role}">移除当前引用</button>${ref.alpha_flattened?'<p class="helper">透明区域在执行副本中使用白底，原件保留。</p>':''}`:'<p class="helper">尚未选择图片</p>'}${importOptions([`<button data-upload-trigger="${role}">${ref?'更换图片':'本地图片'}</button>`,`<button data-library="${role}">从资产库选择</button>`])}<input type="file" accept="image/png,image/jpeg,image/webp,image/bmp,image/tiff" data-upload="${role}" aria-label="上传图${role}" hidden></section>`;
 }
 function projectPanel({project}){
   return {id:'project',label:'项目',html:`${field('项目名称',`<input id="image-project-name" maxlength="120" value="${esc(project.name)}">`)}<p class="helper">名称随当前项目草稿保存。</p>`};
@@ -96,7 +100,7 @@ export function imageRecordHistory(project,task){
 function results(ctx){
   const {project,task,selection,page,catalog}=ctx,allOutputs=project.outputs.filter(o=>o.task===task.id),outputs=allOutputs.filter(o=>!o.removed_at),chosen=chosenOutput(project,task,selection),history=imageRecordHistory(project,task);
   if(!chosen)return history+'<div class="empty image-results-empty"><img src="/static/assets/image-studio/empty-results.webp" width="240" height="160" alt=""><h3>这里将保存每次生成的候选</h3><p>生成后比较、挑选，再保存到资产库。</p></div>';
-  return `${page==='results'?`<div class="image-candidates" aria-label="生成候选">${outputs.map(o=>{const n=allOutputs.indexOf(o)+1,run=project.runs.find(r=>r.id===o.run);return `<div class="image-candidate"><button data-output="${o.id}" aria-pressed="${o.id===chosen.id}"><img src="${esc(o.url)}" alt="候选 ${n}"><small>${o.selected?'已选 · ':''}${o.library?'已入库 · ':''}候选 ${n} · ${o.width}×${o.height}</small></button>${run?recordControl(run,{image:true,selected:o.selected,busy:project.busy}):''}</div>`;}).join('')}</div>`:''}${history}<div class="image-compare"><img src="${esc(chosen.url)}" alt="${chosen.selected?'已选图片':'当前候选'}" id="image-result-main"></div><div class="review-actions"><div class="row">${project.runs.find(r=>r.id===chosen.run)?.snapshot?.submode==='text'?'':'<button id="image-compare-toggle" aria-pressed="false">对比原图 A</button>'}${page==='results'?`<button id="image-reroll" ${generationReason(project,task)?'disabled':''} title="${esc(generationReason(project,task)||'按当前任务原图、指令和参数再生成一个候选')}">重新生成</button>`:'<button id="image-continue">继续编辑</button>'}</div><div class="row"><a class="btn quiet" href="${esc(chosen.url)}?download=1" download="图片资产.png">下载图片</a>${page==='results'?(chosen.library?`<a class="btn quiet" href="#/assets/${esc(chosen.library.asset)}">已入库 · 查看资产</a>`:`<button id="image-quick-ingest" ${catalog.quick_ingest_preserves_selection===true?'':'disabled title="当前后台未加载快捷入库，请重启导演台后刷新页面"'}>加入资产库</button>`):''}</div></div>`;
+  return `${page==='results'?`<div class="result-candidates" aria-label="生成候选">${outputs.map(o=>{const n=allOutputs.indexOf(o)+1,run=project.runs.find(r=>r.id===o.run);return `<div class="result-candidate">${candidateButton({id:o.id,number:n,viewing:o.id===chosen.id,selected:o.selected,collected:Boolean(o.library),preview:`<img src="${esc(o.url)}" alt="候选 ${n}">`,detail:`${o.width}×${o.height}`,attribute:'data-output'})}${run?recordControl(run,{image:true,selected:o.selected,busy:project.busy}):''}</div>`;}).join('')}</div>`:''}${history}<div class="image-compare"><img src="${esc(chosen.url)}" alt="${chosen.selected?'已选图片':'当前候选'}" id="image-result-main"></div>${resultActions({inspect:project.runs.find(r=>r.id===chosen.run)?.snapshot?.submode==='text'?'':'<button id="image-compare-toggle" aria-pressed="false">对比原图 A</button>',decide:page==='results'?`<button id="image-reroll" ${generationReason(project,task)?'disabled':''} title="${esc(generationReason(project,task)||'按当前任务原图、指令和参数再生成一个候选')}">重新生成</button>`:'<button id="image-continue">继续编辑</button>',collect:collectionActions({url:chosen.url+'?download=1',media:'图片',filename:'图片资产.png',asset:page==='results'?chosen.library?.asset:null,button:page==='results'?`<button id="image-quick-ingest" ${catalog.quick_ingest_preserves_selection===true?'':'disabled title="当前后台未加载快捷入库，请重启导演台后刷新页面"'}>加入资产库</button>`:''})})}`;
 }
 export function imageRunClock(run){
   if(run.state==='unknown'||run.closed_without_result)return runTiming({uncertain:true});
@@ -118,12 +122,12 @@ export function imageRunStatus(project,task){
 }
 export function renderImageWorkspace(ctx){
   const {project:p,task:t,view,page,catalog}=ctx;
-  if(!t)return `<div class="project-head"><div><a class="back-link" href="#/archive">← 项目档案</a><h1>${esc(p.name)}</h1><p class="project-summary">0 个编辑任务</p></div></div><section class="empty"><h2>还没有编辑任务</h2><p>可以新增任务，也可以从回收站恢复已废弃的任务。</p><div class="row"><button id="image-new" class="primary">＋ 新增编辑任务</button><a class="btn quiet" href="#/assets?view=trash&recycle=projects">查看已废弃任务</a></div></section><div id="image-feedback" hidden></div>`;
+  if(!t)return `${workspaceHeader({name:p.name,code:'IMAGE',modeName:'图片资产创作',summary:'0 个编辑任务'})}<section class="empty"><h2>还没有编辑任务</h2><p>可以新增任务，也可以从回收站恢复已废弃的任务。</p><div class="row"><button id="image-new" class="primary">＋ 新增编辑任务</button><a class="btn quiet" href="#/assets?view=trash&recycle=projects">查看已废弃任务</a></div></section><div id="image-feedback" hidden></div>`;
   const rail=`<div class="row between"><h3>编辑任务</h3><button id="image-new" class="quiet" aria-label="新增编辑任务">＋</button></div><button class="image-task-toggle quiet" aria-expanded="${view.tasksOpen}">当前：${esc(t.name)} · 展开任务</button><div class="image-task-list ${view.tasksOpen?'is-open':''}">${p.tasks.map((x,i)=>`<button class="image-task ${x.id===t.id?'active':''}" data-task="${x.id}" aria-current="${x.id===t.id}"><strong>${String(i+1).padStart(2,'0')} · ${esc(catalog.tools[x.submode])}</strong><span>${esc(x.name)}</span><small>${taskStatus(p,x)}</small></button>`).join('')}<button id="image-task-name" class="quiet">重命名当前任务</button><button id="image-task-discard" class="quiet" ${p.busy||catalog.task_discard_version!==1?'disabled':''} title="${p.busy?'请先处理完成运行或待确认任务':catalog.task_discard_version!==1?'请重启导演台后刷新页面以加载任务废弃功能':'废弃当前任务及其候选，已入库资产保留'}">− 废弃当前任务</button></div>`;
   const heading=`<div class="shot-heading image-task-heading"><h2>${esc(t.name)}</h2><button class="quiet inspector-toggle" data-toggle-inspector>${view.inspectorHidden?'显示属性':'收起属性'}</button></div>`;
   const properties=page==='edit'&&t.submode==='text'?propertyTabs(view,[{id:'inputs',label:'输入',html:inputPanel(ctx)},projectPanel(ctx)]):page==='edit'?propertyTabs(view,[{id:'assets',label:'素材',html:`${mediaSlot('A',ctx)}${t.submode==='dual'?mediaSlot('B',ctx)+'<button id="image-swap">交换 A / B</button><p class="helper">图A提供底图，图B提供参考形象。</p>':''}`},{id:'inputs',label:'输入',html:inputPanel(ctx)},projectPanel(ctx)]):resultProperties(ctx);
-  return `<div class="project-head"><div><a class="back-link" href="#/archive">← 项目档案</a><div class="project-kicker"><span class="eyebrow">IMAGE · 图片资产创作</span><span class="badge" id="image-task-status">${taskStatus(p,t)}</span></div><h1 id="image-project-title" title="${esc(p.name)}">${esc(p.name)}</h1><div class="muted project-summary">${p.tasks.length} 个编辑任务 · ${esc(catalog.tools[t.submode])}</div></div>${productionSettingsAction({id:'image-settings',workflow:catalog.workflow?.name || catalog.workflow_name || catalog.tools[t.submode] || ''})}</div>
-  <nav class="steps" aria-label="图片创作工作步骤">${imageSteps.map(([id,name],i)=>`<button data-page="${id}" class="${page===id?'active':''}" aria-current="${page===id?'step':'false'}"><span>0${i+1}</span>${id==='edit'&&t.submode==='text'?'描述与创作':name}</button>`).join('')}</nav><div id="image-feedback" role="${view.error?'alert':'status'}" ${view.feedback?'':'hidden'} class="notice ${view.error?'error':''}">${view.error?errorFeedback(view.feedback):esc(view.feedback||'')}</div>
+  return `${workspaceHeader({name:p.name,code:'IMAGE',modeName:'图片资产创作',stateLabel:taskStatus(p,t),statusId:'image-task-status',titleId:'image-project-title',summary:`${p.tasks.length} 个编辑任务 · ${catalog.tools[t.submode]}`,settings:{id:'image-settings',workflow:catalog.workflow?.name||catalog.workflow_name||catalog.tools[t.submode]||''}})}
+  ${workspaceSteps({items:imageSteps.map(([id,name])=>[id,id==='edit'&&t.submode==='text'?'描述与创作':name]),current:page,label:'图片创作工作步骤',attribute:'data-page'})}<div id="image-feedback" role="${view.error?'alert':'status'}" ${view.feedback?'':'hidden'} class="notice ${view.error?'error':''}">${view.error?errorFeedback(view.feedback):esc(view.feedback||'')}</div>
   ${workbench({rail,canvas:(page==='edit'?'':heading)+`<div id="image-run-state">${imageRunStatus(p,t)}</div>`+(page==='edit'?editor(ctx):results(ctx)),inspector:properties,kind:'image-asset-desk'})}
-  <div class="savebar">${imageActionBar(ctx)}</div>`;
+  <footer class="savebar">${imageActionBar(ctx)}</footer>`;
 }

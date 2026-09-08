@@ -8,10 +8,65 @@ from PIL import Image
 from test_local_server import LocalServerTests
 from h3ui.asset_library.bindings import expand
 from h3ui.studio_recipes import defaults
+from h3ui.studio_store import Conflict
 
 
 class LibraryWorkflowTests(unittest.TestCase):
     setUp = LocalServerTests.setUp
+
+    def test_unsaved_draft_and_reference_commit_together_only_after_confirmation(self):
+        self.setup_assets()
+        for mode in ('swap','image_story','text_story'):
+            with self.subTest(mode=mode):
+                item=self.lib.ingest(self.image,'Atomic '+mode,{'categories':['character']})
+                p=self.st.create(mode,mode,15)
+                if mode=='swap':
+                    def prepare(q):
+                        q['settings']=defaults('official_swap')
+                        q['segments'].append(self.st.new_segment(dict(index=0,raw=124,head=0,deliver=124,tail=0,start=0,duration=124/24,boundary='new_scene')))
+                    p=self.st.store.mutate(p['id'],prepare)
+                before=copy.deepcopy(p);draft=copy.deepcopy(p)
+                draft['name']='未保存名称';draft['segments'][0]['prompt']='未保存的创作正文'
+                data=dict(revision=p['revision'],asset=item['id'],version=item['version'],segment=p['segments'][0]['id'],draft=draft)
+                plan=self.lib.project_import.plan(p['id'],data)
+                self.assertTrue(plan['ready'],plan)
+                self.assertEqual(self.st.store.get(p['id']),before)
+                self.assertIsNone(self.lib.store.get(item['id'])['used'])
+                self.lib.project_import.apply(dict(project=p['id'],token=plan['token']),lambda *a:None)
+                saved=self.st.store.get(p['id'])
+                self.assertEqual(saved['name'],draft['name'])
+                self.assertEqual(saved['segments'][0]['prompt'],draft['segments'][0]['prompt'])
+                self.assertTrue(saved['segments'][0]['assets'])
+                self.assertIsNotNone(self.lib.store.get(item['id'])['used'])
+                with self.assertRaises(Conflict):self.lib.project_import.plan(p['id'],data)
+                self.assertEqual(self.st.store.get(p['id']),saved)
+
+    def test_three_video_modes_register_only_confirmed_fixed_references(self):
+        self.setup_assets()
+        for mode in ('swap','image_story','text_story'):
+            with self.subTest(mode=mode):
+                item=self.lib.ingest(self.image,'Usage '+mode,{'categories':['character']})
+                p=self.st.create(mode,mode,15)
+                def prepare(q):
+                    if mode=='swap':
+                        q['settings']=defaults('official_swap')
+                        q['segments'].append(self.st.new_segment(dict(index=0,raw=124,head=0,deliver=124,tail=0,start=0,duration=124/24,boundary='new_scene')))
+                    q['segments'][0]['prompt']='A character walks through a forest.'
+                p=self.st.store.mutate(p['id'],prepare)
+                plan=self.lib.project_import.plan(p['id'],dict(revision=p['revision'],asset=item['id'],version=item['version'],segment=p['segments'][0]['id']))
+                self.assertTrue(plan['ready'],plan)
+                self.assertIsNone(self.lib.store.get(item['id'])['used'])
+                with self.lib.store.connect() as db:self.assertEqual(db.execute('SELECT count(*) FROM refs WHERE asset=?',(item['id'],)).fetchone()[0],0)
+                data=dict(project=p['id'],token=plan['token'])
+                self.lib.project_import.apply(data,lambda *a:None)
+                used=self.lib.store.get(item['id'])['used'];self.assertIsNotNone(used)
+                self.lib.project_import.apply(data,lambda *a:None)
+                self.assertEqual(self.lib.store.get(item['id'])['used'],used)
+                with self.lib.store.connect() as db:self.assertEqual(db.execute('SELECT count(*) FROM refs WHERE asset=?',(item['id'],)).fetchone()[0],1)
+                project_assets=self.st.store.assets(p['id']);self.assertEqual(len(project_assets),1)
+                self.assertEqual(project_assets[0]['library_reference']['version'],item['version'])
+                self.lib.store.trash(item['id'],item['revision'])
+                self.assertTrue(__import__('pathlib').Path(project_assets[0]['path']).is_file())
 
     def setup_assets(self):
         self.lib = self.app.config['ASSET_LIBRARY']

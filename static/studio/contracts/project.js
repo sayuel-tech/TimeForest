@@ -1,4 +1,5 @@
 export const authoredFields = [
+  "prompt_sources",
   "prompt",
   "prompt_mode",
   "voice",

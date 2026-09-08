@@ -1,6 +1,16 @@
+import {promptCollectionNotice} from '../features/prompt-library/collection.js';
+import {bindVideoPrompts} from '../features/prompt-library/adapters.js';
+import {sourceTarget} from '../core/source-target.js';
+import {showSourceNavigation} from '../ui/source-navigation.js';
+import {canReplaceDraft} from '../core/async-state.js';
+import {asyncFeedback} from '../ui/async-feedback.js';
+import {loadResultReceipts} from '../features/asset-picker/result-import.js';
+import {draftStatus} from '../ui/draft-status.js';
+import {chooseAction} from '../ui/choice-dialog.js';
+import {errorFeedback,bindErrorFeedback} from '../ui/error-feedback.js';
 import {bindMediaPlayers} from "../ui/media-player.js";
 import {fitWorkbench} from "../ui/workbench.js";
-import {productionSettingsAction} from "../ui/production-settings.js";
+import {workspaceHeader,workspaceSteps,bindWorkspaceSteps} from "../ui/workspace-chrome.js";
 import * as ui from "../ui/primitives.js";
 import { api } from "../core/api-client.js";
 import { ProjectSession } from "../core/project-session.js";
@@ -20,6 +30,9 @@ import { createFeature as swapPrompts } from "../features/swap-prompts/index.js"
 /** Public context for composable view features. Mutable state belongs to session. */
 export function mountWorkspace(root, project, catalog, definition, mode) {
   const session = new ProjectSession(project);
+  session.root=root;
+  const asyncStatus=asyncFeedback(root,session.controller.signal);
+  session.connection=asyncStatus.connection;
   const disposePlayers = bindMediaPlayers(root);
   const resizeDesk=()=>fitWorkbench(root);
   window.addEventListener('resize',resizeDesk,{signal:session.controller.signal});
@@ -35,7 +48,7 @@ export function mountWorkspace(root, project, catalog, definition, mode) {
   const ctx = {
     ...ui,
     api: (path, method, body) =>
-      api(path, method, body, session.controller.signal),
+      api(path, method, body, session.controller.signal,asyncStatus.transfer),
     root,
     session,
     catalog,
@@ -74,6 +87,7 @@ export function mountWorkspace(root, project, catalog, definition, mode) {
     get: () => root.querySelector("#view"),
   });
   ctx.setDirty = () => session.markDirty();
+  ctx.transferProgress=asyncStatus.transfer;
   ctx.schedulePreview = () => session.schedulePreview();
   ctx.previewNote = (message) => {
     const e =
@@ -81,15 +95,20 @@ export function mountWorkspace(root, project, catalog, definition, mode) {
       root.querySelector("#review-draft-note");
     if (e) e.textContent = message;
   };
-  const decide = (plan) =>
-    ui.confirm(
-      "应用这次变化",
-      plan.summary.join("\n") +
-        "\n\n" +
-        plan.segments
-          .map((s) => `P${s.index + 1} · ${ui.fmt(s.deliver / 24)}秒`)
-          .join("，"),
-    );
+  const decide = async plan => await chooseAction({
+    title:'应用这次变化',message:plan.summary.join('\n')+'\n'+plan.segments.map(s=>`P${s.index+1} · ${ui.fmt(s.deliver/24)}秒`).join('，'),
+    signal:session.controller.signal,choices:[{label:'取消',value:false},{label:'确认应用',value:true,primary:true}]
+  }) === true;
+  ctx.persistDraft = async () => {
+    const previousDraft = session.project.saved_draft?.revision || 0;
+    const saved = await session.save(decide);
+    // A running project's independent draft is durable but must not start generation.
+    return saved || (session.project.saved_draft?.revision || 0) > previousDraft;
+  };
+  const showProjectError = error => {
+    const box=root.querySelector('#project-errors');
+    if(box){box.innerHTML=errorFeedback(error);bindErrorFeedback(box);}
+  };
   ctx.commands = new ProjectCommands(session, decide);
   ctx.save = async () => {
     try {
@@ -97,7 +116,7 @@ export function mountWorkspace(root, project, catalog, definition, mode) {
       if (saved) ui.toast("已保存，制作将使用这些参数");
       return saved;
     } catch (e) {
-      ui.toast(e.message);
+      showProjectError(e);
       return false;
     }
   };
@@ -109,7 +128,7 @@ export function mountWorkspace(root, project, catalog, definition, mode) {
       ui.toast(e.message);
       const errors = root.querySelector("#project-errors");
       if (errors)
-        errors.innerHTML = `<div class="notice error">${ui.esc(e.message)}</div>`;
+        showProjectError(e);
     }
   };
   ctx.switchTab = async (next) => {
@@ -155,7 +174,7 @@ export function mountWorkspace(root, project, catalog, definition, mode) {
       )
       .forEach((button) => {
         button.disabled =
-          session.actionPending || session.working || Boolean(ctx.project.busy);
+          session.actionPending || session.working || Boolean(ctx.project.busy) || (button.hasAttribute("data-select-attempt") && button.textContent==="已选用");
       });
     root
       .querySelectorAll(
@@ -175,6 +194,10 @@ export function mountWorkspace(root, project, catalog, definition, mode) {
             session.working || session.actionPending,
           );
       });
+    root.querySelectorAll('[data-field="seed"]').forEach(el=>{
+      const segment=ctx.project.segments.find(s=>s.id===el.dataset.segment);
+      el.disabled=session.working||session.actionPending||segment?.seed_mode==='random';
+    });
     const state = root.querySelector("#save-state");
     const sourceNext = root.querySelector("#open-segments");
     if (sourceNext)
@@ -184,11 +207,7 @@ export function mountWorkspace(root, project, catalog, definition, mode) {
         ctx.project.status === "preparing" ||
         !(ctx.project.source_candidate || ctx.project.source_asset);
     if (state)
-      state.textContent = session.working
-        ? "正在处理…"
-        : ctx.dirty
-          ? "有未保存修改"
-          : "已保存 · 版本 " + ctx.project.revision;
+      state.textContent = draftStatus({dirty:ctx.dirty,working:session.working||session.actionPending});
   };
   for (const factory of [
     assets,
@@ -207,6 +226,7 @@ export function mountWorkspace(root, project, catalog, definition, mode) {
   ctx.renderEdit = () => {
     if (session.disposed) return;
     mode.renderEdit(ctx);
+    bindVideoPrompts(ctx);
     ctx.syncDraftActions();
   };
   ctx.renderProject = () => {
@@ -215,28 +235,32 @@ export function mountWorkspace(root, project, catalog, definition, mode) {
     ctx.shot = Math.min(ctx.shot, Math.max(0, p.segments.length - 1));
     const recipe = catalog.recipes.find((r) => r.id === p.settings.recipe);
     root.className = "page project-page " + mode.className;
-    root.innerHTML = `<div class="project-head"><div><a class="back-link" href="#/archive">← 项目档案</a><div class="project-kicker"><span class="eyebrow">${definition.code} · ${ui.esc(definition.name)}</span>${ui.status(p.status)}</div><h1>${ui.esc(p.name)}</h1><div class="muted project-summary">${ui.fmt(p.duration)}秒计划 · ${p.segments.length}个片段 · 预计${ui.fmt(p.segments.reduce((n, s) => n + s.deliver, 0) / 24)}秒</div></div>${productionSettingsAction({workflow:recipe?.name || p.settings.recipe})}</div><nav class="steps" aria-label="${ui.esc(definition.name)}工作步骤">${mode.navigation.map(([key, label], i) => `<button data-tab="${key}" class="${ctx.tab === key ? "active" : ""}" aria-current="${ctx.tab === key ? "step" : "false"}"><span>0${i + 1}</span>${label}</button>`).join("")}</nav><div id="project-errors">${p.error ? `<div class="notice error">${ui.esc(p.error)}</div>` : ""}</div><div id="view"></div>`;
+    root.innerHTML = `${workspaceHeader({name:p.name,code:definition.code,modeName:definition.name,state:p.status,summary:`${ui.fmt(p.duration)}秒计划 · ${p.segments.length}个片段 · 预计${ui.fmt(p.segments.reduce((n,s)=>n+s.deliver,0)/24)}秒`,settings:{workflow:recipe?.name||p.settings.recipe}})}${workspaceSteps({items:mode.navigation,current:ctx.tab,label:definition.name+'工作步骤'})}<div id="project-errors">${p.error ? errorFeedback(p.error) : ""}</div><div id="view"></div>`;
     root
       .querySelectorAll("[data-tab]")
       .forEach((b) => (b.onclick = () => ctx.switchTab(b.dataset.tab)));
+    bindWorkspaceSteps(root);
+    bindErrorFeedback(root);
     root.querySelector("#settings").onclick = ctx.openSettings;
     if (p.draft_storage_version && (p.busy || p.saved_draft)) {
       const banner = document.createElement("section");
       banner.className = "notice workspace-draft-note";
       banner.innerHTML = `<p>${p.busy ? "当前任务使用已固定的运行快照；可以编辑并单独保存下一次使用的草稿。" : "有一份单独保存的编排草稿，可载入当前页面核对后应用。"}</p><div class="row"><button id="save-separate-draft">保存独立草稿</button>${p.saved_draft ? `<button id="restore-separate-draft" ${p.busy ? "disabled" : ""}>载入草稿到编排</button><button id="discard-separate-draft">移除这份草稿</button>` : ""}</div>`;
       root.querySelector("#view").before(banner);
-      banner.querySelector("#save-separate-draft").onclick = async () => {
+      banner.querySelector("#save-separate-draft").onclick = () => ctx.commands.perform(async () => {
         try {
           const saved = await ctx.api(`/projects/${p.id}/draft`, "POST", {
             revision: p.saved_draft?.revision || 0,
-            body: p,
+            body: structuredClone(p),
           });
+          if(session.disposed)return;
           p.saved_draft = saved;
+          ctx.renderProject();
           ui.toast("已单独保存草稿，不改变当前运行");
         } catch (error) {
-          ui.toast(error.message);
+          if(!session.disposed)showProjectError(error);
         }
-      };
+      });
       const restore = banner.querySelector("#restore-separate-draft");
       if (restore)
         restore.onclick = () => {
@@ -285,7 +309,12 @@ export function mountWorkspace(root, project, catalog, definition, mode) {
     else if (ctx.tab === "review") ctx.renderReview();
     else if (ctx.tab === "export") void ctx.renderExport();
     else ctx.renderEdit();
+    bindVideoPrompts(ctx);
     ctx.syncDraftActions();
+    asyncStatus.render();
+    void loadResultReceipts(ctx);
+    showSourceNavigation(root,ctx.sourceLocation);
+    promptCollectionNotice(root,session);
   };
   function preserveRender() {
     const scrolls=['.desk-rail','.desk-canvas','.review-media',...Array.from(root.querySelectorAll('.property-panel'),el=>'#'+el.id)]
@@ -355,11 +384,14 @@ export function mountWorkspace(root, project, catalog, definition, mode) {
       ui.toast(detail.message);
     } else ctx.syncDraftActions();
   });
+  ctx.sourceLocation=sourceTarget(project);
+  if(ctx.sourceLocation?.state==='found'){ctx.tab=ctx.sourceLocation.tab;ctx.shot=ctx.sourceLocation.shot??ctx.shot;ctx.sourceRun=ctx.sourceLocation.run;ctx.inspectorTab='runs';}
   const modeCleanup = mode.mount?.(ctx);
   ctx.renderProject();
   const stop = watchProject(session, ui.updateClocks);
   return {
     session,
+    saveBeforeLeave: () => ctx.persistDraft(),
     ctx,
     dispose() {
       try {

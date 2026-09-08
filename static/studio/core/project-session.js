@@ -1,3 +1,4 @@
+import {canReplaceDraft,readStamp,currentRead} from './async-state.js';
 import { api } from "./api-client.js";
 import { singleFlight } from './single-flight.js';
 import {
@@ -12,6 +13,7 @@ export class ProjectSession {
     this.project = normalizeProject(project);
     this.request = request;
     this.dirty = false;
+    this.version=0;
     this.working = false;
     this.actionPending = false;
     this.disposed = false;
@@ -33,17 +35,20 @@ export class ProjectSession {
     if (!this.disposed) this.listeners.forEach((fn) => fn(type, detail));
   }
   markDirty() {
+    this.version++;
     this.dirty = true;
     this.emit("dirty");
   }
   async reload() {
+    const stamp=readStamp(this);
     const next = await this.request(
       `/projects/${this.project.id}`,
       "GET",
       undefined,
       this.controller.signal,
     );
-    if (this.disposed) return;
+    if (!currentRead(this,stamp,next)) return;
+    this.awaitingStatus=false;this.connection?.(null);
     this.replace(next);
   }
   replace(next) {
@@ -58,11 +63,9 @@ export class ProjectSession {
     this.emit("replace");
   }
   receive(next) {
-    if (this.disposed || next.id !== this.project.id) return;
+    if (this.disposed || next.id !== this.project.id || Number(next.revision)<Number(this.project.revision)) return;
     if (
-      !this.dirty &&
-      !this.working &&
-      !this.actionPending &&
+      canReplaceDraft(this,this.root) &&
       (signature(next) !== this.lastStatus ||
         next.revision !== this.project.revision)
     ) {
@@ -168,6 +171,7 @@ export class ProjectSession {
         storyboard_version: p.storyboard_version,
         timing_mode: p.timing_mode,
         removed_drafts: this.draftArchive,
+        prompt_sources: p.prompt_sources,
         ...(p.mode === "swap"
           ? { source_options: p.source_options, swap_prompt: p.swap_prompt }
           : {}),
@@ -175,7 +179,8 @@ export class ProjectSession {
       if (this.disposed) return false;
       if (plan.requires_confirmation && !(await decide(plan))) return false;
       if (this.disposed) return false;
-      const next = await this.request(`/projects/${p.id}/apply`, "POST", {
+      const stamp=readStamp(this);
+    const next = await this.request(`/projects/${p.id}/apply`, "POST", {
         token: plan.token,
       });
       if (this.disposed) return false;

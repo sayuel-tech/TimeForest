@@ -43,6 +43,8 @@ export const opts = (values, chosen) =>
     .join("");
 export const field = (label, html, help = "") =>
   `<label class="field"><span>${label}</span>${html}${help ? `<small>${help}</small>` : ""}</label>`;
+let modalEpoch=0;
+export const modalTicket=()=>{const epoch=modalEpoch;return ()=>epoch===modalEpoch;};
 let toastTimer;
 export function toast(message) {
   clearTimeout(toastTimer);
@@ -53,6 +55,7 @@ export function toast(message) {
   }, 5000);
 }
 export function modal(content) {
+  modalEpoch++;
   const d = $("#dialog");
   if (d.open) cancelModal();
   const trigger = document.activeElement;
@@ -92,6 +95,7 @@ export function modal(content) {
 }
 /** Resolve the active dialog's cancellation contract, including route disposal. */
 export function cancelModal() {
+  modalEpoch++;
   const d = $("#dialog");
   if (!d?.open) return;
   const event = new Event("cancel", { cancelable: true });
@@ -166,4 +170,11 @@ export function watchClocks(scope) {
   tick();
   const timer = setInterval(tick, 1000);
   return () => clearInterval(timer);
+}
+
+/** A queued close event from an older dialog must not close a newly opened scope. */
+export function onScopedClose(dialog, callback) {
+  const closed = () => { if (!dialog.open) { dialog.removeEventListener('close', closed); callback(); } };
+  dialog.addEventListener('close', closed);
+  return () => dialog.removeEventListener('close', closed);
 }

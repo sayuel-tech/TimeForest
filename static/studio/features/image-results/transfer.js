@@ -2,18 +2,28 @@ import * as ui from '../../ui/primitives.js';
 import {api} from '../../core/api-client.js';
 import {libraryApi} from '../asset-picker/library-client.js';
 import {selectionDialog} from '../asset-picker/project-use.js';
+import {acceptsImage} from '../asset-picker/destinations.js';
+import {useImageInAssembly} from '../asset-picker/assembly-use.js';
 
 /** Reuse the exact video reference preview/apply UI and transaction service. */
 export async function sendToVideo(asset,signal){
   const data=await api('/projects','GET',undefined,signal);
-  const projects=data.projects.filter(p=>p.kind!=='image');
+  const projects=data.projects.filter(acceptsImage);
   if(!projects.length)throw new Error('请先创建一个视频项目，再从资产库引用这张图片。');
   const choice=await new Promise(resolve=>{
-    const d=ui.modal(`<h2>用于视频项目</h2><p>下一步预览用途与影响，确认后才修改目标项目。</p>${ui.field('目标项目',`<select id="image-video-project">${ui.opts(projects.map(p=>[p.id,p.name]),projects[0].id)}</select>`)}<div class="dialog-actions"><button id="video-cancel">取消</button><button class="primary" id="video-next">下一步</button></div>`);
-    d.oncancel=()=>resolve(null);d.querySelector('#video-cancel').onclick=()=>{d.close();resolve(null);};
-    d.querySelector('#video-next').onclick=()=>{const id=d.querySelector('select').value;d.close();resolve(id);};
+    const d=ui.scopedModal(`<h2>用于视频项目</h2><p>下一步预览用途与影响，确认后才修改目标项目。</p>${ui.field('目标项目',`<select id="image-video-project">${ui.opts(projects.map(p=>[p.id,p.name]),projects[0].id)}</select>`)}<div class="dialog-actions"><button id="video-cancel">取消</button><button class="primary" id="video-next">下一步</button></div>`);
+    const finish=value=>{signal?.removeEventListener('abort',abort);d.removeEventListener('close',closed);resolve(value);};
+    const closed=()=>{if(!d.open)finish(null);},abort=()=>{d.close();finish(null);};
+    d.oncancel=()=>finish(null);d.querySelector('#video-cancel').onclick=abort;
+    d.addEventListener('close',closed);signal?.addEventListener('abort',abort,{once:true});
+    d.querySelector('#video-next').onclick=()=>{const id=d.querySelector('select').value;finish(id);d.close();};
+    if(signal?.aborted)abort();
   });if(!choice||signal.aborted)return;
   const project=await api('/projects/'+choice,'GET',undefined,signal);
+  if(project.mode==='video_assembly'){
+    if(await useImageInAssembly(asset,project,signal))ui.toast('图片已加入所选续写段');
+    return;
+  }
   if(!project.segments.length)throw new Error('目标项目尚无片段，请先准备视频时间线。');
   const segment=await new Promise(resolve=>{
     const d=ui.modal(`<h2>选择片段</h2>${ui.field('目标片段',`<select>${ui.opts(project.segments.map((s,i)=>[s.id,'P'+String(i+1).padStart(2,'0')]),project.segments[0].id)}</select>`)}<p>本次仅修改所选片段的引用；其他片段的继承按视频项目原设置处理。</p><div class="dialog-actions"><button id="segment-cancel">取消</button><button class="primary" id="segment-next">查看引用影响</button></div>`);

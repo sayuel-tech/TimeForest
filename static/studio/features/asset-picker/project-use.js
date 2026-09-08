@@ -1,22 +1,13 @@
+import {referencePurposes} from '../../ui/reference-metadata.js';
 import * as ui from "../../ui/primitives.js";
 import { pickLibraryAsset } from "./index.js";
 import { libraryApi, followTask } from "./library-client.js";
 import { mediaSummary } from "./media-view.js";
 
-const purposes = [
-  ["character", "角色"],
-  ["face", "脸部"],
-  ["costume", "服装"],
-  ["scene", "场景"],
-  ["prop", "物品"],
-  ["palette", "色系"],
-  ["voice", "声线"],
-  ["accessory", "饰品（需适配）"],
-  ["control", "控制参考（需适配）"],
-  ["texture", "材质（需适配）"],
-];
+const purposes = [...referencePurposes('image'),...referencePurposes('audio'),
+  ['accessory','饰品（需适配）'],['control','控制参考（需适配）'],['texture','材质（需适配）']];
 
-/** Save authored text first, then confirm one atomic asset/workflow change. Never generate here. */
+/** Preview without saving; confirm the current draft and references as one change. */
 export async function useLibrary(
   ctx,
   segmentId,
@@ -25,15 +16,19 @@ export async function useLibrary(
 ) {
   try {
     await ctx.commands.perform(async () => {
-      if (!(await ctx.commands.ensureSaved())) return;
       const item = updateAsset
         ? await libraryApi("/assets/" + updateAsset.library_reference.asset)
         : await pickLibraryAsset({
+            signal:ctx.session.controller.signal,
             kind: target === "source" ? "video" : "",
             title:
               target === "source" ? "选择参考表演视频" : "选择角色与参考素材",
           });
       if (!item || ctx.session.disposed) return;
+      if(ctx.session.previewPending)throw new Error('片段预览尚未完成，请稍候再添加素材；当前草稿保留。');
+      const capabilities=await libraryApi('/catalog','GET',undefined,ctx.session.controller.signal);
+      if(ctx.session.dirty&&capabilities.asset_import_draft_version!==1)throw new Error('后台尚未加载素材与草稿一起确认的功能，请先保存编辑并在任务结束后重启导演台。');
+      if(ctx.session.disposed)return;
       if (updateAsset && item.version === updateAsset.library_reference.version)
         return ui.toast("本段已经使用这个资产的当前版本");
       const owner = updateAsset?.owners?.[0] || crypto.randomUUID();
@@ -75,6 +70,7 @@ export async function useLibrary(
         segment: segmentId,
         target,
         revision: ctx.project.revision,
+        ...(ctx.session.dirty?{draft:{...structuredClone(ctx.project),removed_drafts:structuredClone(ctx.session.draftArchive)}}:{}),
         subject: updateAsset?.subject || suggested,
         entries: selections,
         from_version: updateAsset?.library_reference.version,
@@ -134,7 +130,7 @@ export function selectionDialog(ctx, bundle, prior, data) {
                   )
                 : ""
             }`
-      }<div id="use-report" class="notice" role="status">先检查本次引用，确认工作流变化后再应用。</div><div class="dialog-actions"><button id="use-cancel">取消</button><button id="use-check">检查引用与工作流</button><button id="use-apply" class="primary" disabled>确认应用</button></div></div>`,
+      }<div id="use-report" class="notice" role="status">先检查本次引用，确认后将当前草稿和素材一起保存。取消不会保存草稿或添加素材。</div><div class="dialog-actions"><button id="use-cancel">取消</button><button id="use-check">检查引用与工作流</button><button id="use-apply" class="primary" disabled>确认应用</button></div></div>`,
     );
     const view = d.querySelector(".library-use"),
       apply = view.querySelector("#use-apply"),

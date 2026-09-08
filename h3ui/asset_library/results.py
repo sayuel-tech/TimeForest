@@ -17,7 +17,7 @@ class ResultImports:
 
         def run_records(attempt):
             directory = Path(attempt.get('directory', '')).resolve()
-            records = {}
+            records = {'source_lineage': attempt['source_lineage']} if isinstance(attempt.get('source_lineage'),dict) else {}
             if self.st.store.directory(pid).resolve() not in directory.parents:
                 return records
             for filename, key in [('manifest.json', 'manifest'), ('workflow.json', 'prompt')]:
@@ -54,13 +54,20 @@ class ResultImports:
             result.append(dict(id=token, kind=kind, result_id=identifier, name=name, bytes=stat.st_size,
                                url=self.st.url(pid, file), project=pid))
 
+        def with_receipts():
+            keys = {item['id']: ('assembly-output:'+pid+':'+item['result_id']) if p['mode']=='video_assembly' else 'project-output:'+item['id'] for item in result}
+            receipts = self.lib.store.import_receipts(keys.values())
+            for item in result:
+                item.update(receipts.get(keys[item['id']], {}))
+            return result
+
         if p['mode']=='video_assembly':
             available={e['id'] for c in p['assembly']['clips'] if not c.get('removed_at') for e in c['extensions'] if not e.get('removed_at')}
             for run in p['assembly']['runs']:
                 if run['kind']=='generate' and run.get('extension') not in available:continue
                 if run['state']=='success' and not run.get('removed_at') and run['kind'] in ('generate','export'):
                     register('candidate' if run['kind']=='generate' else 'final',run['id'],p['name']+' · '+('续接' if run['kind']=='generate' else '成片'),run.get('file'),dict(type='generated',project=pid,candidate=run['id'],mode=p['mode'],seed=run.get('seed'),snapshot=run['snapshot'],tasks=run['tasks']))
-            return result
+            return with_receipts()
         for asset in self.st.store.assets(pid):
             path = Path(asset['path'])
             originals = list(path.parent.glob('original.*'))
@@ -88,9 +95,9 @@ class ResultImports:
             selected_runs = [dict(segment=s['id'], candidate=a['id'], records=run_records(a))
                              for s in p['segments'] for a in s.get('attempts', []) if a['id'] in selected_ids]
             register('final', str(output.get('created')), p['name'] + ' · 成片', path,
-                     dict(type='generated', project=pid, project_name=p['name'], composite=True, records={'segments': records, 'selected_runs': selected_runs},
+                     dict(type='generated', project=pid, project_name=p['name'], composite=True, export_created=output.get('created'), records={'segments': records, 'selected_runs': selected_runs},
                           metadata_status='present' if records else 'absent'))
-        return result
+        return with_receipts()
 
     def import_result(self, data, progress):
         with self.lib.store.connect() as db:

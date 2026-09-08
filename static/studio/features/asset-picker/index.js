@@ -1,6 +1,8 @@
+import {mountAssetOrigin} from './origin-view.js';
+import {mediaPlayer} from './media-view.js';
 import { libraryApi } from "./library-client.js";
 import { thumbnail, primaryMedia, mediaSummary } from "./media-view.js";
-import { modal, esc, opts, toast } from "../../ui/primitives.js";
+import { scopedModal as modal, modalTicket, esc, opts, toast } from "../../ui/primitives.js";
 
 /** A library browser only. The calling mode must separately preview and apply input changes. */
 export async function pickLibraryAsset({
@@ -8,8 +10,13 @@ export async function pickLibraryAsset({
   title = "从资产库选择",
   exclude = [],
   multiple = false,
+  signal,
 } = {}) {
-  const catalog = await libraryApi("/catalog");
+  const currentModal=modalTicket();
+  let catalog;
+  try{catalog=await libraryApi("/catalog","GET",undefined,signal);}
+  catch(error){if(signal?.aborted||!currentModal())return null;throw error;}
+  if(signal?.aborted||!currentModal())return null;
   return new Promise((resolve) => {
     const controller = new AbortController();
     const selected = new Map();
@@ -23,10 +30,13 @@ export async function pickLibraryAsset({
     const done = (value) => {
       if (finished) return;
       finished = true;
+      signal?.removeEventListener("abort",cancel);
       controller.abort();
       dialog.close();
       resolve(value);
     };
+    const cancel=()=>done(null);
+    signal?.addEventListener("abort",cancel,{once:true});
     dialog.oncancel = (event) => {
       event.preventDefault();
       done(null);
@@ -53,7 +63,7 @@ export async function pickLibraryAsset({
           data.items
             .map(
               (item) =>
-                `<button class="library-pick-card" ${multiple?`aria-pressed="${selected.has(item.id)}"`:""} data-pick="${item.id}" ${exclude.includes(item.id) ? "disabled" : ""}>${thumbnail(item)}<strong>${esc(item.name)}</strong><small>${esc(mediaSummary(primaryMedia(item)))}</small></button>`,
+                `<div class="library-pick-entry"><button class="library-pick-card" ${multiple?`aria-pressed="${selected.has(item.id)}"`:""} data-pick="${item.id}" ${exclude.includes(item.id) ? "disabled" : ""}>${thumbnail(item)}<strong>${esc(item.name)}</strong><small>${esc(mediaSummary(primaryMedia(item)))}</small></button><details data-preview="${item.id}"><summary>预览与来源</summary><div data-preview-content></div></details></div>`,
             )
             .join("") ||
           '<p class="empty">没有符合条件的资产，可先在资产库上传。</p>';
@@ -62,17 +72,34 @@ export async function pickLibraryAsset({
         view.querySelector('[data-page="-1"]').disabled = page === 1;
         view.querySelector('[data-page="1"]').disabled =
           page * 12 >= data.total;
+        view.querySelectorAll('[data-preview]').forEach(details=>{
+          details.ontoggle=async()=>{
+            if(!details.open||details.dataset.loaded)return;
+            details.dataset.loaded='true';
+            const box=details.querySelector('[data-preview-content]');
+            box.textContent='正在读取素材…';
+            try{
+              const summary=data.items.find(x=>x.id===details.dataset.preview);
+              const item=await libraryApi('/assets/'+details.dataset.preview+'?version='+encodeURIComponent(summary.version),'GET',undefined,controller.signal);
+              if(finished||current!==serial||!box.isConnected)return;
+              const matching=item.snapshot.media.filter(m=>!kind||m.meta.kind===kind);
+              box.innerHTML=matching.map(m=>`<section>${mediaPlayer(m)}<p>${esc(mediaSummary(m))}</p><div data-origin-media="${m.id}"></div></section>`).join('');
+              for(const m of matching)void mountAssetOrigin(box.querySelector(`[data-origin-media="${m.id}"]`),{asset:item.id,version:item.snapshot.id,media:m.id,supported:item.asset_origin_version===1},controller.signal);
+            }catch(error){if(!finished&&box.isConnected){details.dataset.loaded='';box.textContent=error.message;}}
+          };
+        });
         view.querySelectorAll("[data-pick]").forEach(
           (button) =>
             (button.onclick = async () => {
               button.disabled = true;
               try {
                 const item = await libraryApi(
-                  "/assets/" + button.dataset.pick,
+                  "/assets/" + button.dataset.pick + "?version=" + encodeURIComponent(data.items.find(x=>x.id===button.dataset.pick).version),
                   "GET",
                   undefined,
                   controller.signal,
                 );
+                if(finished||current!==serial||!dialog.open)return;
                 if(multiple){
                   if(selected.has(item.id))selected.delete(item.id);else selected.set(item.id,item);
                   button.setAttribute("aria-pressed",String(selected.has(item.id)));button.disabled=false;
@@ -87,7 +114,7 @@ export async function pickLibraryAsset({
             }),
         );
       } catch (error) {
-        if (error.name !== "AbortError") toast(error.message);
+        if (!finished && current===serial && dialog.open && error.name !== "AbortError") toast(error.message);
       }
     }
     view.querySelector("form").onsubmit = (event) => {

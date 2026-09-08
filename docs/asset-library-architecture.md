@@ -75,3 +75,36 @@ video_assembly序列服务接受本地上传或固定asset/version/media视频ID
 ## 视频拼接续写参考
 
 6.3.13由video_assembly/references.py接收当前固定asset/version/media，验证类型后复用Studio.upload规范化为项目副本；段内仅绑定id/用途/角色。生成快照冻结副本哈希和库来源，执行输入不动态读取资产最新版本；资料PROMPT不进入正文。选择器与卡片呈现复用ui/reference-assets，旧视频素材业务保持。
+
+## 公共使用登记与模式适配（6.3.21）
+
+项目提交后的公共完成入口为 `Library.complete_usage`，由 `usage.py` 统一校验固定版本媒体、写历史 refs、更新 used 并记录幂等操作。原三视频在 ProjectImport.apply 后调用；图片从输入准备移到确认 apply；接续视频与参考图/声音在项目保存后调用。项目提交成功但库登记失败的状态必须明确反馈并允许补登记，不能重新导入来掩盖失败。
+
+历史 refs 不等于当前有效引用；used 仅成功新增引用更新，同一操作重试不刷新，旧事件不倒退。图片补登记读冻结的 image_changes；接续以项目内新导入记录的 library_used_at 和媒体 ID 为凭据。旧版本缺失的时间不补造，不在启动时批量改写历史数据。原三视频的绑定展开/检查新版不自动扩展到图片 A/B 或接续逐项引用。
+
+列表用 LibraryStore.objects 批量读取去重媒体，分类查询也批量化；public 单项调用保持兼容。图片结果转入由 destinations 声明真实目标，接续需选择已有续写段，原三视频仍走分镜预览/确认链。前端批量整理、简单输入、媒体选段从列表/详情分离，页面继续拥有加载与草稿状态。
+
+完整改动、失败恢复、检查和历史局限见[审查整改](asset-system-improvements-20260908.md)；[原审查](asset-system-audit-20260908.md)保留修复前证据，不再作为当前缺口列表。
+
+
+## 公共来源解析（6.3.26）
+
+AssetOrigins按确切资产版本和媒体读取来源；生成项目、父资产链、历史使用项目分离。generation_records集中解析保存的图片/视频参数，旧接续入口转调。展示和请求分层，避免公共ui依赖模式内部或资产请求模块。接口、16层派生限制及兼容见[共同体验交付](asset-experience-20260908.md)。不更换库身份或表，不用当前项目参数填历史。
+
+素材与页面草稿联合确认（6.3.28）：ProjectImport.plan的可选draft经原Studio.edit_plan与PreviewStore只读校验，use-apply沿既有changes令牌提交。ProjectImport只组合已有规划结果，不另建保存规则；检查/取消不更新项目、refs或used，确认后的使用登记继续complete_usage。前端意图收集归ui/reference-metadata.js，业务目标和上传归各适配。详见[本批交付](asset-lifecycle-20260908.md)。
+
+## 派生链与反向查找（6.3.29）
+
+lineage.py按冻结身份读取资产/图片输出/接续运行，逐分支限定16层、单次64项；图片只认执行输入，不认可能残留的任务parent_output。descendants.py复用它，按versions既有rowid上界及media索引分页，每批25项，查询已入库后继的历史版本。接口`GET /assets/<id>/descendants`要求version/media，后续传回cursor/upper；不使用refs、不改库表、不读生成媒体内容。前端详情/选择器共用按需展开与重试。类型、旧元数据边界及检查见[本批交付](asset-lineage-20260909.md)。
+
+## 运行来源与项目结果下游（6.3.30）
+
+source_lineage由真实生成入口旁路写入候选/manifest，捕获resolve/inventory与前一选用身份，内部任务保留外层归属；不进入编译参数。lineage支持原视频候选及历史编排只读解析。generation_descendants查询五模式项目生成记录和当前成片，不要求先入库，不写operations/refs或项目；ResultImports仍沿原登记/入库流程携带source_lineage。两个下游视图共用分页模板，作用域与是否入库分开。接口、时间截止/稳定身份游标、旧记录边界见[6.3.30交付](asset-runtime-lineage-20260909.md)。
+
+## 素材包身份边界（6.3.31）
+
+pack_lineage集中实现media_origin、导出固定关系、联合依赖验证和接收库映射。包格式2的media.portable_lineage声明包内/包外来源，来源关系独立于可选工作流资料；保留导出时已经选择的资产集合，不沿追溯链自动打包。真实站点导出复用AssetLineage读取已经记录且可核对的上游；纯Library调用仅提取可直接确认的固定引用，并明确不完整状态。
+
+导入仍经原Packs/local_tasks和LibraryStore，不迁库。included引用匹配发送方asset/version/media/hash，导入后改写为接收方固定身份；outside只显示外部记录。来源与绑定共同构成导入依赖，先校验循环；版本2导入幂等回执同时记录首次asset/version，部分失败后重试也不指向后来编辑的版本。旧包仍可读，旧实现残留的每媒体来源由media_origin隔离，外部项目不跳本机同编号项目。公共lineage/descendants继续承担来源和反查，generation_records有界解包只读参数，不自动应用。
+
+包内关系是清单提供并经媒体摘要核对的声明，不是作者身份签名认证；包外项目/候选不自动迁移，旧数据不补造。具体兼容、验证与用户操作见[交付说明](asset-pack-lineage-20260909.md)。

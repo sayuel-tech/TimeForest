@@ -78,20 +78,11 @@
 .image-workspace .image-results-empty h3{font-size:20px;margin:0 0 8px}
 .image-workspace .image-results-empty p{font-size:14px;margin:0;color:var(--muted)}
 /* Also used inside the shared media chooser dialog. */
-.image-candidates{display:flex;gap:10px;overflow-x:auto;flex-shrink:0;padding:4px 0}
-.image-candidates button{min-width:120px;max-width:160px;padding:8px}
-.image-candidate{flex:0 0 auto;display:flex;flex-direction:column;gap:4px;max-width:160px}
-.image-candidate>small{font-size:11px;color:var(--muted)}
-.image-candidates .image-candidate>[data-record-remove]{padding:3px 8px;min-width:0;align-self:flex-end;font-size:12px}
 .removed-candidate-preview{width:54px;height:54px;object-fit:contain}
-.image-candidates img{width:100%;height:72px;object-fit:contain;border-radius:6px}
-.image-candidates small{display:block;font-size:12px}
-.image-candidates [aria-pressed=true]{border-color:var(--sage);background:var(--sage-soft)}
 .image-workspace .image-compare{min-height:160px;display:flex;align-items:center;justify-content:center;gap:12px;flex:1;background:var(--paper-2);border-radius:var(--r-sm);padding:12px;overflow:auto}
 .image-workspace .image-compare img{max-width:100%;max-height:100%;object-fit:contain;min-width:0}
 .image-workspace .image-compare.split>img,.image-workspace .image-compare.split>figure{max-width:49%;flex:1}
 .image-workspace .image-compare figure{margin:0;text-align:center;font-size:12px}
-.image-workspace .review-actions{font-size:14px}
 @media(max-width:850px),(max-height:620px){
   .image-workspace .image-asset-desk .desk-canvas{min-height:520px}
   .image-workspace .image-asset-desk .desk-inspector{max-height:none}
@@ -100,10 +91,6 @@
   .image-workspace .image-task-list{display:none;margin-top:8px;max-height:200px;overflow:auto}
   .image-workspace .image-task-list.is-open{display:block}
   .image-workspace .image-task{margin-bottom:4px}
-  .image-workspace .savebar{position:static;gap:8px;margin-top:16px}
-  .image-workspace .savebar .row{display:flex;width:auto;justify-content:flex-end}
-  .image-workspace .savebar .row button{width:auto;flex:none}
-  .image-workspace .savebar .row{flex-wrap:wrap;gap:8px}
   .image-workspace .image-compare{min-height:260px}
   .image-workspace .image-compare img{max-height:50dvh}
 }

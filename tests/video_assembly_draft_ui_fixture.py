@@ -53,7 +53,7 @@ try{
   }else{input('[data-prompt]','编辑中的草稿');releasePoll();await pause(150);assert(root.querySelector('[data-prompt]').value==='编辑中的草稿','Late poll replaced active draft');}
  }else if(!query.has('fast')){await wait(()=>polls>=1);await pause(150);}
  input('[data-prompt]','<Picture 1>继续向前走，保留风声。');
- input('[data-seconds]','7');input('[data-reference-purpose]','costume');input('[data-reference-subject]','2');
+ input('[data-seconds]','7');await click('[data-reference-edit]');input('[data-reference-purpose]','costume');input('[data-reference-subject]','2');await click('[data-reference-apply]');
  await click('[data-generate]');await wait(()=>!workspace.session.working);
  if(scenario==='save-error'){
   assert(root.querySelector('[data-error]').textContent.includes('隔离保存冲突'),'Missing save failure');

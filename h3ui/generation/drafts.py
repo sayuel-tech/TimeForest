@@ -5,9 +5,9 @@ import time
 
 from ..studio_store import Conflict
 
-PROJECT_FIELDS=('name','duration','review','settings','storyboard_version','timing_mode','source_options','swap_prompt')
+PROJECT_FIELDS=('name','duration','review','settings','storyboard_version','timing_mode','source_options','swap_prompt','prompt_sources')
 SEGMENT_FIELDS=('id','index','prompt','prompt_mode','staging','beats','voice','soundscape','music','ending','assets','inherit_ids',
-                'asset_mode','seed_mode','seed','boundary','swap_prompt_mode','swap_custom_prompt')
+                'asset_mode','seed_mode','seed','boundary','swap_prompt_mode','swap_custom_prompt','prompt_sources','speaker_order')
 
 
 class DraftStore:

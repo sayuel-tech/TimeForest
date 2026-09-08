@@ -1,3 +1,4 @@
+import {closePromptEditor} from '../features/prompt-library/editor.js';
 import { api, readLegacyProject } from "../core/api-client.js";
 import { assertImageCatalog } from "../core/image-catalog.js";
 import { mountTaskCenter } from "../features/task-center/index.js";
@@ -5,23 +6,29 @@ import * as ui from "../ui/primitives.js";
 import { getMode, listModes, setImageAssetsEnabled, setAssemblyEnabled } from "./mode-registry.js";
 import { renderHome, projectCard } from "../pages/home.js";
 import { createFeature as archiveFeature } from "../pages/archive.js";
+import {confirmLeave} from '../ui/choice-dialog.js';
 
 const root = ui.$("#app");
 let workspace = null,
   epoch = 0,
   routeController = null,
-  catalog = null;
+  catalog = null,
+  leaving = false;
+let activeHash=location.hash||"#/";
 const go = (hash) => {
   location.hash = hash;
 };
 async function createProject(modeId) {
   const mode = getMode(modeId);
-  const d = ui.modal(
+  const d = ui.scopedModal(
     `<div class="dialog-heading"><span class="eyebrow">${mode.code} · NEW PRODUCTION</span><h2>${mode.name}</h2><p>${mode.description}</p></div><form id="new-form">${ui.field("项目名称", '<input name="name" required maxlength="120" placeholder="给这个故事一个名字" autofocus>')}${mode.kind === "image" ? ui.field("编辑工具", '<select name="submode"><option value="single">单图编辑</option><option value="dual">双图编辑</option><option value="region">局部重绘／移除</option><option value="outpaint">图像扩展</option><option value="text">文生图</option></select>') : ""}${modeId !== "swap" && mode.kind !== "image" && mode.kind !== "assembly" ? ui.field("计划总时长（秒）", '<input name="duration" type="number" min="1" max="3600" step=".01" value="15" required>', "每15秒一个片段；30秒写两段提示词。") : ""}<p class="helper">创建后进入${mode.entry}，准备完成后再生成${mode.kind === "image" ? "图片" : "视频"}。</p><div class="dialog-actions"><button type="button" id="close-new">取消</button><button class="primary">开始创作 →</button></div></form>`,
   );
-  ui.$("#close-new").onclick = () => d.close();
+  let creating=false;
+  d.oncancel=e=>{if(creating)e.preventDefault();};
+  d.querySelector("#close-new").onclick=()=>{if(!creating)d.close();};
   ui.$("#new-form").onsubmit = async (e) => {
     e.preventDefault();
+    if(creating||!d.open)return;creating=true;e.target.dataset.operationPending='true';
     const button = e.target.querySelector(".primary");
     button.disabled = true;
     try {
@@ -35,34 +42,52 @@ async function createProject(modeId) {
         name: e.target.elements.name.value,
         duration: Number(e.target.elements.duration?.value || 30),
       });
+      if(!d.open)return;
       d.close();
       go("/p/" + p.id);
     } catch (error) {
-      ui.toast(error.message);
+      if(d.open)ui.toast(error.message);
       button.disabled = false;
+    } finally {
+      creating=false;delete e.target.dataset.operationPending;
     }
   };
 }
 async function route() {
+  if (leaving) {
+    if(workspace)history.replaceState(null,'','#/p/'+workspace.session.project.id);
+    return;
+  }
   const current = ++epoch,
     hash = location.hash || "#/";
+  if(document.querySelector('dialog[open] [data-prompt-form]')){
+    history.replaceState(null,'',activeHash);
+    leaving=true;
+    let proceed;try{proceed=await closePromptEditor();}finally{leaving=false;}
+    if(!proceed)return;
+    history.replaceState(null,'',hash);
+  }
   if (workspace?.session.working || workspace?.session.actionPending) {
     ui.toast("当前操作正在处理，请稍候再离开");
     history.replaceState(null, "", "#/p/" + workspace.session.project.id);
     return;
   }
-  if (
-    workspace?.session.dirty &&
-    !(await ui.confirm(
-      "离开未保存的内容？",
-      "当前编辑仍未保存。离开会放弃这些页面修改，服务器保留上次版本。",
-      "离开",
-    ))
-  ) {
+  if (workspace && document.querySelector('dialog[open] .production-settings')) {
+    ui.toast('请先应用、保存或取消制作参数，再离开当前项目。');
     history.replaceState(null, "", "#/p/" + workspace.session.project.id);
     return;
   }
+  if (workspace?.session.dirty) {
+    history.replaceState(null,'','#/p/'+workspace.session.project.id);
+    leaving=true;
+    let choice;
+    try {choice=await confirmLeave({save:()=>workspace.saveBeforeLeave()});}
+    finally {leaving=false;}
+    if (choice !== 'save' && choice !== 'discard') return;
+    history.replaceState(null,'',hash);
+  }
   if (current !== epoch) return;
+  activeHash=hash;
   workspace?.dispose();
   workspace = null;
   routeController?.abort();
@@ -110,6 +135,10 @@ async function route() {
       const { mountLibrary } = await import("../pages/asset-library/index.js");
       if (current !== epoch) return;
       await mountLibrary(root, hash, signal);
+    } else if (hash === "#/prompts") {
+      const {mountPromptLibrary}=await import("../pages/prompt-library/index.js");
+      if(current!==epoch)return;
+      await mountPromptLibrary(root,signal);
     } else if (hash === "#/archive") {
       const context = {
         ...ui,
@@ -156,7 +185,7 @@ async function health() {
 }
 window.addEventListener("hashchange", route);
 window.addEventListener("beforeunload", (e) => {
-  if (workspace?.session.dirty) {
+  if (workspace?.session.dirty || workspace?.session.working || workspace?.session.actionPending || document.querySelector('dialog[open] [data-parameter-dirty="true"],dialog[open] [data-operation-pending]')) {
     e.preventDefault();
     e.returnValue = "";
   }

@@ -1,6 +1,8 @@
+from ..prompt_library.service import capture as capture_prompts
 from flask import Blueprint, current_app, jsonify, request
 from ..studio_store import Conflict
 from .compiler import catalog
+from ..asset_library.usage import UsageRegistrationPending
 
 bp=Blueprint('video_assembly',__name__,url_prefix='/api/v5/assembly')
 
@@ -10,6 +12,8 @@ def service(): return current_app.config['VIDEO_ASSEMBLY']
 
 @bp.errorhandler(Exception)
 def error(exc):
+    if isinstance(exc,UsageRegistrationPending):
+        return jsonify(error=str(exc),error_raw=str(exc.__cause__),error_kind='website',code='LIBRARY_USAGE_PENDING'),503
     return jsonify(error=str(exc),error_raw=str(exc),error_kind='conflict' if isinstance(exc,Conflict) else 'input' if isinstance(exc,ValueError) else 'website',code='REVISION_CONFLICT' if isinstance(exc,Conflict) else 'INVALID_REQUEST'),409 if isinstance(exc,Conflict) else 404 if isinstance(exc,KeyError) else 400
 
 
@@ -22,7 +26,7 @@ def refresh(): return jsonify(catalog(service().st.recipes))
 
 
 @bp.post('/<pid>/save')
-def save(pid): return jsonify(service().save(pid,request.get_json()))
+def save(pid): return jsonify(capture_prompts(service().save(pid,request.get_json())))
 
 
 @bp.post('/<pid>/import')

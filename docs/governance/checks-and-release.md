@@ -14,6 +14,14 @@
 
 record 的前提、顺序及命令见 [持续维护](context-maintenance.md)。新会话开始先 check 一次，交付前同步内容后再 record/check；禁止为通过检查直接刷新指纹。
 
+## 参数/保存与离开保护首批检查
+
+`python tests/experience_settings_ui_fixture.py --evidence-dir <外部目录>`与`python tests/experience_assembly_ui_fixture.py --evidence-dir <外部目录>`使用已有Chrome与隔离API核对五模式两种窗口。前三视频API受控、图片和接续为真实临时保存；后者附离线模型绑定，禁止引擎调用。范围见[首批交付](../frontend/experience-phase1.md)，不能当成真实生成或完整全站体验验收。
+
+## 新增功能与公共体验准入
+
+每次前端开发交付运行 `node tools/check_experience_contract.mjs`；检查器有变更时运行 `node --test tests/experience_contract.test.mjs`。前者核对实际模式登记、公共入口和场景证据路径，后者只验证检查器的拒绝/接受边界。二者均不启动网站、不调用ComfyUI，不能替代行为与视觉检查。新增功能按[体验准入](../frontend/experience-admission.md)记录相关场景；公共修改覆盖全部受影响调用方，五模式旧缺口仍按方案标记待完善。没有Git钩子或CI，维护任务必须显式执行。
+
 ## 仅视觉样式调整
 
 沿用真实组件生成隔离静态样例，用本机已有无界面浏览器渲染受影响模式与宽窄窗口，核对边框/字号/容器间距和横向溢出。只读实际CSS与渲染模块，独立浏览器资料目录，不使用生产API、真实媒体或生成。样例无事件绑定时必须说明未覆盖实际点击与保存；无需为可逆CSS微调添加镜像式单元测试。相关语法/既有回归按影响选取，证据记录在维护基线。
@@ -115,3 +123,40 @@ node --test tests/studio_parameter_dialog.test.mjs tests/studio_image_interactio
 `python tests/video_assembly_ui_fixture.py --evidence-dir <仓库外证据目录>`使用现有Chrome无界面模式和真实临时API，检查宽窄布局、参数切换/取消/默认/刷新/保存、排序、纯拼接、入库及多选取消/应用。生产进程加载与真实生成另行记录，本轮不发布GitHub。
 
 6.3.13公共界面回归新增tests/shared_ui_fixture.py（原三视频模拟API、图片真实隔离API），拼接tests/video_assembly_ui_fixture.py增加同级导入、主按钮次序、素材上传/用途/保存/沿用/移除及参数根样式检查。对应后端测试含双图参考+尾部绑定和替身执行输入复制。用外部evidence-dir，既有Chrome与临时数据；不连接生产引擎。通过数量与证据见维护基线。
+
+## 资产跨模式整改检查入口
+
+- `python -m unittest tests.test_asset_library.LibraryTests tests.test_library_usage.LibraryUsageTests -q`：库事务/批量读取、图片确认保存、接续提交及登记重试，含既有接续隔离检查。
+- `python -m unittest discover -s tests -p test_library_workflow.py -q`：原三视频确认前后登记、固定版本、副本和真实离线编译路径。
+- `node --test tests/studio_library_usage.test.mjs tests/studio_image_interactions.test.mjs tests/studio_asset_modes.test.mjs`：目标分类、保存重试与较新草稿保留。
+- `python tests/library_transfer_ui_fixture.py --evidence-dir <外部目录>`：既有 Chrome、真实临时 Flask/SQLite、合成媒体；阻止 ComfyClient 网络。核验图片转入、取消/冲突、库侧记录和拆分后的列表批量/详情选段；不代替生产网站加载或生成验收。
+
+本轮实际结果见唯一维护基线和资产整改说明。不得将旧版本缺失使用时间自动记作当前时间。
+
+### 第二批页头/步骤与底栏检查
+
+`.venv/Scripts/python.exe tests/workspace_navigation_ui_fixture.py --evidence-dir <外部目录>` 使用已安装Chrome、websocket-client与CDP；五模式1280/760窗口执行原导航、真实编辑/隔离保存、参数取消、接续导入弹窗取消、键盘焦点和底栏可达性。三视频API受控、图片/接续临时API，不执行生成。参见[第二批交付](../frontend/experience-phase2.md)；结构检查已要求chrome登记，不能替代这些实际交互/截图。
+
+## 候选与结果共同体验检查（6.3.24）
+
+```powershell
+node --test tests/studio_result_experience.test.mjs tests/studio_candidate_records.test.mjs tests/studio_frontend.test.mjs tests/studio_image_interactions.test.mjs tests/studio_video_assembly.test.mjs
+node --test tests/experience_contract.test.mjs
+node tools/check_experience_contract.mjs
+.venv/Scripts/python.exe -m unittest tests.test_candidate_records tests.test_image_result_actions tests.test_video_assembly_track.TrackTests.test_select_appends_once_reselect_keeps_position_and_legacy_is_read_only -q
+.venv/Scripts/python.exe tests/result_experience_ui_fixture.py --evidence-dir <仓库外证据目录>
+```
+
+浏览器fixture沿用已安装Chrome、Node、Python依赖与FFmpeg，仅合成隔离测试素材，不生成AI视频；图片/接续真实临时API，前三视频受控API。共享播放器重试、查看/选用/入库分离和恢复分别检查；实际成绩与局限见[第三批交付](../frontend/experience-phase3.md)。不得用生产项目验收，也不要自动安装缺少的工具。
+
+## 异步与持久回执（6.3.25）
+
+```powershell
+node --test tests/studio_async_experience.test.mjs tests/studio_frontend.test.mjs tests/studio_image_interactions.test.mjs tests/studio_task_center.test.mjs tests/studio_result_experience.test.mjs tests/studio_candidate_records.test.mjs tests/studio_video_assembly.test.mjs
+.venv/Scripts/python.exe -m unittest tests.test_result_receipts tests.test_candidate_records tests.test_image_result_actions tests.test_task_center -q
+.venv/Scripts/python.exe tests/async_experience_ui_fixture.py --evidence-dir <仓库外目录>
+node tools/check_experience_contract.mjs
+node --test tests/experience_contract.test.mjs
+```
+
+沿用已有Chrome、Node和Python/FFmpeg，不自动安装。浏览器通过控制网络响应验证边界，不是生产网络/真实停止验证；回执Python使用实际临时库及路由。准入新增async/transfers/taskStates，声明仍不代替实际体验。
