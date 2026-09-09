@@ -1,3 +1,4 @@
+import {updateStatusRegion} from '../../ui/status-region.js';
 import * as ui from "../../ui/primitives.js";
 import { libraryApi, followTask } from "./library-client.js";
 import {collectionActions} from '../../ui/result-view.js';
@@ -94,8 +95,7 @@ export async function saveProjectMedia(ctx, { kind, resultId } = {}) {
           task,
           (t) => {
             if (d.open)
-              d.querySelector("#save-library-status").innerHTML =
-                `<p>${ui.esc(t.note)}</p><progress max="1" value="${t.progress}"></progress>`;
+              updateStatusRegion(d.querySelector("#save-library-status"),`<p>${ui.esc(t.note)}</p><progress max="1" value="${t.progress}"></progress>`);
           },
           ctx.session.controller.signal,
         );

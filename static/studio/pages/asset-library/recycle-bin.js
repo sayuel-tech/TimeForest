@@ -18,7 +18,7 @@ export function restoreRequest(item){
   if(item.type==='project')return {path:`/projects/${item.id}/trash`,body:{revision,restore:true}};
   if(item.type==='image_task')return {path:`/image-projects/${item.project}/tasks/${item.id}/discard`,body:{revision,restore:true}};
   if(item.type==='legacy_project')return {path:`/legacy/${item.id}/trash`,body:{restore:true}};
-  if(['image_run','video_run'].includes(item.type))return {path:`/projects/${item.project}/records/visibility`,body:{record:item.id,segment:item.segment,revision,removed:false}};
+  if(['image_run','video_run','creation_record'].includes(item.type))return {path:`/projects/${item.project}/records/visibility`,body:{record:item.id,segment:item.segment,revision,removed:false}};
   throw new Error('不支持的恢复类型');
 }
 export function recycleView(data,query=''){

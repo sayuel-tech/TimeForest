@@ -1,3 +1,5 @@
+import {snapshotChange} from './snapshot-update.js';
+import {projectContent,mergeProjectRuntime,acceptProjectRevision} from '../contracts/project-refresh.js';
 import {canReplaceDraft,readStamp,currentRead} from './async-state.js';
 import { api } from "./api-client.js";
 import { singleFlight } from './single-flight.js';
@@ -52,6 +54,7 @@ export class ProjectSession {
     this.replace(next);
   }
   replace(next) {
+    this.pendingRefresh=false;
     this.project = normalizeProject(next);
     this.dirty = false;
     this.draftArchive = [];
@@ -64,21 +67,19 @@ export class ProjectSession {
   }
   receive(next) {
     if (this.disposed || next.id !== this.project.id || Number(next.revision)<Number(this.project.revision)) return;
-    if (
-      canReplaceDraft(this,this.root) &&
-      (signature(next) !== this.lastStatus ||
-        next.revision !== this.project.revision)
-    ) {
-      this.project = normalizeProject(next);
-      this.lastStatus = signature(next);
-      this.emit("server");
-    } else {
-      this.project.busy = next.busy;
-      this.project.runtime = next.runtime;
-      this.project.source_progress = next.source_progress;
-      this.emit("progress");
+    next=normalizeProject(next);
+    const change=this.pendingRefresh?'content':snapshotChange(this.project,next,projectContent);
+    if(change==='none')return;
+    if(canReplaceDraft(this,this.root)&&change==='content'){
+      this.pendingRefresh=false;this.project=next;this.lastStatus=signature(next);this.emit('server');
+    }else{
+      this.pendingRefresh=change==='content';
+      mergeProjectRuntime(this.project,next);
+      if(change==='status'&&canReplaceDraft(this,this.root))acceptProjectRevision(this.project,next);
+      this.emit('progress');
     }
   }
+
   schedulePreview() {
     clearTimeout(this.previewTimer);
     if (!this.project.storyboard_version) {

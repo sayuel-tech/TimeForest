@@ -1,0 +1,133 @@
+{
+  "plan_version": "3.0",
+  "files_in_this_package": "production_briefs_manifest_and_repo_local_finished_art",
+  "style_reference_repo_paths": [
+    "static/assets/modes/mode-r2v.webp",
+    "static/assets/modes/mode-t2v.webp",
+    "static/assets/modes/mode-image-assets.webp",
+    "static/assets/modes/mode-video-continuation.webp"
+  ],
+  "reference_status": "reference_only_do_not_relabel",
+  "items": [
+    {
+      "asset_id": "ART-A01",
+      "purpose": "剧本创作模式入口",
+      "target_repo_path": "static/assets/modes/mode-authoring.webp",
+      "brief_file": "美术配套/制作文本/ART-A01-mode-authoring.txt",
+      "status": "implemented_visual_checked",
+      "mandatory_visual_delivery": true,
+      "model_generation_authorized": true,
+      "aspect_ratio": "3:2",
+      "source_master": "docs/art-masters/creation-v3/ART-A01.png",
+      "web_file_sha256": "8f404b42958906ef62b5778959ad9eb92f8177d367de5fafa94be856d0d522c2",
+      "review_evidence": [
+        "docs/evidence/creation-v3/art/home-1440.png",
+        "docs/evidence/creation-v3/art/home-760.png",
+        "docs/evidence/creation-v3/art/checks.json"
+      ],
+      "creation_method": "Built-in image_gen; exact underlying model not exposed by tool",
+      "authorization": "User reply 你来解决 to explicit five-illustration generation question, 2026-09-09",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "source_sha256": "b455d007c2e32e1e028157d32cad45c39f3c61baf020508e3fd9fabe26bddab4"
+    },
+    {
+      "asset_id": "ART-A02",
+      "purpose": "电影创作模式入口",
+      "target_repo_path": "static/assets/modes/mode-movie.webp",
+      "brief_file": "美术配套/制作文本/ART-A02-mode-movie.txt",
+      "status": "implemented_visual_checked",
+      "mandatory_visual_delivery": true,
+      "model_generation_authorized": true,
+      "aspect_ratio": "3:2",
+      "source_master": "docs/art-masters/creation-v3/ART-A02.png",
+      "web_file_sha256": "8f997a4cd0e8da63934adb926e3be2b59878a3e29d7ac2d1d79f5eb1ac6af072",
+      "review_evidence": [
+        "docs/evidence/creation-v3/art/home-1440.png",
+        "docs/evidence/creation-v3/art/home-760.png",
+        "docs/evidence/creation-v3/art/checks.json"
+      ],
+      "creation_method": "Built-in image_gen; exact underlying model not exposed by tool",
+      "authorization": "User reply 你来解决 to explicit five-illustration generation question, 2026-09-09",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "source_sha256": "924a5d537418ebdfed204f40c50b5f7d7a0b7fc401109bd6e762a6ff31c78f9d"
+    },
+    {
+      "asset_id": "ART-E01",
+      "purpose": "故事与剧本尚无正文",
+      "target_repo_path": "static/assets/authoring/empty-story.webp",
+      "brief_file": "美术配套/制作文本/ART-E01-empty-story.txt",
+      "status": "implemented_visual_checked",
+      "mandatory_visual_delivery": true,
+      "model_generation_authorized": true,
+      "aspect_ratio": "3:2",
+      "source_master": "docs/art-masters/creation-v3/ART-E01.png",
+      "web_file_sha256": "e93125156597bef0b3e7fcda9fc8b5c58bf1e1cabc947ab6c803d864726e4b53",
+      "review_evidence": [
+        "docs/evidence/creation-v3/art/story-1440.png",
+        "docs/evidence/creation-v3/art/story-760.png",
+        "docs/evidence/creation-v3/art/checks.json"
+      ],
+      "creation_method": "Built-in image_gen; exact underlying model not exposed by tool",
+      "authorization": "User reply 你来解决 to explicit five-illustration generation question, 2026-09-09",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "source_sha256": "2370a8dc8a28a7e8fafc586874ceaec6b2eafa1da39ac13080ead50875cebcd6"
+    },
+    {
+      "asset_id": "ART-E02",
+      "purpose": "片段尚无生成候选",
+      "target_repo_path": "static/assets/movie/empty-takes.webp",
+      "brief_file": "美术配套/制作文本/ART-E02-empty-takes.txt",
+      "status": "implemented_visual_checked",
+      "mandatory_visual_delivery": true,
+      "model_generation_authorized": true,
+      "aspect_ratio": "3:2",
+      "source_master": "docs/art-masters/creation-v3/ART-E02.png",
+      "web_file_sha256": "072e0a5aeeab7df872c41a56bcb069122cac0f08258e0205f4a363b6f9a50498",
+      "review_evidence": [
+        "docs/evidence/creation-v3/art/takes-1440.png",
+        "docs/evidence/creation-v3/art/takes-760.png",
+        "docs/evidence/creation-v3/art/checks.json"
+      ],
+      "creation_method": "Built-in image_gen; exact underlying model not exposed by tool",
+      "authorization": "User reply 你来解决 to explicit five-illustration generation question, 2026-09-09",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "source_sha256": "93af4dfeebf11a1cd1cda42665b3368441148e01bcccd4742ed9e6ef7f3f64a8"
+    },
+    {
+      "asset_id": "ART-E03",
+      "purpose": "剪辑页尚无已采用内容",
+      "target_repo_path": "static/assets/movie/empty-edit.webp",
+      "brief_file": "美术配套/制作文本/ART-E03-empty-edit.txt",
+      "status": "implemented_visual_checked",
+      "mandatory_visual_delivery": true,
+      "model_generation_authorized": true,
+      "aspect_ratio": "3:2",
+      "source_master": "docs/art-masters/creation-v3/ART-E03.png",
+      "web_file_sha256": "44af938dbb632fdfd76fc162e69d37cb88e0a6e408c6407bca06056a2eba79e0",
+      "review_evidence": [
+        "docs/evidence/creation-v3/art/edit-1440.png",
+        "docs/evidence/creation-v3/art/edit-760.png",
+        "docs/evidence/creation-v3/art/checks.json"
+      ],
+      "creation_method": "Built-in image_gen; exact underlying model not exposed by tool",
+      "authorization": "User reply 你来解决 to explicit five-illustration generation question, 2026-09-09",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "source_sha256": "c582cc2df7d89f5d43d4f46bb96ee85a9d86a5daef17749bc8888c983d3ed1d7"
+    }
+  ]
+}

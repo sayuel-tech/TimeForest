@@ -1,0 +1,32 @@
+[
+  {
+    "id": "ART-A01",
+    "prompt": "Create one original TimeForest website editorial watercolor illustration, landscape 3:2, 1536x1024. Match our existing art: delicate realistic ink details and layered transparent watercolor collage on pale warm ivory paper, muted forest gray-green, smoky blue and quiet ochre, soft irregular edges. Refined botanical/cinematic mood, low contrast perimeter, rich but restrained detail. No text, lettering, numbers, logos, watermark, UI, border, neon, flat vector icons or glossy 3D. This is a standalone finished image, no contact sheet. Subject: woodland writer's desk with open blank manuscript, fine pen and three loose deckle edged storyboard studies containing a misty forest path. Shaping a story into scenes. Motif fills central two thirds, balanced negative space. Distinct from portrait panels and vintage camera silhouette.",
+    "revision_prompt": "Image 1 is the edit target; Image 2 is STYLE REFERENCE ONLY, do not copy its people or panel composition. Keep the target's distinct main objects and artistic detail, but turn its dense edge-to-edge scene into an airy watercolor editorial vignette like Image 2. Reduce the surrounding woods/table clutter, soften dark mass, fade ALL perimeter areas organically into pale warm ivory paper with a generous 10-15 percent quiet paper margin. Main objects remain clear at card thumbnail size, central about 70 percent. Keep manuscript/pen/studies for writing desk OR slate/camera/miniature set for film studio as applicable. No words, symbols, logos or UI. Landscape 1536x1024 3:2. Finished delicate watercolor and torn-paper mood, not a rectangular photo sitting on paper, no hard frame.",
+    "source_master": "docs/art-masters/creation-v3/ART-A01.png"
+  },
+  {
+    "id": "ART-A02",
+    "prompt": "Create one original TimeForest website editorial watercolor illustration, landscape 3:2, 1536x1024. Match our existing art: delicate realistic ink details and layered transparent watercolor collage on pale warm ivory paper, muted forest gray-green, smoky blue and quiet ochre, soft irregular edges. Refined botanical/cinematic mood, low contrast perimeter, rich but restrained detail. No text, lettering, numbers, logos, watermark, UI, border, neon, flat vector icons or glossy 3D. This is a standalone finished image, no contact sheet. Subject: a small quiet movie set on a woodland edge, an unlettered slate, prepared scene studies on a wooden surface, subtle filming equipment and miniature woodland set softly lit through mist. Turning prepared scenes into a film. Motif fills central two thirds, no people, no river or flowing filmstrip.",
+    "revision_prompt": "Image 1 is the edit target; Image 2 is STYLE REFERENCE ONLY, do not copy its people or panel composition. Keep the target's distinct main objects and artistic detail, but turn its dense edge-to-edge scene into an airy watercolor editorial vignette like Image 2. Reduce the surrounding woods/table clutter, soften dark mass, fade ALL perimeter areas organically into pale warm ivory paper with a generous 10-15 percent quiet paper margin. Main objects remain clear at card thumbnail size, central about 70 percent. Keep manuscript/pen/studies for writing desk OR slate/camera/miniature set for film studio as applicable. No words, symbols, logos or UI. Landscape 1536x1024 3:2. Finished delicate watercolor and torn-paper mood, not a rectangular photo sitting on paper, no hard frame.",
+    "source_master": "docs/art-masters/creation-v3/ART-A02.png"
+  },
+  {
+    "id": "ART-E01",
+    "prompt": "Create one original TimeForest website editorial watercolor illustration, landscape 3:2, 1536x1024. Match our existing art: delicate realistic ink details and layered transparent watercolor collage on pale warm ivory paper, muted forest gray-green, smoky blue and quiet ochre, soft irregular edges. Refined botanical/cinematic mood, low contrast perimeter, rich but restrained detail. No text, lettering, numbers, logos, watermark, UI, border, neon, flat vector icons or glossy 3D. This is a standalone finished image, no contact sheet. Compact empty-state illustration: a single open blank manuscript leaf, slender pen and tiny botanical sprig. Almost invisible woodland pigment wash on one corner. Most of paper empty, motif central with broad blank ivory margins. Calm invitation to begin, light visual density, no finished storyboard.",
+    "revision_prompt": null,
+    "source_master": "docs/art-masters/creation-v3/ART-E01.png"
+  },
+  {
+    "id": "ART-E02",
+    "prompt": "Create one original TimeForest website editorial watercolor illustration, landscape 3:2, 1536x1024. Match our existing art: delicate realistic ink details and layered transparent watercolor collage on pale warm ivory paper, muted forest gray-green, smoky blue and quiet ochre, soft irregular edges. Refined botanical/cinematic mood, low contrast perimeter, rich but restrained detail. No text, lettering, numbers, logos, watermark, UI, border, neon, flat vector icons or glossy 3D. This is a standalone finished image, no contact sheet. Compact empty-state illustration: small unlettered slate next to an empty deckle-edged scene study on a lightly indicated wood ledge. Faint distant forest wash. Small central motif with generous blank ivory perimeter. Waiting for first take, no loading or warning symbols, no fake video.",
+    "revision_prompt": null,
+    "source_master": "docs/art-masters/creation-v3/ART-E02.png"
+  },
+  {
+    "id": "ART-E03",
+    "prompt": "Create one original TimeForest website editorial watercolor illustration, landscape 3:2, 1536x1024. Match our existing art: delicate realistic ink details and layered transparent watercolor collage on pale warm ivory paper, muted forest gray-green, smoky blue and quiet ochre, soft irregular edges. Refined botanical/cinematic mood, low contrast perimeter, rich but restrained detail. No text, lettering, numbers, logos, watermark, UI, border, neon, flat vector icons or glossy 3D. This is a standalone finished image, no contact sheet. Compact empty-state illustration: two short separate photographic film studies awaiting arrangement on warm paper, each showing faint woodland light, tiny connecting paper tab and a restrained fern sprig. Small central motif with broad blank ivory margins. Delicate authentic perforated film material, no long winding ribbon, no river, no timeline UI.",
+    "revision_prompt": null,
+    "source_master": "docs/art-masters/creation-v3/ART-E03.png"
+  }
+]

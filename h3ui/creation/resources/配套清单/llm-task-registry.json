@@ -1,0 +1,177 @@
+{
+  "version": "tf-authoring/2.9",
+  "runtime_status": "integrated_fake_checked_real_models_not_called",
+  "tasks": [
+    {
+      "contract_key": "screenplay_draft",
+      "task_type": "screenplay_draft",
+      "prompt_mode": null,
+      "common_template": "运行模板/common.txt",
+      "task_template": "运行模板/screenplay_draft.txt",
+      "schema_file": "数据契约/llm/screenplay_draft.schema.json",
+      "example_file": "离线样例/LLM/screenplay_draft.ok.json",
+      "body_selectors": [
+        "payload.title",
+        "payload.blocks[].heading",
+        "payload.blocks[].text"
+      ],
+      "format_repair_template": "运行模板/format_repair.txt",
+      "source_design_file": "LLM内部模板草案/02-完整剧本.md"
+    },
+    {
+      "contract_key": "asset_analysis",
+      "task_type": "asset_analysis",
+      "prompt_mode": null,
+      "common_template": "运行模板/common.txt",
+      "task_template": "运行模板/asset_analysis.txt",
+      "schema_file": "数据契约/llm/asset_analysis.schema.json",
+      "example_file": "离线样例/LLM/asset_analysis.ok.json",
+      "body_selectors": [
+        "payload.needs[]"
+      ],
+      "format_repair_template": "运行模板/format_repair.txt",
+      "source_design_file": "LLM内部模板草案/03-资产分析.md"
+    },
+    {
+      "contract_key": "asset_screenplay",
+      "task_type": "asset_screenplay",
+      "prompt_mode": null,
+      "common_template": "运行模板/common.txt",
+      "task_template": "运行模板/asset_screenplay.txt",
+      "schema_file": "数据契约/llm/asset_screenplay.schema.json",
+      "example_file": "离线样例/LLM/asset_screenplay.ok.json",
+      "body_selectors": [
+        "payload.blocks[].heading",
+        "payload.blocks[].text"
+      ],
+      "format_repair_template": "运行模板/format_repair.txt",
+      "source_design_file": "LLM内部模板草案/04-资产完整版.md"
+    },
+    {
+      "contract_key": "storyboard",
+      "task_type": "storyboard",
+      "prompt_mode": null,
+      "common_template": "运行模板/common.txt",
+      "task_template": "运行模板/storyboard.txt",
+      "schema_file": "数据契约/llm/storyboard.schema.json",
+      "example_file": "离线样例/LLM/storyboard.ok.json",
+      "body_selectors": [
+        "payload.shots[].text"
+      ],
+      "format_repair_template": "运行模板/format_repair.txt",
+      "source_design_file": "LLM内部模板草案/05-分镜创作.md"
+    },
+    {
+      "contract_key": "segment_plan",
+      "task_type": "segment_plan",
+      "prompt_mode": null,
+      "common_template": "运行模板/common.txt",
+      "task_template": "运行模板/segment_plan.txt",
+      "schema_file": "数据契约/llm/segment_plan.schema.json",
+      "example_file": "离线样例/LLM/segment_plan.ok.json",
+      "body_selectors": [
+        "payload.segments[].text"
+      ],
+      "format_repair_template": "运行模板/format_repair.txt",
+      "source_design_file": "LLM内部模板草案/06-生成片段.md"
+    },
+    {
+      "contract_key": "image_observation",
+      "task_type": "image_observation",
+      "prompt_mode": null,
+      "common_template": "运行模板/common.txt",
+      "task_template": "运行模板/image_observation.txt",
+      "schema_file": "数据契约/llm/image_observation.schema.json",
+      "example_file": "离线样例/LLM/image_observation.ok.json",
+      "body_selectors": [
+        "payload.observations[]"
+      ],
+      "format_repair_template": "运行模板/format_repair.txt",
+      "source_design_file": "LLM内部模板草案/10-图片观察.md"
+    },
+    {
+      "contract_key": "h3_prompt.full",
+      "task_type": "h3_prompt",
+      "prompt_mode": "full",
+      "common_template": "运行模板/common.txt",
+      "task_template": "运行模板/h3_prompt.full.txt",
+      "schema_file": "数据契约/llm/h3_prompt.full.schema.json",
+      "example_file": "离线样例/LLM/h3_prompt.full.ok.json",
+      "body_selectors": [
+        "payload.prompt_text"
+      ],
+      "format_repair_template": "运行模板/format_repair.txt",
+      "source_design_file": "LLM内部模板草案/07-H3正式Prompt.md"
+    },
+    {
+      "contract_key": "h3_prompt.structured",
+      "task_type": "h3_prompt",
+      "prompt_mode": "structured",
+      "common_template": "运行模板/common.txt",
+      "task_template": "运行模板/h3_prompt.structured.txt",
+      "schema_file": "数据契约/llm/h3_prompt.structured.schema.json",
+      "example_file": "离线样例/LLM/h3_prompt.structured.ok.json",
+      "body_selectors": [
+        "payload.fields"
+      ],
+      "format_repair_template": "运行模板/format_repair.txt",
+      "source_design_file": "LLM内部模板草案/07-H3正式Prompt.md"
+    },
+    {
+      "contract_key": "local_rewrite",
+      "task_type": "local_rewrite",
+      "prompt_mode": null,
+      "common_template": "运行模板/common.txt",
+      "task_template": "运行模板/local_rewrite.txt",
+      "schema_file": "数据契约/llm/local_rewrite.schema.json",
+      "example_file": "离线样例/LLM/local_rewrite.ok.json",
+      "body_selectors": [
+        "payload.replacement_text"
+      ],
+      "format_repair_template": "运行模板/format_repair.txt",
+      "source_design_file": "LLM内部模板草案/08-局部改写.md"
+    },
+    {
+      "contract_key": "change_impact",
+      "task_type": "change_impact",
+      "prompt_mode": null,
+      "common_template": "运行模板/common.txt",
+      "task_template": "运行模板/change_impact.txt",
+      "schema_file": "数据契约/llm/change_impact.schema.json",
+      "example_file": "离线样例/LLM/change_impact.ok.json",
+      "body_selectors": [
+        "payload.impacts[]"
+      ],
+      "format_repair_template": "运行模板/format_repair.txt",
+      "source_design_file": "LLM内部模板草案/09-修改影响分析.md"
+    },
+    {
+      "contract_key": "reference_image",
+      "task_type": "reference_image",
+      "prompt_mode": null,
+      "common_template": "运行模板/common.txt",
+      "task_template": "运行模板/reference_image.txt",
+      "schema_file": "数据契约/llm/reference_image.schema.json",
+      "example_file": "离线样例/LLM/reference_image.ok.json",
+      "body_selectors": [
+        "payload.image_prompt_text"
+      ],
+      "format_repair_template": "运行模板/format_repair.txt",
+      "source_design_file": "LLM内部模板草案/11-参考画面创作.md"
+    },
+    {
+      "contract_key": "context_summary",
+      "task_type": "context_summary",
+      "prompt_mode": null,
+      "common_template": "运行模板/common.txt",
+      "task_template": "运行模板/context_summary.txt",
+      "schema_file": "数据契约/llm/context_summary.schema.json",
+      "example_file": "离线样例/LLM/context_summary.ok.json",
+      "body_selectors": [
+        "payload.summary_text"
+      ],
+      "format_repair_template": "运行模板/format_repair.txt",
+      "source_design_file": "LLM内部模板草案/12-上下文摘要与格式修复.md"
+    }
+  ]
+}

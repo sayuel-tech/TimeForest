@@ -1,3 +1,4 @@
+import {updateStatusRegion} from '../../ui/status-region.js';
 import * as ui from "../../ui/primitives.js";
 import {
   uploadToLibrary,
@@ -20,12 +21,12 @@ export function showUploads(files, metadata, after, target = {}) {
   const rows = dialog.querySelector(".library-upload-rows");
   function draw() {
     if (!dialog.open) return;
-    rows.innerHTML = state
+    updateStatusRegion(rows,state
       .map(
-        (row) =>
-          `<div class="library-upload-row"><strong>${ui.esc(row.file.name)}</strong><small>${ui.esc(row.status)}</small><progress max="1" value="${row.progress}" aria-label="${ui.esc(row.file.name)}导入进度"></progress></div>`,
+        (row,index) =>
+          `<div class="library-upload-row" data-view-key="upload:${index}"><strong>${ui.esc(row.file.name)}</strong><small>${ui.esc(row.status)}</small><progress max="1" value="${row.progress}" aria-label="${ui.esc(row.file.name)}导入进度"></progress></div>`,
       )
-      .join("");
+      .join(""));
   }
   function close() {
     controller.abort();

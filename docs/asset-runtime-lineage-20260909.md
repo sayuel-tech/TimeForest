@@ -28,7 +28,7 @@
 - `tests/asset_lineage_ui_fixture.py`已扩展为五模式×宽窄10例；真实临时API检查详情/选择器展开、预览取消、固定版本/来源链接、下游错误重试、未入库项目结果定位及无横向溢出。浏览器验证链接身份，不重跑所有项目生成流程。
 - 语法、`node tools/check_experience_contract.mjs`、差异检查及上下文record/check通过。准入结构仍保留历史未验范围，不能当作全站体验认证。
 
-证据与before备份：`<本地维护归档>`。仅隔离合成数据，未使用真实作品。撤回时对照before仅撤本批源代码/文档差异及新增source_lineage/generation_descendants模块，不回滚整个脏工作树；无生产数据需要撤回。
+证据与before备份：`<本地维护路径>`。仅隔离合成数据，未使用真实作品。撤回时对照before仅撤本批源代码/文档差异及新增source_lineage/generation_descendants模块，不回滚整个脏工作树；无生产数据需要撤回。
 
 ## 后续接入约束
 

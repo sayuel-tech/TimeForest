@@ -1,3 +1,4 @@
+import {updateStatusRegion} from '../../ui/status-region.js';
 import * as ui from "../../ui/primitives.js";
 import {
   libraryApi,
@@ -52,8 +53,7 @@ export function mountMediaTools(root, asset, media, signal) {
         task,
         (t) => {
           if (d.open)
-            d.querySelector("#derive-task").innerHTML =
-              `<p>${ui.esc(t.note)}</p><progress max="1" value="${t.progress}"></progress>`;
+            updateStatusRegion(d.querySelector("#derive-task"),`<p>${ui.esc(t.note)}</p><progress max="1" value="${t.progress}"></progress>`);
         },
         signal,
       );

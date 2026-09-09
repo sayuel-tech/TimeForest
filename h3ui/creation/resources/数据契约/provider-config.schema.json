@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "provider-config",
+  "type": "object",
+  "properties": {
+    "config_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "display_name": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "provider_kind": {
+      "type": "string",
+      "enum": [
+        "lm_studio",
+        "deepseek"
+      ]
+    },
+    "api_style": {
+      "type": "string",
+      "enum": [
+        "chat",
+        "responses"
+      ]
+    },
+    "base_url": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "model_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "loaded_instance_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "credential_ref": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "structured_mode": {
+      "type": "string",
+      "enum": [
+        "json_schema",
+        "json_object"
+      ]
+    },
+    "vision": {
+      "type": "string",
+      "enum": [
+        "supported",
+        "unsupported",
+        "unknown"
+      ]
+    },
+    "max_output_tokens": {
+      "anyOf": [
+        {
+          "type": "integer",
+          "minimum": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "auto_retry_inference": {
+      "const": false
+    },
+    "enabled": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "config_id",
+    "display_name",
+    "provider_kind",
+    "api_style",
+    "base_url",
+    "model_id",
+    "loaded_instance_id",
+    "credential_ref",
+    "structured_mode",
+    "vision",
+    "max_output_tokens",
+    "auto_retry_inference",
+    "enabled"
+  ],
+  "additionalProperties": false
+}

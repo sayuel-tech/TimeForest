@@ -1,6 +1,6 @@
 # 桌面启动、停止与重启菜单
 
-双击 `<本地用户目录>`，由仓库 `tools/director-menu.cmd` 调用 `tools/director_service.ps1`。菜单为：
+双击 `<本地维护路径>`，由仓库 `tools/director-menu.cmd` 调用 `tools/director_service.ps1`。菜单为：
 
 1. 启动导演台：已有本目录服务时只打开页面；否则使用现有 `.venv/Scripts/python.exe` 启动 `run.py`，等待健康响应后打开页面。
 2. 停止导演台（保留程序和数据）：按用户澄清，“卸载”指停止服务，不删除任何文件或数据。仅停止准确识别的导演台监听进程，ComfyUI独立运行。

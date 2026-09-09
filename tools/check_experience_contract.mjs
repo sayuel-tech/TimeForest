@@ -5,7 +5,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 // Structural admission only: declarations and existing files cannot prove UX quality.
 const baselineIds = ['swap', 'image_story', 'text_story', 'image_assets', 'video_assembly'];
 export const scenarios = ['navigation', 'import', 'parameters', 'save', 'generation', 'results', 'recovery', 'async', 'visual', 'assetLifecycle', 'prompts'];
-const sharedIds = ['chrome', 'settings', 'models', 'workbench', 'actions', 'references', 'timing', 'errors', 'candidates', 'results', 'playback', 'async', 'transfers', 'taskStates', 'assetSelection', 'assetOrigins', 'assetUsage', 'assetCollection', 'promptEditing', 'promptCollection', 'promptRecords', 'modal'];
+const sharedIds = ['chrome', 'settings', 'models', 'workbench', 'actions', 'references', 'timing', 'errors', 'candidates', 'results', 'playback', 'async', 'transfers', 'taskStates', 'assetSelection', 'assetOrigins', 'assetUsage', 'assetCollection', 'promptEditing', 'promptCollection', 'promptRecords', 'modal', 'refresh', 'viewState', 'statusRegions', 'libraryNavigation', 'designScale'];
 const nonempty = value => typeof value === 'string' && value.trim().length > 0;
 
 export function validateContract(contract, registeredIds, fileExists) {
@@ -35,6 +35,10 @@ export function validateContract(contract, registeredIds, fileExists) {
     }
     for (const key of scenarios) {
       const check = mode?.scenarios?.[key];
+      if(check?.status==='pending'){
+        requireValue(false,`${id}/${key}: 待完成，不能通过体验准入：${check.reason||'未说明缺口'}`);
+        continue;
+      }
       requireValue(['checked', 'not-applicable'].includes(check?.status), `${id}/${key}: 缺少场景验收记录`);
       requireValue(nonempty(check?.reason), `${id}/${key}: 缺少实际结果或不适用依据`);
       if (check?.status === 'checked') {
@@ -63,6 +67,7 @@ async function main() {
   const registry = await import(pathToFileURL(resolve(root, 'static/studio/app/mode-registry.js')));
   registry.setImageAssetsEnabled(true);
   registry.setAssemblyEnabled(1);
+  registry.setCreationEnabled(1);
   const contract = JSON.parse(readFileSync(resolve(root, 'docs/frontend/experience-contract.json'), 'utf8'));
   const result = validateContract(contract, registry.listModes().map(mode => mode.id), path => repositoryFileExists(root, path));
   if (result.errors.length) {

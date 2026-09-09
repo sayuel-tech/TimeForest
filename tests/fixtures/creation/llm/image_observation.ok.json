@@ -1,0 +1,21 @@
+{
+  "contract_version": "tf-authoring/2.9",
+  "task_type": "image_observation",
+  "status": "ok",
+  "payload": {
+    "observations": [
+      {
+        "reference_key": "img_001",
+        "visible_facts": [
+          "人物穿灰色外套。"
+        ],
+        "uncertainties": [
+          "远处衣服细节看不清。"
+        ]
+      }
+    ]
+  },
+  "notes": [],
+  "issues": [],
+  "questions": []
+}

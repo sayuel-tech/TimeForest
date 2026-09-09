@@ -1,0 +1,14 @@
+{
+  "model_id": "deepseek-v4.1-flash-expires-on-0910",
+  "source": "user_supplied_model_id_and_referenced_article",
+  "source_url": "https://www.cnblogs.com/vibecodinghuanzhe/p/22894206",
+  "reported_end_date": "2026-09-10",
+  "cutoff_time": null,
+  "cutoff_timezone": null,
+  "date_is_hard_disable": false,
+  "notice": "资料称9月10日结束内测，具体时刻与时区未核实；可编辑模型标识，不自动改模。",
+  "vision_reported": "native_multimodal_reported",
+  "vision_wire_compatibility": "unverified_for_this_model",
+  "pricing_hardcoded": false,
+  "generation_test_performed": false
+}

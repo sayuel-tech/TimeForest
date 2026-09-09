@@ -1,0 +1,40 @@
+[
+  {
+    "passed": true,
+    "width": 1262,
+    "checks": [
+      "library branch/create/read/edit-cancel",
+      "empty model branch can be managed",
+      "swap: common tools/cancel/apply/real save/auto collect",
+      "library picker preview/replace/fixed version",
+      "image_story: common tools/cancel/apply/real save/auto collect",
+      "explicit field bundle/full mode/unchecked fields preserved",
+      "favorite saved record without duplicate",
+      "text_story: common tools/cancel/apply/real save/auto collect",
+      "unsupported fields explained/cancel unchanged",
+      "image_assets: common tools/cancel/apply/real save/auto collect",
+      "video_assembly: common tools/cancel/apply/real save/auto collect"
+    ],
+    "case": "prompts-1280",
+    "evidence_run": "prompt-final"
+  },
+  {
+    "passed": true,
+    "width": 742,
+    "checks": [
+      "library branch/create/read/edit-cancel",
+      "empty model branch can be managed",
+      "swap: common tools/cancel/apply/real save/auto collect",
+      "library picker preview/replace/fixed version",
+      "image_story: common tools/cancel/apply/real save/auto collect",
+      "explicit field bundle/full mode/unchecked fields preserved",
+      "favorite saved record without duplicate",
+      "text_story: common tools/cancel/apply/real save/auto collect",
+      "unsupported fields explained/cancel unchanged",
+      "image_assets: common tools/cancel/apply/real save/auto collect",
+      "video_assembly: common tools/cancel/apply/real save/auto collect"
+    ],
+    "case": "prompts-760",
+    "evidence_run": "prompt-final"
+  }
+]

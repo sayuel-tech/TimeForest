@@ -1,3 +1,7 @@
+import {snapshotChange} from '../../core/snapshot-update.js';
+import {projectContent,mergeProjectRuntime,acceptProjectRevision} from '../../contracts/project-refresh.js';
+import {workspaceViewState} from '../../ui/workspace-view-state.js';
+import {updateStatusRegion} from '../../ui/status-region.js';
 import {addRecordButton,recordSource} from '../../features/prompt-library/records.js';
 import {promptCollectionNotice} from '../../features/prompt-library/collection.js';
 import {bindAssemblyPrompts} from '../../features/prompt-library/adapters.js';
@@ -42,7 +46,8 @@ export function mountWorkspace(root,project,catalog){
   if(project.assembly_contract_version!==1||catalog.assembly_contract_version!==1)throw new Error('视频接续后台尚未更新，请重启导演台后刷新。');
   if(project.assembly_track_version!==1||catalog.assembly_track_version!==1)throw new Error('当前后台尚未加载视频轨道，请在任务结束后重启导演台并刷新。');
   const session={project:structuredClone(project),version:0,dirty:false,working:false,disposed:false};
-  let step=0,clipId=activeClips(project)[0]?.id,extensionId=null,viewRun=null,error=null,polling=false,dialogBusy=false;
+  let step=0,clipId=activeClips(project)[0]?.id,extensionId=null,viewRun=null,error=null,polling=false,dialogBusy=false,pendingRefresh=false;
+  const viewState=workspaceViewState(root);
   const disposePlayers=bindMediaPlayers(root);
   const controller=new AbortController();const ctx={root,inspectorTab:'import',inspectorHidden:false};
   const sourceLocation=sourceTarget(project);
@@ -94,6 +99,7 @@ export function mountWorkspace(root,project,catalog){
       (r.error?errorFeedback({message:r.error,kind:r.error_kind||'website'}):'')+(ACTIVE.has(r.state)?`<div class="row">${(r.state==='unknown'?['recover','close']:['stop']).map(a=>`<button data-control="${a}" data-run="${r.id}">${{recover:'查询恢复',close:'结束等待',stop:'停止任务'}[a]}</button>`).join('')}</div>`:'')+'</div>';
   }
   function render(){
+    const restoreView=viewState.beforeRender(JSON.stringify([p().id,step,clipId,extensionId,viewRun]));
     if(session.disposed)return;
     const c=clip(),e=extension(),locked=busy(),disabled=locked?'disabled':'',draftDisabled=session.working?'disabled':'';
     clipId=c?.id;
@@ -127,7 +133,7 @@ export function mountWorkspace(root,project,catalog){
     root.innerHTML=header+nav+(catalog.assembly_reference_version!==1?errorFeedback({kind:"website",message:"当前后台尚未加载续接参考素材能力，请在任务结束后重启导演台并刷新。"}):'')+`<div data-error>${error?errorFeedback(error):''}</div>`+workbench({rail,canvas:`<div class="assembly-content">${canvas}</div>`,inspector,kind:'assembly-desk'})+workspaceActions({support:`<button class="quiet" data-previous ${step===0?'disabled':''}>返回上一步</button><small data-save-state role="status">${draftStatus(session)}</small><button class="quiet" data-save ${session.working?'disabled':''}>保存草稿</button><button class="quiet" data-reload>刷新状态</button>`,actions:`${step===0?`<button data-direct ${!c?'disabled':''}>直接拼接导出</button>`:''}<button data-next class="primary" ${step===0&&!c?'disabled':''}>${step===0?'下一步：续接与挑选':step===1?'拼接导出':'返回视频与排序'}</button>`});
     asyncStatus.render();
     showSourceNavigation(root,sourceLocation);
-    bindWorkspaceSteps(root);bindWorkbench(ctx);bindErrorFeedback(root);bind(c,e,r);bindAssemblyPrompts({root,session,extension:e,changed:setDirty,render});disposePlayers.refresh();
+    bindWorkspaceSteps(root);bindWorkbench(ctx);bindErrorFeedback(root);bind(c,e,r);bindAssemblyPrompts({root,session,extension:e,changed:setDirty,render});restoreView();disposePlayers.refresh();
     promptCollectionNotice(root,session);
     if(r)addRecordButton(root.querySelector('[data-ingest]')||root.querySelector('[data-play-tail]'),{path:'/records/'+p().id+'?run='+encodeURIComponent(r.id),signal:controller.signal,apply:e?row=>{if(session.disposed||extension()!==e||session.working)throw new Error('目标已变化或正在操作，请重新打开');e.prompt=row.content.text;recordSource(e,"prompt",row);setDirty();render();}:null});
   }
@@ -181,22 +187,23 @@ export function mountWorkspace(root,project,catalog){
     request:(path,method,body,signal)=>api(path,method,body,signal),
     receive(next){
       if(session.disposed||session.working||next.revision<p().revision)return;
-      const changed=next.revision!==p().revision||next.busy!==p().busy;
-      if(!changed)return;
-      if(!canReplaceDraft(session,root)||dialogBusy){
-        // Only execution facts merge while editing. Keep draft object identities and revision.
-        p().busy=next.busy;p().assembly.runs=next.assembly.runs;
+      const change=pendingRefresh?'content':snapshotChange(p(),next,projectContent);
+      if(change==='none')return;
+      if(change==='status'||!canReplaceDraft(session,root)||dialogBusy){
+        pendingRefresh=change==='content';
+        mergeProjectRuntime(p(),next);
+        if(change==='status'&&canReplaceDraft(session,root)&&!dialogBusy)acceptProjectRevision(p(),next);
         root.querySelectorAll('[data-assembly-run-state]').forEach(box=>{
           const run=next.assembly.runs.find(r=>r.id===box.dataset.assemblyRunState);
-          if(run&&!box.contains(document.activeElement))box.outerHTML=runView(run);
+          if(run){const holder=document.createElement('template');holder.innerHTML=runView(run);updateStatusRegion(box,holder.content.firstElementChild.innerHTML);}
         });
         return;
       }
-      session.project=next;
+      pendingRefresh=false;session.project=next;
       render();
     },
     connection:asyncStatus.connection,
     emit(){},
   },()=>root.querySelectorAll('[data-clock]').forEach(el=>el.textContent=ui.elapsed(Number(el.dataset.clock),el.dataset.clockEnd?Number(el.dataset.clockEnd):null)));
-  return {session,saveBeforeLeave:async()=>{await save();return !session.dirty;},dispose(){session.disposed=true;controller.abort();stopWatch();disposePlayers();root.querySelectorAll('video').forEach(v=>{v.pause();v.removeAttribute('src');v.load();});}};
+  return {session,saveBeforeLeave:async()=>{await save();return !session.dirty;},dispose(){viewState.dispose();session.disposed=true;controller.abort();stopWatch();disposePlayers();root.querySelectorAll('video').forEach(v=>{v.pause();v.removeAttribute('src');v.load();});}};
 }

@@ -1,0 +1,256 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "llm-request-context",
+  "type": "object",
+  "properties": {
+    "contract_version": {
+      "const": "tf-authoring/2.9"
+    },
+    "task_type": {
+      "type": "string",
+      "enum": [
+        "asset_analysis",
+        "asset_screenplay",
+        "change_impact",
+        "context_summary",
+        "h3_prompt",
+        "image_observation",
+        "local_rewrite",
+        "reference_image",
+        "screenplay_draft",
+        "segment_plan",
+        "storyboard"
+      ]
+    },
+    "prompt_mode": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "full",
+            "structured"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "user_instruction": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "allowed_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "allowed_write_fields": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "target": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "layer": {
+          "type": "string",
+          "enum": [
+            "intent",
+            "screenplay",
+            "asset_bindings",
+            "asset_screenplay",
+            "storyboard",
+            "segment",
+            "visual_references",
+            "prompt"
+          ]
+        },
+        "target_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "project_id",
+        "layer",
+        "target_ids"
+      ],
+      "additionalProperties": false
+    },
+    "base_content_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "source_bundle_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "materials": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "reference_key": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "text",
+              "image_observation",
+              "image",
+              "capability",
+              "neighbor"
+            ]
+          },
+          "content": {
+            "type": "string",
+            "minLength": 0
+          },
+          "media": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "media_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "\\S"
+                  },
+                  "version": {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "\\S"
+                  },
+                  "content_hash": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  }
+                },
+                "required": [
+                  "media_id",
+                  "version",
+                  "content_hash"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "reference_key",
+          "kind",
+          "content",
+          "media"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    },
+    "budget": {
+      "type": "object",
+      "properties": {
+        "context_tokens": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "output_tokens": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "batch_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "batch_index": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "context_tokens",
+        "output_tokens",
+        "batch_id",
+        "batch_index"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "contract_version",
+    "task_type",
+    "prompt_mode",
+    "user_instruction",
+    "allowed_refs",
+    "allowed_write_fields",
+    "target",
+    "base_content_hash",
+    "source_bundle_ids",
+    "materials",
+    "budget"
+  ],
+  "additionalProperties": false
+}

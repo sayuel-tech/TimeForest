@@ -1,0 +1,128 @@
+[
+  {
+    "passed": true,
+    "mode": "swap",
+    "step": 0,
+    "width": 1262,
+    "settings": true,
+    "regions": 2,
+    "case": "swap-0-1280-settings"
+  },
+  {
+    "passed": true,
+    "mode": "swap",
+    "step": 0,
+    "width": 742,
+    "settings": true,
+    "regions": 2,
+    "case": "swap-0-760-settings"
+  },
+  {
+    "passed": true,
+    "mode": "image_story",
+    "step": 0,
+    "width": 1262,
+    "settings": true,
+    "regions": 2,
+    "case": "image_story-0-1280-settings"
+  },
+  {
+    "passed": true,
+    "mode": "image_story",
+    "step": 0,
+    "width": 742,
+    "settings": true,
+    "regions": 2,
+    "case": "image_story-0-760-settings"
+  },
+  {
+    "passed": true,
+    "mode": "text_story",
+    "step": 0,
+    "width": 1262,
+    "settings": true,
+    "regions": 2,
+    "case": "text_story-0-1280-settings"
+  },
+  {
+    "passed": true,
+    "mode": "text_story",
+    "step": 0,
+    "width": 742,
+    "settings": true,
+    "regions": 2,
+    "case": "text_story-0-760-settings"
+  },
+  {
+    "passed": true,
+    "mode": "image_assets",
+    "step": 0,
+    "width": 1262,
+    "settings": true,
+    "regions": 2,
+    "case": "image_assets-0-1280-settings"
+  },
+  {
+    "passed": true,
+    "mode": "image_assets",
+    "step": 0,
+    "width": 742,
+    "settings": true,
+    "regions": 2,
+    "case": "image_assets-0-760-settings"
+  },
+  {
+    "passed": true,
+    "mode": "video_assembly",
+    "step": 0,
+    "width": 1262,
+    "settings": true,
+    "regions": 2,
+    "case": "video_assembly-0-1280-settings"
+  },
+  {
+    "passed": true,
+    "mode": "video_assembly",
+    "step": 0,
+    "width": 742,
+    "settings": true,
+    "regions": 2,
+    "case": "video_assembly-0-760-settings"
+  },
+  {
+    "passed": true,
+    "mode": "authoring",
+    "step": 0,
+    "width": 1262,
+    "settings": true,
+    "regions": 2,
+    "case": "authoring-0-1280-settings"
+  },
+  {
+    "passed": true,
+    "mode": "authoring",
+    "step": 0,
+    "width": 742,
+    "settings": true,
+    "regions": 2,
+    "case": "authoring-0-760-settings"
+  },
+  {
+    "passed": true,
+    "mode": "movie",
+    "step": 0,
+    "width": 1262,
+    "settings": true,
+    "regions": 2,
+    "case": "movie-0-1280-settings"
+  },
+  {
+    "passed": true,
+    "mode": "movie",
+    "step": 0,
+    "width": 742,
+    "settings": true,
+    "regions": 2,
+    "case": "movie-0-760-settings"
+  }
+]

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "status": "mapping_example_not_active",
+  "profiles": [
+    {
+      "profile_id": "movie.tail.dance_split",
+      "recipe_id": "dance_split",
+      "adapter_id": "assembly.dance_split",
+      "source_path": "h3ui/studio_sources/dance.json",
+      "source_sha256": null,
+      "prompt_mode": "structured",
+      "supported_input_kind": "external_decoded_av",
+      "frame_count_from_source": 22,
+      "source_commit": "6a8de5bcd49d8550cf98b746e7c23a499926372a",
+      "enabled": false
+    },
+    {
+      "profile_id": "movie.tail.official_image",
+      "recipe_id": "official_image",
+      "adapter_id": "assembly.official_image",
+      "source_path": "h3ui/studio_sources/official_r2v.json",
+      "source_sha256": null,
+      "prompt_mode": "structured",
+      "supported_input_kind": "external_decoded_av",
+      "frame_count_from_source": 22,
+      "source_commit": "6a8de5bcd49d8550cf98b746e7c23a499926372a",
+      "enabled": false
+    }
+  ],
+  "independent_generation_note": "由本机已适配recipe能力建立独立生成profile，不推定所有tail设置适用于独立生成。",
+  "policy": "不自动安装、不改现有参数、不复用旧service采用/失效逻辑，缺图阻止对应编译。"
+}

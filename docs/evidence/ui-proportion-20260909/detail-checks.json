@@ -1,0 +1,14 @@
+[
+  {
+    "passed": true,
+    "view": "detail",
+    "width": 1902,
+    "case": "detail-1920"
+  },
+  {
+    "passed": true,
+    "view": "detail",
+    "width": 742,
+    "case": "detail-760"
+  }
+]

@@ -46,7 +46,7 @@
 
 数据库image_projects/image_tasks/image_inputs/image_runs/image_outputs及image_changes与旧表并存。目录为data_v5/<pid>/image_inputs、image_runs；执行副本在Comfy输入目录time-forest-images/<run>。项目回收不会删除库原件。
 
-本次必要备份、隔离开发资料和执行账本位于<本地维护归档>。回退优先关闭image_assets_enabled或恢复代码；备份当前数据库后保留image_新表，禁止用旧库覆盖发布后新内容。
+本次必要备份、隔离开发资料和执行账本位于<本地维护路径>。回退优先关闭image_assets_enabled或恢复代码；备份当前数据库后保留image_新表，禁止用旧库覆盖发布后新内容。
 
 历史接入检查包括tests/test_image_studio.py中的关键行为、原保存门、JS语法及普通／窄屏页面查看，不作为阶段 B 复跑计数。阶段 B 的实际代码修复、相关隔离界面／保存／真实参数绑定检查及证据统一见[维护基线](maintenance-baseline.md)。真实推理、画质、模型组合、量化兼容、耗时、显存和最终用户体验不由这些非生成检查证明，仍待用户验证。
 

@@ -1,0 +1,10 @@
+[
+  {
+    "mode": "authoring",
+    "passed": true
+  },
+  {
+    "mode": "movie",
+    "passed": true
+  }
+]

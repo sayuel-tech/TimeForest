@@ -52,6 +52,12 @@ class TaskCenter:
         projects=self.st.store.list()+self.st.store.list(trash=True)
         seen=set()
         for p in projects:
+            if p['mode'] in ('authoring','movie'):
+                seen.update(j['id'] for j in jobs if j['project_id']==p['id'])
+                for job in p.get('creation_jobs',[]):
+                    if job['state'] not in ('queued','running','preparing','submitting','cancel_requested','submission_unknown'):continue
+                    rows.append(dict(kind='creation',id=job['job_id'],project=p['id'],name=p['name'],title=job['phase'],state='unknown' if job['state']=='submission_unknown' else job['state'],active=True,attention=job['state']=='submission_unknown',creation_mode=p['mode'],actions=(['recover','close'] if p['mode']=='movie' else ['close']) if job['state']=='submission_unknown' else ['stop'],url='#/p/'+p['id'],created=job['created'],updated=job['updated'],note=job.get('error') or job['phase']))
+                continue
             if p['mode']=='video_assembly':
                 seen.update(j['id'] for j in jobs if j['project_id']==p['id'])
                 for r in p['assembly']['runs']:
@@ -100,6 +106,15 @@ class TaskCenter:
     def action(self,body):
         if body.get('confirmed') is not True:raise Conflict('请先确认本次操作的范围与影响')
         kind,action=body.get('kind'),body.get('action');pid=body.get('project');rid=body.get('id')
+        if kind=='creation':
+            creation=current_app.config['CREATION'];project,job=creation.writing.find(rid,'creation_jobs')
+            if project['id']!=pid:raise ValueError('任务归属不一致')
+            if action not in ('stop','cancel','recover','close'):raise ValueError('不支持此操作')
+            if project['mode']=='movie':
+                if action in ('recover','close'):creation.movie.execution.resolve_unknown(rid,close=action=='close')
+                else:creation.movie.execution.cancel(rid)
+            else:creation.writing.cancel(rid)
+            return '任务状态已更新，原请求与制作记录保留'
         if kind=='assembly' and getattr(self,'assembly',None):
             self.assembly.control(pid,rid,action)
             return '任务状态已更新，历史结果保留'

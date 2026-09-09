@@ -1,0 +1,14 @@
+{
+  "authorized": false,
+  "note": "仅为未来用户明确授权时的记录结构；本文件不授予任何权限。",
+  "user_instruction_reference": null,
+  "operation": null,
+  "provider_config_id": null,
+  "model_id": null,
+  "project_id": null,
+  "target_ids": [],
+  "max_requests": 0,
+  "allow_retry": false,
+  "allowed_parameter_changes": [],
+  "expires_at": null
+}

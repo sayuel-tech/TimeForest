@@ -1,3 +1,5 @@
+import {snapshotChange} from './snapshot-update.js';
+import {projectContent,mergeProjectRuntime,acceptProjectRevision} from '../contracts/project-refresh.js';
 import {readStamp,currentRead,canReplaceDraft} from './async-state.js';
 import {api} from './api-client.js';
 import {singleFlight} from './single-flight.js';
@@ -21,9 +23,13 @@ export class ImageSession {
   }
   receive(p){
     if(this.disposed||p.id!==this.project.id||Number(p.revision)<Number(this.project.revision))return;
-    // Keep rendered task objects while editing; status-only arrays are not draft inputs.
-    if(canReplaceDraft(this,this.root)&&JSON.stringify(p)!==JSON.stringify(this.project)){this.project=p;this.emit();return true;}
-    this.project.runs=p.runs;this.project.outputs=p.outputs;this.project.busy=p.busy;
+    const change=this.pendingRefresh?'content':snapshotChange(this.project,p,projectContent);
+    if(change==='none')return false;
+    if(canReplaceDraft(this,this.root)&&change==='content'){this.pendingRefresh=false;this.project=p;this.emit();return true;}
+    this.pendingRefresh=change==='content';
+    this.project.runs=p.runs;this.project.outputs=p.outputs;
+    mergeProjectRuntime(this.project,p);
+    if(change==='status'&&canReplaceDraft(this,this.root))acceptProjectRevision(this.project,p);
     return false;
   }
   save(){return singleFlight(this,'pendingSave',async()=>{

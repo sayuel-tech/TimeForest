@@ -1,0 +1,58 @@
+[
+  {
+    "width": 1440,
+    "passed": true,
+    "scene": "home",
+    "images": 3,
+    "missing_art_fallback": true
+  },
+  {
+    "width": 1440,
+    "passed": true,
+    "scene": "story",
+    "images": 1,
+    "missing_art_fallback": true
+  },
+  {
+    "width": 1440,
+    "passed": true,
+    "scene": "takes",
+    "images": 1,
+    "missing_art_fallback": true
+  },
+  {
+    "width": 1440,
+    "passed": true,
+    "scene": "edit",
+    "images": 1,
+    "missing_art_fallback": true
+  },
+  {
+    "width": 760,
+    "passed": true,
+    "scene": "home",
+    "images": 3,
+    "missing_art_fallback": true
+  },
+  {
+    "width": 760,
+    "passed": true,
+    "scene": "story",
+    "images": 1,
+    "missing_art_fallback": true
+  },
+  {
+    "width": 760,
+    "passed": true,
+    "scene": "takes",
+    "images": 1,
+    "missing_art_fallback": true
+  },
+  {
+    "width": 760,
+    "passed": true,
+    "scene": "edit",
+    "images": 1,
+    "missing_art_fallback": true
+  }
+]

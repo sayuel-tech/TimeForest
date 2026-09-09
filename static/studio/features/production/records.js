@@ -1,3 +1,4 @@
+import {updateStatusRegion} from '../../ui/status-region.js';
 import {runTiming,runStatusRow} from '../../ui/run-timing.js';
 /** View feature; receives a project-scoped public workspace context. */
 export function createFeature(ctx) {
@@ -53,8 +54,7 @@ export function createFeature(ctx) {
   }
   function updateProgress() {
     if (ctx.$("#run-progress"))
-      ctx.$("#run-progress").innerHTML =
-        ctx.tab === "export" ? ctx.exportProgressCard() : progressCard();
+      updateStatusRegion(ctx.$("#run-progress"),ctx.tab === "export" ? ctx.exportProgressCard() : progressCard());
     ctx.updateClocks();
   }
   return {

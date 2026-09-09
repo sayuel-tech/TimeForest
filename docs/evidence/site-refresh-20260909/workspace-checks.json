@@ -1,0 +1,86 @@
+[
+  {
+    "passed": true,
+    "mode": "swap",
+    "checks": [
+      "identical poll",
+      "status patch/editor identity",
+      "changed content/disclosure",
+      "focused draft",
+      "keyed task reorder"
+    ],
+    "case": "swap"
+  },
+  {
+    "passed": true,
+    "mode": "image_story",
+    "checks": [
+      "identical poll",
+      "status patch/editor identity",
+      "changed content/disclosure",
+      "focused draft",
+      "keyed task reorder"
+    ],
+    "case": "image_story"
+  },
+  {
+    "passed": true,
+    "mode": "text_story",
+    "checks": [
+      "identical poll",
+      "status patch/editor identity",
+      "changed content/disclosure",
+      "focused draft",
+      "keyed task reorder"
+    ],
+    "case": "text_story"
+  },
+  {
+    "passed": true,
+    "mode": "image_assets",
+    "checks": [
+      "identical poll",
+      "status patch/editor identity",
+      "changed content/disclosure",
+      "focused draft",
+      "keyed task reorder"
+    ],
+    "case": "image_assets"
+  },
+  {
+    "passed": true,
+    "mode": "video_assembly",
+    "checks": [
+      "identical poll",
+      "status patch/editor identity",
+      "changed content/disclosure",
+      "focused draft",
+      "keyed task reorder"
+    ],
+    "case": "video_assembly"
+  },
+  {
+    "passed": true,
+    "mode": "authoring",
+    "checks": [
+      "identical poll",
+      "status patch/editor identity",
+      "changed content/disclosure",
+      "focused draft",
+      "keyed task reorder"
+    ],
+    "case": "authoring"
+  },
+  {
+    "passed": true,
+    "mode": "movie",
+    "checks": [
+      "identical poll",
+      "status patch/editor identity",
+      "changed content/disclosure",
+      "focused draft",
+      "keyed task reorder"
+    ],
+    "case": "movie"
+  }
+]

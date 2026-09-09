@@ -1,0 +1,21 @@
+{
+  "contract_version": "tf-authoring/2.9",
+  "task_type": "image_observation",
+  "status": "needs_input",
+  "payload": null,
+  "notes": [],
+  "issues": [
+    {
+      "kind": "missing_required_context",
+      "level": "blocking",
+      "message": "缺少本次明确要求使用的资料。",
+      "refs": []
+    }
+  ],
+  "questions": [
+    {
+      "key": "required_context",
+      "question": "请补充本次必需资料或调整任务范围。"
+    }
+  ]
+}

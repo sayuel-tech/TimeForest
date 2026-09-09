@@ -1,0 +1,35 @@
+{
+  "contract_version": "tf-authoring/2.9",
+  "task_type": "segment_plan",
+  "status": "ok",
+  "payload": {
+    "segments": [
+      {
+        "ref": "new_001",
+        "shot_ref": "shot_001",
+        "text": "人物向前走，逐渐停下。",
+        "planned_seconds": 8,
+        "start_state": "人物行走。",
+        "end_state": "人物站定。",
+        "dependency": {
+          "kind": "independent"
+        }
+      },
+      {
+        "ref": "new_002",
+        "shot_ref": "shot_001",
+        "text": "人物低头看向脚边。",
+        "planned_seconds": 5,
+        "start_state": "人物站定。",
+        "end_state": "人物低头。",
+        "dependency": {
+          "kind": "upstream_tail",
+          "upstream_ref": "new_001"
+        }
+      }
+    ]
+  },
+  "notes": [],
+  "issues": [],
+  "questions": []
+}

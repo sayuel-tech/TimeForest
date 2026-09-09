@@ -1,0 +1,1212 @@
+{
+  "schema_version": 1,
+  "topic": "state",
+  "evidence": "Mechanical current-source map; not UI acceptance or a match to historical screenshots.",
+  "sources": {
+    "static/studio/contracts/project-refresh.js": {
+      "sha256": "8a12905edec03de91ab27e32ce6bdad737843d31d28dc5afc5cecf80e7653b7b",
+      "exports": [
+        {
+          "name": "projectContent",
+          "line": 5
+        },
+        {
+          "name": "mergeProjectRuntime",
+          "line": 12
+        },
+        {
+          "name": "acceptProjectRevision",
+          "line": 18
+        }
+      ],
+      "imports": [],
+      "imported_by": [
+        "static/studio/core/image-session.js",
+        "static/studio/core/project-session.js",
+        "static/studio/modes/authoring/workspace.js",
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/modes/video-assembly/workspace.js"
+      ]
+    },
+    "static/studio/contracts/project.js": {
+      "sha256": "07e5e0d7463f00d88103b11222dcf763389d53fae3b4c20150f788e37b8f1c81",
+      "exports": [
+        {
+          "name": "authoredFields",
+          "line": 1
+        },
+        {
+          "name": "normalizeProject",
+          "line": 21
+        },
+        {
+          "name": "signature",
+          "line": 34
+        }
+      ],
+      "imports": [],
+      "imported_by": [
+        "static/studio/core/project-session.js"
+      ]
+    },
+    "static/studio/core/api-client.js": {
+      "sha256": "bf674d3c66420127df558bc26cdaff8fd96174b236963c5549874540f645ea87",
+      "exports": [
+        {
+          "name": "ApiError",
+          "line": 3
+        },
+        {
+          "name": "api",
+          "line": 14
+        },
+        {
+          "name": "readLegacyProject",
+          "line": 18
+        }
+      ],
+      "imports": [
+        "static/studio/core/upload-client.js"
+      ],
+      "imported_by": [
+        "static/studio/app/bootstrap.js",
+        "static/studio/app/workspace-controller.js",
+        "static/studio/core/image-session.js",
+        "static/studio/core/project-session.js",
+        "static/studio/core/upload-client.js",
+        "static/studio/features/asset-picker/assembly-use.js",
+        "static/studio/features/asset-picker/library-client.js",
+        "static/studio/features/authoring-assist/binding-cards.js",
+        "static/studio/features/authoring-assist/create-project.js",
+        "static/studio/features/authoring-assist/image-handoffs.js",
+        "static/studio/features/authoring-assist/index.js",
+        "static/studio/features/authoring-assist/references.js",
+        "static/studio/features/image-results/transfer.js",
+        "static/studio/features/prompt-library/adapters.js",
+        "static/studio/features/prompt-library/api.js",
+        "static/studio/features/task-center/index.js",
+        "static/studio/modes/authoring/workspace.js",
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/modes/video-assembly/settings.js",
+        "static/studio/modes/video-assembly/workspace.js",
+        "static/studio/pages/asset-library/detail.js",
+        "static/studio/pages/asset-library/engine-settings.js",
+        "static/studio/pages/asset-library/recycle-bin.js"
+      ]
+    },
+    "static/studio/core/async-state.js": {
+      "sha256": "c74eb174fcfa4ef5ad3729abe7d079cce9dfae40d2635bc935b61b8361ddda0e",
+      "exports": [
+        {
+          "name": "readStamp",
+          "line": 2
+        },
+        {
+          "name": "uncertainMutation",
+          "line": 3
+        },
+        {
+          "name": "requireKnownStatus",
+          "line": 7
+        },
+        {
+          "name": "currentRead",
+          "line": 10
+        },
+        {
+          "name": "canReplaceDraft",
+          "line": 16
+        }
+      ],
+      "imports": [],
+      "imported_by": [
+        "static/studio/app/image-workspace-controller.js",
+        "static/studio/app/workspace-controller.js",
+        "static/studio/core/image-session.js",
+        "static/studio/core/progress-channel.js",
+        "static/studio/core/project-commands.js",
+        "static/studio/core/project-session.js",
+        "static/studio/modes/authoring/workspace.js",
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/modes/video-assembly/workspace.js"
+      ]
+    },
+    "static/studio/core/capability-client.js": {
+      "sha256": "81c7aefc5c497c5630ca2c1e1bd2ec9948019e8ba87cab9b813a15f5aacd2a79",
+      "exports": [
+        {
+          "name": "visibleParameters",
+          "line": 2
+        },
+        {
+          "name": "choicesFor",
+          "line": 8
+        },
+        {
+          "name": "geometryPreview",
+          "line": 52
+        }
+      ],
+      "imports": [],
+      "imported_by": [
+        "static/studio/features/workflow-settings/index.js"
+      ]
+    },
+    "static/studio/core/export-lifecycle.js": {
+      "sha256": "7a3ee3c004fd92e9cd31276bd9d4f3558f861a3a7006b23ded2584d167f46ba4",
+      "exports": [
+        {
+          "name": "finishesReview",
+          "line": 2
+        },
+        {
+          "name": "exportNavigation",
+          "line": 12
+        }
+      ],
+      "imports": [],
+      "imported_by": [
+        "static/studio/app/workspace-controller.js",
+        "static/studio/core/project-commands.js",
+        "static/studio/features/production/review.js"
+      ]
+    },
+    "static/studio/core/image-catalog.js": {
+      "sha256": "bc16a8e63b1d708e750b55d0f6b077f14f5ae46cb38b03002cc47bb2e1b16630",
+      "exports": [
+        {
+          "name": "assertImageCatalog",
+          "line": 5
+        }
+      ],
+      "imports": [],
+      "imported_by": [
+        "static/studio/app/bootstrap.js",
+        "static/studio/features/image-settings/index.js"
+      ]
+    },
+    "static/studio/core/image-session.js": {
+      "sha256": "5fb2563bfdc4f0569f0c349fcb570ba22dc2fc50ef7e3c5cac310f90bc22ae41",
+      "exports": [
+        {
+          "name": "ImageSession",
+          "line": 7
+        }
+      ],
+      "imports": [
+        "static/studio/contracts/project-refresh.js",
+        "static/studio/core/api-client.js",
+        "static/studio/core/async-state.js",
+        "static/studio/core/single-flight.js",
+        "static/studio/core/snapshot-update.js"
+      ],
+      "imported_by": [
+        "static/studio/app/image-workspace-controller.js"
+      ]
+    },
+    "static/studio/core/progress-channel.js": {
+      "sha256": "e63608c84bbf71ce1eaf6cd1d839c512ec5d0e63cde9ad9b08a9040d0e8890f5",
+      "exports": [
+        {
+          "name": "watchProject",
+          "line": 4
+        }
+      ],
+      "imports": [
+        "static/studio/core/async-state.js"
+      ],
+      "imported_by": [
+        "static/studio/app/image-workspace-controller.js",
+        "static/studio/app/workspace-controller.js",
+        "static/studio/modes/authoring/workspace.js",
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/modes/video-assembly/workspace.js"
+      ]
+    },
+    "static/studio/core/project-commands.js": {
+      "sha256": "38829ce213d31ace726d5ad85e1222078f2330d13ffdc9a15ea40c33b7bfcfab",
+      "exports": [
+        {
+          "name": "ProjectCommands",
+          "line": 5
+        }
+      ],
+      "imports": [
+        "static/studio/core/async-state.js",
+        "static/studio/core/export-lifecycle.js"
+      ],
+      "imported_by": [
+        "static/studio/app/workspace-controller.js"
+      ]
+    },
+    "static/studio/core/project-session.js": {
+      "sha256": "a54c8c8a8d54eb0742bfea84c30ab0c01a218d6ed64c54f03bad47fab14667e3",
+      "exports": [
+        {
+          "name": "ProjectSession",
+          "line": 13
+        }
+      ],
+      "imports": [
+        "static/studio/contracts/project-refresh.js",
+        "static/studio/contracts/project.js",
+        "static/studio/core/api-client.js",
+        "static/studio/core/async-state.js",
+        "static/studio/core/single-flight.js",
+        "static/studio/core/snapshot-update.js"
+      ],
+      "imported_by": [
+        "static/studio/app/workspace-controller.js"
+      ]
+    },
+    "static/studio/core/single-flight.js": {
+      "sha256": "fa9920532dddf2d55a69ea6e764bbfd5da07844da4c036dafed02955274d9ae0",
+      "exports": [
+        {
+          "name": "singleFlight",
+          "line": 2
+        }
+      ],
+      "imports": [],
+      "imported_by": [
+        "static/studio/core/image-session.js",
+        "static/studio/core/project-session.js"
+      ]
+    },
+    "static/studio/core/snapshot-update.js": {
+      "sha256": "d87da944af6aa8a7a6e652ea5dfc2c457bca1be0ac7df9d9f5103c3fa439f74b",
+      "exports": [
+        {
+          "name": "sameSnapshot",
+          "line": 2
+        },
+        {
+          "name": "snapshotChange",
+          "line": 3
+        }
+      ],
+      "imports": [],
+      "imported_by": [
+        "static/studio/core/image-session.js",
+        "static/studio/core/project-session.js",
+        "static/studio/modes/authoring/workspace.js",
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/modes/video-assembly/workspace.js"
+      ]
+    },
+    "static/studio/core/source-target.js": {
+      "sha256": "e333eee81b4e02dd29c567c57c6534ac3644d7518a4e8f18d3aaf610e555c9eb",
+      "exports": [
+        {
+          "name": "sourceTarget",
+          "line": 2
+        }
+      ],
+      "imports": [],
+      "imported_by": [
+        "static/studio/app/image-workspace-controller.js",
+        "static/studio/app/workspace-controller.js",
+        "static/studio/modes/video-assembly/workspace.js"
+      ]
+    },
+    "static/studio/core/task-state.js": {
+      "sha256": "caf0296882c3b479e62ec1b75aa7a54c9de4d553c6dc829d58dd15b33661fc0d",
+      "exports": [
+        {
+          "name": "TASK_STATES",
+          "line": 2
+        }
+      ],
+      "imports": [],
+      "imported_by": [
+        "static/studio/features/image-results/workspace-view.js",
+        "static/studio/features/task-center/index.js",
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/modes/video-assembly/workspace.js"
+      ]
+    },
+    "static/studio/core/upload-client.js": {
+      "sha256": "a7cbcead06fa9b21319273bf1d3df84902047a74297d5a1bca21adfd81cb5f27",
+      "exports": [
+        {
+          "name": "uploadForm",
+          "line": 4
+        },
+        {
+          "name": "uploadAsset",
+          "line": 25
+        }
+      ],
+      "imports": [
+        "static/studio/core/api-client.js"
+      ],
+      "imported_by": [
+        "static/studio/core/api-client.js",
+        "static/studio/features/authoring-assist/binding-cards.js",
+        "static/studio/features/authoring-assist/references.js",
+        "static/studio/features/source-preparation/index.js"
+      ]
+    },
+    "static/studio/styles/components.css": {
+      "sha256": "96f8b268f73ec290ebb84c9dae79abe0f9b40931b67b040b2b77976c83bfdd97",
+      "imported_by": []
+    },
+    "static/studio/styles/task-center.css": {
+      "sha256": "875d03a418ed8ade72021f2602f8df2a86908486477cda95bbf2dffac0929dfc",
+      "imported_by": []
+    },
+    "static/studio/ui/asset-origin.js": {
+      "sha256": "8b0a883dc891b2d3c2bfe2695b8e11c629a5ad8bdbe9ed04619d34d27b491a0f",
+      "exports": [
+        {
+          "name": "projectOriginLink",
+          "line": 6
+        },
+        {
+          "name": "assetVersionLink",
+          "line": 13
+        },
+        {
+          "name": "lineageMarkup",
+          "line": 18
+        },
+        {
+          "name": "assetOriginMarkup",
+          "line": 25
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/source-parameters.js"
+      ],
+      "imported_by": [
+        "static/studio/features/asset-picker/descendants-view.js",
+        "static/studio/features/asset-picker/origin-view.js",
+        "static/studio/features/image-results/workspace-view.js",
+        "static/studio/features/prompt-library/browser.js",
+        "static/studio/modes/swap/workspace.js",
+        "static/studio/modes/video-assembly/workspace.js",
+        "static/studio/pages/asset-library/detail.js",
+        "static/studio/ui/reference-assets.js",
+        "static/studio/ui/source-navigation.js"
+      ]
+    },
+    "static/studio/ui/async-feedback.js": {
+      "sha256": "9fd93e3a8c79e1271210d02f02092a266669e69c9bc3d3efd6810498979ef5c6",
+      "exports": [
+        {
+          "name": "asyncFeedback",
+          "line": 5
+        }
+      ],
+      "imports": [
+        "static/studio/ui/error-feedback.js",
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/app/image-workspace-controller.js",
+        "static/studio/app/workspace-controller.js",
+        "static/studio/modes/video-assembly/workspace.js"
+      ]
+    },
+    "static/studio/ui/candidate-records.js": {
+      "sha256": "9a56960fa1900d94ccb4870de1a35c189f21f47c468b5141ea9a7d71aef8ac59",
+      "exports": [
+        {
+          "name": "recordControl",
+          "line": 3
+        },
+        {
+          "name": "removedRecords",
+          "line": 12
+        },
+        {
+          "name": "recordConfirmation",
+          "line": 18
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/app/image-workspace-controller.js",
+        "static/studio/features/authoring-assist/index.js",
+        "static/studio/features/image-results/workspace-view.js",
+        "static/studio/features/production/review-parts.js",
+        "static/studio/features/production/review.js",
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/modes/video-assembly/workspace.js"
+      ]
+    },
+    "static/studio/ui/choice-dialog.js": {
+      "sha256": "aa6344def4d740b89ea7e8f6d022cf2c1aa59a29f1d35014918fa847037e6837",
+      "exports": [
+        {
+          "name": "chooseAction",
+          "line": 5
+        },
+        {
+          "name": "confirmLeave",
+          "line": 48
+        }
+      ],
+      "imports": [
+        "static/studio/ui/error-feedback.js",
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/app/bootstrap.js",
+        "static/studio/app/workspace-controller.js",
+        "static/studio/features/authoring-assist/binding-cards.js",
+        "static/studio/features/authoring-assist/image-handoffs.js",
+        "static/studio/features/authoring-assist/index.js",
+        "static/studio/features/authoring-assist/references.js",
+        "static/studio/features/prompt-library/browser.js",
+        "static/studio/features/prompt-library/editor.js",
+        "static/studio/features/prompt-library/records.js",
+        "static/studio/features/prompt-library/tools.js",
+        "static/studio/modes/authoring/workspace.js",
+        "static/studio/modes/movie/workspace.js"
+      ]
+    },
+    "static/studio/ui/creation-job-status.js": {
+      "sha256": "e90d0fe627a75f663fc4c73b158c3cc6927698c5d071fd0fc690ceb004b0127d",
+      "exports": [
+        {
+          "name": "creationJobStatus",
+          "line": 3
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/run-timing.js"
+      ],
+      "imported_by": [
+        "static/studio/features/authoring-assist/index.js",
+        "static/studio/modes/movie/workspace.js"
+      ]
+    },
+    "static/studio/ui/draft-status.js": {
+      "sha256": "442fe65e6e276597b129b7ae46c97d22e6dfd1bcc98bcbdc47c0fe9f58cfe831",
+      "exports": [
+        {
+          "name": "draftStatus",
+          "line": 2
+        }
+      ],
+      "imports": [],
+      "imported_by": [
+        "static/studio/app/image-workspace-controller.js",
+        "static/studio/app/workspace-controller.js",
+        "static/studio/features/prompts/editor-parts.js",
+        "static/studio/modes/authoring/workspace.js",
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/modes/swap/workspace.js",
+        "static/studio/modes/video-assembly/workspace.js"
+      ]
+    },
+    "static/studio/ui/empty-state.js": {
+      "sha256": "720cc6d1e5ee89840a724409bdd9fde5dcf08e4e7c99a704d38f35b0597a3865",
+      "exports": [
+        {
+          "name": "illustratedEmpty",
+          "line": 4
+        },
+        {
+          "name": "bindDecorativeArt",
+          "line": 9
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/modes/authoring/workspace.js",
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/pages/home.js"
+      ]
+    },
+    "static/studio/ui/error-feedback.js": {
+      "sha256": "a1da6647c464ae426dcf2399e92613191cfa763b002e967171d223a279bc4fef",
+      "exports": [
+        {
+          "name": "describeError",
+          "line": 8
+        },
+        {
+          "name": "errorFeedback",
+          "line": 16
+        },
+        {
+          "name": "bindErrorFeedback",
+          "line": 21
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/app/image-workspace-controller.js",
+        "static/studio/app/workspace-controller.js",
+        "static/studio/features/asset-picker/descendants-view.js",
+        "static/studio/features/asset-picker/origin-view.js",
+        "static/studio/features/asset-picker/result-import.js",
+        "static/studio/features/authoring-assist/create-project.js",
+        "static/studio/features/image-results/workspace-view.js",
+        "static/studio/features/image-settings/index.js",
+        "static/studio/features/production/review-parts.js",
+        "static/studio/features/production/review.js",
+        "static/studio/features/prompt-library/browser.js",
+        "static/studio/features/prompt-library/collection.js",
+        "static/studio/features/prompt-library/editor.js",
+        "static/studio/features/prompt-library/records.js",
+        "static/studio/features/prompt-library/tools.js",
+        "static/studio/features/task-center/index.js",
+        "static/studio/modes/authoring/workspace.js",
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/modes/video-assembly/workspace.js",
+        "static/studio/pages/asset-library/recycle-bin.js",
+        "static/studio/ui/async-feedback.js",
+        "static/studio/ui/choice-dialog.js",
+        "static/studio/ui/production-settings.js"
+      ]
+    },
+    "static/studio/ui/input-inventory.js": {
+      "sha256": "8e6d4de79666792d98f0c2f09a0f8663802a294368e4c339a3239aa0cf03eeeb",
+      "exports": [
+        {
+          "name": "inputTable",
+          "line": 3
+        },
+        {
+          "name": "inputActions",
+          "line": 7
+        },
+        {
+          "name": "bindInputInventory",
+          "line": 11
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/features/production/preflight.js",
+        "static/studio/features/prompts/authoring.js",
+        "static/studio/features/prompts/editor-parts.js"
+      ]
+    },
+    "static/studio/ui/library-navigation.js": {
+      "sha256": "88cd0d9a3a0558aa5b40b3c8b365b77e09839f4dbf9a8c1d5a2615690550f1dc",
+      "exports": [
+        {
+          "name": "libraryNavigation",
+          "line": 3
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/features/prompt-library/browser.js",
+        "static/studio/pages/asset-library/index.js"
+      ]
+    },
+    "static/studio/ui/media-player.js": {
+      "sha256": "a0588ef0e75153920a8cee4a6fcdc7449516cc7a342b0150d298228688e67fc9",
+      "exports": [
+        {
+          "name": "mediaPlayer",
+          "line": 4
+        },
+        {
+          "name": "bindMediaPlayers",
+          "line": 14
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/app/workspace-controller.js",
+        "static/studio/features/export/index.js",
+        "static/studio/features/production/review-parts.js",
+        "static/studio/features/prompts/editor-parts.js",
+        "static/studio/features/shot-segment-tree/edit-preview.js",
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/modes/swap/workspace.js",
+        "static/studio/modes/video-assembly/workspace.js"
+      ]
+    },
+    "static/studio/ui/model-selector.js": {
+      "sha256": "a5105ae3a6b9d9457f064b5106ac8b2ee3ac2260c56597709b1b9a5a3c472641",
+      "exports": [
+        {
+          "name": "modelSelector",
+          "line": 4
+        },
+        {
+          "name": "bindModelSelectors",
+          "line": 13
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/ui/production-settings.js"
+      ]
+    },
+    "static/studio/ui/primitives.js": {
+      "sha256": "5772ca3b159804ad05b96f941bec7fffcaba5d4358f161fd8bcd220772b75531",
+      "exports": [
+        {
+          "name": "esc",
+          "line": 2
+        },
+        {
+          "name": "fmt",
+          "line": 10
+        },
+        {
+          "name": "bytes",
+          "line": 14
+        },
+        {
+          "name": "LABELS",
+          "line": 20
+        },
+        {
+          "name": "status",
+          "line": 35
+        },
+        {
+          "name": "opts",
+          "line": 37
+        },
+        {
+          "name": "field",
+          "line": 44
+        },
+        {
+          "name": "modalTicket",
+          "line": 47
+        },
+        {
+          "name": "toast",
+          "line": 49
+        },
+        {
+          "name": "modal",
+          "line": 57
+        },
+        {
+          "name": "cancelModal",
+          "line": 97
+        },
+        {
+          "name": "scopedModal",
+          "line": 105
+        },
+        {
+          "name": "confirm",
+          "line": 126
+        },
+        {
+          "name": "download",
+          "line": 144
+        },
+        {
+          "name": "elapsed",
+          "line": 153
+        },
+        {
+          "name": "updateClocks",
+          "line": 157
+        },
+        {
+          "name": "watchClocks",
+          "line": 168
+        },
+        {
+          "name": "onScopedClose",
+          "line": 176
+        }
+      ],
+      "imports": [],
+      "imported_by": [
+        "static/studio/app/bootstrap.js",
+        "static/studio/app/image-workspace-controller.js",
+        "static/studio/app/workspace-controller.js",
+        "static/studio/features/asset-picker/assembly-use.js",
+        "static/studio/features/asset-picker/descendants-view.js",
+        "static/studio/features/asset-picker/index.js",
+        "static/studio/features/asset-picker/media-view.js",
+        "static/studio/features/asset-picker/project-use.js",
+        "static/studio/features/asset-picker/result-import.js",
+        "static/studio/features/authoring-assist/binding-cards.js",
+        "static/studio/features/authoring-assist/create-project.js",
+        "static/studio/features/authoring-assist/image-handoffs.js",
+        "static/studio/features/authoring-assist/index.js",
+        "static/studio/features/authoring-assist/output-editor.js",
+        "static/studio/features/authoring-assist/prompt-fields.js",
+        "static/studio/features/authoring-assist/references.js",
+        "static/studio/features/image-results/transfer.js",
+        "static/studio/features/image-results/workspace-view.js",
+        "static/studio/features/image-settings/index.js",
+        "static/studio/features/prompt-library/browser.js",
+        "static/studio/features/prompt-library/editor.js",
+        "static/studio/features/prompt-library/records.js",
+        "static/studio/features/prompt-library/tools.js",
+        "static/studio/features/prompts/authoring.js",
+        "static/studio/features/prompts/editor-parts.js",
+        "static/studio/features/shot-segment-tree/edit-preview.js",
+        "static/studio/features/shot-segment-tree/index.js",
+        "static/studio/features/swap-prompts/preview.js",
+        "static/studio/features/task-center/index.js",
+        "static/studio/features/workflow-settings/index.js",
+        "static/studio/modes/authoring/workspace.js",
+        "static/studio/modes/image-story/workspace.js",
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/modes/swap/workspace.js",
+        "static/studio/modes/text-story/workspace.js",
+        "static/studio/modes/video-assembly/import-dialog.js",
+        "static/studio/modes/video-assembly/references.js",
+        "static/studio/modes/video-assembly/settings.js",
+        "static/studio/modes/video-assembly/workspace.js",
+        "static/studio/pages/asset-library/batch-actions.js",
+        "static/studio/pages/asset-library/detail.js",
+        "static/studio/pages/asset-library/engine-settings.js",
+        "static/studio/pages/asset-library/import-dialog.js",
+        "static/studio/pages/asset-library/index.js",
+        "static/studio/pages/asset-library/input-dialog.js",
+        "static/studio/pages/asset-library/media-timeline.js",
+        "static/studio/pages/asset-library/media-tools.js",
+        "static/studio/pages/asset-library/recycle-bin.js",
+        "static/studio/pages/asset-library/transfer.js",
+        "static/studio/pages/asset-library/uploads.js",
+        "static/studio/pages/home.js",
+        "static/studio/ui/asset-origin.js",
+        "static/studio/ui/async-feedback.js",
+        "static/studio/ui/candidate-records.js",
+        "static/studio/ui/choice-dialog.js",
+        "static/studio/ui/creation-job-status.js",
+        "static/studio/ui/empty-state.js",
+        "static/studio/ui/error-feedback.js",
+        "static/studio/ui/input-inventory.js",
+        "static/studio/ui/library-navigation.js",
+        "static/studio/ui/media-player.js",
+        "static/studio/ui/model-selector.js",
+        "static/studio/ui/production-settings.js",
+        "static/studio/ui/prompt-editor.js",
+        "static/studio/ui/reference-assets.js",
+        "static/studio/ui/reference-metadata.js",
+        "static/studio/ui/result-view.js",
+        "static/studio/ui/run-timing.js",
+        "static/studio/ui/source-navigation.js",
+        "static/studio/ui/source-parameters.js",
+        "static/studio/ui/workbench.js",
+        "static/studio/ui/workspace-chrome.js"
+      ]
+    },
+    "static/studio/ui/production-settings.js": {
+      "sha256": "0902d57179e02cab57f2908b2eaace4c251deb333559436ec5479a2a3e53d3e0",
+      "exports": [
+        {
+          "name": "openProductionSettings",
+          "line": 6
+        },
+        {
+          "name": "parameterLoras",
+          "line": 54
+        },
+        {
+          "name": "validateSettingsInputs",
+          "line": 58
+        },
+        {
+          "name": "parameterGrid",
+          "line": 63
+        },
+        {
+          "name": "parameterSlots",
+          "line": 64
+        },
+        {
+          "name": "productionSettingsActions",
+          "line": 66
+        },
+        {
+          "name": "productionGroups",
+          "line": 72
+        },
+        {
+          "name": "productionSettingsAction",
+          "line": 83
+        },
+        {
+          "name": "productionSettingsMarkup",
+          "line": 88
+        },
+        {
+          "name": "bindSettingsNavigation",
+          "line": 93
+        },
+        {
+          "name": "parameterField",
+          "line": 107
+        },
+        {
+          "name": "seedFields",
+          "line": 125
+        },
+        {
+          "name": "imageProductionGroups",
+          "line": 129
+        }
+      ],
+      "imports": [
+        "static/studio/ui/error-feedback.js",
+        "static/studio/ui/model-selector.js",
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/features/authoring-assist/index.js",
+        "static/studio/features/image-results/workspace-view.js",
+        "static/studio/features/image-settings/index.js",
+        "static/studio/features/prompts/authoring.js",
+        "static/studio/features/workflow-settings/index.js",
+        "static/studio/modes/video-assembly/settings.js",
+        "static/studio/ui/source-parameters.js",
+        "static/studio/ui/workspace-chrome.js"
+      ]
+    },
+    "static/studio/ui/prompt-editor.js": {
+      "sha256": "4357c251298154ebaea3406f3163ff08d794c58c9b8e429da344c647179a10e4",
+      "exports": [
+        {
+          "name": "readingDisclosure",
+          "line": 4
+        },
+        {
+          "name": "openReading",
+          "line": 10
+        },
+        {
+          "name": "bindReadingPreviews",
+          "line": 15
+        },
+        {
+          "name": "expandPrompt",
+          "line": 23
+        },
+        {
+          "name": "promptTools",
+          "line": 29
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/features/prompt-library/tools.js",
+        "static/studio/modes/authoring/workspace.js",
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/pages/asset-library/detail.js",
+        "static/studio/ui/workbench.js"
+      ]
+    },
+    "static/studio/ui/reference-assets.js": {
+      "sha256": "f22b820ddb58e83d759b0f2202f314f35953af03a385c308d632fd5542769830",
+      "exports": [
+        {
+          "name": "importOptions",
+          "line": 4
+        },
+        {
+          "name": "referenceAssetCard",
+          "line": 7
+        }
+      ],
+      "imports": [
+        "static/studio/ui/asset-origin.js",
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/features/assets/index.js",
+        "static/studio/features/authoring-assist/references.js",
+        "static/studio/features/image-results/workspace-view.js",
+        "static/studio/features/prompts/authoring.js",
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/modes/swap/workspace.js",
+        "static/studio/modes/video-assembly/import-dialog.js",
+        "static/studio/modes/video-assembly/references.js",
+        "static/studio/modes/video-assembly/workspace.js",
+        "static/studio/pages/asset-library/import-dialog.js"
+      ]
+    },
+    "static/studio/ui/reference-metadata.js": {
+      "sha256": "cca0cf7f06f439f0113d7cce85bb4d464a60071a600f1abb8dde579351db8714",
+      "exports": [
+        {
+          "name": "referencePurposes",
+          "line": 3
+        },
+        {
+          "name": "needsSubject",
+          "line": 4
+        },
+        {
+          "name": "referenceMetadata",
+          "line": 5
+        },
+        {
+          "name": "chooseReferenceMetadata",
+          "line": 12
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/features/asset-picker/assembly-use.js",
+        "static/studio/features/asset-picker/project-use.js",
+        "static/studio/features/assets/index.js",
+        "static/studio/features/authoring-assist/references.js",
+        "static/studio/modes/video-assembly/references.js"
+      ]
+    },
+    "static/studio/ui/result-view.js": {
+      "sha256": "c84e9309c1a9c189d8bb988c45c6022528612c3e50ece9ca7f5793a737ac395c",
+      "exports": [
+        {
+          "name": "candidateState",
+          "line": 4
+        },
+        {
+          "name": "candidateButton",
+          "line": 8
+        },
+        {
+          "name": "resultActions",
+          "line": 13
+        },
+        {
+          "name": "collectionActions",
+          "line": 17
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/features/asset-picker/result-import.js",
+        "static/studio/features/authoring-assist/index.js",
+        "static/studio/features/export/index.js",
+        "static/studio/features/image-results/workspace-view.js",
+        "static/studio/features/production/review-parts.js",
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/modes/video-assembly/workspace.js"
+      ]
+    },
+    "static/studio/ui/run-timing.js": {
+      "sha256": "18e8a68d9b636b9afa8ebc8db7bd1f9459ab9cc32375870e26e9239f57fc8add",
+      "exports": [
+        {
+          "name": "runTiming",
+          "line": 6
+        },
+        {
+          "name": "runStatusRow",
+          "line": 14
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/features/authoring-assist/index.js",
+        "static/studio/features/export/index.js",
+        "static/studio/features/image-results/workspace-view.js",
+        "static/studio/features/production/records.js",
+        "static/studio/features/source-preparation/index.js",
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/modes/video-assembly/workspace.js",
+        "static/studio/ui/creation-job-status.js"
+      ]
+    },
+    "static/studio/ui/source-navigation.js": {
+      "sha256": "630682d8d4d6a22bb00cf553d555266aae3a9dcdda68164bda071ce1bdbb39cd",
+      "exports": [
+        {
+          "name": "showSourceNavigation",
+          "line": 4
+        }
+      ],
+      "imports": [
+        "static/studio/ui/asset-origin.js",
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/app/image-workspace-controller.js",
+        "static/studio/app/workspace-controller.js",
+        "static/studio/modes/authoring/workspace.js",
+        "static/studio/modes/video-assembly/workspace.js"
+      ]
+    },
+    "static/studio/ui/source-parameters.js": {
+      "sha256": "e2f45ce3c43697031a1392b92880da8ab720ca6f86c60d6739c3031da33867e3",
+      "exports": [
+        {
+          "name": "sourceParametersMarkup",
+          "line": 5
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/production-settings.js"
+      ],
+      "imported_by": [
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/modes/video-assembly/source-parameters.js",
+        "static/studio/ui/asset-origin.js"
+      ]
+    },
+    "static/studio/ui/status-region.js": {
+      "sha256": "009f2bcfc8c7aaf944b3b02884788a2035031fb8fe31358abaa0a45615d36e1a",
+      "exports": [
+        {
+          "name": "updateStatusRegion",
+          "line": 23
+        }
+      ],
+      "imports": [],
+      "imported_by": [
+        "static/studio/app/image-workspace-controller.js",
+        "static/studio/app/workspace-controller.js",
+        "static/studio/features/asset-picker/result-import.js",
+        "static/studio/features/authoring-assist/index.js",
+        "static/studio/features/production/records.js",
+        "static/studio/features/source-preparation/index.js",
+        "static/studio/features/task-center/index.js",
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/modes/video-assembly/workspace.js",
+        "static/studio/pages/asset-library/index.js",
+        "static/studio/pages/asset-library/media-tools.js",
+        "static/studio/pages/asset-library/uploads.js"
+      ]
+    },
+    "static/studio/ui/workbench.js": {
+      "sha256": "8daa064d366238192815d16b58a420b63fa4e3ae3f507ba38cc542a45c987137",
+      "exports": [
+        {
+          "name": "workbench",
+          "line": 5
+        },
+        {
+          "name": "propertyTabs",
+          "line": 10
+        },
+        {
+          "name": "bindWorkbench",
+          "line": 15
+        },
+        {
+          "name": "fitWorkbench",
+          "line": 42
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/prompt-editor.js"
+      ],
+      "imported_by": [
+        "static/studio/app/image-workspace-controller.js",
+        "static/studio/app/workspace-controller.js",
+        "static/studio/features/export/index.js",
+        "static/studio/features/image-results/workspace-view.js",
+        "static/studio/features/production/review-parts.js",
+        "static/studio/features/production/review.js",
+        "static/studio/features/prompts/authoring.js",
+        "static/studio/features/prompts/editor-parts.js",
+        "static/studio/modes/authoring/workspace.js",
+        "static/studio/modes/image-story/workspace.js",
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/modes/swap/workspace.js",
+        "static/studio/modes/text-story/workspace.js",
+        "static/studio/modes/video-assembly/workspace.js"
+      ]
+    },
+    "static/studio/ui/workspace-actions.js": {
+      "sha256": "da5af74649a68c462d5c4dab3b183863a6c03c1c3d626599e0ccabfac1f2e255",
+      "exports": [
+        {
+          "name": "workspaceActionGroups",
+          "line": 2
+        },
+        {
+          "name": "workspaceActions",
+          "line": 5
+        }
+      ],
+      "imports": [],
+      "imported_by": [
+        "static/studio/features/image-results/workspace-view.js",
+        "static/studio/features/prompts/editor-parts.js",
+        "static/studio/modes/authoring/workspace.js",
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/modes/swap/workspace.js",
+        "static/studio/modes/video-assembly/workspace.js"
+      ]
+    },
+    "static/studio/ui/workspace-chrome.js": {
+      "sha256": "b84e37e54de1656426117c1490c0c51977fc3faccf62bae2b82c20487f44ce3d",
+      "exports": [
+        {
+          "name": "workspaceHeader",
+          "line": 5
+        },
+        {
+          "name": "workspaceSteps",
+          "line": 11
+        },
+        {
+          "name": "bindWorkspaceSteps",
+          "line": 16
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/production-settings.js"
+      ],
+      "imported_by": [
+        "static/studio/app/image-workspace-controller.js",
+        "static/studio/app/workspace-controller.js",
+        "static/studio/features/image-results/workspace-view.js",
+        "static/studio/modes/authoring/workspace.js",
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/modes/video-assembly/workspace.js"
+      ]
+    },
+    "static/studio/ui/workspace-view-state.js": {
+      "sha256": "63e264ab0ee3e608a7ecf72895ef0a67e653fb7b588c31a85ae320abd92457f9",
+      "exports": [
+        {
+          "name": "workspaceViewState",
+          "line": 3
+        }
+      ],
+      "imports": [],
+      "imported_by": [
+        "static/studio/app/image-workspace-controller.js",
+        "static/studio/app/workspace-controller.js",
+        "static/studio/features/prompt-library/browser.js",
+        "static/studio/modes/authoring/workspace.js",
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/modes/video-assembly/workspace.js",
+        "static/studio/pages/asset-library/detail.js",
+        "static/studio/pages/asset-library/index.js"
+      ]
+    }
+  }
+}

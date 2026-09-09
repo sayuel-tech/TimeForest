@@ -18,7 +18,7 @@ export function videoCandidateHistory(ctx,s){
 export function reviewProperties(ctx,s) {
   const refs=ctx.localAssets(s).map(a=>`<figure class="review-reference">${a.kind==='image'?`<img src="${ctx.esc(a.url)}" alt="${ctx.esc(a.name)}">`:`<audio controls preload="metadata" src="${ctx.esc(a.url)}"></audio>`}<figcaption>${ctx.esc(a.name)}</figcaption></figure>`).join('');
   const history=videoCandidateHistory(ctx,s);
-  return propertyTabs(ctx,[{id:'references',label:'参考',html:refs||'<p>本段未使用独立参考素材。</p>'},{id:'runs',label:'运行',html:ctx.executionCard(s)+(history||'<p>尚未生成，没有运行记录。</p>')},{id:'script',label:'正文',html:`<p class="helper">当前编排原文；实际提交正文请在运行文件中查看。</p><pre>${ctx.esc(s.prompt)}</pre>`}]);
+  return propertyTabs(ctx,[{id:'references',label:'参考',html:refs||'<p>本段未使用独立参考素材。</p>'},{id:'runs',label:'运行',html:ctx.executionCard(s)+(history||'<p>尚未生成，没有运行记录。</p>')},{id:'script',label:'正文',html:`<p class="helper">当前编排原文；实际提交正文请在运行文件中查看。</p><div class="creation-prose">${ctx.esc(s.prompt)}</div>`}]);
 }
 
 export function reviewActions(ctx,s,finalReview) {

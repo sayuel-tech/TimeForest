@@ -1,0 +1,18 @@
+{
+  "contract_version": "tf-authoring/2.9",
+  "task_type": "asset_screenplay",
+  "status": "ok",
+  "payload": {
+    "blocks": [
+      {
+        "ref": "block_001",
+        "heading": "清晨·站台",
+        "text": "旅人穿着已经确定的灰色外套，沿站台缓慢向前。"
+      }
+    ],
+    "duration_estimate_seconds": null
+  },
+  "notes": [],
+  "issues": [],
+  "questions": []
+}

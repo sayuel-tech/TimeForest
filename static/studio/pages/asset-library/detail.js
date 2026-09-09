@@ -1,3 +1,5 @@
+import {workspaceViewState} from '../../ui/workspace-view-state.js';
+import {expandPrompt} from '../../ui/prompt-editor.js';
 import {mountAssetOrigin} from '../../features/asset-picker/origin-view.js';
 import {projectOriginLink} from '../../ui/asset-origin.js';
 import {bindTimeline} from "./media-timeline.js";
@@ -97,8 +99,11 @@ export async function mountDetail(root, aid, params, signal) {
     if (!dirty) draft = structuredClone(asset.snapshot);
     draw();
   }
+  const viewState=workspaceViewState(root);
+  signal.addEventListener('abort',()=>viewState.dispose(),{once:true});
   function draw() {
     if (signal.aborted) return;
+    const restoreView=viewState.beforeRender(JSON.stringify([aid,currentMedia,params.get('version')]));
     const media =
       asset.snapshot.media.find((x) => x.id === currentMedia) ||
       primaryMedia(asset);
@@ -118,6 +123,11 @@ export async function mountDetail(root, aid, params, signal) {
         .forEach((el) => (el.disabled = true));
     form.oninput = gather;
     form.onchange = gather;
+    if(!historical)for(const [name,label] of [['record_prompt','资料 PROMPT'],['description','设定说明']]){
+      const input=form.elements[name],button=document.createElement('button');button.type='button';button.textContent='展开编辑'+label;button.className='reading-expand';
+      form.querySelector(`[data-copy="${name}"]`).after(button);
+      button.onclick=async()=>{const value=await expandPrompt(input.value,label,signal);if(value!==null&&!signal.aborted&&input.isConnected){input.value=value;input.dispatchEvent(new Event('input',{bubbles:true}));}};
+    }
     form.onsubmit = async (e) => {
       e.preventDefault();
       if (historical) return;
@@ -322,7 +332,7 @@ export async function mountDetail(root, aid, params, signal) {
         ui.download(records, asset.name + "-generation-records.json");
       exports.append(full);
     }
-    bindTimeline(root,media);
+    restoreView();bindTimeline(root,media);
     root.querySelector('#library-create-image')?.addEventListener('click', async () => {
       if (dirty && !(await ui.confirm('使用已保存的资产版本', '当前资料草稿不会进入图片创作。使用当前查看的固定图片版本继续？', '继续'))) return;
       try {

@@ -1,0 +1,10 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {validateDesign} from '../tools/check_ui_design.mjs';
+const dir=new URL('../static/studio/styles/',import.meta.url);
+const files=fs.readdirSync(dir).filter(f=>f.endsWith('.css')).map(f=>'static/studio/styles/'+f);
+const read=file=>fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
+test('current shared visual ownership passes',()=>assert.deepEqual(validateDesign(read,files),[]));
+test('a new page cannot redefine shared type scale',()=>assert.ok(validateDesign(f=>f==='new.css'?'.new-page{--title-dialog:48px}':read(f),[...files,'new.css']).some(e=>e.includes('重定义'))));
+test('missing token import fails',()=>assert.ok(validateDesign(f=>f==='static/studio/style.css'?read(f).replace('styles/design-tokens.css','missing.css'):read(f),files).length));

@@ -1,0 +1,26 @@
+{
+  "repository": "sayuel-tech/TimeForest",
+  "checked_commit": "6a8de5bcd49d8550cf98b746e7c23a499926372a",
+  "release_tag": "v6.3.32",
+  "companion": {
+    "name": "TimeForest-Companion-v6.3.32.zip",
+    "url": "https://github.com/sayuel-tech/TimeForest/releases/download/v6.3.32/TimeForest-Companion-v6.3.32.zip",
+    "size_bytes_from_release": 102789,
+    "sha256_from_release": "e844a02859b9f2946f749e505e01a8cb85828515965addb5d32e4f111a38b406",
+    "bytes_downloaded_this_round": false,
+    "locally_verified": false,
+    "reason": "本轮再次核对Release元数据；容器未取得ZIP字节。Codex可用本机已有源或静态Release配套，禁止下载模型权重。",
+    "metadata_rechecked_for_plan": "3.0"
+  },
+  "required_sources_by_choice": [
+    "h3ui/studio_sources/dance.json",
+    "h3ui/studio_sources/official_r2v.json",
+    "h3ui/studio_sources/official_t2v.json",
+    "h3ui/studio_sources/wenxi.json",
+    "h3ui/studio_sources/impact.json",
+    "h3ui/image_studio/sources/krea-edit.json"
+  ],
+  "not_all_required": true,
+  "contains_model_weights": false,
+  "auto_install": false
+}

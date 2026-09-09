@@ -1,0 +1,13 @@
+{
+  "contract_version": "tf-authoring/2.9",
+  "task_type": "reference_image",
+  "status": "ok",
+  "payload": {
+    "image_prompt_text": "人物站在画面中央，双脚站定，低头看向脚边；只表现动作完成后的一个瞬间。",
+    "reference_purpose": "end",
+    "used_reference_keys": []
+  },
+  "notes": [],
+  "issues": [],
+  "questions": []
+}

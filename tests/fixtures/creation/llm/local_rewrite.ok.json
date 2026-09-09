@@ -1,0 +1,11 @@
+{
+  "contract_version": "tf-authoring/2.9",
+  "task_type": "local_rewrite",
+  "status": "ok",
+  "payload": {
+    "replacement_text": "她停在车门旁，没有伸手。风吹动衣角，她看了一眼车窗。"
+  },
+  "notes": [],
+  "issues": [],
+  "questions": []
+}

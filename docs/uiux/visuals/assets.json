@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "reference_method": "Literal filename matches in indexed frontend; dynamic references may be missing. Empty references do not authorize deletion.",
+  "assets": [
+    {
+      "path": "static/assets/authoring/empty-story.webp",
+      "bytes": 144028,
+      "sha256": "e93125156597bef0b3e7fcda9fc8b5c58bf1e1cabc947ab6c803d864726e4b53",
+      "referenced_by_text": [],
+      "preservation": "Preserve first; file existence does not imply individual user approval."
+    },
+    {
+      "path": "static/assets/brand/brand-mark.svg",
+      "bytes": 590,
+      "sha256": "6c5a613c6864ee598c8d5d17936cfbf18fe2160f1a7546bba991fb7de6ab66ca",
+      "referenced_by_text": [
+        "static/index.html"
+      ],
+      "preservation": "Preserve first; file existence does not imply individual user approval."
+    },
+    {
+      "path": "static/assets/brand/favicon.svg",
+      "bytes": 334,
+      "sha256": "2a3eb9112b9b8fc72c5ff6ceb5efeaa0d758edcd705f166455b9bc9f169f823c",
+      "referenced_by_text": [
+        "static/index.html"
+      ],
+      "preservation": "Preserve first; file existence does not imply individual user approval."
+    },
+    {
+      "path": "static/assets/empty/empty-projects.svg",
+      "bytes": 1225,
+      "sha256": "734cdca7e129837c31f485834e830b3f077a64fac303befff28e69623a33d2ca",
+      "referenced_by_text": [
+        "static/studio/pages/home.js"
+      ],
+      "preservation": "Preserve first; file existence does not imply individual user approval."
+    },
+    {
+      "path": "static/assets/empty/empty-shot.svg",
+      "bytes": 701,
+      "sha256": "8c215cef157265bbff2d98daa2c43b091288a5375556e04f3b89a01f5409b70d",
+      "referenced_by_text": [
+        "static/studio/design-system.html",
+        "static/studio/features/export/index.js",
+        "static/studio/features/prompts/editor-parts.js"
+      ],
+      "preservation": "Preserve first; file existence does not imply individual user approval."
+    },
+    {
+      "path": "static/assets/hero/hero-director-desk-mobile.webp",
+      "bytes": 93418,
+      "sha256": "5f7beddf79588386805d768976689f2724ead25193224ca8f9c918cc17d6f631",
+      "referenced_by_text": [
+        "static/studio/pages/home.js"
+      ],
+      "preservation": "Preserve first; file existence does not imply individual user approval."
+    },
+    {
+      "path": "static/assets/hero/hero-director-desk.webp",
+      "bytes": 166044,
+      "sha256": "7b539aabba927eb9e16bea1c35fa613c0abeb847146e33d1cb69081d6dc92059",
+      "referenced_by_text": [
+        "static/studio/pages/home.js"
+      ],
+      "preservation": "Preserve first; file existence does not imply individual user approval."
+    },
+    {
+      "path": "static/assets/image-studio/empty-editor.webp",
+      "bytes": 106226,
+      "sha256": "a6f1a59cad9bbb3603644fd6cf61128872abe8f66b869d93b8df80dceef7171a",
+      "referenced_by_text": [
+        "static/studio/features/image-results/workspace-view.js"
+      ],
+      "preservation": "Preserve first; file existence does not imply individual user approval."
+    },
+    {
+      "path": "static/assets/image-studio/empty-results.webp",
+      "bytes": 150790,
+      "sha256": "c8b76c2254cde9e772378077430c6a6727e5be5475d4a529549109fefef6deee",
+      "referenced_by_text": [
+        "static/studio/features/image-results/workspace-view.js"
+      ],
+      "preservation": "Preserve first; file existence does not imply individual user approval."
+    },
+    {
+      "path": "static/assets/modes/mode-authoring.webp",
+      "bytes": 342746,
+      "sha256": "8f404b42958906ef62b5778959ad9eb92f8177d367de5fafa94be856d0d522c2",
+      "referenced_by_text": [
+        "static/studio/app/mode-registry.js"
+      ],
+      "preservation": "Preserve first; file existence does not imply individual user approval."
+    },
+    {
+      "path": "static/assets/modes/mode-image-assets.webp",
+      "bytes": 367050,
+      "sha256": "7685728764d15a599fef4e083eb5810d0ca65d1bb4915f5eadeab9ba3dd9dc96",
+      "referenced_by_text": [
+        "static/studio/app/mode-registry.js"
+      ],
+      "preservation": "Preserve first; file existence does not imply individual user approval."
+    },
+    {
+      "path": "static/assets/modes/mode-movie.webp",
+      "bytes": 382246,
+      "sha256": "8f997a4cd0e8da63934adb926e3be2b59878a3e29d7ac2d1d79f5eb1ac6af072",
+      "referenced_by_text": [
+        "static/studio/app/mode-registry.js"
+      ],
+      "preservation": "Preserve first; file existence does not imply individual user approval."
+    },
+    {
+      "path": "static/assets/modes/mode-r2v.webp",
+      "bytes": 93438,
+      "sha256": "3f2c30f12aac658ee47e6f482848ec5ba72b8b712b59ac6026b936bfbfdf8436",
+      "referenced_by_text": [
+        "static/studio/app/mode-registry.js"
+      ],
+      "preservation": "Preserve first; file existence does not imply individual user approval."
+    },
+    {
+      "path": "static/assets/modes/mode-rv2v.webp",
+      "bytes": 87442,
+      "sha256": "2c5226597c61bc16bd85b4973465dc3655ddd1cdced40e04caf10edc5159e752",
+      "referenced_by_text": [
+        "static/studio/app/mode-registry.js"
+      ],
+      "preservation": "Preserve first; file existence does not imply individual user approval."
+    },
+    {
+      "path": "static/assets/modes/mode-t2v.webp",
+      "bytes": 72818,
+      "sha256": "02cfcf24fcdf793c5e7a936a7b63107992a514349e7549a37b652ab0a1dafc7a",
+      "referenced_by_text": [
+        "static/studio/app/mode-registry.js"
+      ],
+      "preservation": "Preserve first; file existence does not imply individual user approval."
+    },
+    {
+      "path": "static/assets/modes/mode-video-continuation.webp",
+      "bytes": 275558,
+      "sha256": "f4bdc66dd7313100cdb897cdcbe3883526d0ce1fe390ef8de292147d014de598",
+      "referenced_by_text": [
+        "static/studio/app/mode-registry.js"
+      ],
+      "preservation": "Preserve first; file existence does not imply individual user approval."
+    },
+    {
+      "path": "static/assets/movie/empty-edit.webp",
+      "bytes": 157290,
+      "sha256": "44af938dbb632fdfd76fc162e69d37cb88e0a6e408c6407bca06056a2eba79e0",
+      "referenced_by_text": [
+        "static/studio/modes/movie/workspace.js"
+      ],
+      "preservation": "Preserve first; file existence does not imply individual user approval."
+    },
+    {
+      "path": "static/assets/movie/empty-takes.webp",
+      "bytes": 203690,
+      "sha256": "072e0a5aeeab7df872c41a56bcb069122cac0f08258e0205f4a363b6f9a50498",
+      "referenced_by_text": [
+        "static/studio/modes/movie/workspace.js"
+      ],
+      "preservation": "Preserve first; file existence does not imply individual user approval."
+    }
+  ],
+  "font_roots": [
+    {
+      "path": "static/assets/fonts",
+      "woff2_count": 0
+    },
+    {
+      "path": "static/studio/styles/fonts",
+      "woff2_count": 202
+    }
+  ]
+}

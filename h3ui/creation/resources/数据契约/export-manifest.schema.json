@@ -1,0 +1,173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "export-manifest",
+  "type": "object",
+  "properties": {
+    "manifest_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "movie_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "movie_revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "movie_segment_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "take_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "media": {
+            "type": "object",
+            "properties": {
+              "media_id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "content_hash": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "media_id",
+              "version",
+              "content_hash"
+            ],
+            "additionalProperties": false
+          },
+          "range": {
+            "type": "object",
+            "properties": {
+              "in_ms": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "out_ms": {
+                "type": "integer",
+                "minimum": 1
+              }
+            },
+            "required": [
+              "in_ms",
+              "out_ms"
+            ],
+            "additionalProperties": false
+          },
+          "included": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "movie_segment_id",
+          "take_id",
+          "media",
+          "range",
+          "included"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "output": {
+      "type": "object",
+      "properties": {
+        "width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "fps_num": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "fps_den": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "fit": {
+          "type": "string",
+          "enum": [
+            "contain",
+            "cover"
+          ]
+        },
+        "audio_policy": {
+          "const": "preserve_or_silence"
+        },
+        "container": {
+          "const": "mp4"
+        }
+      },
+      "required": [
+        "width",
+        "height",
+        "fps_num",
+        "fps_den",
+        "fit",
+        "audio_policy",
+        "container"
+      ],
+      "additionalProperties": false
+    },
+    "accepted_seams": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "pending_summary": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "minItems": 0
+    }
+  },
+  "required": [
+    "manifest_id",
+    "movie_id",
+    "movie_revision",
+    "items",
+    "output",
+    "accepted_seams",
+    "pending_summary"
+  ],
+  "additionalProperties": false
+}

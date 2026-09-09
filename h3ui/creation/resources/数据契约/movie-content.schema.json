@@ -1,0 +1,443 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "source_project_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "source_bundles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "bundle_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "script_project_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "shot_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "segment_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "source_revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "segment_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "prompt_hash": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "prompt_mode": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "full",
+                  "structured"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "binding_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "input_contract_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "profile_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "profile_revision": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "ready_state": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "ready",
+              "review_required",
+              "missing_input",
+              "source_removed"
+            ]
+          },
+          "snapshot_artifact_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "required": [
+          "bundle_id",
+          "script_project_id",
+          "shot_id",
+          "segment_id",
+          "source_revision",
+          "segment_hash",
+          "prompt_hash",
+          "prompt_mode",
+          "binding_hash",
+          "input_contract_hash",
+          "profile_id",
+          "profile_revision",
+          "ready_state",
+          "snapshot_artifact_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "segment_order": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      }
+    },
+    "generation_drafts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "segment_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "profile_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "parameter_overrides": {
+            "type": "object"
+          },
+          "input_contract_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "reference_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "minItems": 0,
+            "uniqueItems": true
+          },
+          "upstream_take_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "upstream_range": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "in_ms": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "out_ms": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "required": [
+                  "in_ms",
+                  "out_ms"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "segment_id",
+          "profile_id",
+          "parameter_overrides",
+          "input_contract_id",
+          "reference_ids",
+          "upstream_take_id",
+          "upstream_range"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "adoptions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "segment_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "take_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "selection_revision": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "segment_id",
+          "take_id",
+          "selection_revision"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "take_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      }
+    },
+    "edit": {
+      "type": "object",
+      "properties": {
+        "content_schema_version": {
+          "const": 1
+        },
+        "initialized_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "movie_segment_id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "take_id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "media": {
+                "type": "object",
+                "properties": {
+                  "media_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "\\S"
+                  },
+                  "version": {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "\\S"
+                  },
+                  "content_hash": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  }
+                },
+                "required": [
+                  "media_id",
+                  "version",
+                  "content_hash"
+                ],
+                "additionalProperties": false
+              },
+              "range": {
+                "type": "object",
+                "properties": {
+                  "in_ms": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "out_ms": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "required": [
+                  "in_ms",
+                  "out_ms"
+                ],
+                "additionalProperties": false
+              },
+              "included": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "id",
+              "movie_segment_id",
+              "take_id",
+              "media",
+              "range",
+              "included"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0
+        },
+        "order": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "handled_updates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "item_id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "offered_take_id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "offered_selection_revision": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "decision": {
+                "type": "string",
+                "enum": [
+                  "replace",
+                  "keep"
+                ]
+              }
+            },
+            "required": [
+              "item_id",
+              "offered_take_id",
+              "offered_selection_revision",
+              "decision"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "content_schema_version",
+        "initialized_at",
+        "items",
+        "order",
+        "handled_updates"
+      ],
+      "additionalProperties": false
+    },
+    "job_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      }
+    }
+  },
+  "required": [
+    "source_project_id",
+    "source_bundles",
+    "segment_order",
+    "generation_drafts",
+    "adoptions",
+    "take_ids",
+    "edit",
+    "job_ids"
+  ],
+  "additionalProperties": false
+}

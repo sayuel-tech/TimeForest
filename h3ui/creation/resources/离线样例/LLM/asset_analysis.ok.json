@@ -1,0 +1,23 @@
+{
+  "contract_version": "tf-authoring/2.9",
+  "task_type": "asset_analysis",
+  "status": "ok",
+  "payload": {
+    "needs": [
+      {
+        "ref": "new_need_001",
+        "kind": "character",
+        "name": "旅人",
+        "description": "在站台等待的人物形象。",
+        "source_refs": [
+          "block_001"
+        ],
+        "media_need": "recommended",
+        "suggested_asset_refs": []
+      }
+    ]
+  },
+  "notes": [],
+  "issues": [],
+  "questions": []
+}

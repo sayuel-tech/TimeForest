@@ -1,0 +1,583 @@
+{
+  "schema_version": 1,
+  "topic": "library",
+  "evidence": "Mechanical current-source map; not UI acceptance or a match to historical screenshots.",
+  "sources": {
+    "static/studio/features/asset-picker/assembly-use.js": {
+      "sha256": "3ecec68c31c37328d11bb87ba7edc3dbb58bc0480cfa0eed12649ec9dad3c55a",
+      "exports": [
+        {
+          "name": "useImageInAssembly",
+          "line": 7
+        }
+      ],
+      "imports": [
+        "static/studio/core/api-client.js",
+        "static/studio/features/asset-picker/destinations.js",
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/reference-metadata.js"
+      ],
+      "imported_by": [
+        "static/studio/features/image-results/transfer.js"
+      ]
+    },
+    "static/studio/features/asset-picker/descendants-view.js": {
+      "sha256": "6c363204719989475d52f3c6cfa0cc4ee89a1e85990099441a1b2ec83e29c999",
+      "exports": [
+        {
+          "name": "mountAssetDescendants",
+          "line": 7
+        }
+      ],
+      "imports": [
+        "static/studio/features/asset-picker/library-client.js",
+        "static/studio/ui/asset-origin.js",
+        "static/studio/ui/error-feedback.js",
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/features/asset-picker/origin-view.js"
+      ]
+    },
+    "static/studio/features/asset-picker/destinations.js": {
+      "sha256": "5c60e8404f8d8c7a66c07d1259241dc478e77eaeeab9ac03dd7ad51bc070917d",
+      "exports": [
+        {
+          "name": "acceptsImage",
+          "line": 3
+        },
+        {
+          "name": "imageDestinations",
+          "line": 4
+        }
+      ],
+      "imports": [],
+      "imported_by": [
+        "static/studio/features/asset-picker/assembly-use.js",
+        "static/studio/features/image-results/transfer.js"
+      ]
+    },
+    "static/studio/features/asset-picker/index.js": {
+      "sha256": "58d8b4f603a60c9f5f2b8b58cc627e482dfcf5c925126a3b1455a823da633877",
+      "exports": [
+        {
+          "name": "pickLibraryAsset",
+          "line": 8
+        }
+      ],
+      "imports": [
+        "static/studio/features/asset-picker/library-client.js",
+        "static/studio/features/asset-picker/media-view.js",
+        "static/studio/features/asset-picker/origin-view.js",
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/app/image-workspace-controller.js",
+        "static/studio/features/asset-picker/project-use.js",
+        "static/studio/features/authoring-assist/binding-cards.js",
+        "static/studio/features/authoring-assist/image-handoffs.js",
+        "static/studio/features/authoring-assist/references.js",
+        "static/studio/modes/video-assembly/references.js",
+        "static/studio/modes/video-assembly/workspace.js",
+        "static/studio/pages/asset-library/detail.js"
+      ]
+    },
+    "static/studio/features/asset-picker/library-client.js": {
+      "sha256": "aa0a496456077e6ebb70d886409b37f599045816f046291bec9ec1d0a0da5c7f",
+      "exports": [
+        {
+          "name": "libraryApi",
+          "line": 3
+        },
+        {
+          "name": "uploadToLibrary",
+          "line": 7
+        },
+        {
+          "name": "followTask",
+          "line": 67
+        }
+      ],
+      "imports": [
+        "static/studio/core/api-client.js"
+      ],
+      "imported_by": [
+        "static/studio/app/image-workspace-controller.js",
+        "static/studio/features/asset-picker/descendants-view.js",
+        "static/studio/features/asset-picker/index.js",
+        "static/studio/features/asset-picker/origin-view.js",
+        "static/studio/features/asset-picker/project-use.js",
+        "static/studio/features/asset-picker/result-import.js",
+        "static/studio/features/image-results/transfer.js",
+        "static/studio/pages/asset-library/batch-actions.js",
+        "static/studio/pages/asset-library/detail.js",
+        "static/studio/pages/asset-library/index.js",
+        "static/studio/pages/asset-library/media-tools.js",
+        "static/studio/pages/asset-library/transfer.js",
+        "static/studio/pages/asset-library/uploads.js"
+      ]
+    },
+    "static/studio/features/asset-picker/media-view.js": {
+      "sha256": "cf8d5630f42fb9a3b2f175594113d8863230c109ef5da198cc9e34cb7650719c",
+      "exports": [
+        {
+          "name": "primaryMedia",
+          "line": 3
+        },
+        {
+          "name": "kindLabel",
+          "line": 6
+        },
+        {
+          "name": "mediaSummary",
+          "line": 12
+        },
+        {
+          "name": "thumbnail",
+          "line": 23
+        },
+        {
+          "name": "mediaPlayer",
+          "line": 31
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/features/asset-picker/index.js",
+        "static/studio/features/asset-picker/project-use.js",
+        "static/studio/pages/asset-library/batch-actions.js",
+        "static/studio/pages/asset-library/detail.js",
+        "static/studio/pages/asset-library/index.js"
+      ]
+    },
+    "static/studio/features/asset-picker/origin-view.js": {
+      "sha256": "a24600ef05739b1cb041ba1c2b0c2ea3edd96c79e00a479dd03a764c8fa70e63",
+      "exports": [
+        {
+          "name": "mountAssetOrigin",
+          "line": 7
+        }
+      ],
+      "imports": [
+        "static/studio/features/asset-picker/descendants-view.js",
+        "static/studio/features/asset-picker/library-client.js",
+        "static/studio/features/prompt-library/records.js",
+        "static/studio/ui/asset-origin.js",
+        "static/studio/ui/error-feedback.js"
+      ],
+      "imported_by": [
+        "static/studio/features/asset-picker/index.js",
+        "static/studio/pages/asset-library/detail.js"
+      ]
+    },
+    "static/studio/features/asset-picker/project-use.js": {
+      "sha256": "6e0506bc2dad0f72d95ff607edaf6656f417ad5bf3d87d1a6d8564dce60655d4",
+      "exports": [
+        {
+          "name": "useLibrary",
+          "line": 11
+        },
+        {
+          "name": "selectionDialog",
+          "line": 95
+        }
+      ],
+      "imports": [
+        "static/studio/features/asset-picker/index.js",
+        "static/studio/features/asset-picker/library-client.js",
+        "static/studio/features/asset-picker/media-view.js",
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/reference-metadata.js"
+      ],
+      "imported_by": [
+        "static/studio/features/assets/index.js",
+        "static/studio/features/image-results/transfer.js"
+      ]
+    },
+    "static/studio/features/asset-picker/result-import.js": {
+      "sha256": "b1932796405f6a6101d2641167b7c0b7e1897f36b1a0e455f45dc3837040196a",
+      "exports": [
+        {
+          "name": "resultAsset",
+          "line": 9
+        },
+        {
+          "name": "loadResultReceipts",
+          "line": 19
+        },
+        {
+          "name": "saveProjectMedia",
+          "line": 42
+        }
+      ],
+      "imports": [
+        "static/studio/features/asset-picker/library-client.js",
+        "static/studio/ui/error-feedback.js",
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/result-view.js",
+        "static/studio/ui/status-region.js"
+      ],
+      "imported_by": [
+        "static/studio/app/workspace-controller.js",
+        "static/studio/features/assets/index.js",
+        "static/studio/features/export/index.js",
+        "static/studio/features/production/review-parts.js"
+      ]
+    },
+    "static/studio/features/assets/index.js": {
+      "sha256": "f115151272cfc86ac85fa60a5097edbad17e1a10ec0f30f0c2479d005d3cecc5",
+      "exports": [
+        {
+          "name": "createFeature",
+          "line": 6
+        }
+      ],
+      "imports": [
+        "static/studio/features/asset-picker/project-use.js",
+        "static/studio/features/asset-picker/result-import.js",
+        "static/studio/ui/reference-assets.js",
+        "static/studio/ui/reference-metadata.js"
+      ],
+      "imported_by": [
+        "static/studio/app/workspace-controller.js"
+      ]
+    },
+    "static/studio/pages/asset-library/batch-actions.js": {
+      "sha256": "8973ed817dfe6d76bc9d7b1adbef34e8ab536bb918587e6cf377a1f139aed686",
+      "exports": [
+        {
+          "name": "bindBatchActions",
+          "line": 8
+        }
+      ],
+      "imports": [
+        "static/studio/features/asset-picker/library-client.js",
+        "static/studio/features/asset-picker/media-view.js",
+        "static/studio/pages/asset-library/input-dialog.js",
+        "static/studio/pages/asset-library/transfer.js",
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/pages/asset-library/index.js"
+      ]
+    },
+    "static/studio/pages/asset-library/detail.js": {
+      "sha256": "d99421c0936a02ed37bfc0fa4b3002fdc4a553fdb155e73ad2de2b8af0242477",
+      "exports": [
+        {
+          "name": "mountDetail",
+          "line": 30
+        }
+      ],
+      "imports": [
+        "static/studio/core/api-client.js",
+        "static/studio/features/asset-picker/index.js",
+        "static/studio/features/asset-picker/library-client.js",
+        "static/studio/features/asset-picker/media-view.js",
+        "static/studio/features/asset-picker/origin-view.js",
+        "static/studio/pages/asset-library/media-timeline.js",
+        "static/studio/pages/asset-library/media-tools.js",
+        "static/studio/pages/asset-library/transfer.js",
+        "static/studio/pages/asset-library/uploads.js",
+        "static/studio/ui/asset-origin.js",
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/prompt-editor.js",
+        "static/studio/ui/workspace-view-state.js"
+      ],
+      "imported_by": [
+        "static/studio/pages/asset-library/index.js"
+      ]
+    },
+    "static/studio/pages/asset-library/engine-settings.js": {
+      "sha256": "278aaaf196c0bffcf5abe2c357983436f33c8cf10b7c76ec9e55af50a3b419cf",
+      "exports": [
+        {
+          "name": "openLauncher",
+          "line": 4
+        }
+      ],
+      "imports": [
+        "static/studio/core/api-client.js",
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/pages/asset-library/index.js"
+      ]
+    },
+    "static/studio/pages/asset-library/import-dialog.js": {
+      "sha256": "7b0d55c95f1b108d6ae120e4901516daa909d8a720c194d3aeb80e239fb7eb6c",
+      "exports": [
+        {
+          "name": "openLibraryImports",
+          "line": 3
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/reference-assets.js"
+      ],
+      "imported_by": [
+        "static/studio/pages/asset-library/index.js"
+      ]
+    },
+    "static/studio/pages/asset-library/index.js": {
+      "sha256": "bc2b43804c01682d2ed5260e8e934768ef561683a572028746c14034c14db472",
+      "exports": [
+        {
+          "name": "mountLibrary",
+          "line": 22
+        }
+      ],
+      "imports": [
+        "static/studio/features/asset-picker/library-client.js",
+        "static/studio/features/asset-picker/media-view.js",
+        "static/studio/pages/asset-library/batch-actions.js",
+        "static/studio/pages/asset-library/detail.js",
+        "static/studio/pages/asset-library/engine-settings.js",
+        "static/studio/pages/asset-library/import-dialog.js",
+        "static/studio/pages/asset-library/input-dialog.js",
+        "static/studio/pages/asset-library/recycle-bin.js",
+        "static/studio/pages/asset-library/transfer.js",
+        "static/studio/pages/asset-library/uploads.js",
+        "static/studio/ui/library-navigation.js",
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/status-region.js",
+        "static/studio/ui/workspace-view-state.js"
+      ],
+      "imported_by": [
+        "static/studio/app/bootstrap.js"
+      ]
+    },
+    "static/studio/pages/asset-library/input-dialog.js": {
+      "sha256": "a22660b8bb4a239a48703e3e56c7879a5962d3f6992fd8010f922c5f01373ec5",
+      "exports": [
+        {
+          "name": "simpleInput",
+          "line": 3
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/pages/asset-library/batch-actions.js",
+        "static/studio/pages/asset-library/index.js"
+      ]
+    },
+    "static/studio/pages/asset-library/media-timeline.js": {
+      "sha256": "dafad843208f6b161280d36bde5a2fe815ae6e541cc40c62211950a09930619b",
+      "exports": [
+        {
+          "name": "bindTimeline",
+          "line": 4
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/pages/asset-library/detail.js"
+      ]
+    },
+    "static/studio/pages/asset-library/media-tools.js": {
+      "sha256": "ff0e388b1f5285d17b3c15fe7932e20ea763e9830470ddb106406610293f4068",
+      "exports": [
+        {
+          "name": "mountMediaTools",
+          "line": 8
+        }
+      ],
+      "imports": [
+        "static/studio/features/asset-picker/library-client.js",
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/status-region.js"
+      ],
+      "imported_by": [
+        "static/studio/pages/asset-library/detail.js"
+      ]
+    },
+    "static/studio/pages/asset-library/recycle-bin.js": {
+      "sha256": "e369ac0248f6bd538becdda8c5d891018dbb73be8ec4cc6040306665a985b71b",
+      "exports": [
+        {
+          "name": "recycleCategories",
+          "line": 5
+        },
+        {
+          "name": "recycleUrl",
+          "line": 8
+        },
+        {
+          "name": "restoreRequest",
+          "line": 13
+        },
+        {
+          "name": "recycleView",
+          "line": 24
+        },
+        {
+          "name": "mountRecycleBin",
+          "line": 29
+        }
+      ],
+      "imports": [
+        "static/studio/core/api-client.js",
+        "static/studio/ui/error-feedback.js",
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/pages/asset-library/index.js"
+      ]
+    },
+    "static/studio/pages/asset-library/transfer.js": {
+      "sha256": "7fb050a63180d8dd9c9c0ead52a8ba02727370232ab35229d794fce01ea2f015",
+      "exports": [
+        {
+          "name": "exportPack",
+          "line": 7
+        },
+        {
+          "name": "importPack",
+          "line": 78
+        },
+        {
+          "name": "collectFolder",
+          "line": 129
+        }
+      ],
+      "imports": [
+        "static/studio/features/asset-picker/library-client.js",
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/pages/asset-library/batch-actions.js",
+        "static/studio/pages/asset-library/detail.js",
+        "static/studio/pages/asset-library/index.js"
+      ]
+    },
+    "static/studio/pages/asset-library/uploads.js": {
+      "sha256": "bdeb3745e90f12168ab3ec8f160e6a22987b40c96270e63938a39acc9ae23eb9",
+      "exports": [
+        {
+          "name": "showUploads",
+          "line": 8
+        }
+      ],
+      "imports": [
+        "static/studio/features/asset-picker/library-client.js",
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/status-region.js"
+      ],
+      "imported_by": [
+        "static/studio/pages/asset-library/detail.js",
+        "static/studio/pages/asset-library/index.js"
+      ]
+    },
+    "static/studio/styles/collection-navigation.css": {
+      "sha256": "7d3e5afd9779960a8d092f573ec47c752106d9b8249691c7d02542876bef4b62",
+      "imported_by": []
+    },
+    "static/studio/styles/library.css": {
+      "sha256": "0ff0e9826cab546737782328d728086795dfca364e89ad6da478d0e152501675",
+      "imported_by": []
+    },
+    "static/studio/ui/asset-origin.js": {
+      "sha256": "8b0a883dc891b2d3c2bfe2695b8e11c629a5ad8bdbe9ed04619d34d27b491a0f",
+      "exports": [
+        {
+          "name": "projectOriginLink",
+          "line": 6
+        },
+        {
+          "name": "assetVersionLink",
+          "line": 13
+        },
+        {
+          "name": "lineageMarkup",
+          "line": 18
+        },
+        {
+          "name": "assetOriginMarkup",
+          "line": 25
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/source-parameters.js"
+      ],
+      "imported_by": [
+        "static/studio/features/asset-picker/descendants-view.js",
+        "static/studio/features/asset-picker/origin-view.js",
+        "static/studio/features/image-results/workspace-view.js",
+        "static/studio/features/prompt-library/browser.js",
+        "static/studio/modes/swap/workspace.js",
+        "static/studio/modes/video-assembly/workspace.js",
+        "static/studio/pages/asset-library/detail.js",
+        "static/studio/ui/reference-assets.js",
+        "static/studio/ui/source-navigation.js"
+      ]
+    },
+    "static/studio/ui/reference-assets.js": {
+      "sha256": "f22b820ddb58e83d759b0f2202f314f35953af03a385c308d632fd5542769830",
+      "exports": [
+        {
+          "name": "importOptions",
+          "line": 4
+        },
+        {
+          "name": "referenceAssetCard",
+          "line": 7
+        }
+      ],
+      "imports": [
+        "static/studio/ui/asset-origin.js",
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/features/assets/index.js",
+        "static/studio/features/authoring-assist/references.js",
+        "static/studio/features/image-results/workspace-view.js",
+        "static/studio/features/prompts/authoring.js",
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/modes/swap/workspace.js",
+        "static/studio/modes/video-assembly/import-dialog.js",
+        "static/studio/modes/video-assembly/references.js",
+        "static/studio/modes/video-assembly/workspace.js",
+        "static/studio/pages/asset-library/import-dialog.js"
+      ]
+    },
+    "static/studio/ui/reference-metadata.js": {
+      "sha256": "cca0cf7f06f439f0113d7cce85bb4d464a60071a600f1abb8dde579351db8714",
+      "exports": [
+        {
+          "name": "referencePurposes",
+          "line": 3
+        },
+        {
+          "name": "needsSubject",
+          "line": 4
+        },
+        {
+          "name": "referenceMetadata",
+          "line": 5
+        },
+        {
+          "name": "chooseReferenceMetadata",
+          "line": 12
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/features/asset-picker/assembly-use.js",
+        "static/studio/features/asset-picker/project-use.js",
+        "static/studio/features/assets/index.js",
+        "static/studio/features/authoring-assist/references.js",
+        "static/studio/modes/video-assembly/references.js"
+      ]
+    }
+  }
+}

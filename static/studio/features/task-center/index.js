@@ -1,3 +1,4 @@
+import {updateStatusRegion} from '../../ui/status-region.js';
 import {TASK_STATES as states} from '../../core/task-state.js';
 import {api} from '../../core/api-client.js';
 import {esc} from '../../ui/primitives.js';
@@ -6,6 +7,9 @@ import {errorFeedback, bindErrorFeedback} from '../../ui/error-feedback.js';
 const actions={recover:'查询恢复',cancel:'取消排队',pause:'停止后续执行',stop:'停止当前生成',close:'结束等待并保留记录'};
 
 export function confirmation(task,action) {
+  if(task.kind==='creation'&&action==='recover')return '仅查询并接收原引擎编号对应的结果，不重新提交，不更换上游或当前参数。';
+  if(task.kind==='creation'&&action==='close')return '结束这条本地记录的等待，保留原请求、编号和快照。不能证明远端请求已停止，远端可能仍在执行；网站不会自动重试。';
+  if(task.kind==='creation'&&task.creation_mode==='authoring')return '停止接收这条写作请求。当前剧本与候选保留；云端已经开始的请求可能仍执行并计费。';
   if(task.kind==='assembly'&&action==='recover')return `查询「${task.name}」原提交并继续剩余续接任务，已登记的提交不会重复发送。`;
   if(task.kind==='assembly'&&action==='stop')return `停止「${task.name}」当前处理及后续任务？只控制本任务的引擎提交或媒体子进程，原件及已完成结果保留。`;
   if(action==='close')return `结束「${task.name}」这条旧提交的等待？系统会先重查引擎队列和历史。若仍无记录，保留原编号与快照并解除占用；其他排队任务随后可以继续。原提交的结果仍记为未确认，不会重新提交。`;
@@ -20,8 +24,8 @@ export function visibleTasks(tasks,filter) {
 
 export function taskCard(task,index) {
   const progress=Number.isFinite(task.progress)?`<progress max="1" value="${Math.max(0,Math.min(1,task.progress))}" aria-label="任务进度"></progress>`:'';
-  return `<article class="task-card ${task.attention?'needs-attention':''}" data-task-row="${index}">
-    <div class="task-card-heading"><div><small>${esc(task.kind==='image'?'图片资产创作':task.kind==='video'?'视频制作':task.kind==='assembly'?'视频接续':'本地处理')}</small><h3>${esc(task.name)}</h3></div><span class="badge">${esc(task.stop_requested&&task.active?'停止已请求':states[task.state]||task.state)}</span></div>
+  return `<article class="task-card ${task.attention?'needs-attention':''}" data-task-row="${index}" data-view-key="${esc(task.kind+':'+task.project+':'+task.id)}">
+    <div class="task-card-heading"><div><small>${esc(task.kind==='image'?'图片资产创作':task.kind==='video'?'视频制作':task.kind==='assembly'?'视频接续':task.kind==='creation'?(task.creation_mode==='movie'?'电影创作':'剧本创作'):'本地处理')}</small><h3>${esc(task.name)}</h3></div><span class="badge">${esc(task.stop_requested&&task.active?'停止已请求':states[task.state]||task.state)}</span></div>
     <p>${esc(task.title)} <small>· ${esc(task.id.slice(0,8))}</small></p>
     <p class="task-note">${esc(task.note||'任务记录已保留')}</p>${progress}
     ${task.seed!==undefined&&task.seed!==null?`<small>种子 ${esc(task.seed)}</small>`:''}
@@ -37,7 +41,7 @@ export function mountTaskCenter() {
   const button=document.querySelector('#global-tasks');
   if(!button)return;
   const dialog=document.createElement('dialog');dialog.id='task-center';dialog.setAttribute('aria-labelledby','task-center-title');
-  dialog.innerHTML=`<div class="task-center-heading"><div><span class="eyebrow">TASK QUEUE</span><h2 id="task-center-title">当前任务队列</h2><p>跨页面管理正在执行与排队的项目，结束后自动移出。</p></div><button type="button" data-close aria-label="关闭任务列表">×</button></div>
+  dialog.innerHTML=`<div class="task-center-heading"><div><span class="eyebrow">TASK QUEUE</span><h2 id="task-center-title">当前任务队列</h2><p>跨页面管理正在执行与排队的项目，结束后自动移出。</p></div><button type="button" class="dialog-close" data-close aria-label="关闭任务列表">×</button></div>
     <div class="task-toolbar"><label>显示 <select data-filter><option value="active">当前队列</option><option value="attention">待确认占用</option></select></label><button type="button" data-refresh>刷新</button><small data-summary role="status"></small></div>
     <div data-task-error role="alert"></div><div data-task-confirm hidden></div><div data-task-list></div><small data-history></small>`;
   document.body.append(dialog);
@@ -46,7 +50,7 @@ export function mountTaskCenter() {
   const list=dialog.querySelector('[data-task-list]'),error=dialog.querySelector('[data-task-error]'),confirm=dialog.querySelector('[data-task-confirm]');
   function render(){
     const rows=visibleTasks(tasks,filter);const html=rows.map(t=>taskCard(t,tasks.indexOf(t))).join('')||'<div class="task-empty">此处暂无任务</div>';
-    if(html!==last){list.innerHTML=html;last=html;}
+    if(html!==last){updateStatusRegion(list,html);last=html;}
     renderedTasks=tasks.slice();
   }
   function lock(value){

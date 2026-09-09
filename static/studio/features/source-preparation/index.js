@@ -1,3 +1,4 @@
+import {updateStatusRegion} from '../../ui/status-region.js';
 import {runTiming,runStatusRow} from '../../ui/run-timing.js';
 import { uploadAsset } from "../../core/upload-client.js";
 
@@ -19,7 +20,7 @@ export function createFeature(ctx) {
   }
   function updateSourceProgress() {
     const el = ctx.root.querySelector("#source-progress");
-    if (el) el.innerHTML = sourceProgressCard();
+    if (el) updateStatusRegion(el,sourceProgressCard());
   }
   function observeSource(type) {
     if (ctx.project.mode !== "swap") return false;

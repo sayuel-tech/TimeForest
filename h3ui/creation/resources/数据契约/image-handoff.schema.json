@@ -1,0 +1,220 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "image-handoff",
+  "type": "object",
+  "properties": {
+    "handoff_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "image_project_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "image_task_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "target": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "layer": {
+          "type": "string",
+          "enum": [
+            "intent",
+            "screenplay",
+            "asset_bindings",
+            "asset_screenplay",
+            "storyboard",
+            "segment",
+            "visual_references",
+            "prompt"
+          ]
+        },
+        "target_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "project_id",
+        "layer",
+        "target_ids"
+      ],
+      "additionalProperties": false
+    },
+    "source_content_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "reference_purpose": {
+      "type": "string",
+      "enum": [
+        "start",
+        "end",
+        "composition",
+        "key_state",
+        "atmosphere"
+      ]
+    },
+    "return_context": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "origin_movie_id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "origin_page": {
+              "type": "string",
+              "enum": [
+                "generation",
+                "editing"
+              ]
+            },
+            "origin_item_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "origin_segment_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "viewed_take_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "script_project_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "script_target_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "source_bundle_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "view": {
+              "type": "object",
+              "properties": {
+                "scroll_x": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "scroll_y": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "zoom": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                }
+              },
+              "required": [
+                "scroll_x",
+                "scroll_y",
+                "zoom"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "origin_movie_id",
+            "origin_page",
+            "origin_item_id",
+            "origin_segment_id",
+            "viewed_take_id",
+            "script_project_id",
+            "script_target_id",
+            "source_bundle_id",
+            "view"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "generation_started": {
+      "const": false
+    }
+  },
+  "required": [
+    "handoff_id",
+    "image_project_id",
+    "image_task_id",
+    "target",
+    "source_content_hash",
+    "reference_purpose",
+    "return_context",
+    "generation_started"
+  ],
+  "additionalProperties": false
+}

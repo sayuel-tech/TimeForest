@@ -24,6 +24,8 @@ def direct_links(origin):
             if link.get('state')=='mapped':add(link.get('reference'),'ancestor')
         return links
     add(origin.get('parent'),'derived');add(origin.get('library_reference'),'derived')
+    if origin.get('mode')=='movie':
+        for ref in (origin.get('movie_lineage') or {}).get('inputs',[]):add(ref,'reference')
     snap=origin.get('snapshot',{}) or {}
     add(snap.get('source',{}).get('origin'),'continuation')
     for i,part in enumerate(snap.get('parts',[])):

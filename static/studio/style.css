@@ -1,5 +1,6 @@
 @import url("/static/styles/tokens.css");
 @import url("./styles/fonts/fonts.css");
+@import url("./styles/design-tokens.css");
 @import url("./styles/base.css");
 @import url("./styles/components.css");
 @import url("./styles/shell.css");
@@ -15,3 +16,7 @@
 @import "./styles/production-settings.css";
 
 @import url("./styles/prompt-library.css");
+@import url('./styles/creation.css');
+
+@import url("./styles/collection-navigation.css");
+@import url("./styles/task-layouts.css");

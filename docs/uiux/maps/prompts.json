@@ -1,0 +1,257 @@
+{
+  "schema_version": 1,
+  "topic": "prompts",
+  "evidence": "Mechanical current-source map; not UI acceptance or a match to historical screenshots.",
+  "sources": {
+    "static/studio/features/prompt-library/adapters.js": {
+      "sha256": "de6278a22f18ab2463ce228b260967de9043c87de8fdb69c03a4a46e8af3be15",
+      "exports": [
+        {
+          "name": "bindVideoPrompts",
+          "line": 14
+        },
+        {
+          "name": "bindImagePrompts",
+          "line": 35
+        },
+        {
+          "name": "bindAssemblyPrompts",
+          "line": 41
+        }
+      ],
+      "imports": [
+        "static/studio/core/api-client.js",
+        "static/studio/features/prompt-library/api.js",
+        "static/studio/features/prompt-library/tools.js"
+      ],
+      "imported_by": [
+        "static/studio/app/image-workspace-controller.js",
+        "static/studio/app/workspace-controller.js",
+        "static/studio/features/prompts/editor-parts.js",
+        "static/studio/modes/video-assembly/workspace.js"
+      ]
+    },
+    "static/studio/features/prompt-library/api.js": {
+      "sha256": "23dd85ee2bfcd55aa4032f4b1b96b7840915240bfc7b2f5fe17ce088d19aae17",
+      "exports": [
+        {
+          "name": "promptApi",
+          "line": 2
+        },
+        {
+          "name": "promptCatalog",
+          "line": 3
+        }
+      ],
+      "imports": [
+        "static/studio/core/api-client.js"
+      ],
+      "imported_by": [
+        "static/studio/features/prompt-library/adapters.js",
+        "static/studio/features/prompt-library/browser.js",
+        "static/studio/features/prompt-library/collection.js",
+        "static/studio/features/prompt-library/editor.js",
+        "static/studio/features/prompt-library/records.js",
+        "static/studio/features/prompt-library/tools.js"
+      ]
+    },
+    "static/studio/features/prompt-library/browser.js": {
+      "sha256": "ff4a31f72320e0fd8e0217ccfa0fd64cd28ce3cc9734a63c93dfd95259083fba",
+      "exports": [
+        {
+          "name": "mountPromptBrowser",
+          "line": 11
+        }
+      ],
+      "imports": [
+        "static/studio/features/prompt-library/api.js",
+        "static/studio/features/prompt-library/editor.js",
+        "static/studio/ui/asset-origin.js",
+        "static/studio/ui/choice-dialog.js",
+        "static/studio/ui/error-feedback.js",
+        "static/studio/ui/library-navigation.js",
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/workspace-view-state.js"
+      ],
+      "imported_by": [
+        "static/studio/features/prompt-library/tools.js",
+        "static/studio/pages/prompt-library/index.js"
+      ]
+    },
+    "static/studio/features/prompt-library/collection.js": {
+      "sha256": "fb9e623cb8c41654bd90b5ebc99d43ecc32e429e3f5bd131bac8c73d1eae143f",
+      "exports": [
+        {
+          "name": "promptCollectionNotice",
+          "line": 5
+        }
+      ],
+      "imports": [
+        "static/studio/features/prompt-library/api.js",
+        "static/studio/ui/error-feedback.js"
+      ],
+      "imported_by": [
+        "static/studio/app/image-workspace-controller.js",
+        "static/studio/app/workspace-controller.js",
+        "static/studio/modes/video-assembly/workspace.js"
+      ]
+    },
+    "static/studio/features/prompt-library/editor.js": {
+      "sha256": "351a82cd3d6543636ddcfba8f4d940e6d3e2d7a7530cd6667c15187c76ed2a21",
+      "exports": [
+        {
+          "name": "closePromptEditor",
+          "line": 7
+        },
+        {
+          "name": "contentText",
+          "line": 9
+        },
+        {
+          "name": "fieldNames",
+          "line": 10
+        },
+        {
+          "name": "openEditor",
+          "line": 12
+        },
+        {
+          "name": "editBranch",
+          "line": 40
+        }
+      ],
+      "imports": [
+        "static/studio/features/prompt-library/api.js",
+        "static/studio/ui/choice-dialog.js",
+        "static/studio/ui/error-feedback.js",
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/app/bootstrap.js",
+        "static/studio/features/prompt-library/browser.js",
+        "static/studio/features/prompt-library/records.js",
+        "static/studio/features/prompt-library/tools.js"
+      ]
+    },
+    "static/studio/features/prompt-library/records.js": {
+      "sha256": "f324de6b7abb96893b44d641edf8aea1158150a1f2d71f2b21d8c1278d053e77",
+      "exports": [
+        {
+          "name": "recordSource",
+          "line": 7
+        },
+        {
+          "name": "addRecordButton",
+          "line": 11
+        },
+        {
+          "name": "showRecords",
+          "line": 16
+        }
+      ],
+      "imports": [
+        "static/studio/features/prompt-library/api.js",
+        "static/studio/features/prompt-library/editor.js",
+        "static/studio/ui/choice-dialog.js",
+        "static/studio/ui/error-feedback.js",
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/app/image-workspace-controller.js",
+        "static/studio/features/asset-picker/origin-view.js",
+        "static/studio/features/export/index.js",
+        "static/studio/features/production/review.js",
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/modes/video-assembly/workspace.js"
+      ]
+    },
+    "static/studio/features/prompt-library/tools.js": {
+      "sha256": "f7e9790cbee3c327661469d79c12923ce4f14e2a6c381861df5e02d7b3d96ce1",
+      "exports": [
+        {
+          "name": "pickPrompt",
+          "line": 9
+        },
+        {
+          "name": "bindPromptEditor",
+          "line": 23
+        }
+      ],
+      "imports": [
+        "static/studio/features/prompt-library/api.js",
+        "static/studio/features/prompt-library/browser.js",
+        "static/studio/features/prompt-library/editor.js",
+        "static/studio/ui/choice-dialog.js",
+        "static/studio/ui/error-feedback.js",
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/prompt-editor.js"
+      ],
+      "imported_by": [
+        "static/studio/features/authoring-assist/prompt-fields.js",
+        "static/studio/features/prompt-library/adapters.js"
+      ]
+    },
+    "static/studio/pages/prompt-library/index.js": {
+      "sha256": "31e56a1779f8c591f8cb9816c1ba26a0b87b2fd680af2d6d40fde244cf510089",
+      "exports": [
+        {
+          "name": "mountPromptLibrary",
+          "line": 2
+        }
+      ],
+      "imports": [
+        "static/studio/features/prompt-library/browser.js"
+      ],
+      "imported_by": [
+        "static/studio/app/bootstrap.js"
+      ]
+    },
+    "static/studio/styles/collection-navigation.css": {
+      "sha256": "7d3e5afd9779960a8d092f573ec47c752106d9b8249691c7d02542876bef4b62",
+      "imported_by": []
+    },
+    "static/studio/styles/prompt-library.css": {
+      "sha256": "57e940248ca286668c6706baacb9bb1381720e1646fc1562301c838c2f15cb74",
+      "imported_by": []
+    },
+    "static/studio/styles/task-layouts.css": {
+      "sha256": "30bee9fd22edca749b56cc0770b8fddd249ce3c3000c7f95f3c209eb288ce113",
+      "imported_by": []
+    },
+    "static/studio/ui/prompt-editor.js": {
+      "sha256": "4357c251298154ebaea3406f3163ff08d794c58c9b8e429da344c647179a10e4",
+      "exports": [
+        {
+          "name": "readingDisclosure",
+          "line": 4
+        },
+        {
+          "name": "openReading",
+          "line": 10
+        },
+        {
+          "name": "bindReadingPreviews",
+          "line": 15
+        },
+        {
+          "name": "expandPrompt",
+          "line": 23
+        },
+        {
+          "name": "promptTools",
+          "line": 29
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/features/prompt-library/tools.js",
+        "static/studio/modes/authoring/workspace.js",
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/pages/asset-library/detail.js",
+        "static/studio/ui/workbench.js"
+      ]
+    }
+  }
+}

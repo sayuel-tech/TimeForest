@@ -75,7 +75,7 @@ export function createFeature(ctx) {
         return {key:group, title, html};
       }).filter(Boolean);
       content.innerHTML = productionSettingsMarkup({
-        scope: `当前项目草稿 · ${r.name}`,
+        scope: `${ctx.settingsScope||'当前项目草稿'} · ${r.name}`,
         directory: `<details class="engine-directory"><summary>本地模型目录</summary><p>刷新页面或点击下方按钮会重新扫描本地模型目录，无需启动ComfyUI。你的文件选择会原样提交；不兼容时显示ComfyUI返回的错误。${ctx.catalog.local_models?.updated ? ` 上次扫描：${new Date(ctx.catalog.local_models.updated * 1000).toLocaleString()}` : ""}</p>${(ctx.catalog.local_models?.errors || []).map(e => `<p class="notice error">${esc(e)}</p>`).join("")}<button id="connect-engine" type="button">刷新本地模型列表</button></details>`,
         summary: `<div class="settings-summary"><strong id="geometry-preview"></strong><p id="sampling-preview"></p><details><summary>工作流说明与适用范围</summary><p>${esc(r.description)}</p><p>${esc(r.capabilities.verification)}</p></details></div>`,
         sections,

@@ -7,7 +7,7 @@
 }
 .library-header h1 {
   margin: 10px 0;
-  font-size: clamp(38px, 4.6vw, 64px);
+  font-size: var(--title-page);
 }
 .library-header p {
   margin: 0;
@@ -20,28 +20,7 @@
   gap: 40px;
   align-items: start;
 }
-.library-sidebar {
-  position: sticky;
-  top: 112px;
-  display: grid;
-  gap: 5px;
-}
-.library-sidebar a {
-  text-decoration: none;
-  padding: 9px 14px;
-  border-radius: 10px;
-}
-.library-sidebar a.active {
-  background: var(--sage-soft);
-  color: var(--sage);
-  font-weight: 600;
-}
-.library-sidebar a:hover {
-  background: var(--paper-2);
-}
-.library-sidebar .eyebrow {
-  padding: 18px 14px 8px;
-}
+.library-sidebar {position:sticky;top:112px;min-width:0}
 .library-toolbar,
 .library-search {
   display: flex;
@@ -71,8 +50,8 @@
 }
 .library-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 22px;
+  grid-template-columns: repeat(auto-fill, minmax(min(210px, 100%), 1fr));
+  gap: 16px;
 }
 .library-card {
   background: var(--paper);
@@ -94,7 +73,7 @@
 }
 .library-card figure {
   margin: 0;
-  aspect-ratio: 4/3;
+  height: 160px;
   background: var(--paper-2);
   overflow: hidden;
   display: grid;
@@ -106,11 +85,12 @@
   object-fit: contain;
 }
 .library-card .library-card-copy {
-  padding: 18px 20px 22px;
+  padding: 12px 14px 14px;
 }
 .library-card h3 {
-  font-size: 22px;
-  margin: 0 0 8px;
+  font-size: 18px;
+  line-height:1.4;
+  margin: 0 0 6px;
   overflow-wrap: anywhere;
 }
 .library-card small {
@@ -216,9 +196,6 @@
   display: flex;
   gap: 6px;
   align-items: center;
-}
-.library-checks input[type="checkbox"] {
-  width: auto;
 }
 .library-save {
   position: sticky;
@@ -334,7 +311,7 @@ dialog:has(.library-picker) {
 }
 @media (max-width: 1100px) {
   .library-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
   }
   .library-layout {
     gap: 24px;
@@ -349,18 +326,9 @@ dialog:has(.library-picker) {
   .library-detail {
     grid-template-columns: 1fr;
   }
-  .library-sidebar {
-    position: static;
-    display: flex;
-    overflow: auto;
-    gap: 4px;
-  }
-  .library-sidebar a {
-    white-space: nowrap;
-  }
-  .library-sidebar .eyebrow {
-    display: none;
-  }
+  .library-sidebar {position:static}
+  .library-sidebar .collection-navigation {grid-template-columns:repeat(2,minmax(0,1fr));}
+  .library-sidebar .collection-nav-group:nth-child(2){grid-row:span 2}
   .library-header {
     align-items: start;
     flex-direction: column;
@@ -385,7 +353,7 @@ dialog:has(.library-picker) {
 }
 
 /* One recycle-bin shell; record types retain their own restore APIs. */
-.recycle-heading h2 {margin:0 0 6px;font-size:26px}
+.recycle-heading h2 {margin:0 0 6px;font-size:var(--title-section)}
 .recycle-heading p {margin:0 0 16px}
 .recycle-categories {display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
 .recycle-categories .btn {display:flex;gap:12px;align-items:center;padding:8px 14px;font-size:14px}
@@ -419,3 +387,8 @@ dialog:has(.library-picker) {
 .library-pick-entry video,.library-pick-entry img { max-width:100%; max-height:16rem; object-fit:contain; }
 .library-pick-entry audio { max-width:100%; }
 .library-pick-entry [data-preview-content] { max-height:32rem; overflow:auto; }
+
+.library-header>.library-toolbar{margin:0;justify-content:flex-end}
+.library-grid.list .library-card figure{width:100%}
+.library-card h3{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.library-card small{font-size:12px;line-height:1.6}

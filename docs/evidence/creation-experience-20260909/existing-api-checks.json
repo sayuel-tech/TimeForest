@@ -1,0 +1,23 @@
+{
+  "tests": 14,
+  "passed": true,
+  "scenarios": [
+    "test_all_bundled_response_contracts_and_duplicate_json",
+    "test_create_save_reopen_conflict_and_movie_container",
+    "test_fake_chat_to_real_candidate_apply_and_capture",
+    "test_stable_ids_dependency_cycle_and_idempotence",
+    "test_truncated_response_and_reserved_provider_do_not_retry",
+    "test_invalid_duration_is_not_silently_split_and_real_network_blocked",
+    "test_prepared_generation_edit_changes_and_export",
+    "test_sync_keeps_old_take_and_old_prepared_snapshot",
+    "test_downstream_uses_fixed_upstream_and_never_follows_new_adoption",
+    "test_image_handoff_return_is_explicit_and_fixed",
+    "test_movie_collection_provenance_and_both_descendant_views",
+    "test_scoped_rewrite_and_changed_basis",
+    "test_take_removal_recycle_and_unknown_never_replays",
+    "test_twelve_contracts_needs_input_keep_prose"
+  ],
+  "failures": [],
+  "errors": [],
+  "environment": "temporary stores, external sockets blocked, fake model/media terminals"
+}

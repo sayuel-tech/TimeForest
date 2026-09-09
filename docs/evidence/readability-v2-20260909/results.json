@@ -1,0 +1,140 @@
+[
+  {
+    "passed": true,
+    "mode": "swap",
+    "width": 1262,
+    "checks": [
+      "view vs select",
+      "collect keeps step and selection",
+      "remove/restore",
+      "playback/pause/seek/error/retry",
+      "original confirmation semantics"
+    ],
+    "case": "swap-1280",
+    "evidence_run": "review-final"
+  },
+  {
+    "passed": true,
+    "mode": "swap",
+    "width": 742,
+    "checks": [
+      "view vs select",
+      "collect keeps step and selection",
+      "remove/restore",
+      "playback/pause/seek/error/retry",
+      "original confirmation semantics"
+    ],
+    "case": "swap-760",
+    "evidence_run": "review-final"
+  },
+  {
+    "passed": true,
+    "mode": "image_story",
+    "width": 1262,
+    "checks": [
+      "view vs select",
+      "collect keeps step and selection",
+      "remove/restore",
+      "playback/pause/seek/error/retry",
+      "original confirmation semantics"
+    ],
+    "case": "image_story-1280",
+    "evidence_run": "review-delivery"
+  },
+  {
+    "passed": true,
+    "mode": "image_story",
+    "width": 742,
+    "checks": [
+      "view vs select",
+      "collect keeps step and selection",
+      "remove/restore",
+      "playback/pause/seek/error/retry",
+      "original confirmation semantics"
+    ],
+    "case": "image_story-760",
+    "evidence_run": "review-delivery"
+  },
+  {
+    "passed": true,
+    "mode": "text_story",
+    "width": 1262,
+    "checks": [
+      "view vs select",
+      "collect keeps step and selection",
+      "remove/restore",
+      "playback/pause/seek/error/retry",
+      "original confirmation semantics"
+    ],
+    "case": "text_story-1280",
+    "evidence_run": "review-delivery"
+  },
+  {
+    "passed": true,
+    "mode": "text_story",
+    "width": 742,
+    "checks": [
+      "view vs select",
+      "collect keeps step and selection",
+      "remove/restore",
+      "playback/pause/seek/error/retry",
+      "original confirmation semantics"
+    ],
+    "case": "text_story-760",
+    "evidence_run": "review-delivery"
+  },
+  {
+    "passed": true,
+    "mode": "image_assets",
+    "width": 1262,
+    "checks": [
+      "view vs select",
+      "collect keeps step and selection",
+      "remove/restore",
+      "image selection"
+    ],
+    "case": "image_assets-1280",
+    "evidence_run": "results"
+  },
+  {
+    "passed": true,
+    "mode": "image_assets",
+    "width": 742,
+    "checks": [
+      "view vs select",
+      "collect keeps step and selection",
+      "remove/restore",
+      "image selection"
+    ],
+    "case": "image_assets-760",
+    "evidence_run": "results"
+  },
+  {
+    "passed": true,
+    "mode": "video_assembly",
+    "width": 1262,
+    "checks": [
+      "view vs select",
+      "collect keeps step and selection",
+      "remove/restore",
+      "playback/pause/seek/error/retry",
+      "assembly replacement slot"
+    ],
+    "case": "video_assembly-1280",
+    "evidence_run": "results"
+  },
+  {
+    "passed": true,
+    "mode": "video_assembly",
+    "width": 742,
+    "checks": [
+      "view vs select",
+      "collect keeps step and selection",
+      "remove/restore",
+      "playback/pause/seek/error/retry",
+      "assembly replacement slot"
+    ],
+    "case": "video_assembly-760",
+    "evidence_run": "results"
+  }
+]

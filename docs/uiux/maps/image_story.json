@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "topic": "image_story",
+  "evidence": "Mechanical current-source map; not UI acceptance or a match to historical screenshots.",
+  "sources": {
+    "static/studio/modes/image-story/workspace.js": {
+      "sha256": "2a20adf35d1d220a287d746190a4fb849d7e7c32c9b6415625cb06e3e176ff18",
+      "exports": [
+        {
+          "name": "navigation",
+          "line": 12
+        },
+        {
+          "name": "className",
+          "line": 17
+        },
+        {
+          "name": "renderEdit",
+          "line": 18
+        },
+        {
+          "name": "reviewComparison",
+          "line": 25
+        }
+      ],
+      "imports": [
+        "static/studio/features/prompts/authoring.js",
+        "static/studio/features/prompts/editor-parts.js",
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/workbench.js"
+      ],
+      "imported_by": [
+        "static/studio/app/mode-registry.js"
+      ]
+    },
+    "static/studio/styles/modes.css": {
+      "sha256": "b3cd2d85c9547ae9e5742d6a043955122cee889a19a35f5e68b090be849f00ce",
+      "imported_by": []
+    },
+    "static/studio/styles/task-layouts.css": {
+      "sha256": "30bee9fd22edca749b56cc0770b8fddd249ce3c3000c7f95f3c209eb288ce113",
+      "imported_by": []
+    },
+    "static/studio/styles/workbench.css": {
+      "sha256": "3849df049437e28f6528e6a0fedbbfe433837eb050b0f00c5e54516bf82a79d2",
+      "imported_by": []
+    }
+  }
+}

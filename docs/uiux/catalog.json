@@ -1,0 +1,717 @@
+{
+  "schema_version": 1,
+  "topics": [
+    {
+      "id": "home",
+      "title": "首页与项目档案",
+      "doc": "pages/home-projects.md",
+      "aliases": [
+        "首页",
+        "项目档案",
+        "新建",
+        "继续创作"
+      ],
+      "source_patterns": [
+        "static/studio/pages/home.js",
+        "static/studio/pages/archive.js",
+        "static/studio/app/bootstrap.js",
+        "static/studio/app/mode-registry.js",
+        "static/studio/styles/shell.css",
+        "static/studio/styles/modes.css"
+      ],
+      "tests": [
+        "tests/site_layout_ui_fixture.py",
+        "tests/readability_ui_fixture.py"
+      ],
+      "references": [
+        "docs/project-archive-deletion.md"
+      ],
+      "entrypoints": [
+        "static/studio/app/bootstrap.js",
+        "static/studio/app/mode-registry.js",
+        "static/studio/pages/archive.js",
+        "static/studio/pages/home.js",
+        "static/studio/styles/modes.css",
+        "static/studio/styles/shell.css"
+      ]
+    },
+    {
+      "id": "swap",
+      "title": "参考视频换人",
+      "doc": "pages/swap.md",
+      "aliases": [
+        "换人",
+        "源视频",
+        "目标角色",
+        "对照审核"
+      ],
+      "source_patterns": [
+        "static/studio/modes/swap/*.js",
+        "static/studio/features/source-preparation/*.js",
+        "static/studio/features/swap-prompts/*.js",
+        "static/studio/styles/modes.css",
+        "static/studio/styles/workbench.css",
+        "static/studio/styles/task-layouts.css"
+      ],
+      "tests": [
+        "tests/studio_source_preparation.test.mjs",
+        "tests/studio_frontend.test.mjs",
+        "tests/result_experience_ui_fixture.py"
+      ],
+      "references": [
+        "docs/frontend/README.md",
+        "docs/prompts/swap-template-v3.md"
+      ],
+      "entrypoints": [
+        "static/studio/features/source-preparation/index.js",
+        "static/studio/features/swap-prompts/index.js",
+        "static/studio/features/swap-prompts/preview.js",
+        "static/studio/modes/swap/workspace.js",
+        "static/studio/styles/modes.css",
+        "static/studio/styles/task-layouts.css",
+        "static/studio/styles/workbench.css"
+      ]
+    },
+    {
+      "id": "image_story",
+      "title": "参考图长视频",
+      "doc": "pages/image-story.md",
+      "aliases": [
+        "参考图长视频",
+        "角色与片段",
+        "图文分镜"
+      ],
+      "source_patterns": [
+        "static/studio/modes/image-story/*.js",
+        "static/studio/styles/modes.css",
+        "static/studio/styles/workbench.css",
+        "static/studio/styles/task-layouts.css"
+      ],
+      "tests": [
+        "tests/studio_asset_modes.test.mjs",
+        "tests/studio_frontend.test.mjs",
+        "tests/readability_ui_fixture.py"
+      ],
+      "references": [
+        "docs/frontend/parameter-map.md"
+      ],
+      "entrypoints": [
+        "static/studio/modes/image-story/workspace.js",
+        "static/studio/styles/modes.css",
+        "static/studio/styles/task-layouts.css",
+        "static/studio/styles/workbench.css"
+      ]
+    },
+    {
+      "id": "text_story",
+      "title": "文生视频",
+      "doc": "pages/text-story.md",
+      "aliases": [
+        "文生视频",
+        "剧本与镜头",
+        "画面与剧本审核"
+      ],
+      "source_patterns": [
+        "static/studio/modes/text-story/*.js",
+        "static/studio/styles/modes.css",
+        "static/studio/styles/workbench.css",
+        "static/studio/styles/task-layouts.css"
+      ],
+      "tests": [
+        "tests/studio_frontend.test.mjs",
+        "tests/studio_asset_modes.test.mjs",
+        "tests/readability_ui_fixture.py"
+      ],
+      "references": [
+        "docs/frontend/parameter-map.md"
+      ],
+      "entrypoints": [
+        "static/studio/modes/text-story/workspace.js",
+        "static/studio/styles/modes.css",
+        "static/studio/styles/task-layouts.css",
+        "static/studio/styles/workbench.css"
+      ]
+    },
+    {
+      "id": "image_assets",
+      "title": "图片资产创作",
+      "doc": "pages/image-assets.md",
+      "aliases": [
+        "图片",
+        "画布",
+        "文生图",
+        "局部重绘",
+        "扩图",
+        "图片任务"
+      ],
+      "source_patterns": [
+        "static/studio/app/image-workspace-controller.js",
+        "static/studio/features/image-canvas/*.js",
+        "static/studio/features/image-results/*.js",
+        "static/studio/styles/image-assets.css",
+        "static/studio/styles/workbench.css",
+        "static/studio/styles/task-layouts.css"
+      ],
+      "tests": [
+        "tests/studio_image_interactions.test.mjs",
+        "tests/studio_image_clock.test.mjs",
+        "tests/image_parameter_ui_fixture.py"
+      ],
+      "references": [
+        "docs/image-assets.md",
+        "docs/frontend/image-workspace-ui.md"
+      ],
+      "entrypoints": [
+        "static/studio/app/image-workspace-controller.js",
+        "static/studio/features/image-canvas/index.js",
+        "static/studio/features/image-results/transfer.js",
+        "static/studio/features/image-results/workspace-view.js",
+        "static/studio/styles/image-assets.css",
+        "static/studio/styles/task-layouts.css",
+        "static/studio/styles/workbench.css"
+      ]
+    },
+    {
+      "id": "video_assembly",
+      "title": "视频接续",
+      "doc": "pages/video-assembly.md",
+      "aliases": [
+        "视频接续",
+        "续写",
+        "轨道",
+        "拼接",
+        "添加视频"
+      ],
+      "source_patterns": [
+        "static/studio/modes/video-assembly/*.js",
+        "static/studio/styles/video-assembly.css",
+        "static/studio/styles/workbench.css",
+        "static/studio/styles/task-layouts.css"
+      ],
+      "tests": [
+        "tests/studio_video_assembly.test.mjs",
+        "tests/video_assembly_track_ui_fixture.py",
+        "tests/video_assembly_draft_ui_fixture.py",
+        "tests/assembly_import_ui_fixture.py"
+      ],
+      "references": [
+        "docs/video-assembly.md"
+      ],
+      "entrypoints": [
+        "static/studio/modes/video-assembly/import-dialog.js",
+        "static/studio/modes/video-assembly/references.js",
+        "static/studio/modes/video-assembly/settings.js",
+        "static/studio/modes/video-assembly/source-parameters.js",
+        "static/studio/modes/video-assembly/track.js",
+        "static/studio/modes/video-assembly/workspace.js",
+        "static/studio/styles/task-layouts.css",
+        "static/studio/styles/video-assembly.css",
+        "static/studio/styles/workbench.css"
+      ]
+    },
+    {
+      "id": "authoring",
+      "title": "剧本创作",
+      "doc": "pages/authoring.md",
+      "aliases": [
+        "剧本",
+        "资产落实",
+        "资产绑定",
+        "分镜",
+        "片段Prompt",
+        "沟通",
+        "完整资产剧本"
+      ],
+      "source_patterns": [
+        "static/studio/modes/authoring/*.js",
+        "static/studio/features/authoring-assist/*.js",
+        "static/studio/features/shot-segment-tree/*.js",
+        "static/studio/styles/creation.css",
+        "static/studio/styles/workbench.css",
+        "static/studio/styles/task-layouts.css"
+      ],
+      "tests": [
+        "tests/creation_return_context.test.mjs",
+        "tests/creation_experience_ui_fixture.py",
+        "tests/test_creation_experience.py"
+      ],
+      "references": [
+        "docs/frontend/creation-experience-implementation.md",
+        "docs/product/creation-experience-correction.md",
+        "docs/creation-modes.md"
+      ],
+      "entrypoints": [
+        "static/studio/features/authoring-assist/binding-cards.js",
+        "static/studio/features/authoring-assist/conversation.js",
+        "static/studio/features/authoring-assist/create-project.js",
+        "static/studio/features/authoring-assist/image-handoffs.js",
+        "static/studio/features/authoring-assist/index.js",
+        "static/studio/features/authoring-assist/output-editor.js",
+        "static/studio/features/authoring-assist/prompt-fields.js",
+        "static/studio/features/authoring-assist/references.js",
+        "static/studio/features/shot-segment-tree/edit-preview.js",
+        "static/studio/features/shot-segment-tree/index.js",
+        "static/studio/features/shot-segment-tree/return-context.js",
+        "static/studio/modes/authoring/workspace.js",
+        "static/studio/styles/creation.css",
+        "static/studio/styles/task-layouts.css",
+        "static/studio/styles/workbench.css"
+      ]
+    },
+    {
+      "id": "movie",
+      "title": "电影创作",
+      "doc": "pages/movie.md",
+      "aliases": [
+        "电影",
+        "片段生成",
+        "剪辑拼接",
+        "剧本返回"
+      ],
+      "source_patterns": [
+        "static/studio/modes/movie/*.js",
+        "static/studio/styles/creation.css",
+        "static/studio/styles/workbench.css",
+        "static/studio/styles/task-layouts.css"
+      ],
+      "tests": [
+        "tests/creation_return_context.test.mjs",
+        "tests/creation_ui_fixture.py",
+        "tests/test_creation_movie.py"
+      ],
+      "references": [
+        "docs/creation-modes.md"
+      ],
+      "entrypoints": [
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/styles/creation.css",
+        "static/studio/styles/task-layouts.css",
+        "static/studio/styles/workbench.css"
+      ]
+    },
+    {
+      "id": "library",
+      "title": "资产库及选择器",
+      "doc": "pages/asset-library.md",
+      "aliases": [
+        "资产库",
+        "素材",
+        "上传",
+        "导入",
+        "来源",
+        "派生",
+        "批量",
+        "收藏"
+      ],
+      "source_patterns": [
+        "static/studio/pages/asset-library/*.js",
+        "static/studio/features/asset-picker/*.js",
+        "static/studio/features/assets/*.js",
+        "static/studio/ui/asset-origin.js",
+        "static/studio/ui/reference*.js",
+        "static/studio/styles/library.css",
+        "static/studio/styles/collection-navigation.css"
+      ],
+      "tests": [
+        "tests/library_layout_ui_fixture.py",
+        "tests/library_transfer_ui_fixture.py",
+        "tests/asset_origin_ui_fixture.py",
+        "tests/studio_library_usage.test.mjs"
+      ],
+      "references": [
+        "docs/asset-library-architecture.md",
+        "docs/asset-library-maintenance.md",
+        "docs/recycle-bin.md"
+      ],
+      "entrypoints": [
+        "static/studio/features/asset-picker/assembly-use.js",
+        "static/studio/features/asset-picker/descendants-view.js",
+        "static/studio/features/asset-picker/destinations.js",
+        "static/studio/features/asset-picker/index.js",
+        "static/studio/features/asset-picker/library-client.js",
+        "static/studio/features/asset-picker/media-view.js",
+        "static/studio/features/asset-picker/origin-view.js",
+        "static/studio/features/asset-picker/project-use.js",
+        "static/studio/features/asset-picker/result-import.js",
+        "static/studio/features/assets/index.js",
+        "static/studio/pages/asset-library/batch-actions.js",
+        "static/studio/pages/asset-library/detail.js",
+        "static/studio/pages/asset-library/engine-settings.js",
+        "static/studio/pages/asset-library/import-dialog.js",
+        "static/studio/pages/asset-library/index.js",
+        "static/studio/pages/asset-library/input-dialog.js",
+        "static/studio/pages/asset-library/media-timeline.js",
+        "static/studio/pages/asset-library/media-tools.js",
+        "static/studio/pages/asset-library/recycle-bin.js",
+        "static/studio/pages/asset-library/transfer.js",
+        "static/studio/pages/asset-library/uploads.js",
+        "static/studio/styles/collection-navigation.css",
+        "static/studio/styles/library.css",
+        "static/studio/ui/asset-origin.js",
+        "static/studio/ui/reference-assets.js",
+        "static/studio/ui/reference-metadata.js"
+      ]
+    },
+    {
+      "id": "prompts",
+      "title": "提示词库与全文阅读",
+      "doc": "pages/prompt-library.md",
+      "aliases": [
+        "提示词库",
+        "全文",
+        "查找",
+        "收藏Prompt",
+        "自动收录"
+      ],
+      "source_patterns": [
+        "static/studio/pages/prompt-library/*.js",
+        "static/studio/features/prompt-library/*.js",
+        "static/studio/ui/prompt-editor.js",
+        "static/studio/styles/prompt-library.css",
+        "static/studio/styles/collection-navigation.css",
+        "static/studio/styles/task-layouts.css"
+      ],
+      "tests": [
+        "tests/prompt_library_ui_fixture.py",
+        "tests/test_prompt_library.py",
+        "tests/readability_ui_fixture.py"
+      ],
+      "references": [
+        "docs/prompt-library.md",
+        "docs/frontend/readability-implementation.md"
+      ],
+      "entrypoints": [
+        "static/studio/features/prompt-library/adapters.js",
+        "static/studio/features/prompt-library/api.js",
+        "static/studio/features/prompt-library/browser.js",
+        "static/studio/features/prompt-library/collection.js",
+        "static/studio/features/prompt-library/editor.js",
+        "static/studio/features/prompt-library/records.js",
+        "static/studio/features/prompt-library/tools.js",
+        "static/studio/pages/prompt-library/index.js",
+        "static/studio/styles/collection-navigation.css",
+        "static/studio/styles/prompt-library.css",
+        "static/studio/styles/task-layouts.css",
+        "static/studio/ui/prompt-editor.js"
+      ]
+    },
+    {
+      "id": "management",
+      "title": "任务、回收站和本地管理",
+      "doc": "pages/management.md",
+      "aliases": [
+        "任务中心",
+        "任务列表",
+        "回收站",
+        "本地存储",
+        "备份",
+        "分类与合集"
+      ],
+      "source_patterns": [
+        "static/studio/features/task-center/*.js",
+        "static/studio/pages/asset-library/recycle-bin.js",
+        "static/studio/pages/asset-library/engine-settings.js",
+        "static/studio/pages/asset-library/index.js",
+        "static/studio/styles/task-center.css",
+        "static/studio/styles/library.css"
+      ],
+      "tests": [
+        "tests/task_center_ui_fixture.py",
+        "tests/studio_task_center.test.mjs",
+        "tests/studio_recycle_bin.test.mjs",
+        "tests/test_recycle_bin.py"
+      ],
+      "references": [
+        "docs/task-queue.md",
+        "docs/recycle-bin.md",
+        "docs/director-launcher.md"
+      ],
+      "entrypoints": [
+        "static/studio/features/task-center/index.js",
+        "static/studio/pages/asset-library/engine-settings.js",
+        "static/studio/pages/asset-library/index.js",
+        "static/studio/pages/asset-library/recycle-bin.js",
+        "static/studio/styles/library.css",
+        "static/studio/styles/task-center.css"
+      ]
+    },
+    {
+      "id": "shell",
+      "title": "全局壳层、导航与空间",
+      "doc": "common/shell-navigation.md",
+      "aliases": [
+        "页头",
+        "底栏",
+        "导航",
+        "三栏",
+        "侧栏",
+        "属性",
+        "步骤",
+        "响应式"
+      ],
+      "source_patterns": [
+        "static/index.html",
+        "static/studio/app.js",
+        "static/studio/app/bootstrap.js",
+        "static/studio/app/mode-registry.js",
+        "static/studio/ui/workbench.js",
+        "static/studio/ui/workspace*.js",
+        "static/studio/styles/shell.css",
+        "static/studio/styles/workbench.css",
+        "static/studio/styles/task-layouts.css"
+      ],
+      "tests": [
+        "tests/workspace_navigation_ui_fixture.py",
+        "tests/studio_export_navigation.test.mjs",
+        "tests/creation_return_context.test.mjs"
+      ],
+      "references": [
+        "docs/frontend/shared-ui.md",
+        "docs/frontend/visual-design-standard-v2.md"
+      ],
+      "entrypoints": [
+        "static/index.html",
+        "static/studio/app.js",
+        "static/studio/app/bootstrap.js",
+        "static/studio/app/mode-registry.js",
+        "static/studio/styles/shell.css",
+        "static/studio/styles/task-layouts.css",
+        "static/studio/styles/workbench.css",
+        "static/studio/ui/workbench.js",
+        "static/studio/ui/workspace-actions.js",
+        "static/studio/ui/workspace-chrome.js",
+        "static/studio/ui/workspace-view-state.js"
+      ]
+    },
+    {
+      "id": "settings",
+      "title": "参数与模型选择",
+      "doc": "common/settings.md",
+      "aliases": [
+        "参数",
+        "模型",
+        "应用",
+        "恢复默认",
+        "制作参数"
+      ],
+      "source_patterns": [
+        "static/studio/ui/production-settings.js",
+        "static/studio/ui/model-selector.js",
+        "static/studio/features/workflow-settings/*.js",
+        "static/studio/features/image-settings/*.js",
+        "static/studio/modes/video-assembly/settings.js",
+        "static/studio/styles/production-settings.css",
+        "static/studio/styles/components.css"
+      ],
+      "tests": [
+        "tests/studio_parameter_dialog.test.mjs",
+        "tests/model_selection_ui_fixture.py",
+        "tests/image_parameter_ui_fixture.py"
+      ],
+      "references": [
+        "docs/frontend/parameter-map.md",
+        "docs/frontend/parameter-and-interaction-contract.md"
+      ],
+      "entrypoints": [
+        "static/studio/features/image-settings/index.js",
+        "static/studio/features/workflow-settings/index.js",
+        "static/studio/modes/video-assembly/settings.js",
+        "static/studio/styles/components.css",
+        "static/studio/styles/production-settings.css",
+        "static/studio/ui/model-selector.js",
+        "static/studio/ui/production-settings.js"
+      ]
+    },
+    {
+      "id": "production",
+      "title": "视频正文、审核与成片",
+      "doc": "common/production.md",
+      "aliases": [
+        "审核",
+        "原片对照",
+        "播放器",
+        "候选",
+        "成片",
+        "导出",
+        "视频正文"
+      ],
+      "source_patterns": [
+        "static/studio/app/workspace-controller.js",
+        "static/studio/features/prompts/*.js",
+        "static/studio/features/production/*.js",
+        "static/studio/features/export/*.js",
+        "static/studio/ui/media-player.js",
+        "static/studio/ui/result-view.js",
+        "static/studio/ui/candidate-records.js",
+        "static/studio/styles/media-player.css",
+        "static/studio/styles/workbench.css",
+        "static/studio/styles/task-layouts.css"
+      ],
+      "tests": [
+        "tests/studio_result_experience.test.mjs",
+        "tests/studio_candidate_records.test.mjs",
+        "tests/studio_export_navigation.test.mjs",
+        "tests/result_experience_ui_fixture.py"
+      ],
+      "references": [
+        "docs/candidate-records.md",
+        "docs/frontend/experience-phase3.md"
+      ],
+      "entrypoints": [
+        "static/studio/app/workspace-controller.js",
+        "static/studio/features/export/index.js",
+        "static/studio/features/production/preflight.js",
+        "static/studio/features/production/records.js",
+        "static/studio/features/production/review-parts.js",
+        "static/studio/features/production/review.js",
+        "static/studio/features/prompts/authoring.js",
+        "static/studio/features/prompts/editor-parts.js",
+        "static/studio/features/prompts/index.js",
+        "static/studio/styles/media-player.css",
+        "static/studio/styles/task-layouts.css",
+        "static/studio/styles/workbench.css",
+        "static/studio/ui/candidate-records.js",
+        "static/studio/ui/media-player.js",
+        "static/studio/ui/result-view.js"
+      ]
+    },
+    {
+      "id": "state",
+      "title": "草稿、轮询、错误与反馈",
+      "doc": "common/state-feedback.md",
+      "aliases": [
+        "草稿",
+        "刷新",
+        "轮询",
+        "保存",
+        "取消",
+        "报错",
+        "断线",
+        "计时",
+        "弹窗"
+      ],
+      "source_patterns": [
+        "static/studio/core/*.js",
+        "static/studio/contracts/*.js",
+        "static/studio/ui/*.js",
+        "static/studio/styles/components.css",
+        "static/studio/styles/task-center.css"
+      ],
+      "tests": [
+        "tests/studio_async_experience.test.mjs",
+        "tests/studio_refresh_policy.test.mjs",
+        "tests/studio_run_timing.test.mjs",
+        "tests/async_experience_ui_fixture.py"
+      ],
+      "references": [
+        "docs/frontend/refresh-and-libraries.md",
+        "docs/frontend/experience-phase4.md"
+      ],
+      "entrypoints": [
+        "static/studio/contracts/project-refresh.js",
+        "static/studio/contracts/project.js",
+        "static/studio/core/api-client.js",
+        "static/studio/core/async-state.js",
+        "static/studio/core/capability-client.js",
+        "static/studio/core/export-lifecycle.js",
+        "static/studio/core/image-catalog.js",
+        "static/studio/core/image-session.js",
+        "static/studio/core/progress-channel.js",
+        "static/studio/core/project-commands.js",
+        "static/studio/core/project-session.js",
+        "static/studio/core/single-flight.js",
+        "static/studio/core/snapshot-update.js",
+        "static/studio/core/source-target.js",
+        "static/studio/core/task-state.js",
+        "static/studio/core/upload-client.js",
+        "static/studio/styles/components.css",
+        "static/studio/styles/task-center.css",
+        "static/studio/ui/asset-origin.js",
+        "static/studio/ui/async-feedback.js",
+        "static/studio/ui/candidate-records.js",
+        "static/studio/ui/choice-dialog.js",
+        "static/studio/ui/creation-job-status.js",
+        "static/studio/ui/draft-status.js",
+        "static/studio/ui/empty-state.js",
+        "static/studio/ui/error-feedback.js",
+        "static/studio/ui/input-inventory.js",
+        "static/studio/ui/library-navigation.js",
+        "static/studio/ui/media-player.js",
+        "static/studio/ui/model-selector.js",
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/production-settings.js",
+        "static/studio/ui/prompt-editor.js",
+        "static/studio/ui/reference-assets.js",
+        "static/studio/ui/reference-metadata.js",
+        "static/studio/ui/result-view.js",
+        "static/studio/ui/run-timing.js",
+        "static/studio/ui/source-navigation.js",
+        "static/studio/ui/source-parameters.js",
+        "static/studio/ui/status-region.js",
+        "static/studio/ui/workbench.js",
+        "static/studio/ui/workspace-actions.js",
+        "static/studio/ui/workspace-chrome.js",
+        "static/studio/ui/workspace-view-state.js"
+      ]
+    },
+    {
+      "id": "visual",
+      "title": "美术、字体与样式层",
+      "doc": "visuals/README.md",
+      "aliases": [
+        "美术",
+        "水彩",
+        "字体",
+        "颜色",
+        "CSS",
+        "插画",
+        "空态",
+        "尺寸"
+      ],
+      "source_patterns": [
+        "static/studio/style.css",
+        "static/studio/styles/*.css",
+        "static/styles/tokens.css",
+        "static/studio/styles/fonts/fonts.css",
+        "static/assets/fonts/fonts.css",
+        "static/studio/design-system.html",
+        "static/studio/styles/design-tokens.css",
+        "static/studio/styles/base.css",
+        "static/studio/styles/components.css",
+        "static/studio/styles/task-layouts.css"
+      ],
+      "tests": [
+        "tools/check_ui_design.mjs",
+        "tests/ui_design.test.mjs",
+        "tests/creation_art_ui_fixture.py"
+      ],
+      "references": [
+        "docs/image-assets-art.md",
+        "docs/frontend/visual-design-standard-v2.md"
+      ],
+      "entrypoints": [
+        "static/assets/fonts/fonts.css",
+        "static/studio/design-system.html",
+        "static/studio/style.css",
+        "static/studio/styles/base.css",
+        "static/studio/styles/collection-navigation.css",
+        "static/studio/styles/components.css",
+        "static/studio/styles/creation.css",
+        "static/studio/styles/design-tokens.css",
+        "static/studio/styles/fonts/fonts.css",
+        "static/studio/styles/image-assets.css",
+        "static/studio/styles/library.css",
+        "static/studio/styles/media-player.css",
+        "static/studio/styles/modes.css",
+        "static/studio/styles/production-settings.css",
+        "static/studio/styles/prompt-library.css",
+        "static/studio/styles/shell.css",
+        "static/studio/styles/task-center.css",
+        "static/studio/styles/task-layouts.css",
+        "static/studio/styles/video-assembly.css",
+        "static/studio/styles/workbench.css",
+        "static/styles/tokens.css"
+      ]
+    }
+  ]
+}

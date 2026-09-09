@@ -1,6 +1,8 @@
 # 源码与配套工具包分发
 
-当前版本 **v6.3.32**：[GitHub Release](https://github.com/sayuel-tech/TimeForest/releases/tag/v6.3.32) · [下载配套 ZIP](https://github.com/sayuel-tech/TimeForest/releases/download/v6.3.32/TimeForest-Companion-v6.3.32.zip) · [SHA256 校验](https://github.com/sayuel-tech/TimeForest/releases/download/v6.3.32/SHA256SUMS.txt)。本版无需夸克网盘或提取码。
+**v6.3.33 功能状态：剧本创作模式和电影创作模式目前不可用。** 本版保留开发中的页面与代码，尚未完成可用性与完整创作流程验收；请勿将这两个模式视为已交付功能。后续状态以版本说明为准。
+
+当前版本 **v6.3.33**：[GitHub Release](https://github.com/sayuel-tech/TimeForest/releases/tag/v6.3.33) · [下载配套 ZIP](https://github.com/sayuel-tech/TimeForest/releases/download/v6.3.33/TimeForest-Companion-v6.3.33.zip) · [SHA256 校验](https://github.com/sayuel-tech/TimeForest/releases/download/v6.3.33/SHA256SUMS.txt)。本版无需夸克网盘或提取码。
 
 源码保留在 Git 仓库；工作流与模型名称 TXT 独立压缩，作为同版 GitHub Release 附件提供。用户已于 2026-09-09 明确授权代码和配套包一并更新到 GitHub，替代此前只在夸克分发的限制。模型权重、凭据、真实配置、项目、资产与提示词库内容不发布。
 

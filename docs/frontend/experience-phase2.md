@@ -35,7 +35,7 @@ node tools/check_experience_contract.mjs
 
 前三视频使用受控保存 API；图片使用真实图片服务/临时数据库；接续使用真实应用/临时数据库和 FFmpeg 合成的两秒视频，生成功能禁止。结果不能代替真实生产数据或生成效果验证。
 
-证据目录：`<本地维护归档>`（checks.json、DOM、PNG）。本批修改前副本在同级 `before/`，只回退本批涉及文件时使用，不能用 Git HEAD 覆盖前几轮未提交成果。
+证据目录：`<本地维护路径>`（checks.json、DOM、PNG）。本批修改前副本在同级 `before/`，只回退本批涉及文件时使用，不能用 Git HEAD 覆盖前几轮未提交成果。
 
 ## 后续约束与交接
 

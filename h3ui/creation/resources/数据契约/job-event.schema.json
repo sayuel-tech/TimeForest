@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "job-event",
+  "type": "object",
+  "properties": {
+    "contract_version": {
+      "const": "tf-events/1"
+    },
+    "job_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "event_seq": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "state_changed",
+        "phase_changed",
+        "candidate_ready",
+        "completed",
+        "failed",
+        "cancelled",
+        "submission_unknown"
+      ]
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "queued",
+        "waiting_dependency",
+        "preparing",
+        "waiting_resource",
+        "submitting",
+        "running",
+        "succeeded",
+        "failed",
+        "cancel_requested",
+        "cancelled",
+        "submission_unknown"
+      ]
+    },
+    "phase": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "message": {
+      "type": "string",
+      "minLength": 0
+    },
+    "candidate_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "contract_version",
+    "job_id",
+    "event_seq",
+    "event_type",
+    "state",
+    "phase",
+    "message",
+    "candidate_ids"
+  ],
+  "additionalProperties": false
+}

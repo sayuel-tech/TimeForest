@@ -108,3 +108,8 @@ pack_lineage集中实现media_origin、导出固定关系、联合依赖验证�
 导入仍经原Packs/local_tasks和LibraryStore，不迁库。included引用匹配发送方asset/version/media/hash，导入后改写为接收方固定身份；outside只显示外部记录。来源与绑定共同构成导入依赖，先校验循环；版本2导入幂等回执同时记录首次asset/version，部分失败后重试也不指向后来编辑的版本。旧包仍可读，旧实现残留的每媒体来源由media_origin隔离，外部项目不跳本机同编号项目。公共lineage/descendants继续承担来源和反查，generation_records有界解包只读参数，不自动应用。
 
 包内关系是清单提供并经媒体摘要核对的声明，不是作者身份签名认证；包外项目/候选不自动迁移，旧数据不补造。具体兼容、验证与用户操作见[交付说明](asset-pack-lineage-20260909.md)。
+
+
+## V3.0 剧本与电影接入
+
+creation/reference、handoffs、movie 通过原 library fixed version/usage/ingest 接入。电影单段与成片保存固定输入来源、实际生成快照和原项目 ID，lineage/生成反查扩展读取 movie_takes 与 export parts；不查询当前采用来推断旧视频来源。素材包仍走原包内映射和外部身份边界，不新建资产体系。

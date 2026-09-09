@@ -1,0 +1,12 @@
+{
+  "archive": "<本地维护路径>",
+  "files": 123,
+  "bytes": 440286,
+  "sha256": "110de81d04906e4c62519d0484dc388fdeb700190162e5e8cc9f1087639ec338",
+  "syntax": {
+    "python": 12,
+    "javascript": 10,
+    "json_resources": "passed"
+  },
+  "contents": "allowlisted static resources, docs, isolated screenshots; no production data, credentials, models or finished art"
+}

@@ -1,0 +1,349 @@
+{
+  "schema_version": 1,
+  "topic": "production",
+  "evidence": "Mechanical current-source map; not UI acceptance or a match to historical screenshots.",
+  "sources": {
+    "static/studio/app/workspace-controller.js": {
+      "sha256": "8cdd54b3986c8d1e296fed174713fb83b66ace82eadf94c2b1b615401d11ab2b",
+      "exports": [
+        {
+          "name": "mountWorkspace",
+          "line": 33
+        }
+      ],
+      "imports": [
+        "static/studio/core/api-client.js",
+        "static/studio/core/async-state.js",
+        "static/studio/core/export-lifecycle.js",
+        "static/studio/core/progress-channel.js",
+        "static/studio/core/project-commands.js",
+        "static/studio/core/project-session.js",
+        "static/studio/core/source-target.js",
+        "static/studio/features/asset-picker/result-import.js",
+        "static/studio/features/assets/index.js",
+        "static/studio/features/export/index.js",
+        "static/studio/features/production/preflight.js",
+        "static/studio/features/production/records.js",
+        "static/studio/features/production/review.js",
+        "static/studio/features/prompt-library/adapters.js",
+        "static/studio/features/prompt-library/collection.js",
+        "static/studio/features/prompts/index.js",
+        "static/studio/features/source-preparation/index.js",
+        "static/studio/features/swap-prompts/index.js",
+        "static/studio/features/workflow-settings/index.js",
+        "static/studio/ui/async-feedback.js",
+        "static/studio/ui/choice-dialog.js",
+        "static/studio/ui/draft-status.js",
+        "static/studio/ui/error-feedback.js",
+        "static/studio/ui/media-player.js",
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/source-navigation.js",
+        "static/studio/ui/status-region.js",
+        "static/studio/ui/workbench.js",
+        "static/studio/ui/workspace-chrome.js",
+        "static/studio/ui/workspace-view-state.js"
+      ],
+      "imported_by": [
+        "static/studio/app/bootstrap.js"
+      ]
+    },
+    "static/studio/features/export/index.js": {
+      "sha256": "0cf4d35f8f38d928070ba95063dfe28929128bdc6da3e861f3cc3f4c17d8cef7",
+      "exports": [
+        {
+          "name": "createFeature",
+          "line": 8
+        }
+      ],
+      "imports": [
+        "static/studio/features/asset-picker/result-import.js",
+        "static/studio/features/prompt-library/records.js",
+        "static/studio/ui/media-player.js",
+        "static/studio/ui/result-view.js",
+        "static/studio/ui/run-timing.js",
+        "static/studio/ui/workbench.js"
+      ],
+      "imported_by": [
+        "static/studio/app/workspace-controller.js"
+      ]
+    },
+    "static/studio/features/production/preflight.js": {
+      "sha256": "945353754663f7f931d19e07b521a50825d0b08db6810b66ca09370224158074",
+      "exports": [
+        {
+          "name": "createFeature",
+          "line": 3
+        }
+      ],
+      "imports": [
+        "static/studio/ui/input-inventory.js"
+      ],
+      "imported_by": [
+        "static/studio/app/workspace-controller.js"
+      ]
+    },
+    "static/studio/features/production/records.js": {
+      "sha256": "42883bb45a0b64b96eafcf310efb8649b91da6c8f07e909d3bf8a91e4185f319",
+      "exports": [
+        {
+          "name": "createFeature",
+          "line": 4
+        }
+      ],
+      "imports": [
+        "static/studio/ui/run-timing.js",
+        "static/studio/ui/status-region.js"
+      ],
+      "imported_by": [
+        "static/studio/app/workspace-controller.js"
+      ]
+    },
+    "static/studio/features/production/review-parts.js": {
+      "sha256": "27fabb98788d9187a5dc3ea239691d795101c4651fcb473da81b604a03450106",
+      "exports": [
+        {
+          "name": "selectionLabel",
+          "line": 8
+        },
+        {
+          "name": "videoCandidateHistory",
+          "line": 9
+        },
+        {
+          "name": "reviewProperties",
+          "line": 18
+        },
+        {
+          "name": "reviewActions",
+          "line": 24
+        }
+      ],
+      "imports": [
+        "static/studio/features/asset-picker/result-import.js",
+        "static/studio/ui/candidate-records.js",
+        "static/studio/ui/error-feedback.js",
+        "static/studio/ui/media-player.js",
+        "static/studio/ui/result-view.js",
+        "static/studio/ui/workbench.js"
+      ],
+      "imported_by": [
+        "static/studio/features/production/review.js"
+      ]
+    },
+    "static/studio/features/production/review.js": {
+      "sha256": "479c25f1c68c93d0a6cbf8ca3f55ba13b31ffde472676018d8b9ae9cfa15b98d",
+      "exports": [
+        {
+          "name": "createFeature",
+          "line": 10
+        }
+      ],
+      "imports": [
+        "static/studio/core/export-lifecycle.js",
+        "static/studio/features/production/review-parts.js",
+        "static/studio/features/prompt-library/records.js",
+        "static/studio/features/prompts/authoring.js",
+        "static/studio/ui/candidate-records.js",
+        "static/studio/ui/error-feedback.js",
+        "static/studio/ui/workbench.js"
+      ],
+      "imported_by": [
+        "static/studio/app/workspace-controller.js"
+      ]
+    },
+    "static/studio/features/prompts/authoring.js": {
+      "sha256": "25e03b042ce1a821da68beabf05c2bbfc98b75513af0d40ee6845855e8653e66",
+      "exports": [
+        {
+          "name": "assetCommands",
+          "line": 9
+        },
+        {
+          "name": "shotProperties",
+          "line": 13
+        },
+        {
+          "name": "shotHeading",
+          "line": 22
+        },
+        {
+          "name": "shotPrompt",
+          "line": 26
+        }
+      ],
+      "imports": [
+        "static/studio/ui/input-inventory.js",
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/production-settings.js",
+        "static/studio/ui/reference-assets.js",
+        "static/studio/ui/workbench.js"
+      ],
+      "imported_by": [
+        "static/studio/features/production/review.js",
+        "static/studio/modes/image-story/workspace.js",
+        "static/studio/modes/swap/workspace.js",
+        "static/studio/modes/text-story/workspace.js"
+      ]
+    },
+    "static/studio/features/prompts/editor-parts.js": {
+      "sha256": "47b7db302e4793370ae00cfb86a1336048cdd55b8aae2c866d60028124b34aff",
+      "exports": [
+        {
+          "name": "projectSummary",
+          "line": 9
+        },
+        {
+          "name": "savebar",
+          "line": 27
+        },
+        {
+          "name": "shotNavigation",
+          "line": 30
+        },
+        {
+          "name": "sourceVideo",
+          "line": 33
+        },
+        {
+          "name": "sourcePlayer",
+          "line": 38
+        },
+        {
+          "name": "bindEditor",
+          "line": 44
+        },
+        {
+          "name": "resultPlayer",
+          "line": 140
+        }
+      ],
+      "imports": [
+        "static/studio/features/prompt-library/adapters.js",
+        "static/studio/ui/draft-status.js",
+        "static/studio/ui/input-inventory.js",
+        "static/studio/ui/media-player.js",
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/workbench.js",
+        "static/studio/ui/workspace-actions.js"
+      ],
+      "imported_by": [
+        "static/studio/modes/image-story/workspace.js",
+        "static/studio/modes/swap/workspace.js",
+        "static/studio/modes/text-story/workspace.js"
+      ]
+    },
+    "static/studio/features/prompts/index.js": {
+      "sha256": "0f80aff5c8b93a309204d2beab515831eeebe6d0bf9a870033bb59d9c56f83c8",
+      "exports": [
+        {
+          "name": "createFeature",
+          "line": 2
+        }
+      ],
+      "imports": [],
+      "imported_by": [
+        "static/studio/app/workspace-controller.js"
+      ]
+    },
+    "static/studio/styles/media-player.css": {
+      "sha256": "6af72d751fde02a703bc38af8044f924e2c2b0bf9876cc7a2aea608588140cb8",
+      "imported_by": []
+    },
+    "static/studio/styles/task-layouts.css": {
+      "sha256": "30bee9fd22edca749b56cc0770b8fddd249ce3c3000c7f95f3c209eb288ce113",
+      "imported_by": []
+    },
+    "static/studio/styles/workbench.css": {
+      "sha256": "3849df049437e28f6528e6a0fedbbfe433837eb050b0f00c5e54516bf82a79d2",
+      "imported_by": []
+    },
+    "static/studio/ui/candidate-records.js": {
+      "sha256": "9a56960fa1900d94ccb4870de1a35c189f21f47c468b5141ea9a7d71aef8ac59",
+      "exports": [
+        {
+          "name": "recordControl",
+          "line": 3
+        },
+        {
+          "name": "removedRecords",
+          "line": 12
+        },
+        {
+          "name": "recordConfirmation",
+          "line": 18
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/app/image-workspace-controller.js",
+        "static/studio/features/authoring-assist/index.js",
+        "static/studio/features/image-results/workspace-view.js",
+        "static/studio/features/production/review-parts.js",
+        "static/studio/features/production/review.js",
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/modes/video-assembly/workspace.js"
+      ]
+    },
+    "static/studio/ui/media-player.js": {
+      "sha256": "a0588ef0e75153920a8cee4a6fcdc7449516cc7a342b0150d298228688e67fc9",
+      "exports": [
+        {
+          "name": "mediaPlayer",
+          "line": 4
+        },
+        {
+          "name": "bindMediaPlayers",
+          "line": 14
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/app/workspace-controller.js",
+        "static/studio/features/export/index.js",
+        "static/studio/features/production/review-parts.js",
+        "static/studio/features/prompts/editor-parts.js",
+        "static/studio/features/shot-segment-tree/edit-preview.js",
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/modes/swap/workspace.js",
+        "static/studio/modes/video-assembly/workspace.js"
+      ]
+    },
+    "static/studio/ui/result-view.js": {
+      "sha256": "c84e9309c1a9c189d8bb988c45c6022528612c3e50ece9ca7f5793a737ac395c",
+      "exports": [
+        {
+          "name": "candidateState",
+          "line": 4
+        },
+        {
+          "name": "candidateButton",
+          "line": 8
+        },
+        {
+          "name": "resultActions",
+          "line": 13
+        },
+        {
+          "name": "collectionActions",
+          "line": 17
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/features/asset-picker/result-import.js",
+        "static/studio/features/authoring-assist/index.js",
+        "static/studio/features/export/index.js",
+        "static/studio/features/image-results/workspace-view.js",
+        "static/studio/features/production/review-parts.js",
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/modes/video-assembly/workspace.js"
+      ]
+    }
+  }
+}

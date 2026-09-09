@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "take",
+  "type": "object",
+  "properties": {
+    "take_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "movie_segment_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "job_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "origin": {
+      "type": "string",
+      "enum": [
+        "generated",
+        "linked_existing"
+      ]
+    },
+    "snapshot_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "media": {
+      "type": "object",
+      "properties": {
+        "media_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "content_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "media_id",
+        "version",
+        "content_hash"
+      ],
+      "additionalProperties": false
+    },
+    "duration_ms": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "available",
+        "removed",
+        "missing_media"
+      ]
+    },
+    "currently_adopted": {
+      "type": "boolean"
+    },
+    "created_at": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    }
+  },
+  "required": [
+    "take_id",
+    "movie_segment_id",
+    "job_id",
+    "origin",
+    "snapshot_id",
+    "media",
+    "duration_ms",
+    "state",
+    "currently_adopted",
+    "created_at"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,19 @@
+{
+  "contract_version": "tf-authoring/2.9",
+  "task_type": "screenplay_draft",
+  "status": "ok",
+  "payload": {
+    "title": "旧站台",
+    "blocks": [
+      {
+        "ref": "new_001",
+        "heading": "清晨·站台",
+        "text": "她把车票收回口袋。站台另一端传来一声脚步，她没有立刻回头。"
+      }
+    ],
+    "duration_estimate_seconds": null
+  },
+  "notes": [],
+  "issues": [],
+  "questions": []
+}

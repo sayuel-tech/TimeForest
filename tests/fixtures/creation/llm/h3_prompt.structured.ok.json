@@ -1,0 +1,20 @@
+{
+  "contract_version": "tf-authoring/2.9",
+  "task_type": "h3_prompt",
+  "status": "ok",
+  "payload": {
+    "fields": {
+      "prompt": "人物缓慢停下，然后低头。",
+      "voice": "",
+      "staging": "人物位于画面中央。",
+      "beats": "行走、停下、低头。",
+      "ending": "低头站定。",
+      "soundscape": "自然风声，无对白。",
+      "music": ""
+    },
+    "used_reference_keys": []
+  },
+  "notes": [],
+  "issues": [],
+  "questions": []
+}

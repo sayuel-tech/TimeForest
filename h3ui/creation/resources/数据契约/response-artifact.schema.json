@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "response_artifact_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "job_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "contract_key": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "response_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "raw_final_text": {
+      "type": "string"
+    },
+    "finish_reason": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "validation_status": {
+      "type": "string",
+      "enum": [
+        "valid",
+        "invalid_structure",
+        "truncated",
+        "refused",
+        "empty",
+        "provider_error"
+      ]
+    },
+    "repair_eligible": {
+      "type": "boolean"
+    },
+    "inference_executed": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "response_artifact_id",
+    "job_id",
+    "contract_key",
+    "response_hash",
+    "raw_final_text",
+    "finish_reason",
+    "validation_status",
+    "repair_eligible",
+    "inference_executed"
+  ],
+  "additionalProperties": false
+}

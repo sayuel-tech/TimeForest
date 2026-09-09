@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "job",
+  "type": "object",
+  "properties": {
+    "job_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "authoring",
+        "generation",
+        "media_prepare",
+        "media_export"
+      ]
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "queued",
+        "waiting_dependency",
+        "preparing",
+        "waiting_resource",
+        "submitting",
+        "running",
+        "succeeded",
+        "failed",
+        "cancel_requested",
+        "cancelled",
+        "submission_unknown"
+      ]
+    },
+    "phase": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "event_seq": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "candidate_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "provider_request_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "failure_code": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "result_ref": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "prepared_request",
+                "candidate",
+                "export",
+                "response_artifact"
+              ]
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            }
+          },
+          "required": [
+            "kind",
+            "id"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "inference_executed": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "job_id",
+    "kind",
+    "project_id",
+    "state",
+    "phase",
+    "event_seq",
+    "candidate_ids",
+    "provider_request_id",
+    "failure_code",
+    "result_ref",
+    "inference_executed"
+  ],
+  "additionalProperties": false
+}

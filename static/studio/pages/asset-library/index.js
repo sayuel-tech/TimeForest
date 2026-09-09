@@ -1,3 +1,7 @@
+import {libraryNavigation} from '../../ui/library-navigation.js';
+import {updateStatusRegion} from '../../ui/status-region.js';
+import {workspaceViewState} from '../../ui/workspace-view-state.js';
+import {openLibraryImports} from './import-dialog.js';
 import {bindBatchActions} from "./batch-actions.js";
 import {simpleInput} from "./input-dialog.js";
 import {mountRecycleBin} from './recycle-bin.js';
@@ -16,7 +20,7 @@ import { showUploads } from "./uploads.js";
 import { importPack, collectFolder } from "./transfer.js";
 
 export async function mountLibrary(root, hash, signal) {
-  root.classList.add("library-page");
+  root.classList.add("library-page","collection-page");
   const match = hash.match(/^#\/assets(?:\/([a-f0-9]+))?(?:\?(.*))?$/);
   const params = new URLSearchParams(match?.[2] || "");
   if (match?.[1]) {
@@ -38,8 +42,21 @@ export async function mountLibrary(root, hash, signal) {
     }
     return "#/assets?" + next;
   }
+  const view=params.get('view')||(params.get('trash')==='1'?'trash':'');
+  const navUrl=changes=>url({view:'',trash:'',category:'',collection:'',favorite:'',unorganized:'',sort:'',...changes});
+  function navigation(){
+    const link=(label,changes,active)=>({label,href:navUrl(changes),active});
+    return libraryNavigation({label:'资产库分类',groups:[{label:'浏览',items:[
+      link('全部资产',{},!view&&!params.get('category')&&!params.get('favorite')&&!params.get('unorganized')&&params.get('sort')!=='used'&&!params.get('collection')),
+      link('我的收藏',{favorite:'1'},!view&&params.get('favorite')==='1'),
+      link('最近使用',{sort:'used'},!view&&params.get('sort')==='used'),
+      link('待整理',{unorganized:'1'},!view&&params.get('unorganized')==='1'),
+    ]},{label:'用途分类',items:catalog.categories.map(c=>link(c.name,{category:c.id},!view&&params.get('category')===c.id))},
+    {label:'管理',items:[link('分类与合集',{view:'organize'},view==='organize'),link('回收站',{view:'trash'},view==='trash'),link('处理任务',{view:'tasks'},view==='tasks'),link('本地存储与备份',{view:'storage'},view==='storage')]}]});
+  }
+  const pathLabel=()=>[params.get('favorite')?'我的收藏':params.get('unorganized')?'待整理':params.get('sort')==='used'?'最近使用':'全部资产',catalog.categories.find(c=>c.id===params.get('category'))?.name,catalog.collections.find(c=>c.id===params.get('collection'))?.name].filter(Boolean).join(' / ');
   const selected = new Set();
-  root.innerHTML = `<section class="library-header"><div><span class="eyebrow">THE MATERIAL COLLECTION</span><h1>资产库</h1><p>本地保存角色、场景、视频与声音，随时用于新的创作。</p></div><div class="library-toolbar"><a class="btn" href="${ui.esc(url({ view: "tasks" }))}">处理任务</a><label class="btn primary">导入素材<input id="library-upload" type="file" multiple hidden accept="image/*,video/*,audio/*,.json"></label><details id="library-transfer"><summary>更多导入方式</summary><div class="library-toolbar"><button id="library-folder">收集输出文件夹</button><label class="btn">导入素材包<input type="file" accept=".zip" id="library-pack-upload" hidden></label></div></details></div></section><div class="library-layout"><aside class="library-sidebar"><a href="#/assets" class="${!params.size ? "active" : ""}">全部资产</a><a href="${ui.esc(url({ favorite: "1", view: "", trash: "" }))}">我的收藏</a><a href="${ui.esc(url({ sort: "used", view: "", trash: "" }))}">最近使用</a><a href="${ui.esc(url({ unorganized: "1", view: "", trash: "" }))}">待整理</a><span class="eyebrow">CATEGORIES</span>${catalog.categories.map((c) => `<a class="${params.get("category") === c.id ? "active" : ""}" href="${ui.esc(url({ category: c.id, view: "", trash: "" }))}">${ui.esc(c.name)}</a>`).join("")}<span class="eyebrow">ORGANIZE</span><a href="${ui.esc(url({ view: "organize" }))}">分类与合集</a><a href="#/assets?view=trash" class="${params.get("view")==="trash"||params.get("trash")==="1"?"active":""}">回收站</a><a href="${ui.esc(url({ view: "storage" }))}">本地存储与备份</a></aside><section id="library-content"></section></div>`;
+  root.innerHTML = `<section class="library-header"><div><span class="eyebrow">THE MATERIAL COLLECTION</span><h1>资产库</h1><p>本地保存角色、场景、视频与声音，随时用于新的创作。</p></div><div class="library-toolbar"><a class="btn" href="${ui.esc(url({ view: "tasks" }))}">处理任务</a><label class="btn primary">导入素材<input id="library-upload" type="file" multiple hidden accept="image/*,video/*,audio/*,.json"></label><button id="library-transfer">更多导入方式</button></div></section><div class="library-layout"><aside class="library-sidebar">${navigation()}</aside><section id="library-content"></section></div>`;
   root.querySelectorAll('label:has(input[type="file"])').forEach((label) => {
     label.tabIndex = 0;
     label.setAttribute("role", "button");
@@ -51,10 +68,10 @@ export async function mountLibrary(root, hash, signal) {
     };
   });
   const content = root.querySelector("#library-content");
-  root.querySelector("#library-folder").onclick = () => collectFolder(signal);
-  root.querySelector("#library-pack-upload").onchange = (e) => {
-    if (e.target.files[0]) void importPack(e.target.files[0], signal);
-  };
+  const viewState=workspaceViewState(content);
+  signal.addEventListener("abort",()=>viewState.dispose(),{once:true});
+  let readSerial=0;
+  root.querySelector('#library-transfer').onclick=()=>openLibraryImports({signal,folder:()=>collectFolder(signal),pack:file=>importPack(file,signal)});
   root.querySelector("#library-upload").onchange = (e) =>
     showUploads(
       [...e.target.files],
@@ -75,14 +92,16 @@ export async function mountLibrary(root, hash, signal) {
       if (view === "storage") return renderStorage();
       if (view === "organize") return renderOrganize();
       if (view === "trash" || params.get("trash") === "1") return mountRecycleBin(content, params, signal);
+      const serial=++readSerial;
       const data = await libraryApi(
         "/assets?" + params,
         "GET",
         undefined,
         signal,
       );
-      if (!active()) return;
-      content.innerHTML = `<form class="library-search"><input name="q" aria-label="搜索资产名称" placeholder="搜索资产名称" value="${ui.esc(params.get("q") || "")}"><select name="kind" aria-label="媒体类型">${ui.opts(
+      if (!active()||serial!==readSerial) return;
+      const restoreView=viewState.beforeRender(hash);
+      content.innerHTML = `<h2 class="collection-path" data-library-path>${ui.esc(pathLabel())}</h2><form class="library-search"><input name="q" aria-label="搜索资产名称" placeholder="搜索资产名称" value="${ui.esc(params.get("q") || "")}"><select name="kind" aria-label="媒体类型">${ui.opts(
         [
           ["", "所有媒体"],
           ["image", "图片"],
@@ -151,7 +170,8 @@ export async function mountLibrary(root, hash, signal) {
           ["oldest", "最早入库"],
         ],
         params.get("sort"),
-      )}</select><button id="library-layout">${params.get("layout") === "list" ? "卡片视图" : "列表视图"}</button></div><div id="library-batch" hidden></div><div class="library-grid ${params.get("layout") === "list" ? "list" : ""}">${data.items.map((item) => `<article class="library-card"><label><input type="checkbox" data-select="${item.id}" aria-label="选择${ui.esc(item.name)}"></label><a href="#/assets/${item.id}"><figure>${thumbnail(item)}</figure><div class="library-card-copy"><h3>${item.favorite ? "☆ " : ""}${ui.esc(item.name)}</h3><small>${ui.esc(mediaSummary(primaryMedia(item)))}</small><small>${item.snapshot.categories.map((id) => ui.esc(catalog.categories.find((c) => c.id === id)?.name || id)).join(" · ") || "未分类"} ${item.state === "selected" ? "· 已选用" : ""}</small></div></a></article>`).join("") || '<div class="panel empty"><h2>从第一份素材开始。</h2><p>导入一张角色图、一段参考视频或一份声音，在这里慢慢建立自己的创作素材库。</p></div>'}</div><div class="library-pagination"><a class="btn" ${data.page === 1 ? 'aria-disabled="true"' : `href="${ui.esc(url({ page: data.page - 1 }))}"`}>上一页</a><span>${data.page} / ${Math.max(1, Math.ceil(data.total / data.limit))}</span><a class="btn" ${data.page * data.limit >= data.total ? 'aria-disabled="true"' : `href="${ui.esc(url({ page: data.page + 1 }))}"`}>下一页</a></div>`;
+      )}</select><button id="library-layout">${params.get("layout") === "list" ? "卡片视图" : "列表视图"}</button></div><div id="library-batch" hidden></div><div class="library-grid ${params.get("layout") === "list" ? "list" : ""}">${data.items.map((item) => `<article class="library-card"><label><input type="checkbox" data-select="${item.id}" ${selected.has(item.id)?'checked':''} aria-label="选择${ui.esc(item.name)}"></label><a href="#/assets/${item.id}"><figure>${thumbnail(item)}</figure><div class="library-card-copy"><h3>${item.favorite ? "☆ " : ""}${ui.esc(item.name)}</h3><small>${ui.esc(mediaSummary(primaryMedia(item)))}</small><small>${item.snapshot.categories.map((id) => ui.esc(catalog.categories.find((c) => c.id === id)?.name || id)).join(" · ") || "未分类"} ${item.state === "selected" ? "· 已选用" : ""}</small></div></a></article>`).join("") || '<div class="panel empty"><h2>从第一份素材开始。</h2><p>导入一张角色图、一段参考视频或一份声音，在这里慢慢建立自己的创作素材库。</p></div>'}</div><div class="library-pagination"><a class="btn" ${data.page === 1 ? 'aria-disabled="true"' : `href="${ui.esc(url({ page: data.page - 1 }))}"`}>上一页</a><span>${data.page} / ${Math.max(1, Math.ceil(data.total / data.limit))}</span><a class="btn" ${data.page * data.limit >= data.total ? 'aria-disabled="true"' : `href="${ui.esc(url({ page: data.page + 1 }))}"`}>下一页</a></div>`;
+      restoreView();
       content.querySelector("form").onsubmit = (event) => {
         event.preventDefault();
         location.hash = url(Object.fromEntries(new FormData(event.target)));
@@ -190,9 +210,10 @@ export async function mountLibrary(root, hash, signal) {
     bindBatchActions({content,selected,params,catalog,active,render,signal},items);
   }
   async function renderTasks() {
+    clearTimeout(timer);const serial=++readSerial;
     const data = await libraryApi("/tasks", "GET", undefined, signal);
-    if (!active()) return;
-    content.innerHTML = `<h2>本地处理任务</h2><p class="helper">上传后的检验、预览、派生和备份在本机处理，不需要生成引擎。</p>${data.items.map((task) => `<div class="library-task-row"><div><strong>${ui.esc({ ingest: "资产入库", backup: "资产备份", derive: "媒体派生", scan: "目录收集", pack: "导出素材包" }[task.action] || task.action)}</strong><p>${ui.esc(task.note)}</p></div>${["failed", "interrupted"].includes(task.state) ? `<button data-retry="${task.id}">重试</button>` : task.result?.id ? `<a class="btn" href="#/assets/${task.result.id}">查看资产</a>` : ""}<progress max="1" value="${task.progress}" aria-label="任务进度"></progress>${task.result?.path ? `<small>${ui.esc(task.result.path)}</small>` : ""}</div>`).join("") || '<div class="empty">暂时没有处理任务。</div>'}`;
+    if (!active()||serial!==readSerial) return;
+    updateStatusRegion(content,`<h2>本地处理任务</h2><p class="helper">上传后的检验、预览、派生和备份在本机处理，不需要生成引擎。</p>${data.items.map((task) => `<div data-view-key="task:${ui.esc(task.id)}" class="library-task-row"><div><strong>${ui.esc({ ingest: "资产入库", backup: "资产备份", derive: "媒体派生", scan: "目录收集", pack: "导出素材包" }[task.action] || task.action)}</strong><p>${ui.esc(task.note)}</p></div>${["failed", "interrupted"].includes(task.state) ? `<button data-retry="${task.id}">重试</button>` : task.result?.id ? `<a class="btn" href="#/assets/${task.result.id}">查看资产</a>` : ""}<progress max="1" value="${task.progress}" aria-label="任务进度"></progress>${task.result?.path ? `<small>${ui.esc(task.result.path)}</small>` : ""}</div>`).join("") || '<div class="empty">暂时没有处理任务。</div>'}`);
     content.querySelectorAll("[data-retry]").forEach(
       (b) =>
         (b.onclick = async () => {

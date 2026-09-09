@@ -1,3 +1,5 @@
+import {workspaceViewState} from '../ui/workspace-view-state.js';
+import {updateStatusRegion} from '../ui/status-region.js';
 import {promptCollectionNotice} from '../features/prompt-library/collection.js';
 import {bindVideoPrompts} from '../features/prompt-library/adapters.js';
 import {sourceTarget} from '../core/source-target.js';
@@ -30,6 +32,7 @@ import { createFeature as swapPrompts } from "../features/swap-prompts/index.js"
 /** Public context for composable view features. Mutable state belongs to session. */
 export function mountWorkspace(root, project, catalog, definition, mode) {
   const session = new ProjectSession(project);
+  const viewState=workspaceViewState(root);
   session.root=root;
   const asyncStatus=asyncFeedback(root,session.controller.signal);
   session.connection=asyncStatus.connection;
@@ -230,6 +233,7 @@ export function mountWorkspace(root, project, catalog, definition, mode) {
     ctx.syncDraftActions();
   };
   ctx.renderProject = () => {
+    const restoreView=viewState.beforeRender(JSON.stringify([session.project.id,ctx.tab,ctx.shot]));
     if (session.disposed) return;
     const p = ctx.project;
     ctx.shot = Math.min(ctx.shot, Math.max(0, p.segments.length - 1));
@@ -315,54 +319,9 @@ export function mountWorkspace(root, project, catalog, definition, mode) {
     void loadResultReceipts(ctx);
     showSourceNavigation(root,ctx.sourceLocation);
     promptCollectionNotice(root,session);
+    restoreView();disposePlayers.refresh();
   };
-  function preserveRender() {
-    const scrolls=['.desk-rail','.desk-canvas','.review-media',...Array.from(root.querySelectorAll('.property-panel'),el=>'#'+el.id)]
-      .map(selector=>{const el=root.querySelector(selector);return [selector,el?.scrollTop||0,el?.scrollLeft||0];});
-    const media = [...root.querySelectorAll("video[src],audio[src]")];
-    const positions = new Map(media.map((el) => [el, el.getAttribute("src")]));
-    const active = document.activeElement;
-    const key = active?.id;
-    const sid = active?.dataset.segment;
-    const field = active?.dataset.field;
-    const selection = active?.selectionStart;
-    const selectionEnd = active?.selectionEnd;
-    const x = window.scrollX,
-      y = window.scrollY;
-    const opened = [...root.querySelectorAll("details")]
-      .map((el, i) => (el.open ? i : -1))
-      .filter((i) => i >= 0);
-    ctx.renderProject();
-    const fresh = [...root.querySelectorAll("video[src],audio[src]")];
-    for (const [old, src] of positions) {
-      const index = fresh.findIndex(
-        (el) => el.tagName === old.tagName && el.getAttribute("src") === src,
-      );
-      if (index >= 0) {
-        fresh[index].replaceWith(old);
-        fresh.splice(index, 1);
-      }
-    }
-    const details = root.querySelectorAll("details");
-    disposePlayers.refresh();
-    for(const [selector,top,left] of scrolls){const el=root.querySelector(selector);if(el){el.scrollTop=top;el.scrollLeft=left;}}
-    opened.forEach((i) => {
-      if (details[i]) details[i].open = true;
-    });
-    const target = key
-      ? document.getElementById(key)
-      : sid && field
-        ? root.querySelector(
-            `[data-segment="${CSS.escape(sid)}"][data-field="${CSS.escape(field)}"]`,
-          )
-        : null;
-    target?.focus({ preventScroll: true });
-    if (target?.setSelectionRange && selection !== null)
-      try {
-        target.setSelectionRange(selection, selectionEnd);
-      } catch {}
-    window.scrollTo(x, y);
-  }
+  function preserveRender(){ctx.renderProject();}
   session.subscribe((type, detail) => {
     if (ctx.observeSource(type)) return;
     if (
@@ -400,7 +359,7 @@ export function mountWorkspace(root, project, catalog, definition, mode) {
           JSON.stringify({ tab: ctx.tab, shot: ctx.shot }),
         );
       } catch {}
-      stop();
+      stop();viewState.dispose();
       disposePlayers();
       modeCleanup?.();
       mode.dispose?.(ctx);

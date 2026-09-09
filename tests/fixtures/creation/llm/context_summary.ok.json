@@ -1,0 +1,14 @@
+{
+  "contract_version": "tf-authoring/2.9",
+  "task_type": "context_summary",
+  "status": "ok",
+  "payload": {
+    "summary_text": "人物已在站台停下，尚未回头。脚步声的来源仍未明确。",
+    "source_refs": [
+      "block_001"
+    ]
+  },
+  "notes": [],
+  "issues": [],
+  "questions": []
+}

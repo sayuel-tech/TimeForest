@@ -68,6 +68,19 @@ def project_records(app,pid,query):
         return prompt_records(dict(type='generated_image',project=pid,project_name=p['name'],mode='image_assets',run=run['id'],task=run['task'],output=query.get('output'),snapshot=run['snapshot']),extra)
     p=studio.store.get(pid)
     base=dict(project=pid,project_name=p['name'],mode=p['mode'])
+    if p['mode']=='movie':
+        rid=query.get('run');take=next((t for t in p.get('movie_takes',[]) if t['take_id']==rid),None)
+        export=next((e for e in p.get('movie_exports',[]) if e['export_id']==rid),None)
+        if not take and not export:raise KeyError('此电影生成记录不存在，未替换为最新结果')
+        takes=[take] if take else [next(t for t in p['movie_takes'] if t['take_id']==part['item']['take_id']) for part in export['manifest']['parts']]
+        rows=[]
+        for index,take in enumerate(takes):
+            snapshot=p['artifacts'][take['snapshot_id']]
+            batch=prompt_records(dict(**base,run=take['take_id'],segment=take['movie_segment_id'],actual_prompt=snapshot['actual_prompt_text'],manifest=dict(settings=snapshot['parameters'])),extra)
+            if export:
+                for row in batch:row['title']=f'成片 · 片段 {index+1} · '+row['title']
+            rows.extend(batch)
+        return rows
     if p['mode']=='video_assembly':
         run=app['VIDEO_ASSEMBLY'].find_run(p,query.get('run'))
         return assembly_records(app,{**base,'candidate':run['id'],'snapshot':run['snapshot']},set())

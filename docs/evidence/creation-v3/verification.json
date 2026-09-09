@@ -1,0 +1,60 @@
+{
+  "scope": "temporary stores and fake model/media terminals only",
+  "backend": {
+    "unique_creation_tests": 14,
+    "passed": true,
+    "details": "backend.json"
+  },
+  "existing_backend": {
+    "passed": 63,
+    "suites": [
+      "test_task_center",
+      "test_candidate_records",
+      "test_recycle_bin",
+      "test_asset_lineage",
+      "test_runtime_lineage",
+      "test_pack_lineage"
+    ],
+    "note": "56 passed in combined run; old pack fixture import required tests on sys.path, then 7 passed separately"
+  },
+  "node": {
+    "passed": 35,
+    "suites": [
+      "creation_return_context",
+      "experience_contract",
+      "studio_source_target",
+      "studio_candidate_records",
+      "studio_task_center",
+      "studio_parameter_dialog"
+    ]
+  },
+  "browser": {
+    "passed": 4,
+    "widths": [
+      1440,
+      760
+    ],
+    "modes": [
+      "authoring",
+      "movie"
+    ],
+    "checks": [
+      "manual content saved with stable IDs",
+      "settings cancel",
+      "image handoff cancel preserves dirty unsaved content",
+      "fake generation/adopt/edit range persistence",
+      "continuous preview opens original player",
+      "original project UUID source return preserves edit selection",
+      "primary actions reachable under original responsive scrolling"
+    ],
+    "limits": "fake video bytes do not provide playable media or validate rendered sound/video"
+  },
+  "not_executed": [
+    "real LLM/vision/image/video/TTS/repair",
+    "ComfyUI prompt or model load/download",
+    "production secrets/reload/recovery",
+    "stress or large library tests",
+    "publish"
+  ],
+  "visual": "art_pending: two entrance illustrations and three empty-state illustrations; this is not full visual acceptance"
+}

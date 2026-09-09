@@ -1,0 +1,16 @@
+{
+  "policy_version": "tf-dev-policy/1",
+  "scope": "isolated_fixture_only",
+  "network_mode": "isolated",
+  "model_inference": "deny",
+  "model_lifecycle": "deny",
+  "startup_recovery": false,
+  "production_config_access": false,
+  "production_media_access": false,
+  "auto_retry_inference": false,
+  "auto_fallback_model": false,
+  "auto_format_repair": false,
+  "allow_public_source_read": true,
+  "media_runner": "fake_by_default",
+  "release_actions": "require_current_user_authorization"
+}

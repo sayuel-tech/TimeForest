@@ -2,13 +2,16 @@ import {readStamp,currentRead} from './async-state.js';
 
 /** At most one read in flight; disposal aborts reads and all scheduled callbacks. */
 export function watchProject(session, clock) {
+  const doc=globalThis.document;
+  let reading=false;
   let timer,
     stopped = false;
-  const clocks = setInterval(clock, 1000);
+  const clocks = setInterval(()=>{if(!doc?.hidden)clock();}, 1000);
   const poll = async () => {
-    let stamp;
+    if(stopped||reading)return;
+    reading=true;let stamp;
     try {
-      if (!session.working && !session.actionPending) {
+      if (!doc?.hidden && !session.working && !session.actionPending) {
         stamp=readStamp(session);
         const next = await session.request(
           `/projects/${session.project.id}`,
@@ -30,12 +33,15 @@ export function watchProject(session, clock) {
         session.emit("progress");
       }
     } finally {
+      reading=false;
       if (!stopped) timer = setTimeout(poll, 2000);
     }
   };
+  const resume=()=>{if(!doc.hidden&&!reading){clearTimeout(timer);void poll();}};
+  doc?.addEventListener('visibilitychange',resume);
   timer = setTimeout(poll, 2000);
   return () => {
-    stopped = true;
+    stopped = true;doc?.removeEventListener('visibilitychange',resume);
     clearTimeout(timer);
     clearInterval(clocks);
   };

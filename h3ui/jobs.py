@@ -31,7 +31,7 @@ class JobManager:
                 return None
             if self.is_busy(project_id):
                 return None
-            limit = 1 if lane == "gpu" else max(1, int(self.cfg.get("media_workers", 2)))
+            limit = 1 if lane == "gpu" else max(1, int(self.cfg.get("authoring_cloud_workers", 2))) if lane == "cloud" else max(1, int(self.cfg.get("media_workers", 2)))
             if sum(j["lane"] == lane for j in self._jobs.values()) >= limit:
                 return None
             key = uuid.uuid4().hex

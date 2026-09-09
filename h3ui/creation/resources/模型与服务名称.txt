@@ -1,0 +1,22 @@
+模型与服务名称（静态配置资料，不是模型组合实测）
+
+DeepSeek Chat 初始 model_id：deepseek-v4.1-flash-expires-on-0910
+到期后用户手动配置，不自动换模。LM Studio 本轮仅保留配置表示，不调用。
+
+电影仍使用原 H3 工作流，当前默认文件名：
+
+dance_split
+model: minimax_h3_hybrid_fl2va_ref2va_b25-49-int8.safetensors
+clip: qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors
+video_vae: minimax_h3_video_vae_int8_convrot.safetensors
+audio_vae: minimax_h3_audio_vae_fp32.safetensors
+accel_file: minimax_h3_turbo_v4_step600_ema_pruned_comfyui.safetensors
+
+official_image
+model: minimax_h3_ref2va_pruned_int8_convrot.safetensors
+clip: qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors
+video_vae: minimax_h3_video_vae_fp16.safetensors
+audio_vae: minimax_h3_audio_vae_fp32.safetensors
+accel_file: minimax_h3_ref2v_turbo_4step_v0.1_comfyui_bf16.safetensors
+
+实际选择由原本地模型列表和工作流参数决定；可兼容文件不会因未列在此处而被限制。本包不包含模型权重、不安装节点、不替换原工作流。

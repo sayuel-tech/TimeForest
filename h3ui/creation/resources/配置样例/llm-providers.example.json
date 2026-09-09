@@ -1,0 +1,17 @@
+[
+  {
+    "config_id": "deepseek_authoring",
+    "display_name": "DeepSeek V4.1 Flash · 限时测试版",
+    "provider_kind": "deepseek",
+    "api_style": "chat",
+    "base_url": "https://api.deepseek.com",
+    "model_id": "deepseek-v4.1-flash-expires-on-0910",
+    "loaded_instance_id": null,
+    "credential_ref": null,
+    "structured_mode": "json_object",
+    "vision": "unknown",
+    "max_output_tokens": 16384,
+    "auto_retry_inference": false,
+    "enabled": false
+  }
+]

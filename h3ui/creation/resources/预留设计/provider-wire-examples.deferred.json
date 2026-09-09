@@ -1,0 +1,92 @@
+{
+  "fixture_only": true,
+  "examples": [
+    {
+      "provider": "lm_studio",
+      "api_style": "chat",
+      "http_method": "POST",
+      "relative_path": "/v1/chat/completions",
+      "not_runnable": true,
+      "request_template": {
+        "model": "${MODEL_ID_FROM_BACKEND_CONFIG}",
+        "messages": [
+          {
+            "role": "system",
+            "content": "${COMMON_TXT_PLUS_TASK_TXT_PLUS_SELECTED_SCHEMA}"
+          },
+          {
+            "role": "user",
+            "content": "${SERIALIZED_APPROVED_CONTEXT}"
+          }
+        ],
+        "response_format": {
+          "type": "json_schema",
+          "json_schema": {
+            "name": "local_rewrite",
+            "strict": true,
+            "schema": "${PROVIDER_COMPATIBLE_SCHEMA}"
+          }
+        },
+        "stream": false,
+        "max_tokens": "${USER_CONFIGURED_LIMIT}"
+      },
+      "response_fixture": {
+        "id": "response_fixture",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "{\"contract_version\": \"tf-authoring/2.9\", \"task_type\": \"local_rewrite\", \"status\": \"ok\", \"payload\": {\"replacement_text\": \"她停在车门旁，没有伸手。风吹动衣角，她看了一眼车窗。\"}, \"notes\": [], \"issues\": [], \"questions\": []}"
+            },
+            "finish_reason": "stop"
+          }
+        ]
+      }
+    },
+    {
+      "provider": "deepseek",
+      "api_style": "responses",
+      "http_method": "POST",
+      "relative_path": "/responses",
+      "not_runnable": true,
+      "enabled_by_default": false,
+      "request_template": {
+        "model": "${MODEL_ID_FROM_BACKEND_CONFIG}",
+        "input": [
+          {
+            "role": "user",
+            "content": "${SERIALIZED_APPROVED_CONTEXT}"
+          }
+        ],
+        "instructions": "${COMMON_TXT_PLUS_TASK_TXT}",
+        "text": {
+          "format": {
+            "type": "json_schema",
+            "name": "local_rewrite",
+            "schema": "${PROVIDER_COMPATIBLE_SCHEMA}"
+          }
+        },
+        "stream": false,
+        "max_output_tokens": "${USER_CONFIGURED_LIMIT}"
+      },
+      "response_fixture": {
+        "id": "response_fixture_responses",
+        "status": "completed",
+        "output": [
+          {
+            "type": "message",
+            "role": "assistant",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "{\"contract_version\": \"tf-authoring/2.9\", \"task_type\": \"local_rewrite\", \"status\": \"ok\", \"payload\": {\"replacement_text\": \"她停在车门旁，没有伸手。风吹动衣角，她看了一眼车窗。\"}, \"notes\": [], \"issues\": [], \"questions\": []}"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "implementation_status": "deferred"
+}

@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "topic": "home",
+  "evidence": "Mechanical current-source map; not UI acceptance or a match to historical screenshots.",
+  "sources": {
+    "static/studio/app/bootstrap.js": {
+      "sha256": "54054c57e5b875ae7e1ebf6f5981afe487acbf42dbf56dfb99a5e0bd6a7639a9",
+      "exports": [],
+      "imports": [
+        "static/studio/app/image-workspace-controller.js",
+        "static/studio/app/mode-registry.js",
+        "static/studio/app/workspace-controller.js",
+        "static/studio/core/api-client.js",
+        "static/studio/core/image-catalog.js",
+        "static/studio/features/authoring-assist/create-project.js",
+        "static/studio/features/prompt-library/editor.js",
+        "static/studio/features/task-center/index.js",
+        "static/studio/modes/video-assembly/workspace.js",
+        "static/studio/pages/archive.js",
+        "static/studio/pages/asset-library/index.js",
+        "static/studio/pages/home.js",
+        "static/studio/pages/prompt-library/index.js",
+        "static/studio/ui/choice-dialog.js",
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/app.js"
+      ]
+    },
+    "static/studio/app/mode-registry.js": {
+      "sha256": "f2c1e42c9a7f4e292b9ac3455803ba2934eb2bf52b2f7b160b72540075506c7e",
+      "exports": [
+        {
+          "name": "setCreationEnabled",
+          "line": 5
+        },
+        {
+          "name": "setAssemblyEnabled",
+          "line": 6
+        },
+        {
+          "name": "setImageAssetsEnabled",
+          "line": 7
+        },
+        {
+          "name": "registerMode",
+          "line": 8
+        },
+        {
+          "name": "listModes",
+          "line": 13
+        },
+        {
+          "name": "getMode",
+          "line": 14
+        }
+      ],
+      "imports": [
+        "static/studio/app/image-workspace-controller.js",
+        "static/studio/modes/authoring/workspace.js",
+        "static/studio/modes/image-story/workspace.js",
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/modes/swap/workspace.js",
+        "static/studio/modes/text-story/workspace.js",
+        "static/studio/modes/video-assembly/workspace.js"
+      ],
+      "imported_by": [
+        "static/studio/app/bootstrap.js",
+        "static/studio/pages/home.js"
+      ]
+    },
+    "static/studio/pages/archive.js": {
+      "sha256": "beb6d1e30aa8c7a684707310990cfc8e49c3257223383d42082acc3a203fab4e",
+      "exports": [
+        {
+          "name": "createFeature",
+          "line": 2
+        }
+      ],
+      "imports": [],
+      "imported_by": [
+        "static/studio/app/bootstrap.js"
+      ]
+    },
+    "static/studio/pages/home.js": {
+      "sha256": "24ece4e30057315d9439de9e1c921f3535bf34a60301a0e1d0619979dd808774",
+      "exports": [
+        {
+          "name": "projectCard",
+          "line": 4
+        },
+        {
+          "name": "renderHome",
+          "line": 8
+        }
+      ],
+      "imports": [
+        "static/studio/app/mode-registry.js",
+        "static/studio/ui/empty-state.js",
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/app/bootstrap.js"
+      ]
+    },
+    "static/studio/styles/modes.css": {
+      "sha256": "b3cd2d85c9547ae9e5742d6a043955122cee889a19a35f5e68b090be849f00ce",
+      "imported_by": []
+    },
+    "static/studio/styles/shell.css": {
+      "sha256": "6e3033db3c41db63ffe57144239a5bbdf717ae860ca3b6008ccec2920734b125",
+      "imported_by": []
+    }
+  }
+}

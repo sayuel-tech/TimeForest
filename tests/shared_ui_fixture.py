@@ -40,7 +40,7 @@ try{
  assert(root!==original,'dialog instance reused');
  await document.fonts.ready;
  const heading=getComputedStyle(root.querySelector('h2')),grid=getComputedStyle(root.querySelector('.settings-grid'));
- assert(heading.fontSize==='27px','shared heading style missing');
+ assert(heading.fontSize===getComputedStyle(document.documentElement).getPropertyValue('--title-dialog').trim(),'shared heading style missing');
  assert(grid.display==='grid','shared field grid missing');
  assert(dialog.getBoundingClientRect().width>Math.min(1000,innerWidth*.8),'dialog too narrow');
  assert(dialog.scrollWidth<=dialog.clientWidth+1,'dialog content overflow');

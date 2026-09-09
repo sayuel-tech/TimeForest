@@ -1,0 +1,13 @@
+{
+  "archive": "<本地维护路径>",
+  "files": 140,
+  "bytes": 16892473,
+  "sha256": "d8bd26263b6545bfd3999a0827a7e3659afe2075dd53ffb9d39226a13283844e",
+  "artwork_count": 5,
+  "masters": 5,
+  "dimensions": "1536x1024",
+  "browser_checks": 8,
+  "node_admission_tests": 11,
+  "production_reload": false,
+  "published": false
+}

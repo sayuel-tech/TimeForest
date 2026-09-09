@@ -1,0 +1,254 @@
+{
+  "type": "object",
+  "properties": {
+    "contract_version": {
+      "const": "tf-authoring/2.9"
+    },
+    "task_type": {
+      "const": "image_observation"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "ok",
+        "needs_input"
+      ]
+    },
+    "payload": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "observations": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "reference_key": {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "\\S"
+                  },
+                  "visible_facts": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "\\S"
+                    },
+                    "minItems": 0
+                  },
+                  "uncertainties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "\\S"
+                    },
+                    "minItems": 0
+                  }
+                },
+                "required": [
+                  "reference_key",
+                  "visible_facts",
+                  "uncertainties"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 1
+            }
+          },
+          "required": [
+            "observations"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "minItems": 0,
+      "maxItems": 5
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "level": {
+            "type": "string",
+            "enum": [
+              "notice",
+              "blocking"
+            ]
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "minItems": 0,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "kind",
+          "level",
+          "message",
+          "refs"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    },
+    "questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "question": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "required": [
+          "key",
+          "question"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    }
+  },
+  "required": [
+    "contract_version",
+    "task_type",
+    "status",
+    "payload",
+    "notes",
+    "issues",
+    "questions"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "image_observation response",
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "ok"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "type": "object",
+            "properties": {
+              "observations": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "reference_key": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "\\S"
+                    },
+                    "visible_facts": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "pattern": "\\S"
+                      },
+                      "minItems": 0
+                    },
+                    "uncertainties": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "pattern": "\\S"
+                      },
+                      "minItems": 0
+                    }
+                  },
+                  "required": [
+                    "reference_key",
+                    "visible_facts",
+                    "uncertainties"
+                  ],
+                  "additionalProperties": false
+                },
+                "minItems": 1
+              }
+            },
+            "required": [
+              "observations"
+            ],
+            "additionalProperties": false
+          },
+          "questions": {
+            "maxItems": 0
+          },
+          "issues": {
+            "items": {
+              "properties": {
+                "level": {
+                  "const": "notice"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "needs_input"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "type": "null"
+          },
+          "questions": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ]
+}

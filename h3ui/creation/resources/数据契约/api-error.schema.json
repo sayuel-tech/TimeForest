@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "api-error",
+  "type": "object",
+  "properties": {
+    "error": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "error_raw": {
+      "type": "string",
+      "minLength": 0
+    },
+    "error_kind": {
+      "type": "string",
+      "enum": [
+        "input",
+        "conflict",
+        "website",
+        "provider",
+        "policy"
+      ]
+    },
+    "code": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "field_errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "required": [
+          "field",
+          "message"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    },
+    "retryable": {
+      "type": "boolean"
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    }
+  },
+  "required": [
+    "error",
+    "error_raw",
+    "error_kind",
+    "code",
+    "field_errors",
+    "retryable",
+    "request_id"
+  ],
+  "additionalProperties": false
+}

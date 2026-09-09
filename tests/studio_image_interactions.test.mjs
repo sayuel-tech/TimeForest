@@ -130,13 +130,13 @@ test('outpaint anchor changes during a pending geometry refresh use only the cur
   ]};
   const element=()=>({value:'',dataset:{},listeners:{},style:{},classList:{toggle(){}},
     addEventListener(name,fn){this.listeners[name]=fn;},setAttribute(){},setCustomValidity(){},
-    querySelector(){return null;},querySelectorAll(){return []},getContext(){return {}}});
+    prepend(){},querySelector(){return null;},querySelectorAll(){return []},getContext(){return {}}});
   const ratio=element(),anchor=element(),host=element(),surface=element();
   surface.width=720;surface.height=960;host.querySelector=selector=>selector==='canvas'?surface:null;
   host.clientWidth=720;host.clientHeight=960;
   const pads=Object.fromEntries(['left','right','top','bottom'].map(key=>[key,{...element(),dataset:{setting:key}}]));
   const tasks=[{...element(),dataset:{task:first.id}},{...element(),dataset:{task:second.id}}];
-  const root={...element(),querySelector(selector){
+  const root={...element(),ownerDocument:{activeElement:null,defaultView:{scrollX:0,scrollY:0,scrollTo(){}}},contains(){return false;},querySelector(selector){
     if(selector==='.image-viewport')return host;
     if(selector==='#image-target-ratio')return ratio;
     if(selector==='#image-anchor')return anchor;
@@ -145,13 +145,14 @@ test('outpaint anchor changes during a pending geometry refresh use only the cur
   const pending=[];
   const replacements={
     window:{addEventListener(){},removeEventListener(){}},
-    document:{createElement:element},
+    document:{createElement:element,addEventListener(){},removeEventListener(){}},
     location:{hash:'#/p/image-fixture'},
     sessionStorage:{getItem(){return null;},setItem(){}},
     requestAnimationFrame(){},
     Image:class{naturalWidth=0;},
     ResizeObserver:class{observe(){} disconnect(){}},
     fetch:async(path,options)=>{
+      if(path.includes('/prompt-library/pending/'))return new Response(JSON.stringify({items:[]}));
       assert.ok(path.endsWith('/geometry'));
       return new Promise(resolve=>pending.push({resolve,body:JSON.parse(options.body)}));
     },

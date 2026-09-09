@@ -1,0 +1,29 @@
+{
+  "policy_version": "tf-provider-scope/3.0",
+  "implemented": [
+    {
+      "provider_kind": "deepseek",
+      "api_style": "chat"
+    }
+  ],
+  "deferred": [
+    {
+      "provider_kind": "lm_studio",
+      "api_style": "chat"
+    },
+    {
+      "provider_kind": "deepseek",
+      "api_style": "responses"
+    }
+  ],
+  "unsupported_runtime_error": "PROVIDER_NOT_IMPLEMENTED",
+  "manual_model_id_allowed": true,
+  "default_concurrency": 2,
+  "default_concurrency_origin": "website_working_default_not_provider_limit",
+  "model_list_is_allowlist": false,
+  "automatically_discover_on_startup": false,
+  "automatically_probe_by_inference": false,
+  "auto_fallback_model": false,
+  "auto_retry_inference": false,
+  "local_runtime_calls_this_release": false
+}

@@ -58,5 +58,6 @@
   "seed_base": 730000,
   "default_profile": "dance16g",
   "auto_concat": true,
-  "image_assets_enabled": true
+  "image_assets_enabled": true,
+  "authoring_cloud_workers": 2
 }

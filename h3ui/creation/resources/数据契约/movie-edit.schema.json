@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "movie-edit",
+  "type": "object",
+  "properties": {
+    "content_schema_version": {
+      "const": 1
+    },
+    "initialized_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "movie_segment_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "take_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "media": {
+            "type": "object",
+            "properties": {
+              "media_id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "content_hash": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "media_id",
+              "version",
+              "content_hash"
+            ],
+            "additionalProperties": false
+          },
+          "range": {
+            "type": "object",
+            "properties": {
+              "in_ms": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "out_ms": {
+                "type": "integer",
+                "minimum": 1
+              }
+            },
+            "required": [
+              "in_ms",
+              "out_ms"
+            ],
+            "additionalProperties": false
+          },
+          "included": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "movie_segment_id",
+          "take_id",
+          "media",
+          "range",
+          "included"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    },
+    "order": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "handled_updates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "offered_take_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "offered_selection_revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "decision": {
+            "type": "string",
+            "enum": [
+              "replace",
+              "keep"
+            ]
+          }
+        },
+        "required": [
+          "item_id",
+          "offered_take_id",
+          "offered_selection_revision",
+          "decision"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    }
+  },
+  "required": [
+    "content_schema_version",
+    "initialized_at",
+    "items",
+    "order",
+    "handled_updates"
+  ],
+  "additionalProperties": false
+}

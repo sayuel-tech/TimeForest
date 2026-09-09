@@ -96,6 +96,15 @@ class AssetLineage:
                 captured=dict(type='generated',project=pid,records=attempt_records(self.origins.studio.store,pid,attempt))
                 row['parameters']=parameter_records(captured)
                 self.expand(captured,row['id'],trail,depth+1)
+            elif kind == 'movie':
+                if not isinstance(pid,str) or not isinstance(ref.get('run'),str):raise KeyError('电影来源身份缺失')
+                project=self.origins.studio.store.get(pid,include_deleted=True)
+                if project.get('mode')!='movie':raise KeyError('并非电影项目')
+                take=next(t for t in project.get('movie_takes',[]) if t['take_id']==ref['run'])
+                snapshot=project['artifacts'][take['snapshot_id']]
+                row.update(run=take['take_id'],segment=take['movie_segment_id'],project=self.project(pid,run=take['take_id'],segment=take['movie_segment_id']),state='removed' if take['state']=='removed' else 'available')
+                captured=dict(mode='movie',project=pid,movie_lineage=take.get('lineage',{}),records=dict(manifest=dict(settings=snapshot['parameters'],segment=dict(actual_seed=snapshot['parameters'].get('actual_seed')))))
+                row['parameters']=parameter_records(captured);self.expand(captured,row['id'],trail,depth+1)
             elif kind == 'assembly':
                 rid=ref.get('run')
                 if not isinstance(pid,str) or not pid or not isinstance(rid,str) or not rid:
@@ -117,7 +126,7 @@ class AssetLineage:
                 origin=dict(type='generated',mode='video_assembly',project=pid,snapshot=run.get('snapshot'),seed=run.get('seed'),tasks=run.get('tasks'))
                 row['parameters']=parameter_records(origin)
                 self.expand(origin,row['id'],trail,depth+1)
-        except (KeyError, ValueError):
+        except (KeyError, ValueError, StopIteration):
             row.update(state='missing',notice='上游记录已不存在或身份不匹配，未替换为当前结果')
 
     def input(self, ref, pid, relation, parent, trail, depth):
@@ -136,6 +145,13 @@ class AssetLineage:
         if len(self.rows)>=self.MAX_NODES:
             self.truncated=True; return
         pid=origin.get('project')
+        if origin.get('mode')=='movie':
+            lineage=mapping(origin.get('movie_lineage'))
+            for ref in lineage.get('inputs',[]):self.follow('asset',ref,None,'reference',parent,trail,depth)
+            previous=lineage.get('previous')
+            if previous:self.follow('movie',previous,previous.get('project'),'continuation',parent,trail,depth)
+            for index,ref in enumerate(lineage.get('parts',[])):self.follow('movie',ref,ref.get('project'),'part_'+str(index+1),parent,trail,depth)
+            return
         if origin.get('type')=='portable_pack':
             row=self.row('pack',parent,kind='boundary')
             if row is None:return

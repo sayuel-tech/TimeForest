@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "steps": 5,
+  "scope": "real save/confirm/asset needs/tree/source/fake LLM",
+  "requests": 9,
+  "continued_from_output": true
+}

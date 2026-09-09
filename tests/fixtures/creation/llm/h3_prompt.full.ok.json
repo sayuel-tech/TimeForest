@@ -1,0 +1,12 @@
+{
+  "contract_version": "tf-authoring/2.9",
+  "task_type": "h3_prompt",
+  "status": "ok",
+  "payload": {
+    "prompt_text": "integrated_multimodal_description:\n人物缓慢停下，低头看向脚边。\noverall_soundscape:\n仅自然风声，无对白。\nnon_diegetic_music:\nN/A",
+    "used_reference_keys": []
+  },
+  "notes": [],
+  "issues": [],
+  "questions": []
+}

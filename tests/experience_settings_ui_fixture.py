@@ -53,7 +53,7 @@ try{
  location.hash='#/p/'+pid;await wait(()=>document.querySelector('.project-actions button'));await open();
  await document.fonts.ready;
  const root=document.querySelector('.production-settings'),dialog=document.querySelector('#dialog');
- assert(getComputedStyle(root.querySelector('h2')).fontSize==='27px','heading style differs');
+ assert(getComputedStyle(root.querySelector('h2')).fontSize===getComputedStyle(document.documentElement).getPropertyValue('--title-dialog').trim(),'heading style differs');
  assert(dialog.scrollWidth<=dialog.clientWidth+1,'horizontal overflow');
  const roles=[...root.querySelectorAll('[data-settings-action]')].map(b=>b.dataset.settingsAction);
  assert(roles.join(',')==='reset,cancel,apply,save','common action ordering differs');

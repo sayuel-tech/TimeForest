@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "topic": "movie",
+  "evidence": "Mechanical current-source map; not UI acceptance or a match to historical screenshots.",
+  "sources": {
+    "static/studio/modes/movie/workspace.js": {
+      "sha256": "3de14d36809b2ee697e9da67bfb715f0044624d2e8fac074fb621eb1b13812d9",
+      "exports": [
+        {
+          "name": "mountWorkspace",
+          "line": 33
+        }
+      ],
+      "imports": [
+        "static/studio/contracts/project-refresh.js",
+        "static/studio/core/api-client.js",
+        "static/studio/core/async-state.js",
+        "static/studio/core/progress-channel.js",
+        "static/studio/core/snapshot-update.js",
+        "static/studio/core/task-state.js",
+        "static/studio/features/prompt-library/records.js",
+        "static/studio/features/shot-segment-tree/edit-preview.js",
+        "static/studio/features/shot-segment-tree/index.js",
+        "static/studio/features/shot-segment-tree/return-context.js",
+        "static/studio/features/workflow-settings/index.js",
+        "static/studio/ui/candidate-records.js",
+        "static/studio/ui/choice-dialog.js",
+        "static/studio/ui/creation-job-status.js",
+        "static/studio/ui/draft-status.js",
+        "static/studio/ui/empty-state.js",
+        "static/studio/ui/error-feedback.js",
+        "static/studio/ui/media-player.js",
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/prompt-editor.js",
+        "static/studio/ui/reference-assets.js",
+        "static/studio/ui/result-view.js",
+        "static/studio/ui/run-timing.js",
+        "static/studio/ui/source-parameters.js",
+        "static/studio/ui/status-region.js",
+        "static/studio/ui/workbench.js",
+        "static/studio/ui/workspace-actions.js",
+        "static/studio/ui/workspace-chrome.js",
+        "static/studio/ui/workspace-view-state.js"
+      ],
+      "imported_by": [
+        "static/studio/app/mode-registry.js"
+      ]
+    },
+    "static/studio/styles/creation.css": {
+      "sha256": "4d2f7af4570cc721b840479476aee71df3199cb3b365229abb503dd3f082a9f0",
+      "imported_by": []
+    },
+    "static/studio/styles/task-layouts.css": {
+      "sha256": "30bee9fd22edca749b56cc0770b8fddd249ce3c3000c7f95f3c209eb288ce113",
+      "imported_by": []
+    },
+    "static/studio/styles/workbench.css": {
+      "sha256": "3849df049437e28f6528e6a0fedbbfe433837eb050b0f00c5e54516bf82a79d2",
+      "imported_by": []
+    }
+  }
+}

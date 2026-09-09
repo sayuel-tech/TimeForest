@@ -1,0 +1,38 @@
+[
+  {
+    "passed": true,
+    "view": "assets",
+    "width": 1902,
+    "case": "assets-1920"
+  },
+  {
+    "passed": true,
+    "view": "prompts",
+    "width": 1902,
+    "case": "prompts-1920"
+  },
+  {
+    "passed": true,
+    "view": "imports",
+    "width": 1902,
+    "case": "imports-1920"
+  },
+  {
+    "passed": true,
+    "view": "assets",
+    "width": 742,
+    "case": "assets-760"
+  },
+  {
+    "passed": true,
+    "view": "prompts",
+    "width": 742,
+    "case": "prompts-760"
+  },
+  {
+    "passed": true,
+    "view": "imports",
+    "width": 742,
+    "case": "imports-760"
+  }
+]

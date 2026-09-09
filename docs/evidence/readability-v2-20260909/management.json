@@ -1,0 +1,114 @@
+[
+  {
+    "passed": true,
+    "view": "home",
+    "width": 1902,
+    "case": "home-1920",
+    "evidence_run": "management"
+  },
+  {
+    "passed": true,
+    "view": "archive",
+    "width": 1902,
+    "case": "archive-1920",
+    "evidence_run": "management"
+  },
+  {
+    "passed": true,
+    "view": "tasks",
+    "width": 1902,
+    "case": "tasks-1920",
+    "evidence_run": "management"
+  },
+  {
+    "passed": true,
+    "view": "storage",
+    "width": 1902,
+    "case": "storage-1920",
+    "evidence_run": "management"
+  },
+  {
+    "passed": true,
+    "view": "organize",
+    "width": 1902,
+    "case": "organize-1920",
+    "evidence_run": "management"
+  },
+  {
+    "passed": true,
+    "view": "trash",
+    "width": 1902,
+    "case": "trash-1920",
+    "evidence_run": "management"
+  },
+  {
+    "passed": true,
+    "view": "detail",
+    "width": 1902,
+    "case": "detail-1920",
+    "evidence_run": "management"
+  },
+  {
+    "passed": true,
+    "view": "global-tasks",
+    "width": 1902,
+    "case": "global-tasks-1920",
+    "evidence_run": "management"
+  },
+  {
+    "passed": true,
+    "view": "home",
+    "width": 742,
+    "case": "home-760",
+    "evidence_run": "management"
+  },
+  {
+    "passed": true,
+    "view": "archive",
+    "width": 742,
+    "case": "archive-760",
+    "evidence_run": "management"
+  },
+  {
+    "passed": true,
+    "view": "tasks",
+    "width": 742,
+    "case": "tasks-760",
+    "evidence_run": "management"
+  },
+  {
+    "passed": true,
+    "view": "storage",
+    "width": 742,
+    "case": "storage-760",
+    "evidence_run": "management"
+  },
+  {
+    "passed": true,
+    "view": "organize",
+    "width": 742,
+    "case": "organize-760",
+    "evidence_run": "management"
+  },
+  {
+    "passed": true,
+    "view": "trash",
+    "width": 742,
+    "case": "trash-760",
+    "evidence_run": "management"
+  },
+  {
+    "passed": true,
+    "view": "detail",
+    "width": 742,
+    "case": "detail-760",
+    "evidence_run": "management"
+  },
+  {
+    "passed": true,
+    "view": "global-tasks",
+    "width": 742,
+    "case": "global-tasks-760",
+    "evidence_run": "management"
+  }
+]

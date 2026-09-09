@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "return-context",
+  "type": "object",
+  "properties": {
+    "origin_movie_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "origin_page": {
+      "type": "string",
+      "enum": [
+        "generation",
+        "editing"
+      ]
+    },
+    "origin_item_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "origin_segment_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "viewed_take_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "script_project_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "script_target_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "source_bundle_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "view": {
+      "type": "object",
+      "properties": {
+        "scroll_x": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "scroll_y": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "zoom": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      },
+      "required": [
+        "scroll_x",
+        "scroll_y",
+        "zoom"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "origin_movie_id",
+    "origin_page",
+    "origin_item_id",
+    "origin_segment_id",
+    "viewed_take_id",
+    "script_project_id",
+    "script_target_id",
+    "source_bundle_id",
+    "view"
+  ],
+  "additionalProperties": false
+}

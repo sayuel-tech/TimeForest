@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "topic": "image_assets",
+  "evidence": "Mechanical current-source map; not UI acceptance or a match to historical screenshots.",
+  "sources": {
+    "static/studio/app/image-workspace-controller.js": {
+      "sha256": "583403725f0a81d3d0d41c0c372eb0454454ba707c17b0b52d509ffed2614877",
+      "exports": [
+        {
+          "name": "mountWorkspace",
+          "line": 29
+        }
+      ],
+      "imports": [
+        "static/studio/core/async-state.js",
+        "static/studio/core/image-session.js",
+        "static/studio/core/progress-channel.js",
+        "static/studio/core/source-target.js",
+        "static/studio/features/asset-picker/index.js",
+        "static/studio/features/asset-picker/library-client.js",
+        "static/studio/features/image-canvas/index.js",
+        "static/studio/features/image-results/transfer.js",
+        "static/studio/features/image-results/workspace-view.js",
+        "static/studio/features/image-settings/index.js",
+        "static/studio/features/prompt-library/adapters.js",
+        "static/studio/features/prompt-library/collection.js",
+        "static/studio/features/prompt-library/records.js",
+        "static/studio/ui/async-feedback.js",
+        "static/studio/ui/candidate-records.js",
+        "static/studio/ui/draft-status.js",
+        "static/studio/ui/error-feedback.js",
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/source-navigation.js",
+        "static/studio/ui/status-region.js",
+        "static/studio/ui/workbench.js",
+        "static/studio/ui/workspace-chrome.js",
+        "static/studio/ui/workspace-view-state.js"
+      ],
+      "imported_by": [
+        "static/studio/app/bootstrap.js",
+        "static/studio/app/mode-registry.js"
+      ]
+    },
+    "static/studio/features/image-canvas/index.js": {
+      "sha256": "062b61884f0737339848aa73cc919f42b62e2d6f727838eda5934ab7ba984e45",
+      "exports": [
+        {
+          "name": "ImageCanvas",
+          "line": 2
+        }
+      ],
+      "imports": [],
+      "imported_by": [
+        "static/studio/app/image-workspace-controller.js"
+      ]
+    },
+    "static/studio/features/image-results/transfer.js": {
+      "sha256": "dce851846968371b099bcdb295bd47acc6741cd47fa400a2706ad0e42c560ba6",
+      "exports": [
+        {
+          "name": "sendToVideo",
+          "line": 9
+        }
+      ],
+      "imports": [
+        "static/studio/core/api-client.js",
+        "static/studio/features/asset-picker/assembly-use.js",
+        "static/studio/features/asset-picker/destinations.js",
+        "static/studio/features/asset-picker/library-client.js",
+        "static/studio/features/asset-picker/project-use.js",
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/app/image-workspace-controller.js"
+      ]
+    },
+    "static/studio/features/image-results/workspace-view.js": {
+      "sha256": "cbc9f959d39978b7ee2cff6981a291010b8fedd35ca59bcff87c0ef1cc375935",
+      "exports": [
+        {
+          "name": "imageSteps",
+          "line": 15
+        },
+        {
+          "name": "imageRunStates",
+          "line": 17
+        },
+        {
+          "name": "chosenOutput",
+          "line": 20
+        },
+        {
+          "name": "generationReason",
+          "line": 24
+        },
+        {
+          "name": "taskStatus",
+          "line": 31
+        },
+        {
+          "name": "imageActionBar",
+          "line": 35
+        },
+        {
+          "name": "imageRecordHistory",
+          "line": 96
+        },
+        {
+          "name": "imageRunClock",
+          "line": 106
+        },
+        {
+          "name": "imageRunStatus",
+          "line": 117
+        },
+        {
+          "name": "renderImageWorkspace",
+          "line": 124
+        }
+      ],
+      "imports": [
+        "static/studio/core/task-state.js",
+        "static/studio/features/image-settings/index.js",
+        "static/studio/features/shot-segment-tree/return-context.js",
+        "static/studio/ui/asset-origin.js",
+        "static/studio/ui/candidate-records.js",
+        "static/studio/ui/error-feedback.js",
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/production-settings.js",
+        "static/studio/ui/reference-assets.js",
+        "static/studio/ui/result-view.js",
+        "static/studio/ui/run-timing.js",
+        "static/studio/ui/workbench.js",
+        "static/studio/ui/workspace-actions.js",
+        "static/studio/ui/workspace-chrome.js"
+      ],
+      "imported_by": [
+        "static/studio/app/image-workspace-controller.js"
+      ]
+    },
+    "static/studio/styles/image-assets.css": {
+      "sha256": "7d010d6fa2f3a97f8659eccd0785f980cff34e368d67e30f13670c592e0d658c",
+      "imported_by": []
+    },
+    "static/studio/styles/task-layouts.css": {
+      "sha256": "30bee9fd22edca749b56cc0770b8fddd249ce3c3000c7f95f3c209eb288ce113",
+      "imported_by": []
+    },
+    "static/studio/styles/workbench.css": {
+      "sha256": "3849df049437e28f6528e6a0fedbbfe433837eb050b0f00c5e54516bf82a79d2",
+      "imported_by": []
+    }
+  }
+}

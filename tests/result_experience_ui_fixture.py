@@ -124,7 +124,7 @@ class ResultFixture(RealImageFixture):
         return super().request(method,path,body)
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--evidence-dir',required=True);parser.add_argument('--only',choices=['original','assembly']);args=parser.parse_args();out=Path(args.evidence_dir);out.mkdir(parents=True,exist_ok=True);checks=[]
+    parser=argparse.ArgumentParser();parser.add_argument('--evidence-dir',required=True);parser.add_argument('--only',choices=['original','assembly']);parser.add_argument('--modes',default='swap,image_story,text_story,image_assets');args=parser.parse_args();out=Path(args.evidence_dir);out.mkdir(parents=True,exist_ok=True);checks=[]
     TrackTests.setUpClass()
     try:
         if args.only!='assembly':
@@ -144,6 +144,7 @@ def main():
             fixture=ResultFixture(out);server=ThreadingHTTPServer(('127.0.0.1',0),Checked);server.fixture=fixture;threading.Thread(target=server.serve_forever,daemon=True).start()
             try:
                 for mode in ['swap','image_story','text_story','image_assets']:
+                    if mode not in args.modes.split(','):continue
                     for width in [1280,760]:
                         fixture.reset();fixture.seed_results();pid=next(k for k,p in fixture.projects.items() if p['mode']==mode)
                         checks.append(capture(out,mode+'-'+str(width),f'http://127.0.0.1:{server.server_port}/?check=1#/p/{pid}',width))

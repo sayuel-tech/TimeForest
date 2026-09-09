@@ -41,13 +41,28 @@ def video_visibility(studio,pid,data):
         return dict(ok=True,revision=p['revision'],removed=data['removed'])
 
 
+def creation_visibility(studio,pid,data):
+    with studio.store.lock:
+        p=studio.store.get(pid)
+        if p['revision']!=data.get('revision'):raise Conflict('项目已更新，请先保存或核对后再整理候选')
+        if any(j['state'] in ('queued','preparing','running','submitting','cancel_requested','submission_unknown') for j in p['creation_jobs']):raise Conflict('请先处理当前运行或待确认提交')
+        records=p.get('movie_takes',[]) if p['mode']=='movie' else p['candidates'];field='take_id' if p['mode']=='movie' else 'candidate_id'
+        record=next((r for r in records if r[field]==data['record']),None)
+        if not record:raise KeyError('候选不属于当前项目')
+        if data['removed'] and (record.get('currently_adopted') or record.get('disposition')=='applied'):raise Conflict('当前已采用的制作记录保留；请先选择其他结果')
+        record['removed_at']=(record.get('removed_at') or time.time()) if data['removed'] else None
+        if p['mode']=='movie':record['state']='removed' if data['removed'] else 'available'
+        else:record['disposition']='discarded' if data['removed'] else 'pending'
+        p=studio.store.save(p,p['revision']);return dict(ok=True,revision=p['revision'],removed=data['removed'])
+
+
 @bp.post('/<pid>/records/visibility')
 def visibility(pid):
     data=request.get_json() or {}
     try:
         if not isinstance(data.get('removed'),bool) or not isinstance(data.get('record'),str):raise ValueError('缺少有效的记录或移除/恢复操作')
         studio=current_app.config['STUDIO'];images=current_app.config.get('IMAGE_STUDIO')
-        action=lambda:image_visibility(images,pid,data) if images and images.store.exists(pid) else video_visibility(studio,pid,data)
+        action=lambda:image_visibility(images,pid,data) if images and images.store.exists(pid) else creation_visibility(studio,pid,data) if studio.store.get(pid).get('mode') in ('authoring','movie') else video_visibility(studio,pid,data)
         return jsonify(studio.jobs.run_inline('candidate_visibility',pid,action))
     except (ValueError,KeyError,RuntimeError) as exc:
         return jsonify(error=str(exc),error_raw=str(exc),error_kind='conflict'),409

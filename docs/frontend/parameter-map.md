@@ -71,7 +71,7 @@
 
 适配ID为image_assets/text，TEXT_ADAPTER_REVISION=1。原krea-edit.json只有四个编辑分组，没有现成文生图分组；文件保持不变，source_hash沿用其SHA256，plugin_version沿用86f886dac23013d88996e3a2e99093ba44d322fb来源记录。新增编译规则在内存中派生原单图输出27链，运行snapshot额外固定adapter_revision，实际提交图另存graph_hash；这些是来源/结构记录，不是已验证环境声明。
 
-本地依据：<本地ComfyUI目录>。本机启动脚本指向的ComfyUI源码目录为<本地用户目录>；nodes.py的CLIPLoader支持type=krea2，CLIPTextEncode使用其原生tokenize/encode；comfy/text_encoders/krea2.py提供Krea文本模板和编码。只读取源码，没有运行脚本、插件或模型。
+本地依据：<本地维护路径>。本机启动脚本指向的ComfyUI源码目录为<本地维护路径>；nodes.py的CLIPLoader支持type=krea2，CLIPTextEncode使用其原生tokenize/encode；comfy/text_encoders/krea2.py提供Krea文本模板和编码。只读取源码，没有运行脚本、插件或模型。
 
 | 文生图实际输入 | 编译落点与固定行为 |
 |---|---|
@@ -132,3 +132,8 @@ text只公开上述字段；不公开或消费lora/strength_model、参考权重
 ### 接续片尾尺寸准备（6.3.20）
 
 AI尾部的媒体预处理保留源视频显示几何，经LoadVideo(101)→视频帧→MotionContext(105)进入现有画布适配；20.width/height仍取用户一采设置，不把导出contain补边用于AI参考。新运行snapshot.tail_preparation=source_geometry_v2，旧运行缺字段按legacy_contain_v1恢复。只调整外部片尾预处理，不改用户默认参数、节点加载或两采绑定；普通拼接导出fit仍按原设置执行。详见[视频接续](../video-assembly.md#时长与声音)。
+
+
+## V3.0 剧本与电影接入
+
+剧本服务配置由 authoring-assist 适配公共 production-settings，参数在临时副本中编辑，取消不保存；DeepSeek Chat 的 model_id 可编辑，无自动换模。电影 parameters 调原 workflow-settings，catalog 来自 creation/movie.py 的原 Recipes 投影，8 个 profile 保留 full/structured；排除电影业务不使用的 export_fps。导出尺寸/画幅在导出确认中，作用于成片，不回写 H3 默认采样。准备快照冻结真实参数，来源页只展示固定制作记录。

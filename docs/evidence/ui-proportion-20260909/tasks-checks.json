@@ -1,0 +1,14 @@
+[
+  {
+    "passed": true,
+    "view": "global-tasks",
+    "width": 1902,
+    "case": "global-tasks-1920"
+  },
+  {
+    "passed": true,
+    "view": "global-tasks",
+    "width": 742,
+    "case": "global-tasks-760"
+  }
+]

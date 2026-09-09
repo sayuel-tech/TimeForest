@@ -27,6 +27,10 @@ export async function pickLibraryAsset({
       `<div class="library-picker"><span class="eyebrow">ASSET LIBRARY</span><h2>${esc(title)}</h2><form class="library-search"><input name="q" placeholder="搜索资产名称" aria-label="搜索资产名称"><select name="category" aria-label="分类">${opts([["", "所有分类"], ...catalog.categories.map((c) => [c.id, c.name])], "")}</select><button>查找</button></form><div class="library-picker-results" aria-live="polite"></div><div class="library-pagination"><button data-page="-1">上一页</button><span></span><button data-page="1">下一页</button></div><p class="helper">这里仅选择资产；引用用途、绑定内容和工作流变化会在下一步核对。资料PROMPT不会进入制作。</p>${multiple?'<button type="button" class="primary picker-apply" disabled>导入所选视频（0）</button>':''}<button type="button" class="picker-cancel">取消</button></div>`,
     );
     const view = dialog.querySelector(".library-picker");
+    const actions=document.createElement('div');actions.className='dialog-actions';
+    actions.append(view.querySelector('.picker-cancel'));
+    if(multiple)actions.append(view.querySelector('.picker-apply'));
+    view.append(actions);
     const done = (value) => {
       if (finished) return;
       finished = true;

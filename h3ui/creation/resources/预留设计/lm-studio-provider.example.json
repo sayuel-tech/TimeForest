@@ -1,0 +1,15 @@
+{
+  "config_id": "lm_studio_draft",
+  "display_name": "用户加载的本地写作模型",
+  "provider_kind": "lm_studio",
+  "api_style": "chat",
+  "base_url": "http://127.0.0.1:1234",
+  "model_id": null,
+  "loaded_instance_id": null,
+  "credential_ref": null,
+  "structured_mode": "json_schema",
+  "vision": "unknown",
+  "max_output_tokens": null,
+  "auto_retry_inference": false,
+  "enabled": false
+}

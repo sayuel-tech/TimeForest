@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "source-bundle",
+  "type": "object",
+  "properties": {
+    "bundle_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "script_project_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "shot_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "segment_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "source_revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "segment_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "prompt_hash": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "prompt_mode": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "full",
+            "structured"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "binding_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "input_contract_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "profile_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "profile_revision": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "ready_state": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "ready",
+        "review_required",
+        "missing_input",
+        "source_removed"
+      ]
+    },
+    "snapshot_artifact_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    }
+  },
+  "required": [
+    "bundle_id",
+    "script_project_id",
+    "shot_id",
+    "segment_id",
+    "source_revision",
+    "segment_hash",
+    "prompt_hash",
+    "prompt_mode",
+    "binding_hash",
+    "input_contract_hash",
+    "profile_id",
+    "profile_revision",
+    "ready_state",
+    "snapshot_artifact_id"
+  ],
+  "additionalProperties": false
+}

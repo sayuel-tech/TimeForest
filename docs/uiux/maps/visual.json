@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "topic": "visual",
+  "evidence": "Mechanical current-source map; not UI acceptance or a match to historical screenshots.",
+  "sources": {
+    "static/assets/fonts/fonts.css": {
+      "sha256": "7c5610f52534808598bef558d151454c04e9337c926aa118818cf4207a3849a7",
+      "imported_by": []
+    },
+    "static/studio/design-system.html": {
+      "sha256": "5c2daae77f7087da965c9ba86c460f63311da7ca6c49b94db66bf18ab1c2e071",
+      "imported_by": []
+    },
+    "static/studio/style.css": {
+      "sha256": "acee90e4b08e257f45cbdce4ce1ae06eb64d5cf7ffeb6847e3188f94c97f5e5e",
+      "imported_by": []
+    },
+    "static/studio/styles/base.css": {
+      "sha256": "f1c718b99bccd4b0079464243c4cd12f15ee4fcffd54d9b91b5edd0b29bf6a2f",
+      "imported_by": []
+    },
+    "static/studio/styles/collection-navigation.css": {
+      "sha256": "7d3e5afd9779960a8d092f573ec47c752106d9b8249691c7d02542876bef4b62",
+      "imported_by": []
+    },
+    "static/studio/styles/components.css": {
+      "sha256": "96f8b268f73ec290ebb84c9dae79abe0f9b40931b67b040b2b77976c83bfdd97",
+      "imported_by": []
+    },
+    "static/studio/styles/creation.css": {
+      "sha256": "4d2f7af4570cc721b840479476aee71df3199cb3b365229abb503dd3f082a9f0",
+      "imported_by": []
+    },
+    "static/studio/styles/design-tokens.css": {
+      "sha256": "e009f961ba810b5f636ebbcda63d9784d6aae40f113582da4bc0dafca1289157",
+      "imported_by": []
+    },
+    "static/studio/styles/fonts/fonts.css": {
+      "sha256": "924f2034f4832522b4d43b8663adea1538fc7a259530f74abec1a359d33bf76a",
+      "imported_by": []
+    },
+    "static/studio/styles/image-assets.css": {
+      "sha256": "7d010d6fa2f3a97f8659eccd0785f980cff34e368d67e30f13670c592e0d658c",
+      "imported_by": []
+    },
+    "static/studio/styles/library.css": {
+      "sha256": "0ff0e9826cab546737782328d728086795dfca364e89ad6da478d0e152501675",
+      "imported_by": []
+    },
+    "static/studio/styles/media-player.css": {
+      "sha256": "6af72d751fde02a703bc38af8044f924e2c2b0bf9876cc7a2aea608588140cb8",
+      "imported_by": []
+    },
+    "static/studio/styles/modes.css": {
+      "sha256": "b3cd2d85c9547ae9e5742d6a043955122cee889a19a35f5e68b090be849f00ce",
+      "imported_by": []
+    },
+    "static/studio/styles/production-settings.css": {
+      "sha256": "07b3cd7f58759afe62098e2106d75bcd781454f4ce1a0664b35a81288df5cf63",
+      "imported_by": []
+    },
+    "static/studio/styles/prompt-library.css": {
+      "sha256": "57e940248ca286668c6706baacb9bb1381720e1646fc1562301c838c2f15cb74",
+      "imported_by": []
+    },
+    "static/studio/styles/shell.css": {
+      "sha256": "6e3033db3c41db63ffe57144239a5bbdf717ae860ca3b6008ccec2920734b125",
+      "imported_by": []
+    },
+    "static/studio/styles/task-center.css": {
+      "sha256": "875d03a418ed8ade72021f2602f8df2a86908486477cda95bbf2dffac0929dfc",
+      "imported_by": []
+    },
+    "static/studio/styles/task-layouts.css": {
+      "sha256": "30bee9fd22edca749b56cc0770b8fddd249ce3c3000c7f95f3c209eb288ce113",
+      "imported_by": []
+    },
+    "static/studio/styles/video-assembly.css": {
+      "sha256": "9e89a4b7e16289565249c40e27261499cb73c6804073e6b5ef608a739582efb3",
+      "imported_by": []
+    },
+    "static/studio/styles/workbench.css": {
+      "sha256": "3849df049437e28f6528e6a0fedbbfe433837eb050b0f00c5e54516bf82a79d2",
+      "imported_by": []
+    },
+    "static/styles/tokens.css": {
+      "sha256": "1739b6502ce29d633902d5adb29f1578b647f7413f8e97147216cf9021beb4bd",
+      "imported_by": []
+    }
+  }
+}

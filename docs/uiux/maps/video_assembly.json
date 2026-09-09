@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "topic": "video_assembly",
+  "evidence": "Mechanical current-source map; not UI acceptance or a match to historical screenshots.",
+  "sources": {
+    "static/studio/modes/video-assembly/import-dialog.js": {
+      "sha256": "44bc3bd35141a74ffbabfb7e9de478e6a9ae3ee4a2306617f00e43fb4526d47d",
+      "exports": [
+        {
+          "name": "chooseVideoImport",
+          "line": 5
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/reference-assets.js"
+      ],
+      "imported_by": [
+        "static/studio/modes/video-assembly/workspace.js"
+      ]
+    },
+    "static/studio/modes/video-assembly/references.js": {
+      "sha256": "f8eb60a32a1e33d04df1f98263afaf5f270c2e2b0ca11ee53b2ef5179aa330a7",
+      "exports": [
+        {
+          "name": "boundReferences",
+          "line": 6
+        },
+        {
+          "name": "referencePanels",
+          "line": 7
+        },
+        {
+          "name": "bindReferences",
+          "line": 21
+        }
+      ],
+      "imports": [
+        "static/studio/features/asset-picker/index.js",
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/reference-assets.js",
+        "static/studio/ui/reference-metadata.js"
+      ],
+      "imported_by": [
+        "static/studio/modes/video-assembly/workspace.js"
+      ]
+    },
+    "static/studio/modes/video-assembly/settings.js": {
+      "sha256": "74c7179ad89f631a00b6e23db311cafd5a3db38c95b7283a6d8010d53d90c3f6",
+      "exports": [
+        {
+          "name": "visibleParameters",
+          "line": 5
+        },
+        {
+          "name": "resetParameters",
+          "line": 10
+        },
+        {
+          "name": "switchRecipe",
+          "line": 16
+        },
+        {
+          "name": "settingsDialog",
+          "line": 21
+        }
+      ],
+      "imports": [
+        "static/studio/core/api-client.js",
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/production-settings.js"
+      ],
+      "imported_by": [
+        "static/studio/modes/video-assembly/workspace.js"
+      ]
+    },
+    "static/studio/modes/video-assembly/source-parameters.js": {
+      "sha256": "9fcc0c20d1600563c99e96a8678aeba52bb4664ee6e260f01706490f90832b47",
+      "exports": [],
+      "imports": [
+        "static/studio/ui/source-parameters.js"
+      ],
+      "imported_by": [
+        "static/studio/modes/video-assembly/workspace.js"
+      ]
+    },
+    "static/studio/modes/video-assembly/track.js": {
+      "sha256": "11d273764e67b202498e46e65173aecdc0d524d768b229e2e9524c7c5666b0a9",
+      "exports": [
+        {
+          "name": "trackItems",
+          "line": 2
+        },
+        {
+          "name": "moveTrack",
+          "line": 15
+        }
+      ],
+      "imports": [],
+      "imported_by": [
+        "static/studio/modes/video-assembly/workspace.js"
+      ]
+    },
+    "static/studio/modes/video-assembly/workspace.js": {
+      "sha256": "7f30043e088bda54e96b68013cd82b8e475047a8fc7b3ac88a8adba4b8e222da",
+      "exports": [
+        {
+          "name": "activeClips",
+          "line": 36
+        },
+        {
+          "name": "savePayload",
+          "line": 37
+        },
+        {
+          "name": "moveClip",
+          "line": 38
+        },
+        {
+          "name": "mountWorkspace",
+          "line": 45
+        }
+      ],
+      "imports": [
+        "static/studio/contracts/project-refresh.js",
+        "static/studio/core/api-client.js",
+        "static/studio/core/async-state.js",
+        "static/studio/core/progress-channel.js",
+        "static/studio/core/snapshot-update.js",
+        "static/studio/core/source-target.js",
+        "static/studio/core/task-state.js",
+        "static/studio/features/asset-picker/index.js",
+        "static/studio/features/prompt-library/adapters.js",
+        "static/studio/features/prompt-library/collection.js",
+        "static/studio/features/prompt-library/records.js",
+        "static/studio/modes/video-assembly/import-dialog.js",
+        "static/studio/modes/video-assembly/references.js",
+        "static/studio/modes/video-assembly/settings.js",
+        "static/studio/modes/video-assembly/source-parameters.js",
+        "static/studio/modes/video-assembly/track.js",
+        "static/studio/ui/asset-origin.js",
+        "static/studio/ui/async-feedback.js",
+        "static/studio/ui/candidate-records.js",
+        "static/studio/ui/draft-status.js",
+        "static/studio/ui/error-feedback.js",
+        "static/studio/ui/media-player.js",
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/reference-assets.js",
+        "static/studio/ui/result-view.js",
+        "static/studio/ui/run-timing.js",
+        "static/studio/ui/source-navigation.js",
+        "static/studio/ui/status-region.js",
+        "static/studio/ui/workbench.js",
+        "static/studio/ui/workspace-actions.js",
+        "static/studio/ui/workspace-chrome.js",
+        "static/studio/ui/workspace-view-state.js"
+      ],
+      "imported_by": [
+        "static/studio/app/bootstrap.js",
+        "static/studio/app/mode-registry.js"
+      ]
+    },
+    "static/studio/styles/task-layouts.css": {
+      "sha256": "30bee9fd22edca749b56cc0770b8fddd249ce3c3000c7f95f3c209eb288ce113",
+      "imported_by": []
+    },
+    "static/studio/styles/video-assembly.css": {
+      "sha256": "9e89a4b7e16289565249c40e27261499cb73c6804073e6b5ef608a739582efb3",
+      "imported_by": []
+    },
+    "static/studio/styles/workbench.css": {
+      "sha256": "3849df049437e28f6528e6a0fedbbfe433837eb050b0f00c5e54516bf82a79d2",
+      "imported_by": []
+    }
+  }
+}

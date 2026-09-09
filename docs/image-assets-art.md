@@ -8,7 +8,7 @@
 | static/assets/image-studio/empty-editor.webp | 图片尚未上传时的编辑画布 |
 | static/assets/image-studio/empty-results.webp | 生成与挑选、保存与使用步骤暂无候选时 |
 
-原始 PNG 保留在 <本地用户目录>。生产资源为 WebP，保持原尺寸和构图，仅转换网页编码；网站不依赖生成缓存。旧 SVG 已归档至 <本地维护归档>。
+原始 PNG 保留在 <本地维护路径>。生产资源为 WebP，保持原尺寸和构图，仅转换网页编码；网站不依赖生成缓存。旧 SVG 已归档至 <本地维护路径>。
 
 插画仅用于入口和空状态，上传图片后沿用原画布。空状态采用紧凑排版；装饰图 alt 为空，说明文字保留为可访问文本。
 
@@ -38,8 +38,13 @@ Composition: a simple quiet central vignette occupying about 65% of the canvas, 
 
 本地6.3.14新增 `static/assets/modes/mode-video-continuation.webp`，替换第五入口此前复用的R2V图。使用内置imagegen生成，以原站 `mode-t2v.webp` 仅作风格参考；胶片片段连接，末帧河流延伸进森林晨光，区别于参考图长视频的人物画面序列。首页沿用公共卡片，不增加模式私有样式。
 
-原始PNG：`<本地用户目录>`。网站使用独立WebP，1536×1024、3:2，保留尺寸和构图，只转换网页编码（quality=90）；原图保留。文字由网页渲染。
+原始PNG：`<本地维护路径>`。网站使用独立WebP，1536×1024、3:2，保留尺寸和构图，只转换网页编码（quality=90）；原图保留。文字由网页渲染。
 
 生成提示词：
 
 Create one finished website module-card illustration, landscape 3:2 aspect ratio. It represents VIDEO CONTINUATION: joining existing video clips and extending their final moving frames into new scenery. Match the attached style reference ONLY in palette and media: warm ivory watercolor paper, muted forest olive, smoky blue gray, sepia ink, subtle vintage paper collage, sophisticated quiet literary cinematic atmosphere. New independent composition: a gently curving continuous strip of film flows from the lower left across the middle into a misty forest valley on the right; two short film-strip pieces visibly meet along the journey, their frames containing consecutive views of the SAME forest river, and the final film frame gradually dissolves into the actual flowing river and distant soft golden dawn. Elegant broad flowing motion, delicate tree silhouettes and ink detail, balanced negative space and bright creamy paper at edges. Central 75 percent readable when used in a small 3:2 card. Restrained low-contrast watercolor, handmade soft torn paper edges. Do NOT reproduce reference composition, do NOT include a camera as main subject, no people or repeated portrait panels. No text, letters, numbers, logos, arrows, controls, borders or mockup. Deliver the illustration alone.
+
+
+## V3.0 剧本与电影接入
+
+剧本与电影增加 ART-A01/A02/E01/E02/E03 五项，见 h3ui/creation/resources/美术配套/art-manifest.json；原四种风格参考不能改名复用。用户在单独美术授权问题后回复“你来解决”，已用内置image_gen制作五张原创插画，入口各轻化迭代一次。PNG母稿在docs/art-masters/creation-v3，WebP按manifest生产路径落盘；全部1536×1024，装饰alt为空。原公共卡片/空态框架复用，8项宽窄加载/缺图回退检查及截图核对通过。实际提示词、方法和hash在美术配套，证据见docs/evidence/creation-v3/art/README.md。此次授权不扩展到项目生成或其他模型测试。

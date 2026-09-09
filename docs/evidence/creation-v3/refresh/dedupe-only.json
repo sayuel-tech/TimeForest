@@ -1,0 +1,12 @@
+[
+  {
+    "mode": "authoring",
+    "passed": false,
+    "error": "Error: changed snapshot collapsed disclosure\n    at assert (http://127.0.0.1:64323/refresh-fixture?pid=b49bb054-e5fd-48fc-9e9f-89472fbbffac:5:48)\n    at http://127.0.0.1:64323/refresh-fixture?pid=b49bb054-e5fd-48fc-9e9f-89472fbbffac:12:85"
+  },
+  {
+    "mode": "movie",
+    "passed": false,
+    "error": "Error: changed snapshot collapsed disclosure\n    at assert (http://127.0.0.1:64323/refresh-fixture?pid=612fd5a9-77a4-4036-8be1-a6dad1e2f67a:5:48)\n    at http://127.0.0.1:64323/refresh-fixture?pid=612fd5a9-77a4-4036-8be1-a6dad1e2f67a:12:85"
+  }
+]

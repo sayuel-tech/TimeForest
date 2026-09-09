@@ -65,3 +65,12 @@
 ## 视频序列接入实例
 
 已接入video_assembly，kind=assembly，由bootstrap分派独立序列控制器。此任务的原片/续写结构与故事分镜不同，因此复用公共呈现、API边界和watchProject，而不是强行投影到ProjectSession的segments。后端输入、保存、编译、运行、入库与恢复均有对应适配，目录与health显式返回assembly_contract_version=1；旧后台不展示入口。最初计划和现行差异见[视频拼接说明](../video-assembly.md)。
+
+
+## V3.0 剧本与电影接入
+
+V3新模式登记在 experience-contract.json 的 modes，不能套既有五模式 baseline。creation业务页使用原项目 session，旧后台能力未就绪不展示入口；新业务 mutation 与原视频 mutation 路由隔离。增加 profile 需实际编译、输入合同和固定来源校验，不用名字推断能力。两模式 visual 已在五张成品接入及宽窄页面核对后转为 checked；以后美术 pending 仍必须阻止准入。
+
+## 写作任务准入
+
+新写作页面先说明当前对象、上游依据、输出写入范围和确认对象，接入现有conversation草稿与候选机制。参考[剧本纠偏实现](creation-experience-implementation.md)：检验切换/重开不串稿、继续修改使用选定输出、局部确认不确认其他对象；右栏或绑定卡片显示的资产必须与后端有效解析和实际输入一致。需要不同业务布局可配置工作区，不能以“公共组件一致”为由强制三栏，也不能另复制保存/错误/参数生命周期。

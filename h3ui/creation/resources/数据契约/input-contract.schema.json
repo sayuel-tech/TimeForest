@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "input_contract_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "revision": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "profile_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "profile_revision": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "prompt_mode": {
+      "type": "string",
+      "enum": [
+        "full",
+        "structured"
+      ]
+    },
+    "slots": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "slot_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "reference_key": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "media_kind": {
+            "type": "string",
+            "enum": [
+              "image",
+              "video",
+              "audio",
+              "control"
+            ]
+          },
+          "purpose": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "application": {
+            "type": "string",
+            "enum": [
+              "engine_input",
+              "prompt_only",
+              "unsupported"
+            ]
+          },
+          "source": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "fixed_asset"
+                  },
+                  "media": {
+                    "type": "object",
+                    "properties": {
+                      "media_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "pattern": "\\S"
+                      },
+                      "version": {
+                        "type": "string",
+                        "minLength": 1,
+                        "pattern": "\\S"
+                      },
+                      "content_hash": {
+                        "type": "string",
+                        "pattern": "^[0-9a-f]{64}$"
+                      }
+                    },
+                    "required": [
+                      "media_id",
+                      "version",
+                      "content_hash"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "kind",
+                  "media"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "future_upstream"
+                  },
+                  "upstream_segment_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "\\S"
+                  },
+                  "expected_end_state": {
+                    "type": "string"
+                  },
+                  "accepted_context_kind": {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "\\S"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "upstream_segment_id",
+                  "expected_end_state",
+                  "accepted_context_kind"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "adapter_slot_key": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "ordinal_label": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "slot_id",
+          "reference_key",
+          "media_kind",
+          "purpose",
+          "application",
+          "source",
+          "adapter_slot_key",
+          "ordinal_label"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "input_contract_id",
+    "revision",
+    "profile_id",
+    "profile_revision",
+    "prompt_mode",
+    "slots"
+  ],
+  "additionalProperties": false
+}

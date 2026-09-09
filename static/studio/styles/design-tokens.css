@@ -1,0 +1,12 @@
+/* Product UI scale. Editorial home artwork/hero and media geometry are exceptions. */
+:root {
+  --text-body:15px; --text-control:14px; --text-meta:13px;
+  --text-reading:17px; --text-summary:16px; --leading-reading:1.8; --reading-width:920px;
+  --title-page:32px; --title-dialog:24px; --title-section:20px; --title-card:18px;
+  --control-height:44px; --control-compact:36px; --control-radius:10px;
+  --panel-padding:20px; --dialog-padding:24px; --layout-gap:20px;
+  --page-gutter:28px; --nav-width:200px;
+}
+@media(max-width:760px) {
+  :root { --title-page:28px; --title-dialog:22px; --dialog-padding:20px; --page-gutter:20px; --layout-gap:16px; }
+}

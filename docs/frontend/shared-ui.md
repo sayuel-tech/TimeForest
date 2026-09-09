@@ -1,5 +1,11 @@
 # 公共界面组件与模式适配
 
+业务子区域需要保存滚动位置时，在公共`workspaceViewState`中通过`data-view-scroll`声明，并使用稳定id；不再为每个模式加私有恢复函数。命名资产卡片以需求ref作为data-view-key，重排不会交换展开状态。
+
+剧本第二/四/五页共用 `features/authoring-assist` 的上沟通下输出：conversation负责对象作用域，output-editor负责保留身份的输出编辑，index负责请求/确认；binding-cards负责命名需求及局部来源展示，后端bindings.py负责真实写作/电影输入解析。第三页采用专属上资产下剧本布局，仍复用工作区与资产选择/上传组件。新增任务不可共享一个跨对象textarea或复制候选保存代码。具体边界见[本轮交付](creation-experience-implementation.md)。
+
+剧本补图入口使用`chooseAction`的保存/不保存确认与原`save`，不另外复制指令编辑器；`features/authoring-assist/image-handoffs.js`只负责创建关联与跳转，`styles/creation.css`的补图分组负责侧栏内链接/回填按钮的纵向间距。图片制作继续由原图片模式处理。保存/创建失败保留草稿，成功后解除离开提示，不能在确认前清理dirty状态。
+
 本地6.3.13按[优化方案](../product/shared-ui-optimization-plan.md)接入。共同样式修改从以下入口进行，各模式保留自己的草稿、参数定义和执行逻辑。
 
 | 共同呈现 | 唯一入口（相对static/studio） | 调用方与边界 |
@@ -86,3 +92,37 @@ ui/reference-metadata.js提供referencePurposes、referenceMetadata及chooseRefe
 公共工具栏和展开编辑外壳为ui/prompt-editor.js，业务协调在features/prompt-library/tools.js；后者使用同目录browser/editor适配库页面与选择器。ui层不倒依赖feature；adapters按当前目标及允许字段应用patch。三个工作区控制器和原视频编辑器绑定同一个入口，不另写模式按钮/CSS。取消不写草稿，应用不保存，收藏不生成；保存成功由后端统一收录。错误复用error-feedback，补记失败与项目保存状态分开。
 
 模板编辑与分类编辑离开时经共同确认，scopedModal的onScopedClose只在当前关闭时收尾，避免旧close事件关闭刚打开的选择器。结果与资产来源的生成文字共用features/prompt-library/records.js，固定版本与project跳转复用原来源组件。具体使用、边界、代码及五模式必要检查见[提示词库](../prompt-library.md)。新功能按准入声明promptEditing/promptCollection/promptRecords，不能复制私有模板。
+
+
+## V3.0 剧本与电影接入
+
+authoring/movie 继续使用公共页头、步骤、三栏、底栏、参数、候选、计时、错误、播放器及离开保护。features/authoring-assist 适配 LLM 合同和素材绑定；features/shot-segment-tree 只负责稳定身份树、来源返回上下文和剪辑预览。电影横轴/裁切属于模式业务。workflow-settings 只新增可选范围说明，沿用原目录和完整弹窗生命周期。return-context 接受原 UUID 与 32 位目标 ID，拒绝外链；查看不改变采用。窄屏沿用整页滚动，不建立私有固定底栏。证据见 [V3检查](../evidence/creation-v3/README.md)。
+
+
+V3美术补齐：ui/empty-state.js 复用原 .empty 呈现，模式仅提供图/文案/动作；bindDecorativeArt 共用于原首页与新空态，缺图仅隐藏装饰，不移除正文和操作。公共图片 height:auto 保持声明比例，不设模式私有尺寸或皮肤。
+
+
+后台同步视图保护：ui/workspace-view-state.js由剧本/电影共用，render前捕获、子组件挂载完成后恢复。按项目/页/对象隔离；同时记住open与closed，列表项提供稳定data-view-key，不能按总列表下标错配。保存滚动/summary焦点和相同媒体元素，dispose清理。无变化快照必须跳过重绘；输入/弹窗/播放保护继续由async-state控制。相关复现见docs/evidence/creation-v3/refresh。
+
+
+## 全站刷新与库页共同层（2026-09-09）
+[本轮规范与覆盖矩阵](refresh-and-libraries.md)替代前文“仅authoring/movie接入”和不改轮询行为的历史描述。core/snapshot-update负责变化判定，contracts/project-refresh声明允许局部合入的执行事实；七模式完整视图保护统一workspace-view-state，status-region只操作状态片段与有稳定身份的任务列表，不代替编辑器绑定。creation-job-status复用共同计时，不能自行另写计时卡。
+
+ui/library-navigation拥有分组/父子/选中与语义属性，styles/collection-navigation拥有两库公共页头、导航及响应式；styles/library与prompt-library只处理资产卡片和文本列表的业务差异。原workbench中的库页头、导航字体覆盖已移除。新增功能按26项公共入口声明复用或不适用；范围、检查与局限见上述规范。
+
+
+## 全站尺寸与布局收敛（2026-09-09）
+
+执行[视觉规范](visual-design-standard.md)。公共标尺由design-tokens.css提供，base/components/shell/workbench/production-settings/collection-navigation按角色使用。清理旧大标题和窄屏覆盖；提示词浏览器明确搜索与筛选行、路径动作、空态详情及分页，并按容器宽度降栏。共同组件生命周期和草稿语义保持；新模式须声明designScale，普通页面亦须核对宽窄及实际截图。
+
+
+## 当前设计判断改为任务与阅读优先
+
+用户已退回V1阅读体验，以上尺寸收敛仅代表既有实现。当前按[规范V2](visual-design-standard-v2.md)及[任务卡](page-purpose-design.md)推进：先确定主信息与操作，再选择查找、阅读、预览/比较、编排或配置框架。公共组件需要支持这些视图与状态恢复，不能所有页面固定三栏。现有异步/保存生命周期保持；本轮尚未改UI。
+
+
+## 任务与阅读框架的实际归属（V2）
+
+`styles/task-layouts.css`组合公共读写、媒体、参数和主/辅区域，`design-tokens.css`定义reading/summary/leading/width角色。`workbench`依据有无插槽分配列，统一属性开关且不重建草稿。`ui/prompt-editor.js`提供`readingDisclosure`（摘要与原文）、`openReading`（只读）、`expandPrompt`（返回草稿）；用途不同不能互换保存语义。提示词浏览器使用list/read两视图，切换保留列表DOM与返回状态；资产资料展开仍触发原gather持久本机草稿。
+
+所有调用方与有限验证见[交付](readability-implementation.md)。共享机制、基础容器、任务组合、模式数据适配分层维护；修改公共呈现核对其调用方，不再在模式私有样式复制同类阅读字号。

@@ -1,3 +1,5 @@
+import {workspaceViewState} from '../ui/workspace-view-state.js';
+import {updateStatusRegion} from '../ui/status-region.js';
 import {addRecordButton,recordSource} from '../features/prompt-library/records.js';
 import {promptCollectionNotice} from '../features/prompt-library/collection.js';
 import {bindImagePrompts} from '../features/prompt-library/adapters.js';
@@ -26,6 +28,7 @@ const presetNames={single:['修改服装','更换背景'],dual:['整体人物替
 
 export function mountWorkspace(root,project,catalog){
   const session=new ImageSession(project);let canvas=null,page=sessionStorage.getItem('image-page:'+project.id)||'edit',geom=null,geomSource=null,serial=0,timer=null,selection=null,submitKey=null;
+  const viewState=workspaceViewState(root);
   const view={root,inspectorTab:'assets',inspectorHidden:false,tasksOpen:false,saveTarget:'new',assetName:'',feedback:'',error:false};
   const sourceLocation=sourceTarget(project);
   let viewingTask=sourceLocation?.state==='found'?sourceLocation.task:null;
@@ -116,13 +119,14 @@ export function mountWorkspace(root,project,catalog){
   }
   function render(){
     if(session.disposed)return;
+    const restoreView=viewState.beforeRender(JSON.stringify([session.project.id,page,task()?.id,selection]));
     sessionStorage.setItem('image-page:'+project.id,page);canvas?.dispose();canvas=null;
     const t=task();selection=chosenOutput(session.project,t,selection)?.id;
     root.className='page project-page image-workspace';root.innerHTML=renderImageWorkspace(context());showSourceNavigation(root,sourceLocation);
     root.querySelector('.desk-rail')?.setAttribute('aria-label','编辑任务');
     root.querySelector('.desk-inspector')?.setAttribute('aria-label','图片属性');
     root.querySelector('.property-tabs')?.setAttribute('aria-label','图片属性');
-    if(!t){root.querySelector('#image-new').onclick=()=>void action(async()=>{newTask('single');render();});refreshChrome();return;}
+    if(!t){root.querySelector('#image-new').onclick=()=>void action(async()=>{newTask('single');render();});refreshChrome();restoreView();return;}
     bind();bindImagePrompts({root,session,task:t,changed:mark,render});
     promptCollectionNotice(root,session);
     if(selection)addRecordButton(root.querySelector('#image-reroll')||root.querySelector('#image-quick-ingest'),{path:'/records/'+project.id+'?output='+encodeURIComponent(selection),signal:session.controller.signal,apply:row=>{if(session.disposed||task()!==t||busy())throw new Error('目标已变化或正在操作，请重新打开');t.prompt=row.content.text;recordSource(t,"prompt",row);mark();page='edit';render();}});bindWorkspaceSteps(root);bindWorkbench(view);
@@ -131,7 +135,7 @@ export function mountWorkspace(root,project,catalog){
       canvas=new ImageCanvas(root.querySelector('.image-viewport'),{image:input(t.A).url,mask:input(t.mask)?.url,mode:t.submode,settings:t.settings,geometry:geom,onChange:mark,onPad:(edge,value)=>{t.settings[edge]=value;mark();const field=root.querySelector(`[data-setting="${edge}"]`);if(field)field.value=value;void geometry();}});
       canvas.tool=t.submode==='region'?'brush':t.submode==='outpaint'?'expand':'pan';void geometry();
     }
-    refreshChrome();
+    refreshChrome();restoreView();
   }
   function bind(){
     const bindAction=(selector,fn)=>root.querySelector(selector)?.addEventListener('click',()=>void action(fn));
@@ -235,7 +239,7 @@ export function mountWorkspace(root,project,catalog){
     if(session.disposed)return;
     if(changed){render();return;}
     const box=root.querySelector('#image-run-state');
-    if(box&&task()){box.innerHTML=imageRunStatus(session.project,task());bindRunButtons();}
+    if(box&&task()){updateStatusRegion(box,imageRunStatus(session.project,task()));bindRunButtons();}
     refreshChrome();
   };
   const resize=()=>fitWorkbench(root);window.addEventListener('resize',resize);
@@ -244,5 +248,5 @@ export function mountWorkspace(root,project,catalog){
   const stopClocks=ui.watchClocks(root);
   const incoming=new URLSearchParams(location.hash.split('?')[1]||'');
   if(incoming.get('asset'))void action(async()=>{const item=await libraryApi('/assets/'+encodeURIComponent(incoming.get('asset'))+'?version='+encodeURIComponent(incoming.get('version')||''));await attachLibrary(item,'A',incoming.get('media'));await save();render();history.replaceState(null,'','#/p/'+project.id);});
-  return {session,saveBeforeLeave:async()=>{await save();return !session.dirty;},dispose(){stopPoll();clearTimeout(timer);stopClocks();serial++;canvas?.dispose();window.removeEventListener('resize',resize);session.dispose();}};
+  return {session,saveBeforeLeave:async()=>{await save();return !session.dirty;},dispose(){viewState.dispose();stopPoll();clearTimeout(timer);stopClocks();serial++;canvas?.dispose();window.removeEventListener('resize',resize);session.dispose();}};
 }

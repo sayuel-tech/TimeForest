@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "visual-reference",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "scope_target_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "purpose": {
+      "type": "string",
+      "enum": [
+        "start",
+        "end",
+        "composition",
+        "key_state",
+        "atmosphere",
+        "subject_motion",
+        "camera_motion"
+      ]
+    },
+    "asset_ref": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "asset_version": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "intent_text": {
+      "type": "string",
+      "minLength": 0
+    },
+    "control_data_artifact_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "active": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "id",
+    "scope_target_id",
+    "purpose",
+    "asset_ref",
+    "asset_version",
+    "intent_text",
+    "control_data_artifact_id",
+    "active"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,12 @@
+[
+  {
+    "mode": "authoring",
+    "passed": false,
+    "error": "Error: poll collapsed disclosure\n    at assert (http://127.0.0.1:49449/refresh-fixture?pid=6ff3c300-c5f2-4d59-982e-385b0c758d02:5:48)\n    at http://127.0.0.1:49449/refresh-fixture?pid=6ff3c300-c5f2-4d59-982e-385b0c758d02:11:19"
+  },
+  {
+    "mode": "movie",
+    "passed": false,
+    "error": "Error: poll collapsed disclosure\n    at assert (http://127.0.0.1:49449/refresh-fixture?pid=916b3930-72cf-4587-a2ca-8797f70acdb3:5:48)\n    at http://127.0.0.1:49449/refresh-fixture?pid=916b3930-72cf-4587-a2ca-8797f70acdb3:11:19"
+  }
+]

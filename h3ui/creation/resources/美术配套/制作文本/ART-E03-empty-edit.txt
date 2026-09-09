@@ -1,0 +1,15 @@
+资产：ART-E03
+用途：剪辑页尚无已采用内容
+状态：制作规格，非已完成图片；本文件本身不授权任何模型调用。
+原站参考：static/assets/modes/mode-r2v.webp 和 mode-t2v.webp；必须先查看实际图片，只取风格，不复制其布局。
+
+Production brief:
+Create one independent editorial illustration belonging to the existing TimeForest website. Use the real site images as stylistic references: a pale warm paper ground, restrained gray-green and blue-gray pigments, delicate dark drawing details, soft irregular watercolor transitions and generous quiet negative space. Match the reference image's level of finish and visual weight rather than inventing another brand.
+
+Subject:
+Two short loose film studies waiting to be arranged on ivory paper, with a tiny connecting paper tab and a restrained fern detail. Minimal visual density and generous blank perimeter. Suggest assembling selected scenes, not a professional timeline screenshot or the long flowing film-and-river continuation composition.
+
+Composition and delivery:
+A landscape 3:2 composition with the main motif safely inside the central area. Remain readable at a compact module-card or empty-state size. No lettering, numbers, labels, logos, watermark, interface controls, or decorative frame around the entire canvas. Avoid neon, saturated flat icon style and glossy dashboard visuals. Supply a source/master asset and a local web-ready WebP rendition, preserve proportions, and record the creation method. Do not crop a previously approved mode's distinct illustration to masquerade as a new one.
+
+验收：与现有卡片/空态并排，检查纸底、轮廓、留白、縮小识别和主体比重。文字由网站渲染，装饰图alt为空。模型方式需要单独明确制作指令。

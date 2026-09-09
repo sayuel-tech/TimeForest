@@ -1,0 +1,829 @@
+{
+  "package_version": "3.0",
+  "date": "2026-09-09",
+  "source_package_sha256": "ddb708f591cc2c9eb2baeb9dfc65b0d6109a232713cc5d8226a500d57f575658",
+  "source_code_commit": "6a8de5bcd49d8550cf98b746e7c23a499926372a",
+  "excluded_from_self_hash": [
+    "离线检查/execution-scope.report.json",
+    "离线检查/package-check.report.json",
+    "配套清单/package-manifest.json"
+  ],
+  "scope": "execution_plan_not_implemented_website",
+  "files": [
+    {
+      "path": "00-CODEX执行入口.md",
+      "size": 3605,
+      "sha256": "acd62e22d85048721dc97b662bc5d0af6f00c53c706d32296a62df0e84032887"
+    },
+    {
+      "path": "01-升级范围与完成标准.md",
+      "size": 4461,
+      "sha256": "cbe2101e906c3214b1e542cc41ee2522093432fd7943993c0ff79be13cd82afd"
+    },
+    {
+      "path": "02-公共组件与专属实现.md",
+      "size": 6175,
+      "sha256": "0bcd9ef2895dddda066fc8501e0badb5929e66501932991f570080f4a19b127a"
+    },
+    {
+      "path": "03-统一UX_UI与视觉验收.md",
+      "size": 4677,
+      "sha256": "2d31318fdeb5ac3d776892663bbfc333eb705efd23a812334569bb0ed90bb1da"
+    },
+    {
+      "path": "04-DeepSeek与本地预留.md",
+      "size": 5385,
+      "sha256": "10d03b4c29753d4edbe863f5907557053753a8028722e7533dc16550b1e5e95f"
+    },
+    {
+      "path": "05-数据_API与集成落实.md",
+      "size": 5050,
+      "sha256": "30202f201e5d7891c55672dd9f0ab81d1be7462f22604ec9cf19a848efb9b79a"
+    },
+    {
+      "path": "06-逐阶段实施与验收.md",
+      "size": 6445,
+      "sha256": "f0bde291cc1b4bd20f05caf2030a9ffff708c95aa886521896de421fde223fd5"
+    },
+    {
+      "path": "07-禁止生成测试与安全边界.md",
+      "size": 3519,
+      "sha256": "0c6e523ae3b5aeabc01285d2bfe65063c384198836bc7aedc49ddf4f44c9ef40"
+    },
+    {
+      "path": "08-美术资产交付规范.md",
+      "size": 4753,
+      "sha256": "48d83694f6b7b875ff34bf845f66c85e16b382e9650b09fcfc65ac56472842bd"
+    },
+    {
+      "path": "09-交付报告与持续恢复.md",
+      "size": 3160,
+      "sha256": "3a4b28ba4d990f0d4cc90f1048434642177002515fb7d90c4a6397eab471f8f4"
+    },
+    {
+      "path": "10-本轮变更与资料依据.md",
+      "size": 5752,
+      "sha256": "b64ac5765229112e71548618b9245073598d6dbb893385c384951a20110abec7"
+    },
+    {
+      "path": "11-发给Codex的启动指令.txt",
+      "size": 2264,
+      "sha256": "1571172a092f9765bac961734fd257cd9f0330aa07874ae3375680989bf48fdd"
+    },
+    {
+      "path": "API契约/job-states.json",
+      "size": 1975,
+      "sha256": "a0da866f4485b2f6b74f8e06e6d5d0c08737be1ebf3de080403a0350cf20e36d"
+    },
+    {
+      "path": "API契约/openapi.json",
+      "size": 445983,
+      "sha256": "31e62232fc0056382d920f7de03013d0c7c6db5a8dc3fbb1105edfa833b0f582"
+    },
+    {
+      "path": "API契约/operations.json",
+      "size": 11989,
+      "sha256": "9b66fcf4ebfbc5b66b09ef1ffdc0438c6cc14f5fed9d1b277060bdc251cf26c9"
+    },
+    {
+      "path": "LLM内部模板草案/00-模板目录与使用边界.md",
+      "size": 3613,
+      "sha256": "25b503336398658b219fc072cf1820866733c639c25aa89ced99cae26423f26a"
+    },
+    {
+      "path": "LLM内部模板草案/01-公共通讯约定.md",
+      "size": 3332,
+      "sha256": "ec5e36e5c7688c8f5ccf07ba6ccce439a6871c586382e0df988b29e153da2bfb"
+    },
+    {
+      "path": "LLM内部模板草案/02-完整剧本.md",
+      "size": 3047,
+      "sha256": "b9590d5a11ded71c7c672d73969d621c15abce883103669aa72cef034da160d2"
+    },
+    {
+      "path": "LLM内部模板草案/03-资产分析.md",
+      "size": 2362,
+      "sha256": "5f080f7fd4248a82645d7f31ece3f6a0a2707e88686a8830a48644b013492625"
+    },
+    {
+      "path": "LLM内部模板草案/04-资产完整版.md",
+      "size": 2314,
+      "sha256": "232db89316c7e12284c1c5a0f34e5504b536db689384c12ec71e16139e7d5635"
+    },
+    {
+      "path": "LLM内部模板草案/05-分镜创作.md",
+      "size": 2106,
+      "sha256": "1777a7fd6bbad827684e3712f10e1fa0fbde50146b3575959c53fedd2629762b"
+    },
+    {
+      "path": "LLM内部模板草案/06-生成片段.md",
+      "size": 2353,
+      "sha256": "8c80904b0f555dffb69c5d05acd90f14c7fe2405dc2e7bdb35dae9b31c1a7edf"
+    },
+    {
+      "path": "LLM内部模板草案/07-H3正式Prompt.md",
+      "size": 4368,
+      "sha256": "34b93f77fe15ab53a8a1fa747447f5a159e746aa86eba516ee122ad4bf8920ff"
+    },
+    {
+      "path": "LLM内部模板草案/08-局部改写.md",
+      "size": 1959,
+      "sha256": "4b067d3cd3961f46d16506beaae89e8f366c4efd3e14d265d77f654ac55b6e74"
+    },
+    {
+      "path": "LLM内部模板草案/09-修改影响分析.md",
+      "size": 2083,
+      "sha256": "f4c579908e2ca16eb96ed85ff45a687393a18fa2a25b00040b8bc903b79c2972"
+    },
+    {
+      "path": "LLM内部模板草案/10-图片观察.md",
+      "size": 2097,
+      "sha256": "806b8108b7913eadd8efc8dbd15e66709c6aefe3d820c441c3efd68488ea94ed"
+    },
+    {
+      "path": "LLM内部模板草案/11-参考画面创作.md",
+      "size": 2238,
+      "sha256": "cf4d5ec29f9edadff0969b8823f74298404a3bbcecd954a917348471e8b0e2cb"
+    },
+    {
+      "path": "LLM内部模板草案/12-上下文摘要与格式修复.md",
+      "size": 3039,
+      "sha256": "cd8d941d9a7b899f98599c29343c3ad8c942f3bfa9af1fccd00fdb7e1b4f94e6"
+    },
+    {
+      "path": "LLM内部模板草案/13-返回样稿与界面对应.md",
+      "size": 5401,
+      "sha256": "98cdfe290051d78f12f7b4f4f5def9b89b8757e55153749a984255837070e022"
+    },
+    {
+      "path": "执行配套/component-ownership.json",
+      "size": 5983,
+      "sha256": "31def95cf416f3b747e64c54351025ebc63cd3d28542a723d5b406cb58687c08"
+    },
+    {
+      "path": "执行配套/operation-map.json",
+      "size": 18533,
+      "sha256": "09017d07138f27bc154ff0aa5345e734eea9c888a4483494cca212554f7e149a"
+    },
+    {
+      "path": "执行配套/stages.json",
+      "size": 1572,
+      "sha256": "9a6b0cedfd4d7c756f00fef4633ca3d7aec33a005c4eb8a14dbb98a0c8f66338"
+    },
+    {
+      "path": "执行配套/ux-scenarios.json",
+      "size": 3120,
+      "sha256": "22cee5aee282e6b4cb55f969cea1a3a63ec4b863c5cd0c672d403af2b0d6a234"
+    },
+    {
+      "path": "执行配套/visual-tokens.reference.json",
+      "size": 792,
+      "sha256": "2109173f6441afa244b8dd86901dfc05c3dffe0beb4f34d976e15513da24f011"
+    },
+    {
+      "path": "执行配套/交付记录模板.md",
+      "size": 1170,
+      "sha256": "8cd81179b62a03e9155ff139e82a2e9ce234c6c525cd50cd4ed16fa31a7a212a"
+    },
+    {
+      "path": "执行配套/阶段阅读路由.md",
+      "size": 2140,
+      "sha256": "8c3ee2b462a343418719bfd776cbc0a7e5d44843c872baf9f72323c8dc31dc9c"
+    },
+    {
+      "path": "数据契约/api-error.schema.json",
+      "size": 1376,
+      "sha256": "bd76a948ad63097e1e60f2b4a3f5b897c87782ec62d813879bbbad63615a0641"
+    },
+    {
+      "path": "数据契约/api-requests.schema.json",
+      "size": 111236,
+      "sha256": "cb23ad3d1923c3af0f282183888d6843215a0a4108596e100d1e3ae2ce0c68be"
+    },
+    {
+      "path": "数据契约/api-responses.schema.json",
+      "size": 246201,
+      "sha256": "fe639f0947c1462f703ab37ddc61700b3db563c792bcb2e6e0ef9b6405a660b1"
+    },
+    {
+      "path": "数据契约/authoring-content.schema.json",
+      "size": 32116,
+      "sha256": "7a00690fc04d729e48bbe5e33fe9499f34eee51404cbb4643d84c74335739fb7"
+    },
+    {
+      "path": "数据契约/export-manifest.schema.json",
+      "size": 3756,
+      "sha256": "8af0babc64edad5708a75400975415c40a56e049406827d0e0ade2241a9c8dd1"
+    },
+    {
+      "path": "数据契约/generation-snapshot.schema.json",
+      "size": 4717,
+      "sha256": "578c00af0bcedd2ed9e7c6e94f6d4957d63b31bb8a686a2c9f653203edfcf53f"
+    },
+    {
+      "path": "数据契约/image-handoff.schema.json",
+      "size": 5136,
+      "sha256": "2c8d262b7e4eb8b9b9a065cee47f27fcaffb1e47c81167f2eb19f8f74bfadb37"
+    },
+    {
+      "path": "数据契约/input-contract.schema.json",
+      "size": 4713,
+      "sha256": "3cb39c2af25e1692f640ca5a35a02aa4bed34f8d33b50d727e4423a07cb820eb"
+    },
+    {
+      "path": "数据契约/job-event.schema.json",
+      "size": 1469,
+      "sha256": "438668ce0a1962f93b0ca8611293b102bb8a369d3ccbc4f19a158b82dd128b58"
+    },
+    {
+      "path": "数据契约/job.schema.json",
+      "size": 2636,
+      "sha256": "445310fa4e5edcfc7347fb0b5e10a9453d9f7b88cf0fce831261002f58b12a73"
+    },
+    {
+      "path": "数据契约/llm/asset_analysis.schema.json",
+      "size": 8332,
+      "sha256": "674eb39ac160259e191142c8be4e2d139330a1006d4f00d65325e9cab1c1071d"
+    },
+    {
+      "path": "数据契约/llm/asset_screenplay.schema.json",
+      "size": 5876,
+      "sha256": "c235ae756b591cad23aaabc5d77dc4951553748a735f916fe6fae44beaa17646"
+    },
+    {
+      "path": "数据契约/llm/change_impact.schema.json",
+      "size": 6670,
+      "sha256": "c40ae4915bd2619ee1126b2816c3a04fd4e07d185288b27f57502749d53d3ebf"
+    },
+    {
+      "path": "数据契约/llm/context_summary.schema.json",
+      "size": 4396,
+      "sha256": "f1fa971071b08ad5aa7d155d8f001492986d7feed1f7887a8aea7ef41053983c"
+    },
+    {
+      "path": "数据契约/llm/h3_prompt.full.schema.json",
+      "size": 4417,
+      "sha256": "02367574b5ff942e56355fe0efa44365e062a870d1f1fafcd5dadadd105134fd"
+    },
+    {
+      "path": "数据契约/llm/h3_prompt.structured.schema.json",
+      "size": 6695,
+      "sha256": "b2c24f7af523480f80f8054f441e68be51355180bba414e1142cfe42f1420654"
+    },
+    {
+      "path": "数据契约/llm/image_observation.schema.json",
+      "size": 5952,
+      "sha256": "235b7b76fa2a338c0c00e884ebfe2ddc494b20d4ec6c9f247d401155dc14a4fd"
+    },
+    {
+      "path": "数据契约/llm/local_rewrite.schema.json",
+      "size": 3774,
+      "sha256": "a9d870c2fe55a3e4d0085559a1f55309f2f3127895d5b0167edf48cf8738e3b1"
+    },
+    {
+      "path": "数据契约/llm/reference_image.schema.json",
+      "size": 5054,
+      "sha256": "8c1532537a7457c500c437a988eeaf2fbfd58c58de67c0d4340d7a8cd617f859"
+    },
+    {
+      "path": "数据契约/llm/screenplay_draft.schema.json",
+      "size": 6192,
+      "sha256": "3312dd0f202a3adab9514d32d6b0426f65a794fcc7c9aad0c334236efd773308"
+    },
+    {
+      "path": "数据契约/llm/segment_plan.schema.json",
+      "size": 8866,
+      "sha256": "4226b3fcdeeac762491b45d0703cb4fe6c4fa94aa4b2f8918fc7d01c4e1a7593"
+    },
+    {
+      "path": "数据契约/llm/storyboard.schema.json",
+      "size": 6824,
+      "sha256": "c73d296b9ca01fe3625e14f029b1cf06728df32a9df239afb5bf46af66ca3847"
+    },
+    {
+      "path": "数据契约/llm-request-context.schema.json",
+      "size": 5534,
+      "sha256": "2500ffcf6755228278023809e93ece39dc9dbba00408cc8d28e01c99e57fef08"
+    },
+    {
+      "path": "数据契约/movie-content.schema.json",
+      "size": 10778,
+      "sha256": "52e9ea9c8a6fd59532d7e93f075cb24a8d0f0a364dda49ca883795435b09a8ee"
+    },
+    {
+      "path": "数据契约/movie-edit.schema.json",
+      "size": 3513,
+      "sha256": "5c0e7474c3860f6a714fff157a35677a9d8476d78151cceb032eb54645e0bee6"
+    },
+    {
+      "path": "数据契约/provider-config.schema.json",
+      "size": 2112,
+      "sha256": "c68ec4021af9cbd1db8c39b6056c57ff5418ba43f4ae596f34d4124cb6ece190"
+    },
+    {
+      "path": "数据契约/response-artifact.schema.json",
+      "size": 1419,
+      "sha256": "55d6489d6eebf103ec6a32d133b851bc6363126bc973a9d9c772107b331e7497"
+    },
+    {
+      "path": "数据契约/return-context.schema.json",
+      "size": 2283,
+      "sha256": "e9ceef0a8703af79c8aa0a2af2c216723ebedf9651e6360c46bc1d657710b8fa"
+    },
+    {
+      "path": "数据契约/source-bundle.schema.json",
+      "size": 2316,
+      "sha256": "370ec76af5992281b446471ce75a0dce1c463916ec0d834edb50b2c6586b0f95"
+    },
+    {
+      "path": "数据契约/source-view.schema.json",
+      "size": 16035,
+      "sha256": "9a13b31855ad4c375816d30192af5af8871b89bd43c9f1f85446fb678129647a"
+    },
+    {
+      "path": "数据契约/take.schema.json",
+      "size": 1953,
+      "sha256": "4dc08923d99a2bb2008945f23a030661e01a100cef224f7dcfc44f48e12a11e6"
+    },
+    {
+      "path": "数据契约/visual-reference.schema.json",
+      "size": 1483,
+      "sha256": "dc79020c268715325c3779ed2335d9782d8ad968512de32a4e40c83910b0fcd4"
+    },
+    {
+      "path": "离线样例/API交互.json",
+      "size": 8321,
+      "sha256": "535cd8e52c763b18ec31b64669f8735dea45a2d3fd0d82c7ffc5a2deb51b46f2"
+    },
+    {
+      "path": "离线样例/LLM/asset_analysis.needs_input.json",
+      "size": 458,
+      "sha256": "f96ca0a44213f81ca41e5e8a01982bcb56b76a577688cf50d0f21abef60a33b7"
+    },
+    {
+      "path": "离线样例/LLM/asset_analysis.ok.json",
+      "size": 479,
+      "sha256": "d3fdf1caf3aa35c83c6af48a74ce3c79d863393cc7dc35c55c028a64001680c2"
+    },
+    {
+      "path": "离线样例/LLM/asset_screenplay.needs_input.json",
+      "size": 460,
+      "sha256": "17f776c36e185291932621fb000aa42e1b804ba97325c9b0b36d99175e25f7e1"
+    },
+    {
+      "path": "离线样例/LLM/asset_screenplay.ok.json",
+      "size": 395,
+      "sha256": "72a289c3d42365a5f864200a232f143f80baa5c6bf659a677fc2f2e95efddfc0"
+    },
+    {
+      "path": "离线样例/LLM/change_impact.needs_input.json",
+      "size": 457,
+      "sha256": "1df2e897379f9a441b23289ee6879e6d9c78b8c9121897b909d943de6916a580"
+    },
+    {
+      "path": "离线样例/LLM/change_impact.ok.json",
+      "size": 462,
+      "sha256": "c9f740ee1712fd846af168b4cb1fa39a4d1837afa38457070aea2d3cc2aa6157"
+    },
+    {
+      "path": "离线样例/LLM/context_summary.needs_input.json",
+      "size": 459,
+      "sha256": "c77465cbe6c6e22ce66d383c067e06d6d771044e840f6fb2b5ada36426238b7c"
+    },
+    {
+      "path": "离线样例/LLM/context_summary.ok.json",
+      "size": 311,
+      "sha256": "d7cba2bfcbb88ab828aa5073606685c4f0fa49d998ad72e6e5446da74bb50c45"
+    },
+    {
+      "path": "离线样例/LLM/h3_prompt.full.needs_input.json",
+      "size": 453,
+      "sha256": "47de57e9fa0f662827825a99fecf7079de547912f6689f4300b6823f6cf49ed9"
+    },
+    {
+      "path": "离线样例/LLM/h3_prompt.full.ok.json",
+      "size": 371,
+      "sha256": "8794eb1f80cbc7a6af3547c47d3820c1f4b1a6f16f98a3749b7ddb4fe3d6ce23"
+    },
+    {
+      "path": "离线样例/LLM/h3_prompt.structured.needs_input.json",
+      "size": 453,
+      "sha256": "47de57e9fa0f662827825a99fecf7079de547912f6689f4300b6823f6cf49ed9"
+    },
+    {
+      "path": "离线样例/LLM/h3_prompt.structured.ok.json",
+      "size": 487,
+      "sha256": "3ed01402935e10af43a8074bdf8a865e3163f6144a0c2563ba081a291ac165de"
+    },
+    {
+      "path": "离线样例/LLM/image_observation.needs_input.json",
+      "size": 461,
+      "sha256": "8cca7b4b1efefb439f2829ae3d07d9abc1740a43643fa2c0616437664c1f61df"
+    },
+    {
+      "path": "离线样例/LLM/image_observation.ok.json",
+      "size": 404,
+      "sha256": "007e7b6f13cac22ae21a70c6aef31962bf0d0f3d6b8c386c79bdb8c0d9584620"
+    },
+    {
+      "path": "离线样例/LLM/local_rewrite.needs_input.json",
+      "size": 457,
+      "sha256": "d338e0f608faffa31956304925435c9363fb66037b8344bc7227b67bfe6fcbd5"
+    },
+    {
+      "path": "离线样例/LLM/local_rewrite.ok.json",
+      "size": 270,
+      "sha256": "0fabc323e26fba7d0f413b51ff86ffae6e59a62d1472ccf211c213f73ff05f77"
+    },
+    {
+      "path": "离线样例/LLM/reference_image.needs_input.json",
+      "size": 459,
+      "sha256": "586510f87f1fd398e376c3c68795ec4578817ce89a16d2166a12db31fb06fa83"
+    },
+    {
+      "path": "离线样例/LLM/reference_image.ok.json",
+      "size": 363,
+      "sha256": "8bdba3c10396405ce444a32872818ae09295aa02a9016c788874efd7221afaeb"
+    },
+    {
+      "path": "离线样例/LLM/screenplay_draft.needs_input.json",
+      "size": 460,
+      "sha256": "1bc0f57496f96bcd3fc4d84d1a99b779a56a21a835069642d025670c9ce0a495"
+    },
+    {
+      "path": "离线样例/LLM/screenplay_draft.ok.json",
+      "size": 440,
+      "sha256": "2d3530c869a726f4b9b4c530d88958565cd7a91ce8e7030ce7b84b8432e42fd2"
+    },
+    {
+      "path": "离线样例/LLM/segment_plan.needs_input.json",
+      "size": 456,
+      "sha256": "754561f62e8e026ab9522f92efcfac27b5db9cbb45f3da48db4dec01f207a432"
+    },
+    {
+      "path": "离线样例/LLM/segment_plan.ok.json",
+      "size": 832,
+      "sha256": "e7a80578958f6c5f7f8f7f53085a407c6162779f005fd5696dcea3309b027ec6"
+    },
+    {
+      "path": "离线样例/LLM/storyboard.needs_input.json",
+      "size": 454,
+      "sha256": "0bba9f2efde7d37bedf6624dcc833b9277c14d508eb307e0b5f32576cd7e27e5"
+    },
+    {
+      "path": "离线样例/LLM/storyboard.ok.json",
+      "size": 446,
+      "sha256": "3402e527d37d39bc6e6fd46b7518a785075fde99bc46f7b39bb3f25ca121ab68"
+    },
+    {
+      "path": "离线样例/business-cases.json",
+      "size": 2506,
+      "sha256": "5ec1d8003c84794c721785a7ef19b692f92495ef0eac1c4403f56525db3e1d8b"
+    },
+    {
+      "path": "离线样例/domain-responses.json",
+      "size": 1445,
+      "sha256": "a03016e39cc0e3651dde91074bd6d9b257a1db6ce73db69ceca00e623da7dc00"
+    },
+    {
+      "path": "离线样例/execution-scope-cases.json",
+      "size": 1189,
+      "sha256": "5d626f396f2f9312633b8d52be5bccb514746e31131a7734f43c76e53808262d"
+    },
+    {
+      "path": "离线样例/invalid-api-requests.json",
+      "size": 2029,
+      "sha256": "e8d512e8af432a7ff87d872c7bdc837907e419893be1c8b10689ce8d052cadd3"
+    },
+    {
+      "path": "离线样例/invalid-responses.json",
+      "size": 9347,
+      "sha256": "7d6ac591c9a415165da397518ae5d092da9f863a488f3be663dee71f627477c5"
+    },
+    {
+      "path": "离线样例/movie-edit.json",
+      "size": 1272,
+      "sha256": "a36e20f2266cf9dd32ae3213da81068d13e1d5764226d2f8def3a118c66d551d"
+    },
+    {
+      "path": "离线样例/provider-wire-examples.json",
+      "size": 1525,
+      "sha256": "60ec7e6403e9ff452a2cbca06c6c5bd16b6c204d8cd26127c81d2df3fefa12c8"
+    },
+    {
+      "path": "离线样例/request-context.json",
+      "size": 799,
+      "sha256": "9fce9de31ad9601d9b66ffca3f033762e36dba5302309d7dc8bfb9c17a01b283"
+    },
+    {
+      "path": "离线样例/return-context.json",
+      "size": 391,
+      "sha256": "6fcad894273d5807d0eeb6827ffad57400ce37caace4fc85bfd04f77a7198da5"
+    },
+    {
+      "path": "离线检查/README.md",
+      "size": 1183,
+      "sha256": "a7a701075785cf3196876c71eeb7163124419da76075f3619d73b58edcb8d9b1"
+    },
+    {
+      "path": "离线检查/check_execution_scope.py",
+      "size": 7586,
+      "sha256": "80c2fa4fc7c3eedbfd8ed5f238d934e6e68609afe0957c1490ac746a5c6c5b96"
+    },
+    {
+      "path": "离线检查/check_package.py",
+      "size": 11400,
+      "sha256": "86002d83388fb0e2896e15f68484c32391bd39a9772008a925332433fd4cce04"
+    },
+    {
+      "path": "离线检查/本轮检查记录.md",
+      "size": 1827,
+      "sha256": "43f05a08bda6143fec69b881f88c7683f7a0d96f932477a8072e76755c8b4df3"
+    },
+    {
+      "path": "美术配套/README.md",
+      "size": 410,
+      "sha256": "a47c1e03c36348bfbd85267a90a0435a3ff720179964f94895146715d53b8bb8"
+    },
+    {
+      "path": "美术配套/art-manifest.json",
+      "size": 2719,
+      "sha256": "23dc2f12cfcbce7d8c237436bb3d05d2024fe34da6be394f48e976d197e8f78c"
+    },
+    {
+      "path": "美术配套/制作文本/ART-A01-mode-authoring.txt",
+      "size": 1777,
+      "sha256": "e2cc3abefa1233816f0bbdf68d4b162dcafaf592b41634e148f66e40d240edc1"
+    },
+    {
+      "path": "美术配套/制作文本/ART-A02-mode-movie.txt",
+      "size": 1805,
+      "sha256": "0ffe73be8200a17204f8c6b0e24f147581a6ff20001ee2292442a9de356f528a"
+    },
+    {
+      "path": "美术配套/制作文本/ART-E01-empty-story.txt",
+      "size": 1726,
+      "sha256": "8f2b59b6fc22de41556f098dbeb981e38de7f9e3532827b5d817571580802636"
+    },
+    {
+      "path": "美术配套/制作文本/ART-E02-empty-takes.txt",
+      "size": 1767,
+      "sha256": "4697a663378073c7f1e14986d98b65963ba58a97817dc51a810b3ace0d67b669"
+    },
+    {
+      "path": "美术配套/制作文本/ART-E03-empty-edit.txt",
+      "size": 1809,
+      "sha256": "1d9340549c622a61b17981ff0a93a350f12abc2dd0a7e7fa0bb863f9fe136315"
+    },
+    {
+      "path": "设计基线/00-阅读导航与版本说明.md",
+      "size": 1327,
+      "sha256": "cc2039ecca0db36d9021e5d7379d2015c7bb749cde020fc7b735ece0cde731f8"
+    },
+    {
+      "path": "设计基线/01-TimeForest_可迭代设计主方案_V2.9.md",
+      "size": 20209,
+      "sha256": "4b3d9f6466a126dcd141860948a414a23e369ad55126c885fff9bd6411562b31"
+    },
+    {
+      "path": "设计基线/02-页面与交互设计.md",
+      "size": 14632,
+      "sha256": "565fa62a480acebd0715214620a4eab2b32f320a4a3abbb550ef5ebfb342af68"
+    },
+    {
+      "path": "设计基线/03-内容关系与状态流转.md",
+      "size": 13533,
+      "sha256": "5ae8731bd1758b6a885cf741c92495967384d44b428ef872dc3172c45ea77f8c"
+    },
+    {
+      "path": "设计基线/04-生成接续与剪辑拼接设计.md",
+      "size": 10820,
+      "sha256": "e6d5457a9c69911460dca6d8aee2c96479d4874d3e43cf2be53b6d55e2c75ffa"
+    },
+    {
+      "path": "设计基线/05-LLM接入与技术路线比较.md",
+      "size": 10157,
+      "sha256": "0e28ed0b3e9796f80edd4e6c937cbd77ef1ff16df63519ee6913776d9929b886"
+    },
+    {
+      "path": "设计基线/06-LLM内部通讯与结果呈现.md",
+      "size": 14232,
+      "sha256": "2d3950d933fabc52647de8202658260cb99f6ae638b60c1830b339309eeb353b"
+    },
+    {
+      "path": "设计基线/07-现有代码依据与复用边界.md",
+      "size": 7587,
+      "sha256": "cae7f2d2a93748b35d50741946679fde9ccb03e5d0e286eddbb28c1d7361757e"
+    },
+    {
+      "path": "设计基线/08-情境推演与设计评审.md",
+      "size": 10457,
+      "sha256": "97ef67bd9623f1e68e5db9191427a56c661912f1ee514b169d07baf96a3deebf"
+    },
+    {
+      "path": "设计基线/09-设计决定与待定事项.md",
+      "size": 8625,
+      "sha256": "e5775a8cd095439f93c9e3174476985f1f88068743c059bd52465fae66c125a8"
+    },
+    {
+      "path": "设计基线/10-资料来源与核验范围.md",
+      "size": 9579,
+      "sha256": "809375bba9982bce1ad9f0905365885ac18dbb74f877d874da5b31758dd8d651"
+    },
+    {
+      "path": "设计基线/11-V2.6修改明细.md",
+      "size": 4728,
+      "sha256": "c03d8de2788237ef63e45bc7885b709a3081eaf5b319a71319662b296388e3f4"
+    },
+    {
+      "path": "设计基线/12-V2.7评估与迭代取舍.md",
+      "size": 12071,
+      "sha256": "e408d2731548e189ca963b0c3d7d43370ac00e6793854ea0adb60740cf809674"
+    },
+    {
+      "path": "设计基线/13-V2.8横向时间轴与来源导航.md",
+      "size": 7329,
+      "sha256": "097fe30f1b97d96462d8b3e91a85b261ba0af3ce5a0557641cd3761c05fdf100"
+    },
+    {
+      "path": "设计基线/14-方案审查与开工判断.md",
+      "size": 6758,
+      "sha256": "967eb55cadb4e79ea03b6aa82c22db81b71ac6c278e945f541caf34ad81094d7"
+    },
+    {
+      "path": "设计基线/15-首版边界与可迭代实现基线.md",
+      "size": 5779,
+      "sha256": "39cb06f44b666532ab9e3999cffa5b44e699bcb738c2f3460f494684159e641a"
+    },
+    {
+      "path": "设计基线/16-网站API与前后端契约.md",
+      "size": 9532,
+      "sha256": "cd9edf9e3c52b49f5f9472583d9910b23c0a99b611064d55a935ead587a36238"
+    },
+    {
+      "path": "设计基线/17-数据状态同步与迁移补充.md",
+      "size": 8822,
+      "sha256": "3762790a0d8a102f269f7a97c8c3fae1b14958234da1efeb6d2c11cda73e5444"
+    },
+    {
+      "path": "设计基线/18-LLM和H3适配与配套文件.md",
+      "size": 8308,
+      "sha256": "7ccbded2604ba486f7ef83afcfe4e2ef872f9da6d71e5cb2bdbcac1d70c05ae0"
+    },
+    {
+      "path": "设计基线/19-禁止生成测试与隔离验收.md",
+      "size": 5905,
+      "sha256": "0a082cb654c563a303e12696238d9aa860231661e6ef47f16331a3924e2979d8"
+    },
+    {
+      "path": "设计基线/20-源码复核与配套交付清单.md",
+      "size": 7173,
+      "sha256": "83209616f9303a7f572588ba58505ab4469177ac48e4b78ca34a6ce1314f5ff5"
+    },
+    {
+      "path": "设计基线/21-V2.9独立修改明细.md",
+      "size": 3317,
+      "sha256": "2dce27ed2fff0f785e16b0c326f5f5cf51a3e47f5acfd43a667957c8c3781fb0"
+    },
+    {
+      "path": "运行模板/README.md",
+      "size": 518,
+      "sha256": "2d1ab7eabea43dc59df33eca135b64709dddb6d15299e509dbd944135dd11e32"
+    },
+    {
+      "path": "运行模板/asset_analysis.txt",
+      "size": 930,
+      "sha256": "5f0e7c4722eb7600648a7ca7db9f15c04c489344438388770d0240d4f317e4a1"
+    },
+    {
+      "path": "运行模板/asset_screenplay.txt",
+      "size": 949,
+      "sha256": "a3503562d8ba469cbde8897ef313e6ea752a8fd7df63cf27daf4590687c2f34b"
+    },
+    {
+      "path": "运行模板/change_impact.txt",
+      "size": 783,
+      "sha256": "1029bbde2e6d0775f37a51316197e16db29bed3f1c0a122d82ab2ef1afee7e51"
+    },
+    {
+      "path": "运行模板/common.txt",
+      "size": 1905,
+      "sha256": "5c1f0e5523638d22be767333f949c124e2f6d3974e45dd7fe35e922a5798e219"
+    },
+    {
+      "path": "运行模板/context_summary.txt",
+      "size": 613,
+      "sha256": "8550647eee6e9d044c7f28d5ff3d938d405ecd82508f3ef03a32ea0176713310"
+    },
+    {
+      "path": "运行模板/format_repair.txt",
+      "size": 678,
+      "sha256": "db92474aedb17df71f675468185e28cb8fe0d95e34a0ea4421966aeebddff7bb"
+    },
+    {
+      "path": "运行模板/h3_prompt.full.txt",
+      "size": 1416,
+      "sha256": "316042443747641f946bc3a4c5d3a38dc5a85b7f88317c60ca2f8fd177b6a397"
+    },
+    {
+      "path": "运行模板/h3_prompt.structured.txt",
+      "size": 1668,
+      "sha256": "d4b8df80fe29d83ad33f92aef4fb72f4acb88c6cb8205f73d2d4ba1199f319b5"
+    },
+    {
+      "path": "运行模板/image_observation.txt",
+      "size": 786,
+      "sha256": "2fa99800d65306f4614302a511327a9552557ea6c64f98b074e914deea36bae1"
+    },
+    {
+      "path": "运行模板/local_rewrite.txt",
+      "size": 840,
+      "sha256": "37a89982e91b9cded74236e3ce12b27dd4ab8f92a075c262b732d5d0192a0e76"
+    },
+    {
+      "path": "运行模板/reference_image.txt",
+      "size": 873,
+      "sha256": "116c80e090ece9057fe03b1decce2000ebcf6f6083712321a19e19fd2b33ac77"
+    },
+    {
+      "path": "运行模板/screenplay_draft.txt",
+      "size": 1064,
+      "sha256": "117b36f309b60a2cea33101e8f9feb5b10955e001a4cf10f9132aad64eecc27a"
+    },
+    {
+      "path": "运行模板/segment_plan.txt",
+      "size": 1000,
+      "sha256": "55bcece57a7f523fde95a4f3a7958372c527e14ff4a541d6717079e4cff4b561"
+    },
+    {
+      "path": "运行模板/storyboard.txt",
+      "size": 852,
+      "sha256": "35c83d27dd7e483ef13cee3afbd3a2d282d86ff6819ea948730d648ce3aa50be"
+    },
+    {
+      "path": "配套清单/external-resources.json",
+      "size": 1109,
+      "sha256": "ff71de38e0835d30a6ea39be5a274161af9a003cf68631d98e5bd73ea48170fd"
+    },
+    {
+      "path": "配套清单/llm-task-registry.json",
+      "size": 7034,
+      "sha256": "e0b13782db8b51231884e6271b7a2feadb3fbc57add7cf3369d9530268e54aea"
+    },
+    {
+      "path": "配置样例/README.md",
+      "size": 844,
+      "sha256": "f31c77198d5801900bc331325dbbdc0bee5f68907262488749c52f1d3aa48786"
+    },
+    {
+      "path": "配置样例/deepseek-beta-notice.json",
+      "size": 612,
+      "sha256": "ae7a956336946cc6a4e3ae8090fb87c37a28b87a9e286687ddb637f60cb8522c"
+    },
+    {
+      "path": "配置样例/development-policy.json",
+      "size": 496,
+      "sha256": "1d4bb8540ae7948211480e3c28adb93ea9a5c95d1b43073a51e16bcee08aefd1"
+    },
+    {
+      "path": "配置样例/h3-profiles.example.json",
+      "size": 1243,
+      "sha256": "dbfcb92eba2ef6e8e5b4ec225ace855d32f3f7cc222d1747c9189e80a00fc6ef"
+    },
+    {
+      "path": "配置样例/live-authorization.example.json",
+      "size": 377,
+      "sha256": "5e3e2db76026b51d7d00537f0e5f9fe52e5713ef57b67e3905da406d7ac2af6b"
+    },
+    {
+      "path": "配置样例/llm-providers.example.json",
+      "size": 481,
+      "sha256": "c20aae4e215ae77f0d3a53513375466bcc169b1df8edfc133ca23b0ac5318649"
+    },
+    {
+      "path": "配置样例/provider-runtime-policy.json",
+      "size": 756,
+      "sha256": "efc7cb693488051a1b613f0d4b1f47a5c071011ac30cf9ab0b9a5a30295f56cf"
+    },
+    {
+      "path": "附图/用户提供的纵向轴示意.png",
+      "size": 10122,
+      "sha256": "0bd9c69539897d1b056904acaa76b3f472d9e47a8a3adb907fae462fa0f1ad49"
+    },
+    {
+      "path": "预留设计/README.md",
+      "size": 995,
+      "sha256": "0f4349a6b70d4a1616b04fafb8c5a4e576d6d8eb28ddf26dab9e8e463f774964"
+    },
+    {
+      "path": "预留设计/lm-studio-provider.example.json",
+      "size": 403,
+      "sha256": "ed881bbd06ac9c30be7aea01391e11b33d8b34a6379d69b79bb23c79de44f51e"
+    },
+    {
+      "path": "预留设计/provider-wire-examples.deferred.json",
+      "size": 2873,
+      "sha256": "a1f5154e6d93ea9cf6cb491f0a9f3338114cdd60e0023b2873d084ab7693a797"
+    }
+  ]
+}

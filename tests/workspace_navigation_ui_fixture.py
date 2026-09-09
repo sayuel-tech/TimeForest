@@ -99,10 +99,15 @@ def capture(out,name,url,width):
     def evaluate(expression):return command('Runtime.evaluate',dict(expression=expression,returnByValue=True))['result'].get('value')
     try:
         deadline=time.monotonic()+45
-        while not (profile/'DevToolsActivePort').exists():
-            if time.monotonic()>deadline:raise TimeoutError('Chrome startup')
+        # Chrome briefly holds its newly created port file open on Windows.
+        # Existence alone does not mean it is readable or fully written yet.
+        while True:
+            try:
+                port=(profile/'DevToolsActivePort').read_text().splitlines()[0]
+                if port.isdigit():break
+            except (FileNotFoundError,PermissionError,IndexError):pass
+            if time.monotonic()>deadline:raise TimeoutError('Chrome startup port not ready')
             time.sleep(.05)
-        port=(profile/'DevToolsActivePort').read_text().splitlines()[0]
         with urlopen(f'http://127.0.0.1:{port}/json/list') as response:tabs=json.load(response)
         socket=websocket.create_connection(next(t['webSocketDebuggerUrl'] for t in tabs if t['type']=='page'),suppress_origin=True,timeout=10)
         while not (marker:=evaluate('document.body?.dataset.check')):

@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "topic": "settings",
+  "evidence": "Mechanical current-source map; not UI acceptance or a match to historical screenshots.",
+  "sources": {
+    "static/studio/features/image-settings/index.js": {
+      "sha256": "af39af878a43ea952a5ecb00b810151a3ce754c2a7745958db5abc0fc07d4c1a",
+      "exports": [
+        {
+          "name": "imageParameters",
+          "line": 11
+        },
+        {
+          "name": "parseImageSeed",
+          "line": 16
+        },
+        {
+          "name": "readImageParameter",
+          "line": 24
+        },
+        {
+          "name": "createImageSettingsDraft",
+          "line": 43
+        },
+        {
+          "name": "renderImageQuickSettings",
+          "line": 117
+        },
+        {
+          "name": "openImageSettings",
+          "line": 139
+        }
+      ],
+      "imports": [
+        "static/studio/core/image-catalog.js",
+        "static/studio/ui/error-feedback.js",
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/production-settings.js"
+      ],
+      "imported_by": [
+        "static/studio/app/image-workspace-controller.js",
+        "static/studio/features/image-results/workspace-view.js"
+      ]
+    },
+    "static/studio/features/workflow-settings/index.js": {
+      "sha256": "6c1157b636ab834b0b75a3a465187de0b2693998823944075ea9d54e3551228e",
+      "exports": [
+        {
+          "name": "createFeature",
+          "line": 10
+        }
+      ],
+      "imports": [
+        "static/studio/core/capability-client.js",
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/production-settings.js"
+      ],
+      "imported_by": [
+        "static/studio/app/workspace-controller.js",
+        "static/studio/modes/movie/workspace.js"
+      ]
+    },
+    "static/studio/modes/video-assembly/settings.js": {
+      "sha256": "74c7179ad89f631a00b6e23db311cafd5a3db38c95b7283a6d8010d53d90c3f6",
+      "exports": [
+        {
+          "name": "visibleParameters",
+          "line": 5
+        },
+        {
+          "name": "resetParameters",
+          "line": 10
+        },
+        {
+          "name": "switchRecipe",
+          "line": 16
+        },
+        {
+          "name": "settingsDialog",
+          "line": 21
+        }
+      ],
+      "imports": [
+        "static/studio/core/api-client.js",
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/production-settings.js"
+      ],
+      "imported_by": [
+        "static/studio/modes/video-assembly/workspace.js"
+      ]
+    },
+    "static/studio/styles/components.css": {
+      "sha256": "96f8b268f73ec290ebb84c9dae79abe0f9b40931b67b040b2b77976c83bfdd97",
+      "imported_by": []
+    },
+    "static/studio/styles/production-settings.css": {
+      "sha256": "07b3cd7f58759afe62098e2106d75bcd781454f4ce1a0664b35a81288df5cf63",
+      "imported_by": []
+    },
+    "static/studio/ui/model-selector.js": {
+      "sha256": "a5105ae3a6b9d9457f064b5106ac8b2ee3ac2260c56597709b1b9a5a3c472641",
+      "exports": [
+        {
+          "name": "modelSelector",
+          "line": 4
+        },
+        {
+          "name": "bindModelSelectors",
+          "line": 13
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/ui/production-settings.js"
+      ]
+    },
+    "static/studio/ui/production-settings.js": {
+      "sha256": "0902d57179e02cab57f2908b2eaace4c251deb333559436ec5479a2a3e53d3e0",
+      "exports": [
+        {
+          "name": "openProductionSettings",
+          "line": 6
+        },
+        {
+          "name": "parameterLoras",
+          "line": 54
+        },
+        {
+          "name": "validateSettingsInputs",
+          "line": 58
+        },
+        {
+          "name": "parameterGrid",
+          "line": 63
+        },
+        {
+          "name": "parameterSlots",
+          "line": 64
+        },
+        {
+          "name": "productionSettingsActions",
+          "line": 66
+        },
+        {
+          "name": "productionGroups",
+          "line": 72
+        },
+        {
+          "name": "productionSettingsAction",
+          "line": 83
+        },
+        {
+          "name": "productionSettingsMarkup",
+          "line": 88
+        },
+        {
+          "name": "bindSettingsNavigation",
+          "line": 93
+        },
+        {
+          "name": "parameterField",
+          "line": 107
+        },
+        {
+          "name": "seedFields",
+          "line": 125
+        },
+        {
+          "name": "imageProductionGroups",
+          "line": 129
+        }
+      ],
+      "imports": [
+        "static/studio/ui/error-feedback.js",
+        "static/studio/ui/model-selector.js",
+        "static/studio/ui/primitives.js"
+      ],
+      "imported_by": [
+        "static/studio/features/authoring-assist/index.js",
+        "static/studio/features/image-results/workspace-view.js",
+        "static/studio/features/image-settings/index.js",
+        "static/studio/features/prompts/authoring.js",
+        "static/studio/features/workflow-settings/index.js",
+        "static/studio/modes/video-assembly/settings.js",
+        "static/studio/ui/source-parameters.js",
+        "static/studio/ui/workspace-chrome.js"
+      ]
+    }
+  }
+}

@@ -16,6 +16,12 @@ def recycle_index(studio,images,library):
         if deleted:
             groups['projects'].append(dict(id=p['id'],title=p['name'],type='project',revision=p['revision'],
                 mode=p['mode'],removed_at=p['deleted_at'],open_url='#/p/'+p['id'],blocked_reason='项目仍有任务正在处理' if busy else ''))
+        if p['mode'] in ('authoring','movie'):
+            rows=p.get('movie_takes',[]) if p['mode']=='movie' else p.get('candidates',[])
+            for record in rows:
+                if not record.get('removed_at'):continue
+                rid=record.get('take_id') or record['candidate_id']
+                groups['generations'].append(dict(id=rid,title=p['name'],task_name='电影候选' if p['mode']=='movie' else '剧本文本候选',type='creation_record',project=p['id'],revision=p['revision'],mode=p['mode'],removed_at=record['removed_at'],state='complete',open_url='#/p/'+p['id'],blocked_reason='请先恢复所属项目' if deleted else '项目仍有任务正在处理' if busy else ''))
         if p['mode']=='video_assembly':
             blocked='请先恢复所属项目' if deleted else '项目仍有运行或待确认任务' if busy or any(r['state'] in ('preparing','submitting','running','unknown') for r in p['assembly']['runs']) else ''
             for clip in p['assembly']['clips']:

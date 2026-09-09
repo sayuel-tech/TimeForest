@@ -1,0 +1,18 @@
+.collection-navigation{display:grid;gap:22px;min-width:0}
+.collection-nav-group{display:grid;gap:4px;min-width:0}
+.collection-nav-group h2{font:600 12px var(--sans);letter-spacing:.1em;color:var(--muted);margin:0 12px 6px}
+.collection-nav-link{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:40px;padding:9px 12px;border:1px solid transparent;border-radius:10px;text-align:left;text-decoration:none;background:transparent;box-shadow:none;font:400 14px/1.5 var(--sans);color:var(--ink);overflow-wrap:anywhere}
+.collection-nav-link:hover{background:var(--paper-2)}
+.collection-nav-link.active{background:var(--sage-soft);border-color:var(--sage);color:var(--sage);font-weight:600}
+.collection-nav-link.is-ancestor{color:var(--sage);font-weight:600;background:var(--paper-2)}
+.collection-nav-children{display:grid;gap:4px;margin:6px 0 8px 14px;padding-left:10px;border-left:1px solid var(--line)}
+.collection-path{font:600 var(--text-body)/1.5 var(--sans);margin:0 0 18px;overflow-wrap:anywhere}
+@media(max-width:760px){.collection-navigation{gap:14px}.collection-nav-group{grid-template-columns:repeat(auto-fit,minmax(130px,1fr));align-items:start}.collection-nav-group h2{grid-column:1/-1}.collection-nav-children{margin-left:5px;padding-left:6px}.collection-nav-link{font-size:13px;padding:8px 10px}}
+
+/* Shared full library page shell; pickers keep their dialog dimensions. */
+.collection-page{max-width:1760px;padding:20px var(--page-gutter)}
+.collection-page .library-header{margin:0 0 20px;align-items:center}
+.collection-page .library-header h1{font-size:var(--title-page);margin:4px 0}
+.collection-page .library-header p{font-size:13px}
+.collection-page .library-header .library-toolbar{margin:0;gap:8px}
+@media(max-width:850px),(max-height:620px){.collection-page .library-header{align-items:start;flex-direction:column}}

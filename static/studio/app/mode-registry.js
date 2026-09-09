@@ -1,6 +1,8 @@
 const modes = new Map();
 let imageAssetsEnabled = false;
 let assemblyEnabled = false;
+let creationEnabled = false;
+export function setCreationEnabled(value){creationEnabled=value===1;}
 export function setAssemblyEnabled(value){assemblyEnabled=value===1;}
 export function setImageAssetsEnabled(value) { imageAssetsEnabled = Boolean(value); }
 export function registerMode(definition) {
@@ -8,7 +10,7 @@ export function registerMode(definition) {
     throw new Error("模式注册无效或重复");
   modes.set(definition.id, Object.freeze(definition));
 }
-export const listModes = () => [...modes.values()].filter(m => (m.id !== 'image_assets' || imageAssetsEnabled) && (m.id !== 'video_assembly' || assemblyEnabled));
+export const listModes = () => [...modes.values()].filter(m => (m.id !== 'image_assets' || imageAssetsEnabled) && (m.id !== 'video_assembly' || assemblyEnabled) && (!['authoring','movie'].includes(m.id) || creationEnabled));
 export const getMode = (id) => modes.get(id);
 registerMode({
   id: "swap",
@@ -40,3 +42,5 @@ registerMode({
 registerMode({id:'image_assets',kind:'image',name:'图片资产创作',code:'IMAGE',art:'mode-image-assets.webp',description:'编辑角色、服装与场景，让每张图片成为可复用的创作资产。',entry:'图片创作',load:()=>import('./image-workspace-controller.js')});
 
 registerMode({id:'video_assembly',kind:'assembly',name:'视频接续',code:'JOIN',art:'mode-video-continuation.webp',description:'把已有片段串成作品，沿视频末尾继续生长。',entry:'视频与排序',load:()=>import('../modes/video-assembly/workspace.js')});
+registerMode({id:'authoring',kind:'authoring',name:'剧本创作',code:'SCRIPT',art:'mode-authoring.webp',description:'从故事与参考出发，写成剧本，整理分镜与片段提示词。',entry:'故事起点',load:()=>import('../modes/authoring/workspace.js')});
+registerMode({id:'movie',kind:'movie',name:'电影创作',code:'FILM',art:'mode-movie.webp',description:'把准备好的剧本逐段拍出来，在时间轴上组织成片。',entry:'片段生成',load:()=>import('../modes/movie/workspace.js')});

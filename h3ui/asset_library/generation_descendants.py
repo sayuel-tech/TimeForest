@@ -7,7 +7,12 @@ from ..generation.source_lineage import video_attempts, attempt_records, export_
 
 def project_results(origins,p):
     pid=p['id']
-    if p.get('mode')=='video_assembly':
+    if p.get('mode')=='movie':
+        for take in p.get('movie_takes',[]):
+            yield dict(id=take['take_id'],run=take['take_id'],eligible=True,name='电影片段候选',created=float(take['created_at']),completed=float(take['created_at']),removed=take['state']=='removed',origin=dict(mode='movie',project=pid,movie_lineage=take.get('lineage',{})),target=dict(run=take['take_id'],segment=take['movie_segment_id']))
+        for export in p.get('movie_exports',[]):
+            yield dict(id=export['export_id'],run=export['export_id'],eligible=True,name='电影成片',created=float(export['created_at']),completed=float(export['created_at']),removed=False,origin=dict(mode='movie',project=pid,movie_lineage=dict(parts=[dict(project=pid,run=x['item']['take_id']) for x in export['manifest']['parts']])),target=dict(run=export['export_id']))
+    elif p.get('mode')=='video_assembly':
         for run in p.get('assembly',{}).get('runs',[]):
             removed=bool(run.get('removed_at'))
             for clip in p['assembly'].get('clips',[]):
@@ -51,7 +56,7 @@ def generation_descendants(origins,aid,version,mid,cursor=None,before=None):
             result.append({k:v for k,v in candidate.items() if k in ('id','run','output','name','removed','historical')})
             result[-1]['project']=reader.project(pid,**candidate['target'])
         record=candidate['origin'].get('records',{})
-        known=bool(candidate['origin'].get('snapshot') or record.get('source_lineage') or record.get('manifest',{}).get('source_lineage') or record.get('segments') or record.get('snapshot'))
+        known=bool('movie_lineage' in candidate['origin'] or candidate['origin'].get('snapshot') or record.get('source_lineage') or record.get('manifest',{}).get('source_lineage') or record.get('segments') or record.get('snapshot'))
         if not known or lineage['truncated'] or any(r['state'] in ('missing','incomplete','cycle','limit','external') or (r['kind']=='boundary' and r['state']=='unrecorded') for r in lineage['rows']):unknown+=1
 
     # Bound work even when many projects contain no successful results.

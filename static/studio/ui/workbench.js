@@ -1,8 +1,10 @@
 import {esc} from './primitives.js';
+import {bindReadingPreviews} from './prompt-editor.js';
 
 /** Slots are owned by the mode. Only layout and local view state are shared. */
 export function workbench({rail='',canvas='',inspector='',kind=''}) {
-  return `<div class="director-desk ${esc(kind)}">${rail?`<aside class="desk-rail" aria-label="片段目录">${rail}</aside>`:''}<section class="desk-canvas">${canvas}</section>${inspector?`<aside class="desk-inspector" aria-label="本段属性">${inspector}</aside>`:''}</div>`;
+  const controls=inspector&&!canvas.includes('data-toggle-inspector')?'<div class="workbench-view-tools"><button type="button" data-toggle-inspector class="quiet">收起属性</button></div>':'';
+  return `<div class="director-desk ${esc(kind)}" data-has-rail="${!!rail}" data-has-inspector="${!!inspector}">${rail?`<aside class="desk-rail" aria-label="片段目录">${rail}</aside>`:''}<section class="desk-canvas">${controls}${canvas}</section>${inspector?`<aside class="desk-inspector" aria-label="本段属性">${inspector}</aside>`:''}</div>`;
 }
 
 export function propertyTabs(ctx,panels) {
@@ -11,10 +13,13 @@ export function propertyTabs(ctx,panels) {
 }
 
 export function bindWorkbench(ctx) {
+  bindReadingPreviews(ctx.root);
   requestAnimationFrame(()=>fitWorkbench(ctx.root));
   const desk=ctx.root.querySelector('.director-desk');
+  if(ctx.inspectorHidden===undefined)ctx.inspectorHidden=window.innerWidth>850&&window.innerWidth<1180;
   desk?.classList.toggle('inspector-collapsed',Boolean(ctx.inspectorHidden && ctx.root.querySelector('[data-toggle-inspector]')));
   ctx.root.querySelectorAll('[data-toggle-inspector]').forEach(button=>{
+    button.textContent=ctx.inspectorHidden?'显示属性':'收起属性';
     button.setAttribute('aria-expanded',String(!ctx.inspectorHidden));
     button.onclick=()=>{ctx.inspectorHidden=!ctx.inspectorHidden;desk.classList.toggle('inspector-collapsed',ctx.inspectorHidden);button.textContent=ctx.inspectorHidden?'显示属性':'收起属性';button.setAttribute('aria-expanded',String(!ctx.inspectorHidden));};
   });

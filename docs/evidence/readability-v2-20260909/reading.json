@@ -1,0 +1,102 @@
+[
+  {
+    "passed": true,
+    "view": "list",
+    "width": 1262,
+    "checks": [
+      "distinct readable summaries/no empty detail column"
+    ],
+    "case": "list-1280",
+    "evidence_run": "reading-delivery"
+  },
+  {
+    "passed": true,
+    "view": "read",
+    "width": 1262,
+    "checks": [
+      "600+ characters/full ending/next-previous/back preserves DOM filters scroll focus/exact selection"
+    ],
+    "case": "read-1280",
+    "evidence_run": "reading-delivery"
+  },
+  {
+    "passed": true,
+    "view": "management",
+    "width": 1262,
+    "checks": [
+      "600+ characters/full ending/next-previous/back preserves DOM filters scroll focus/exact selection"
+    ],
+    "case": "management-1280",
+    "evidence_run": "reading-delivery"
+  },
+  {
+    "passed": true,
+    "view": "asset-preview",
+    "width": 1262,
+    "checks": [
+      "whole-row media preview without selection"
+    ],
+    "case": "asset-preview-1280",
+    "evidence_run": "reading-delivery"
+  },
+  {
+    "passed": true,
+    "view": "asset-notes",
+    "width": 1262,
+    "checks": [
+      "long asset notes/cancel/apply to draft/no library write"
+    ],
+    "case": "asset-notes-1280",
+    "evidence_run": "reading-delivery"
+  },
+  {
+    "passed": true,
+    "view": "list",
+    "width": 742,
+    "checks": [
+      "distinct readable summaries/no empty detail column"
+    ],
+    "case": "list-760",
+    "evidence_run": "reading-delivery"
+  },
+  {
+    "passed": true,
+    "view": "read",
+    "width": 742,
+    "checks": [
+      "600+ characters/full ending/next-previous/back preserves DOM filters scroll focus/exact selection"
+    ],
+    "case": "read-760",
+    "evidence_run": "reading-delivery"
+  },
+  {
+    "passed": true,
+    "view": "management",
+    "width": 742,
+    "checks": [
+      "600+ characters/full ending/next-previous/back preserves DOM filters scroll focus/exact selection"
+    ],
+    "case": "management-760",
+    "evidence_run": "reading-delivery"
+  },
+  {
+    "passed": true,
+    "view": "asset-preview",
+    "width": 742,
+    "checks": [
+      "whole-row media preview without selection"
+    ],
+    "case": "asset-preview-760",
+    "evidence_run": "reading-delivery"
+  },
+  {
+    "passed": true,
+    "view": "asset-notes",
+    "width": 742,
+    "checks": [
+      "long asset notes/cancel/apply to draft/no library write"
+    ],
+    "case": "asset-notes-760",
+    "evidence_run": "reading-delivery"
+  }
+]

@@ -1,0 +1,405 @@
+{
+  "version": "2.9",
+  "operations": [
+    {
+      "operation": "createAuthoring",
+      "method": "POST",
+      "path": "/api/v5/authoring/projects",
+      "request_schema": "CreateAuthoring",
+      "response_schema": "AuthoringProjectView",
+      "side_effect": "local_write"
+    },
+    {
+      "operation": "readAuthoring",
+      "method": "GET",
+      "path": "/api/v5/authoring/projects/{pid}",
+      "request_schema": null,
+      "response_schema": "AuthoringProjectView",
+      "side_effect": "pure_read"
+    },
+    {
+      "operation": "saveAuthoring",
+      "method": "POST",
+      "path": "/api/v5/authoring/projects/{pid}/save",
+      "request_schema": "SaveAuthoring",
+      "response_schema": "MutationReceipt",
+      "side_effect": "local_write"
+    },
+    {
+      "operation": "confirmContent",
+      "method": "POST",
+      "path": "/api/v5/authoring/projects/{pid}/confirm",
+      "request_schema": "ConfirmContent",
+      "response_schema": "MutationReceipt",
+      "side_effect": "local_write"
+    },
+    {
+      "operation": "listProviders",
+      "method": "GET",
+      "path": "/api/v5/authoring/providers",
+      "request_schema": null,
+      "response_schema": "ProviderList",
+      "side_effect": "pure_read"
+    },
+    {
+      "operation": "saveProvider",
+      "method": "POST",
+      "path": "/api/v5/authoring/providers/save",
+      "request_schema": "SaveProvider",
+      "response_schema": "ProviderConfig",
+      "side_effect": "local_write"
+    },
+    {
+      "operation": "writeCredential",
+      "method": "POST",
+      "path": "/api/v5/authoring/providers/credential",
+      "request_schema": "WriteCredential",
+      "response_schema": "CredentialReceipt",
+      "side_effect": "secret_write"
+    },
+    {
+      "operation": "removeCredential",
+      "method": "POST",
+      "path": "/api/v5/authoring/providers/credential/remove",
+      "request_schema": "DeleteCredential",
+      "response_schema": "CredentialReceipt",
+      "side_effect": "secret_write"
+    },
+    {
+      "operation": "discoverProvider",
+      "method": "POST",
+      "path": "/api/v5/authoring/providers/discover",
+      "request_schema": "DiscoverProvider",
+      "response_schema": "Catalog",
+      "side_effect": "provider_read"
+    },
+    {
+      "operation": "preflightAuthoring",
+      "method": "POST",
+      "path": "/api/v5/authoring/jobs/preflight",
+      "request_schema": "LLMPreflight",
+      "response_schema": "Preflight",
+      "side_effect": "pure_read"
+    },
+    {
+      "operation": "createAuthoringJob",
+      "method": "POST",
+      "path": "/api/v5/authoring/jobs",
+      "request_schema": "CreateLLMJob",
+      "response_schema": "Job",
+      "side_effect": "inference"
+    },
+    {
+      "operation": "readAuthoringJob",
+      "method": "GET",
+      "path": "/api/v5/authoring/jobs/{job_id}",
+      "request_schema": null,
+      "response_schema": "Job",
+      "side_effect": "pure_read"
+    },
+    {
+      "operation": "readAuthoringEvents",
+      "method": "GET",
+      "path": "/api/v5/authoring/jobs/{job_id}/events",
+      "request_schema": null,
+      "response_schema": "JobEvent",
+      "side_effect": "pure_read"
+    },
+    {
+      "operation": "cancelAuthoringJob",
+      "method": "POST",
+      "path": "/api/v5/authoring/jobs/{job_id}/cancel",
+      "request_schema": "CancelJob",
+      "response_schema": "Job",
+      "side_effect": "cancel"
+    },
+    {
+      "operation": "readCandidate",
+      "method": "GET",
+      "path": "/api/v5/authoring/candidates/{candidate_id}",
+      "request_schema": null,
+      "response_schema": "Candidate",
+      "side_effect": "pure_read"
+    },
+    {
+      "operation": "applyCandidate",
+      "method": "POST",
+      "path": "/api/v5/authoring/projects/{pid}/candidates/apply",
+      "request_schema": "ApplyCandidate",
+      "response_schema": "MutationReceipt",
+      "side_effect": "local_write"
+    },
+    {
+      "operation": "discardCandidate",
+      "method": "POST",
+      "path": "/api/v5/authoring/projects/{pid}/candidates/discard",
+      "request_schema": "DiscardCandidate",
+      "response_schema": "MutationReceipt",
+      "side_effect": "local_write"
+    },
+    {
+      "operation": "repairCandidate",
+      "method": "POST",
+      "path": "/api/v5/authoring/jobs/repair",
+      "request_schema": "RepairCandidate",
+      "response_schema": "Job",
+      "side_effect": "inference"
+    },
+    {
+      "operation": "createImageHandoff",
+      "method": "POST",
+      "path": "/api/v5/authoring/projects/{pid}/image-handoffs",
+      "request_schema": "ImageHandoff",
+      "response_schema": "ImageHandoffReceipt",
+      "side_effect": "local_write"
+    },
+    {
+      "operation": "preflightImageBind",
+      "method": "POST",
+      "path": "/api/v5/authoring/projects/{pid}/image-bind/preflight",
+      "request_schema": "ImageBindPreflight",
+      "response_schema": "ChangePlan",
+      "side_effect": "pure_read"
+    },
+    {
+      "operation": "applyImageBind",
+      "method": "POST",
+      "path": "/api/v5/authoring/projects/{pid}/image-bind/apply",
+      "request_schema": "ApplyPlan",
+      "response_schema": "MutationReceipt",
+      "side_effect": "local_write"
+    },
+    {
+      "operation": "createMovie",
+      "method": "POST",
+      "path": "/api/v5/movie/projects",
+      "request_schema": "CreateMovie",
+      "response_schema": "MovieProjectView",
+      "side_effect": "local_write"
+    },
+    {
+      "operation": "readMovie",
+      "method": "GET",
+      "path": "/api/v5/movie/projects/{pid}",
+      "request_schema": null,
+      "response_schema": "MovieProjectView",
+      "side_effect": "pure_read"
+    },
+    {
+      "operation": "previewScriptSync",
+      "method": "POST",
+      "path": "/api/v5/movie/projects/{pid}/sync/preview",
+      "request_schema": "SyncPreview",
+      "response_schema": "ChangePlan",
+      "side_effect": "pure_read"
+    },
+    {
+      "operation": "applyScriptSync",
+      "method": "POST",
+      "path": "/api/v5/movie/projects/{pid}/sync/apply",
+      "request_schema": "ApplyPlan",
+      "response_schema": "MutationReceipt",
+      "side_effect": "local_write"
+    },
+    {
+      "operation": "readMovieCatalog",
+      "method": "GET",
+      "path": "/api/v5/movie/catalog",
+      "request_schema": null,
+      "response_schema": "Catalog",
+      "side_effect": "pure_read"
+    },
+    {
+      "operation": "saveGenerationDraft",
+      "method": "POST",
+      "path": "/api/v5/movie/projects/{pid}/generation-draft",
+      "request_schema": "SaveGenerationDraft",
+      "response_schema": "MutationReceipt",
+      "side_effect": "local_write"
+    },
+    {
+      "operation": "preflightGeneration",
+      "method": "POST",
+      "path": "/api/v5/movie/projects/{pid}/preflight",
+      "request_schema": "GenerationPreflight",
+      "response_schema": "Preflight",
+      "side_effect": "pure_read"
+    },
+    {
+      "operation": "prepareGeneration",
+      "method": "POST",
+      "path": "/api/v5/movie/projects/{pid}/prepare",
+      "request_schema": "PrepareGeneration",
+      "response_schema": "PreparedGeneration",
+      "side_effect": "media_prepare"
+    },
+    {
+      "operation": "submitGeneration",
+      "method": "POST",
+      "path": "/api/v5/movie/projects/{pid}/generate",
+      "request_schema": "SubmitGeneration",
+      "response_schema": "Job",
+      "side_effect": "inference"
+    },
+    {
+      "operation": "readTakes",
+      "method": "GET",
+      "path": "/api/v5/movie/projects/{pid}/segments/{segment_id}/takes",
+      "request_schema": null,
+      "response_schema": "TakeList",
+      "side_effect": "pure_read"
+    },
+    {
+      "operation": "adoptTake",
+      "method": "POST",
+      "path": "/api/v5/movie/projects/{pid}/adopt",
+      "request_schema": "AdoptTake",
+      "response_schema": "MutationReceipt",
+      "side_effect": "local_write"
+    },
+    {
+      "operation": "readTakeSource",
+      "method": "GET",
+      "path": "/api/v5/movie/projects/{pid}/takes/{take_id}/source",
+      "request_schema": null,
+      "response_schema": "SourceView",
+      "side_effect": "pure_read"
+    },
+    {
+      "operation": "readMovieJob",
+      "method": "GET",
+      "path": "/api/v5/movie/jobs/{job_id}",
+      "request_schema": null,
+      "response_schema": "Job",
+      "side_effect": "pure_read"
+    },
+    {
+      "operation": "readMovieEvents",
+      "method": "GET",
+      "path": "/api/v5/movie/jobs/{job_id}/events",
+      "request_schema": null,
+      "response_schema": "JobEvent",
+      "side_effect": "pure_read"
+    },
+    {
+      "operation": "cancelMovieJob",
+      "method": "POST",
+      "path": "/api/v5/movie/jobs/{job_id}/cancel",
+      "request_schema": "CancelJob",
+      "response_schema": "Job",
+      "side_effect": "cancel"
+    },
+    {
+      "operation": "initializeEdit",
+      "method": "POST",
+      "path": "/api/v5/movie/projects/{pid}/edit/initialize",
+      "request_schema": "InitializeEdit",
+      "response_schema": "MutationReceipt",
+      "side_effect": "local_write"
+    },
+    {
+      "operation": "readEdit",
+      "method": "GET",
+      "path": "/api/v5/movie/projects/{pid}/edit",
+      "request_schema": null,
+      "response_schema": "MovieEdit",
+      "side_effect": "pure_read"
+    },
+    {
+      "operation": "saveEdit",
+      "method": "POST",
+      "path": "/api/v5/movie/projects/{pid}/edit/save",
+      "request_schema": "SaveEdit",
+      "response_schema": "MutationReceipt",
+      "side_effect": "local_write"
+    },
+    {
+      "operation": "previewEditUpdates",
+      "method": "POST",
+      "path": "/api/v5/movie/projects/{pid}/edit/updates",
+      "request_schema": "EditUpdatesPreview",
+      "response_schema": "ChangePlan",
+      "side_effect": "pure_read"
+    },
+    {
+      "operation": "applyEditUpdates",
+      "method": "POST",
+      "path": "/api/v5/movie/projects/{pid}/edit/updates/apply",
+      "request_schema": "EditUpdatesApply",
+      "response_schema": "MutationReceipt",
+      "side_effect": "local_write"
+    },
+    {
+      "operation": "readItemSource",
+      "method": "GET",
+      "path": "/api/v5/movie/projects/{pid}/edit/items/{item_id}/source",
+      "request_schema": null,
+      "response_schema": "SourceView",
+      "side_effect": "pure_read"
+    },
+    {
+      "operation": "preflightExport",
+      "method": "POST",
+      "path": "/api/v5/movie/projects/{pid}/export/preflight",
+      "request_schema": "ExportPreflight",
+      "response_schema": "Preflight",
+      "side_effect": "pure_read"
+    },
+    {
+      "operation": "createExport",
+      "method": "POST",
+      "path": "/api/v5/movie/projects/{pid}/exports",
+      "request_schema": "CreateExport",
+      "response_schema": "Job",
+      "side_effect": "media_export"
+    },
+    {
+      "operation": "readExport",
+      "method": "GET",
+      "path": "/api/v5/movie/projects/{pid}/exports/{export_id}",
+      "request_schema": null,
+      "response_schema": "ExportManifest",
+      "side_effect": "pure_read"
+    },
+    {
+      "operation": "ingestMovieResult",
+      "method": "POST",
+      "path": "/api/v5/movie/projects/{pid}/ingest",
+      "request_schema": "IngestResult",
+      "response_schema": "MutationReceipt",
+      "side_effect": "local_write"
+    },
+    {
+      "operation": "readAuthoringResponse",
+      "method": "GET",
+      "path": "/api/v5/authoring/jobs/{job_id}/response",
+      "request_schema": null,
+      "response_schema": "ResponseArtifact",
+      "side_effect": "pure_read"
+    },
+    {
+      "operation": "readPreparedGeneration",
+      "method": "GET",
+      "path": "/api/v5/movie/projects/{pid}/prepared/{prepared_request_id}",
+      "request_schema": null,
+      "response_schema": "PreparedGeneration",
+      "side_effect": "pure_read"
+    },
+    {
+      "operation": "readInputContract",
+      "method": "GET",
+      "path": "/api/v5/movie/projects/{pid}/input-contracts/{input_contract_id}",
+      "request_schema": null,
+      "response_schema": "InputContract",
+      "side_effect": "pure_read"
+    },
+    {
+      "operation": "saveConversation",
+      "method": "POST",
+      "path": "/api/v5/authoring/projects/{pid}/conversation",
+      "request_schema": "SaveConversation",
+      "response_schema": "MutationReceipt",
+      "side_effect": "local_write"
+    }
+  ]
+}

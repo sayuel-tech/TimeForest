@@ -46,7 +46,17 @@ class Library:
             if c['type']=='text' and not c['text'].strip(): return
             if c['type']=='fields' and not any(c['fields'].values()): return
             rows.append(self.context(p,target,purpose,settings,scope,c))
-        if p.get('kind')=='image' or p.get('mode')=='image':
+        if p.get('mode')=='authoring':
+            for entry in p.get('content',{}).get('layers',[]):
+                content=entry['content'];scope=entry['layer'];target=dict(id=':'.join(entry['target_ids']) or scope,name=scope)
+                if scope=='prompt':
+                    payload=content.get('payload',{})
+                    if content.get('prompt_mode')=='full':add(target,'video',{'model':'minimax_h3_hybrid_fl2va_ref2va_b25-49-int8.safetensors','recipe':content.get('profile_id')},scope,dict(type='text',text=payload.get('prompt_text','')))
+                    else:add(target,'video',{'model':'minimax_h3_hybrid_fl2va_ref2va_b25-49-int8.safetensors','recipe':content.get('profile_id')},scope,dict(type='fields',fields=payload.get('fields',{}),prompt_mode='structured'))
+                elif scope in ('intent','screenplay','asset_screenplay'):
+                    text=content.get('story_text') or '\n\n'.join(b.get('text','') for b in content.get('blocks',[]))
+                    add(target,'script',{},scope,dict(type='text',text=text))
+        elif p.get('kind')=='image' or p.get('mode')=='image':
             for t in p.get('tasks',[]):
                 if not t.get('discarded_at'): add(t,'image',t.get('models',{}),t.get('submode','image'),dict(type='text',text=t.get('prompt','')))
         elif p.get('mode')=='video_assembly':
@@ -70,6 +80,7 @@ class Library:
     def capture(self, p, identity=None):
         # Persist the exact committed snapshot independently of the library disk.
         snapshot={k:p.get(k) for k in ('id','name','mode','kind','revision','updated_at','updated','settings','swap_prompt','prompt_sources')}
+        if p.get('mode')=='authoring':snapshot['content']=p['content']
         if p.get('tasks') is not None:
             snapshot['tasks']=[{k:t.get(k) for k in ('id','name','submode','prompt','models','discarded_at','prompt_sources')} for t in p['tasks']]
         if p.get('segments') is not None:

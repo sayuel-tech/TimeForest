@@ -5,12 +5,17 @@ import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { validateContract, repositoryFileExists, scenarios } from '../tools/check_experience_contract.mjs';
 
-const keys = ['chrome', 'settings', 'models', 'workbench', 'actions', 'references', 'timing', 'errors', 'candidates', 'results', 'playback', 'async', 'transfers', 'taskStates', 'assetSelection', 'assetOrigins', 'assetUsage', 'assetCollection', 'promptEditing', 'promptCollection', 'promptRecords', 'modal'];
+const keys = ['chrome', 'settings', 'models', 'workbench', 'actions', 'references', 'timing', 'errors', 'candidates', 'results', 'playback', 'async', 'transfers', 'taskStates', 'assetSelection', 'assetOrigins', 'assetUsage', 'assetCollection', 'promptEditing', 'promptCollection', 'promptRecords', 'modal', 'refresh', 'viewState', 'statusRegions', 'libraryNavigation', 'designScale'];
 const contract = () => ({version: 1, shared: Object.fromEntries(keys.map(key => [key, 'shared.js'])), baseline: {}, modes: {}});
 const mode = () => ({
   review: 'review.md',
   shared: Object.fromEntries(keys.map(key => [key, {kind: 'reuse', adapter: 'adapter.js', reason: '提供业务作用域'}])),
   scenarios: Object.fromEntries(scenarios.map(key => [key, {status: 'checked', reason: '预期与实际一致，细节见证据', evidence: ['review.md']}]))
+});
+
+test('新模式美术待制作时保持准入失败，不可当作历史豁免',()=>{
+  const data=contract();data.modes.authoring=mode();data.modes.authoring.scenarios.visual={status:'pending',reason:'五张新插画尚未完成'};
+  assert.match(validateContract(data,['authoring'],()=>true).errors.join('\n'),/待完成.*不能通过体验准入/);
 });
 
 test('新增实际注册模式漏登记时失败', () => {
@@ -95,4 +100,11 @@ test('新模式须声明提示词共同工具、保存收录、固定记录与�
   }
   delete data.modes.new_mode.scenarios.prompts;
   assert.ok(validateContract(data,['new_mode'],()=>true).errors.some(e=>e.includes('new_mode/prompts')));
+});
+
+test('新模式不能遗漏变化判定、视图保护、状态区域及库导航入口',()=>{
+  const data=contract();data.modes.new_mode=mode();
+  for(const key of ['refresh','viewState','statusRegions','libraryNavigation', 'designScale'])delete data.modes.new_mode.shared[key];
+  const errors=validateContract(data,['new_mode'],()=>true).errors.join('\n');
+  for(const key of ['refresh','viewState','statusRegions','libraryNavigation', 'designScale'])assert.ok(errors.includes('new_mode/'+key));
 });

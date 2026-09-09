@@ -1,0 +1,98 @@
+[
+  {
+    "case": "swap-1280",
+    "passed": true,
+    "heading": "24px",
+    "width": 1100,
+    "columns": "421px 421px",
+    "evidence_run": "settings-flow"
+  },
+  {
+    "case": "swap-1920",
+    "passed": true,
+    "heading": "24px",
+    "width": 1100,
+    "columns": "428.5px 428.5px",
+    "evidence_run": "settings-flow"
+  },
+  {
+    "case": "swap-760",
+    "passed": true,
+    "heading": "22px",
+    "width": 742,
+    "columns": "702px",
+    "evidence_run": "settings-flow"
+  },
+  {
+    "case": "image_story-1280",
+    "passed": true,
+    "heading": "24px",
+    "width": 1100,
+    "columns": "421px 421px",
+    "evidence_run": "settings-flow"
+  },
+  {
+    "case": "image_story-1920",
+    "passed": true,
+    "heading": "24px",
+    "width": 1100,
+    "columns": "428.5px 428.5px",
+    "evidence_run": "settings-flow"
+  },
+  {
+    "case": "image_story-760",
+    "passed": true,
+    "heading": "22px",
+    "width": 742,
+    "columns": "702px",
+    "evidence_run": "settings-flow"
+  },
+  {
+    "case": "text_story-1280",
+    "passed": true,
+    "heading": "24px",
+    "width": 1100,
+    "columns": "421px 421px",
+    "evidence_run": "settings-flow"
+  },
+  {
+    "case": "text_story-1920",
+    "passed": true,
+    "heading": "24px",
+    "width": 1100,
+    "columns": "428.5px 428.5px",
+    "evidence_run": "settings-flow"
+  },
+  {
+    "case": "text_story-760",
+    "passed": true,
+    "heading": "22px",
+    "width": 742,
+    "columns": "702px",
+    "evidence_run": "settings-flow"
+  },
+  {
+    "case": "image_assets-1280",
+    "passed": true,
+    "heading": "24px",
+    "width": 1100,
+    "columns": "421px 421px",
+    "evidence_run": "settings-flow"
+  },
+  {
+    "case": "image_assets-1920",
+    "passed": true,
+    "heading": "24px",
+    "width": 1100,
+    "columns": "428.5px 428.5px",
+    "evidence_run": "settings-flow"
+  },
+  {
+    "case": "image_assets-760",
+    "passed": true,
+    "heading": "22px",
+    "width": 742,
+    "columns": "702px",
+    "evidence_run": "settings-flow"
+  }
+]

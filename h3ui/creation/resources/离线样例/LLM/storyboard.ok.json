@@ -1,0 +1,21 @@
+{
+  "contract_version": "tf-authoring/2.9",
+  "task_type": "storyboard",
+  "status": "ok",
+  "payload": {
+    "shots": [
+      {
+        "ref": "new_shot_001",
+        "title": "停下",
+        "source_refs": [
+          "block_001"
+        ],
+        "text": "人物向前走，逐渐放缓脚步，停下，最后低头看向脚边。",
+        "duration_hint_seconds": 13
+      }
+    ]
+  },
+  "notes": [],
+  "issues": [],
+  "questions": []
+}

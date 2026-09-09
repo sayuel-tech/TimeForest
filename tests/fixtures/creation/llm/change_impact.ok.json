@@ -1,0 +1,21 @@
+{
+  "contract_version": "tf-authoring/2.9",
+  "task_type": "change_impact",
+  "status": "ok",
+  "payload": {
+    "impacts": [
+      {
+        "target_ref": "segment_B",
+        "relation": "possible",
+        "basis_refs": [
+          "segment_A"
+        ],
+        "reason": "前段结束站位变化可能影响接续。",
+        "suggestion": "保留后段正文，检查衔接描述。"
+      }
+    ]
+  },
+  "notes": [],
+  "issues": [],
+  "questions": []
+}

@@ -1,0 +1,283 @@
+{
+  "contract_version": 1,
+  "routes": [
+    {
+      "method": "POST",
+      "path": "/api/v5/authoring/projects",
+      "handler": "create_authoring"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/movie/projects",
+      "handler": "create_movie"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v5/authoring/projects/<pid>",
+      "handler": "read_authoring"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v5/movie/projects/<pid>",
+      "handler": "read_movie"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/authoring/projects/<pid>/save",
+      "handler": "save"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/authoring/projects/<pid>/confirm",
+      "handler": "confirm"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/authoring/projects/<pid>/references",
+      "handler": "import_reference"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/authoring/projects/<pid>/references/remove",
+      "handler": "remove_reference"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/authoring/projects/<pid>/image-handoffs",
+      "handler": "image_handoff"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/authoring/projects/<pid>/image-bind/preflight",
+      "handler": "image_bind_preview"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/authoring/projects/<pid>/image-bind/apply",
+      "handler": "image_bind_apply"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v5/authoring/providers",
+      "handler": "providers"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/authoring/providers/save",
+      "handler": "save_provider"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/authoring/providers/credential",
+      "handler": "credential"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/authoring/providers/credential/remove",
+      "handler": "remove_credential"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/authoring/providers/discover",
+      "handler": "discover"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/authoring/projects/<pid>/context",
+      "handler": "request_context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/authoring/jobs/preflight",
+      "handler": "writing_preflight"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/authoring/jobs",
+      "handler": "writing_start"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/authoring/jobs/repair",
+      "handler": "repair_candidate"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v5/authoring/jobs/<jid>",
+      "handler": "writing_job"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v5/authoring/jobs/<jid>/events",
+      "handler": "writing_events"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v5/authoring/jobs/<jid>/response",
+      "handler": "writing_response"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/authoring/jobs/<jid>/cancel",
+      "handler": "writing_cancel"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v5/authoring/candidates/<cid>",
+      "handler": "candidate"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/authoring/projects/<pid>/candidates/apply",
+      "handler": "apply_candidate"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/authoring/projects/<pid>/candidates/discard",
+      "handler": "discard_candidate"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v5/movie/catalog",
+      "handler": "movie_catalog"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v5/authoring/projects/<pid>/segments/<sid>/prompt-preview",
+      "handler": "authoring_prompt_preview"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/movie/projects/<pid>/sync/preview",
+      "handler": "movie_sync_preview"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/movie/projects/<pid>/sync/apply",
+      "handler": "movie_sync_apply"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/movie/projects/<pid>/generation-draft",
+      "handler": "movie_draft"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/movie/projects/<pid>/preflight",
+      "handler": "movie_preflight"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/movie/projects/<pid>/prepare",
+      "handler": "movie_prepare"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/movie/projects/<pid>/generate",
+      "handler": "movie_generate"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v5/movie/projects/<pid>/segments/<sid>/takes",
+      "handler": "movie_takes"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/movie/projects/<pid>/adopt",
+      "handler": "movie_adopt"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v5/movie/jobs/<jid>",
+      "handler": "movie_job"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v5/movie/jobs/<jid>/events",
+      "handler": "movie_events"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/movie/jobs/<jid>/cancel",
+      "handler": "movie_cancel"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/movie/projects/<pid>/edit/initialize",
+      "handler": "initialize_edit"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v5/movie/projects/<pid>/edit",
+      "handler": "read_edit"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/movie/projects/<pid>/edit/save",
+      "handler": "save_edit"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/movie/projects/<pid>/edit/updates",
+      "handler": "edit_updates"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/movie/projects/<pid>/edit/updates/apply",
+      "handler": "apply_updates"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/movie/projects/<pid>/export/preflight",
+      "handler": "export_preflight"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/movie/projects/<pid>/exports",
+      "handler": "export_movie"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v5/movie/projects/<pid>/exports/<eid>",
+      "handler": "read_export"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v5/movie/projects/<pid>/prepared/<rid>",
+      "handler": "read_prepared"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v5/movie/projects/<pid>/input-contracts/<cid>",
+      "handler": "read_contract"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v5/movie/projects/<pid>/takes/<tid>/source",
+      "handler": "take_source"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v5/movie/projects/<pid>/edit/items/<iid>/source",
+      "handler": "item_source"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/movie/projects/<pid>/ingest",
+      "handler": "ingest_movie"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v5/authoring/projects/<pid>/conversation",
+      "handler": "save_conversation"
+    }
+  ],
+  "native_extensions": [
+    "/api/v5/projects",
+    "/api/v5/projects/<pid>/records/visibility",
+    "/api/v5/recycle-bin",
+    "/api/v5/tasks",
+    "/api/v5/library",
+    "/api/v5/prompts"
+  ]
+}

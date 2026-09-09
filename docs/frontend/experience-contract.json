@@ -22,7 +22,12 @@
     "assetCollection": "h3ui/asset_library/service.py",
     "promptEditing": "static/studio/ui/prompt-editor.js",
     "promptCollection": "h3ui/prompt_library/service.py",
-    "promptRecords": "static/studio/features/prompt-library/records.js"
+    "promptRecords": "static/studio/features/prompt-library/records.js",
+    "refresh": "static/studio/core/snapshot-update.js",
+    "viewState": "static/studio/ui/workspace-view-state.js",
+    "statusRegions": "static/studio/ui/status-region.js",
+    "libraryNavigation": "static/studio/ui/library-navigation.js",
+    "designScale": "static/studio/styles/design-tokens.css"
   },
   "baseline": {
     "swap": {
@@ -46,5 +51,489 @@
       "review": "docs/ui-code-reuse-audit-20260908.md"
     }
   },
-  "modes": {}
+  "modes": {
+    "authoring": {
+      "review": "docs/creation-modes.md",
+      "shared": {
+        "settings": {
+          "kind": "reuse",
+          "adapter": "static/studio/features/authoring-assist/index.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "models": {
+          "kind": "not-applicable",
+          "reason": "剧本配置云端服务的可编辑模型ID，不选择Comfy底模；不实现本地LLM目录扫描。"
+        },
+        "workbench": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/authoring/workspace.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "actions": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/authoring/workspace.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "references": {
+          "kind": "reuse",
+          "adapter": "static/studio/features/authoring-assist/references.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "timing": {
+          "kind": "reuse",
+          "adapter": "static/studio/features/authoring-assist/index.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "errors": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/authoring/workspace.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "candidates": {
+          "kind": "reuse",
+          "adapter": "static/studio/features/authoring-assist/index.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "modal": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/authoring/workspace.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "chrome": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/authoring/workspace.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "results": {
+          "kind": "reuse",
+          "adapter": "static/studio/features/authoring-assist/index.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "playback": {
+          "kind": "not-applicable",
+          "reason": "剧本产物为文本；视频剪辑播放在电影模式，本页没有第二套播放器。"
+        },
+        "async": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/authoring/workspace.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "transfers": {
+          "kind": "reuse",
+          "adapter": "static/studio/features/authoring-assist/references.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "taskStates": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/authoring/workspace.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "assetSelection": {
+          "kind": "reuse",
+          "adapter": "static/studio/features/authoring-assist/references.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "assetOrigins": {
+          "kind": "reuse",
+          "adapter": "static/studio/features/authoring-assist/references.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "assetUsage": {
+          "kind": "reuse",
+          "adapter": "h3ui/creation/service.py",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "assetCollection": {
+          "kind": "reuse",
+          "adapter": "h3ui/creation/service.py",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "promptEditing": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/authoring/workspace.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "promptCollection": {
+          "kind": "reuse",
+          "adapter": "h3ui/creation/service.py",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "promptRecords": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/authoring/workspace.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "refresh": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/authoring/workspace.js",
+          "reason": "经公共快照分类与视图保护接收，进度局部更新；提示词管理沿用公共分层导航。"
+        },
+        "viewState": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/authoring/workspace.js",
+          "reason": "经公共快照分类与视图保护接收，进度局部更新；提示词管理沿用公共分层导航。"
+        },
+        "statusRegions": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/authoring/workspace.js",
+          "reason": "经公共快照分类与视图保护接收，进度局部更新；提示词管理沿用公共分层导航。"
+        },
+        "libraryNavigation": {
+          "kind": "reuse",
+          "adapter": "static/studio/features/prompt-library/browser.js",
+          "reason": "经公共快照分类与视图保护接收，进度局部更新；提示词管理沿用公共分层导航。"
+        },
+        "designScale": {
+          "kind": "reuse",
+          "adapter": "static/studio/style.css",
+          "reason": "字体、控件、面板和弹窗尺寸消费公共标尺；业务内容按原模式配置。"
+        }
+      },
+      "scenarios": {
+        "navigation": {
+          "status": "checked",
+          "reason": "真实浏览器检查步骤与稳定目标；来源返回使用原项目UUID，保留剪辑项目/片段/页签/视图参数，Node补外链拒绝。",
+          "evidence": [
+            "docs/evidence/creation-v3/verification.json",
+            "tests/test_creation_roundtrip.py",
+            "tests/creation_ui_fixture.py"
+          ]
+        },
+        "import": {
+          "status": "checked",
+          "reason": "临时真实Store验证未完成稿导入与图片handoff固定版本；浏览器取消补图不保存未提交草稿。不含大文件续传。",
+          "evidence": [
+            "docs/evidence/creation-v3/verification.json",
+            "tests/test_creation_roundtrip.py",
+            "tests/creation_ui_fixture.py"
+          ]
+        },
+        "parameters": {
+          "status": "checked",
+          "reason": "真实浏览器检查DeepSeek精确model_id、云端与原电影参数弹窗取消无草稿副作用；共享参数组件另有Node回归。",
+          "evidence": [
+            "docs/evidence/creation-v3/verification.json",
+            "tests/test_creation_roundtrip.py",
+            "tests/creation_ui_fixture.py"
+          ]
+        },
+        "save": {
+          "status": "checked",
+          "reason": "真实API验证保存重开、固定ID、revision冲突和幂等；浏览器输入与裁切保存持久化。",
+          "evidence": [
+            "docs/evidence/creation-v3/verification.json",
+            "tests/test_creation_roundtrip.py",
+            "tests/creation_ui_fixture.py"
+          ]
+        },
+        "generation": {
+          "status": "checked",
+          "reason": "fake模型/媒体末端验证实际任务API、准备/提交、候选与12合同待补充不覆盖；没有真实生成验证。",
+          "evidence": [
+            "docs/evidence/creation-v3/verification.json",
+            "tests/test_creation_roundtrip.py",
+            "tests/creation_ui_fixture.py"
+          ]
+        },
+        "results": {
+          "status": "checked",
+          "reason": "真实临时API检查候选应用、采用和入库独立、裁切保留；共享结果移除保护及恢复。",
+          "evidence": [
+            "docs/evidence/creation-v3/verification.json",
+            "tests/test_creation_roundtrip.py",
+            "tests/creation_ui_fixture.py"
+          ]
+        },
+        "recovery": {
+          "status": "checked",
+          "reason": "隔离检查无效/截断候选、过期依据、unknown关闭不重放和回收恢复；不含实际引擎断线。",
+          "evidence": [
+            "docs/evidence/creation-v3/verification.json",
+            "tests/test_creation_roundtrip.py",
+            "tests/creation_ui_fixture.py"
+          ]
+        },
+        "async": {
+          "status": "checked",
+          "reason": "保存/异步任务修订、迟到依据拒绝与共有参数关闭失效检查；不声称长时多窗口验收。 本轮补真实2秒轮询无变化不重绘及真实变化保留展开/滚动/输入的回归。",
+          "evidence": [
+            "docs/evidence/creation-v3/verification.json",
+            "tests/test_creation_roundtrip.py",
+            "tests/creation_ui_fixture.py",
+            "tests/creation_refresh_ui_fixture.py",
+            "docs/evidence/creation-v3/refresh/after.json",
+            "docs/evidence/site-refresh-20260909/workspace-checks.json"
+          ]
+        },
+        "assetLifecycle": {
+          "status": "checked",
+          "reason": "固定版本绑定、图片A/B交接、显式应用、movie幂等入库、来源参数及两类派生反查的真实临时API检查。",
+          "evidence": [
+            "docs/evidence/creation-v3/verification.json",
+            "tests/test_creation_roundtrip.py",
+            "tests/creation_ui_fixture.py"
+          ]
+        },
+        "prompts": {
+          "status": "checked",
+          "reason": "剧本保存收录与H3实际编译绑定、movie冻结Prompt来源与家族查询；不从当前草稿补历史。",
+          "evidence": [
+            "docs/evidence/creation-v3/verification.json",
+            "tests/test_creation_roundtrip.py",
+            "tests/creation_ui_fixture.py"
+          ]
+        },
+        "visual": {
+          "status": "checked",
+          "reason": "五张原创插画已落盘接入。原首页/空态框架，8项宽窄浏览器加载/缺图回退检查通过，实际截图核对；仅此有限美术准入，不代表用户最终审美认可。",
+          "evidence": [
+            "docs/evidence/creation-v3/art/README.md",
+            "docs/evidence/creation-v3/art/checks.json",
+            "h3ui/creation/resources/美术配套/art-manifest.json"
+          ]
+        }
+      }
+    },
+    "movie": {
+      "review": "docs/creation-modes.md",
+      "shared": {
+        "settings": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/movie/workspace.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "models": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/movie/workspace.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "workbench": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/movie/workspace.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "actions": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/movie/workspace.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "references": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/movie/workspace.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "timing": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/movie/workspace.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "errors": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/movie/workspace.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "candidates": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/movie/workspace.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "modal": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/movie/workspace.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "chrome": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/movie/workspace.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "results": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/movie/workspace.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "playback": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/movie/workspace.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "async": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/movie/workspace.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "transfers": {
+          "kind": "not-applicable",
+          "reason": "电影从固定剧本来源导入引用，只读原正文；修改素材/Prompt返回剧本，不另做上传或提示词编辑器。"
+        },
+        "taskStates": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/movie/workspace.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "assetSelection": {
+          "kind": "not-applicable",
+          "reason": "电影从固定剧本来源导入引用，只读原正文；修改素材/Prompt返回剧本，不另做上传或提示词编辑器。"
+        },
+        "assetOrigins": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/movie/workspace.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "assetUsage": {
+          "kind": "reuse",
+          "adapter": "h3ui/creation/movie.py",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "assetCollection": {
+          "kind": "reuse",
+          "adapter": "h3ui/creation/movie.py",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "promptEditing": {
+          "kind": "not-applicable",
+          "reason": "电影从固定剧本来源导入引用，只读原正文；修改素材/Prompt返回剧本，不另做上传或提示词编辑器。"
+        },
+        "promptCollection": {
+          "kind": "reuse",
+          "adapter": "h3ui/creation/movie.py",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "promptRecords": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/movie/workspace.js",
+          "reason": "沿用公共入口，由模式传固定身份、作用范围和业务命令；不复制组件。"
+        },
+        "refresh": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/movie/workspace.js",
+          "reason": "经公共快照分类与视图保护接收，进度局部更新；提示词管理沿用公共分层导航。"
+        },
+        "viewState": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/movie/workspace.js",
+          "reason": "经公共快照分类与视图保护接收，进度局部更新；提示词管理沿用公共分层导航。"
+        },
+        "statusRegions": {
+          "kind": "reuse",
+          "adapter": "static/studio/modes/movie/workspace.js",
+          "reason": "经公共快照分类与视图保护接收，进度局部更新；提示词管理沿用公共分层导航。"
+        },
+        "libraryNavigation": {
+          "kind": "reuse",
+          "adapter": "static/studio/features/prompt-library/browser.js",
+          "reason": "经公共快照分类与视图保护接收，进度局部更新；提示词管理沿用公共分层导航。"
+        },
+        "designScale": {
+          "kind": "reuse",
+          "adapter": "static/studio/style.css",
+          "reason": "字体、控件、面板和弹窗尺寸消费公共标尺；业务内容按原模式配置。"
+        }
+      },
+      "scenarios": {
+        "navigation": {
+          "status": "checked",
+          "reason": "真实浏览器检查步骤与稳定目标；来源返回使用原项目UUID，保留剪辑项目/片段/页签/视图参数，Node补外链拒绝。",
+          "evidence": [
+            "docs/evidence/creation-v3/verification.json",
+            "tests/test_creation_roundtrip.py",
+            "tests/creation_ui_fixture.py"
+          ]
+        },
+        "import": {
+          "status": "checked",
+          "reason": "临时真实Store验证未完成稿导入与图片handoff固定版本；浏览器取消补图不保存未提交草稿。不含大文件续传。",
+          "evidence": [
+            "docs/evidence/creation-v3/verification.json",
+            "tests/test_creation_roundtrip.py",
+            "tests/creation_ui_fixture.py"
+          ]
+        },
+        "parameters": {
+          "status": "checked",
+          "reason": "真实浏览器检查DeepSeek精确model_id、云端与原电影参数弹窗取消无草稿副作用；共享参数组件另有Node回归。",
+          "evidence": [
+            "docs/evidence/creation-v3/verification.json",
+            "tests/test_creation_roundtrip.py",
+            "tests/creation_ui_fixture.py"
+          ]
+        },
+        "save": {
+          "status": "checked",
+          "reason": "真实API验证保存重开、固定ID、revision冲突和幂等；浏览器输入与裁切保存持久化。",
+          "evidence": [
+            "docs/evidence/creation-v3/verification.json",
+            "tests/test_creation_roundtrip.py",
+            "tests/creation_ui_fixture.py"
+          ]
+        },
+        "generation": {
+          "status": "checked",
+          "reason": "fake模型/媒体末端验证实际任务API、准备/提交、候选与12合同待补充不覆盖；没有真实生成验证。",
+          "evidence": [
+            "docs/evidence/creation-v3/verification.json",
+            "tests/test_creation_roundtrip.py",
+            "tests/creation_ui_fixture.py"
+          ]
+        },
+        "results": {
+          "status": "checked",
+          "reason": "真实临时API检查候选应用、采用和入库独立、裁切保留；共享结果移除保护及恢复。",
+          "evidence": [
+            "docs/evidence/creation-v3/verification.json",
+            "tests/test_creation_roundtrip.py",
+            "tests/creation_ui_fixture.py"
+          ]
+        },
+        "recovery": {
+          "status": "checked",
+          "reason": "隔离检查无效/截断候选、过期依据、unknown关闭不重放和回收恢复；不含实际引擎断线。",
+          "evidence": [
+            "docs/evidence/creation-v3/verification.json",
+            "tests/test_creation_roundtrip.py",
+            "tests/creation_ui_fixture.py"
+          ]
+        },
+        "async": {
+          "status": "checked",
+          "reason": "保存/异步任务修订、迟到依据拒绝与共有参数关闭失效检查；不声称长时多窗口验收。 本轮补真实2秒轮询无变化不重绘及真实变化保留展开/滚动/输入的回归。",
+          "evidence": [
+            "docs/evidence/creation-v3/verification.json",
+            "tests/test_creation_roundtrip.py",
+            "tests/creation_ui_fixture.py",
+            "tests/creation_refresh_ui_fixture.py",
+            "docs/evidence/creation-v3/refresh/after.json",
+            "docs/evidence/site-refresh-20260909/workspace-checks.json"
+          ]
+        },
+        "assetLifecycle": {
+          "status": "checked",
+          "reason": "固定版本绑定、图片A/B交接、显式应用、movie幂等入库、来源参数及两类派生反查的真实临时API检查。",
+          "evidence": [
+            "docs/evidence/creation-v3/verification.json",
+            "tests/test_creation_roundtrip.py",
+            "tests/creation_ui_fixture.py"
+          ]
+        },
+        "prompts": {
+          "status": "checked",
+          "reason": "剧本保存收录与H3实际编译绑定、movie冻结Prompt来源与家族查询；不从当前草稿补历史。",
+          "evidence": [
+            "docs/evidence/creation-v3/verification.json",
+            "tests/test_creation_roundtrip.py",
+            "tests/creation_ui_fixture.py"
+          ]
+        },
+        "visual": {
+          "status": "checked",
+          "reason": "五张原创插画已落盘接入。原首页/空态框架，8项宽窄浏览器加载/缺图回退检查通过，实际截图核对；仅此有限美术准入，不代表用户最终审美认可。",
+          "evidence": [
+            "docs/evidence/creation-v3/art/README.md",
+            "docs/evidence/creation-v3/art/checks.json",
+            "h3ui/creation/resources/美术配套/art-manifest.json"
+          ]
+        }
+      }
+    }
+  }
 }

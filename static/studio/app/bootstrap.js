@@ -3,7 +3,7 @@ import { api, readLegacyProject } from "../core/api-client.js";
 import { assertImageCatalog } from "../core/image-catalog.js";
 import { mountTaskCenter } from "../features/task-center/index.js";
 import * as ui from "../ui/primitives.js";
-import { getMode, listModes, setImageAssetsEnabled, setAssemblyEnabled } from "./mode-registry.js";
+import { getMode, listModes, setImageAssetsEnabled, setAssemblyEnabled, setCreationEnabled } from "./mode-registry.js";
 import { renderHome, projectCard } from "../pages/home.js";
 import { createFeature as archiveFeature } from "../pages/archive.js";
 import {confirmLeave} from '../ui/choice-dialog.js';
@@ -20,6 +20,10 @@ const go = (hash) => {
 };
 async function createProject(modeId) {
   const mode = getMode(modeId);
+  if(['authoring','movie'].includes(modeId)){
+    const {createCreationProject}=await import('../features/authoring-assist/create-project.js');
+    return createCreationProject(mode,go);
+  }
   const d = ui.scopedModal(
     `<div class="dialog-heading"><span class="eyebrow">${mode.code} · NEW PRODUCTION</span><h2>${mode.name}</h2><p>${mode.description}</p></div><form id="new-form">${ui.field("项目名称", '<input name="name" required maxlength="120" placeholder="给这个故事一个名字" autofocus>')}${mode.kind === "image" ? ui.field("编辑工具", '<select name="submode"><option value="single">单图编辑</option><option value="dual">双图编辑</option><option value="region">局部重绘／移除</option><option value="outpaint">图像扩展</option><option value="text">文生图</option></select>') : ""}${modeId !== "swap" && mode.kind !== "image" && mode.kind !== "assembly" ? ui.field("计划总时长（秒）", '<input name="duration" type="number" min="1" max="3600" step=".01" value="15" required>', "每15秒一个片段；30秒写两段提示词。") : ""}<p class="helper">创建后进入${mode.entry}，准备完成后再生成${mode.kind === "image" ? "图片" : "视频"}。</p><div class="dialog-actions"><button type="button" id="close-new">取消</button><button class="primary">开始创作 →</button></div></form>`,
   );
@@ -102,6 +106,11 @@ async function route() {
     const match = hash.match(/^#\/p\/([a-zA-Z0-9-]+)(?:[/?].*)?$/);
     if (match) {
       const p = await api("/projects/" + match[1], "GET", undefined, signal);
+      if(['authoring','movie'].includes(p.kind)){
+        const {mountWorkspace}=await getMode(p.mode).load();
+        if(current!==epoch)return;
+        workspace=mountWorkspace(root,p);return;
+      }
       if(p.kind==='assembly'){
         const directory=await api('/assembly/catalog','GET',undefined,signal);
         const {mountWorkspace}=await import('../modes/video-assembly/workspace.js');
@@ -157,6 +166,7 @@ async function route() {
       if (current !== epoch) return;
       setImageAssetsEnabled(data.image_assets_enabled);
       setAssemblyEnabled(data.assembly_contract_version);
+      setCreationEnabled(data.creation_contract_version);
       renderHome(root, data.projects, createProject);
     }
   } catch (e) {
@@ -169,6 +179,7 @@ async function health() {
     const h = await api("/health");
     setImageAssetsEnabled(h.image_assets_enabled);
     setAssemblyEnabled(h.assembly_contract_version);
+    setCreationEnabled(h.creation_contract_version);
     const imageMismatch = h.image_assets_enabled && h.image_parameter_contract_version !== 1;
     ui.$("#health").textContent = imageMismatch ? "网站后台待重启" : h.local_server_version
       ? h.busy

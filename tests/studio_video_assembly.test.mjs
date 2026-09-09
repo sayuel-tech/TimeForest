@@ -43,7 +43,7 @@ test('three new removal types restore with exact project revision',()=>{
   for(const kind of ['clip','extension','run'])assert.deepEqual(restoreRequest({type:'assembly_'+kind,id:'x',project:'p',revision:3}),{path:'/assembly/p/visibility',body:{revision:3,id:'x',kind,removed:false}});
 });
 test('global active task has clear stop and recovery labels',()=>{
-  const task={kind:'assembly',id:'abc',name:'拼接',state:'unknown',actions:['recover','close'],active:true,url:'#/p/p'};
+  const task={kind:'assembly',id:'abc',project:'p',name:'拼接',state:'unknown',actions:['recover','close'],active:true,url:'#/p/p'};
   const html=taskCard(task,0);assert.match(html,/查询恢复/);assert.doesNotMatch(html,/undefined/);
   assert.match(confirmation(task,'recover'),/不会重复/);
 });

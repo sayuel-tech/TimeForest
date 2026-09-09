@@ -52,3 +52,8 @@
 ## 每次交付
 
 改动时在既有任务记录或维护状态说明所属功能/工具、来源与适配 ID、保留的工作区、必要输入和参数、审核/连续性/资产影响、旧项目影响及本次检查范围。代码、相关现行说明、当前状态和必要 AGENTS/PROJECT_GUIDE 路由同批维护，按[上下文维护机制](../governance/context-maintenance.md)完成语义核对、索引刷新及检查。不能只改日期，不能把文档维护留给下一次会话；未授权提交时全部留在同一工作树。
+
+
+## V3.0 剧本与电影接入
+
+剧本固定5页，电影固定2页，详见 [实际说明](../creation-modes.md)。电影 generation 只读剧本/Prompt，返回来源改稿；编辑页横轴只操作片段。StudioStore 原JSON扩展，53新业务路由和核心DTO经creation校验；原生公共project/catalog/source展示扩展与附件示意DTO区别明确记录在 runtime-routes.json，不重建旧API。

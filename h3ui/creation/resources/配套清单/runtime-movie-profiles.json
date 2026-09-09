@@ -1,0 +1,62 @@
+{
+  "revision": "movie-1",
+  "family": "h3",
+  "profiles": [
+    {
+      "profile_id": "movie.independent.dance_split",
+      "profile_revision": "1",
+      "recipe": "dance_split",
+      "prompt_mode": "full",
+      "context_kind": "independent"
+    },
+    {
+      "profile_id": "movie.independent.official_image",
+      "profile_revision": "1",
+      "recipe": "official_image",
+      "prompt_mode": "full",
+      "context_kind": "independent"
+    },
+    {
+      "profile_id": "movie.tail.dance_split",
+      "profile_revision": "1",
+      "recipe": "dance_split",
+      "prompt_mode": "full",
+      "context_kind": "external_decoded_av"
+    },
+    {
+      "profile_id": "movie.tail.official_image",
+      "profile_revision": "1",
+      "recipe": "official_image",
+      "prompt_mode": "full",
+      "context_kind": "external_decoded_av"
+    },
+    {
+      "profile_id": "movie.independent.dance_split.structured",
+      "profile_revision": "1",
+      "recipe": "dance_split",
+      "prompt_mode": "structured",
+      "context_kind": "independent"
+    },
+    {
+      "profile_id": "movie.independent.official_image.structured",
+      "profile_revision": "1",
+      "recipe": "official_image",
+      "prompt_mode": "structured",
+      "context_kind": "independent"
+    },
+    {
+      "profile_id": "movie.tail.dance_split.structured",
+      "profile_revision": "1",
+      "recipe": "dance_split",
+      "prompt_mode": "structured",
+      "context_kind": "external_decoded_av"
+    },
+    {
+      "profile_id": "movie.tail.official_image.structured",
+      "profile_revision": "1",
+      "recipe": "official_image",
+      "prompt_mode": "structured",
+      "context_kind": "external_decoded_av"
+    }
+  ]
+}

@@ -52,7 +52,7 @@ header nav {
 .page {
   max-width: 1360px;
   margin: auto;
-  padding: 48px 40px 72px;
+  padding: 28px var(--page-gutter) 48px;
   min-height: 75vh;
 }
 .hero {
@@ -134,7 +134,7 @@ header nav {
 }
 .card-body h3 {
   margin: 12px 0;
-  font-size: 25px;
+  font-size: 22px;
 }
 .card-body p {
   font-size: 14px;
@@ -167,7 +167,7 @@ header nav {
   gap: 16px;
   padding: 30px;
   font-family: var(--serif);
-  font-size: 26px;
+  font-size: var(--title-section);
 }
 .filter {
   display: grid;
@@ -198,7 +198,7 @@ header nav {
   gap: 28px;
 }
 .project-head h1 {
-  font-size: 36px;
+  font-size: var(--title-page);
   margin: 8px 0 10px;
   overflow-wrap: anywhere;
 }
@@ -261,7 +261,7 @@ header nav {
   margin: 0 0 22px;
 }
 .workspace-intro h2 {
-  font-size: 26px;
+  font-size: var(--title-section);
   margin: 10px 0 0;
 }
 .workspace-intro > p {
@@ -337,7 +337,7 @@ header nav {
   max-width: 145px;
 }
 .segment h2 {
-  font-size: 28px;
+  font-size: var(--title-section);
   margin: 10px 0;
 }
 .segment {
@@ -428,7 +428,7 @@ header nav {
     align-items: start;
   }
   .project-head h1 {
-    font-size: 32px;
+    font-size: var(--title-page);
   }
   .project-actions button {
     font-size: 13px;
@@ -457,7 +457,7 @@ header nav {
     gap: 14px;
   }
   .workspace-intro h2 {
-    font-size: 27px;
+    font-size: var(--title-section);
   }
   .workspace-intro p br {
     display: none;

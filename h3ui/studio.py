@@ -35,6 +35,7 @@ class Studio(StoryExecution,SourcePreparation):
         from .generation.launcher import EngineLauncher
         self.launcher=EngineLauncher(self)
         for p in self.store.list() if ctx.get('startup_recovery', True) else []:
+            if p.get('mode') in ('authoring','movie'):continue
             if p.get('status') in ['generating','assembling','preparing']:
                 p['status']='interrupted';p['error']='工作台上次中断。先查询已有任务或重新准备素材。'
                 for s in p['segments']:
@@ -463,6 +464,18 @@ class Studio(StoryExecution,SourcePreparation):
 
 @bp.errorhandler(Exception)
 def error(exc):return jsonify(error=str(exc),code='REVISION_CONFLICT' if isinstance(exc,Conflict) else 'INVALID_REQUEST'),409 if isinstance(exc,Conflict) else 404 if isinstance(exc,KeyError) else 400
+@bp.before_request
+def guard_creation_routes():
+    pid=(request.view_args or {}).get('pid')
+    if not pid:return
+    try:p=service().store.get(pid)
+    except KeyError:return
+    if p.get('mode') not in ('authoring','movie'):return
+    route=request.url_rule.rule
+    if request.method!='GET' and not route.endswith('/trash'):
+        raise ValueError('此项目请使用剧本或电影专属操作，不能套用视频项目修改与生成接口')
+    if request.method=='GET' and route.endswith('/preflight'):
+        raise ValueError('请使用电影片段检查接口')
 @bp.get('/catalog')
 def catalog():return jsonify(service().recipes.catalog())
 @bp.get('/projects')
@@ -470,6 +483,11 @@ def listing():
     st=service();items=[]
     for p in st.store.list(trash=request.args.get("trash")=="1"):
         cover=None
+        if p['mode'] in ('authoring','movie'):
+            content=p['content']
+            segments=next((r['content'].get('segments',[]) for r in content.get('layers',[]) if r['layer']=='segment'),[]) if p['mode']=='authoring' else content['segment_order']
+            items.append(dict(id=p['id'],revision=p['revision'],name=p['name'],mode=p['mode'],kind=p['mode'],status=p['status'],duration=p['duration'],updated=p['updated_at'],deleted_at=p.get('deleted_at'),busy=st.jobs.is_busy(p['id']),cover=None,segments=len(segments),accepted=0))
+            continue
         if p['mode']=='video_assembly':
             assembly=current_app.config['VIDEO_ASSEMBLY']
             items.append(dict(id=p['id'],revision=p['revision'],name=p['name'],mode=p['mode'],kind='assembly',status=p['status'],duration=assembly.duration(p),updated=p['updated_at'],deleted_at=p.get('deleted_at'),busy=st.jobs.is_busy(p['id']),cover=None,segments=sum(not c.get('removed_at') for c in p['assembly']['clips']),accepted=0))
@@ -480,7 +498,7 @@ def listing():
         items.append(dict(revision=p['revision'],deleted_at=p.get('deleted_at'),busy=st.jobs.is_busy(p['id']),id=p['id'],name=p['name'],mode=p['mode'],status=p['status'],duration=p['duration'],updated=p['updated_at'],cover=cover,segments=len(p['segments']),accepted=sum(s['status'] in ['accepted','done'] for s in p['segments'])))
     images=current_app.config.get('IMAGE_STUDIO')
     if images:items.extend(images.summaries(trash=request.args.get('trash')=='1'))
-    return jsonify(projects=sorted(items,key=lambda p:p['updated'],reverse=True),image_assets_enabled=bool(images),assembly_contract_version=1)
+    return jsonify(projects=sorted(items,key=lambda p:p['updated'],reverse=True),image_assets_enabled=bool(images),assembly_contract_version=1,creation_contract_version=1)
 @bp.post('/projects/<pid>/trash')
 def project_trash(pid):
     st=service();data=request.get_json() or {}
@@ -498,6 +516,10 @@ def project_trash(pid):
 @bp.post('/projects')
 def create():
     d=request.get_json()
+    if d.get('mode') in ('authoring','movie'):
+        data={k:v for k,v in d.items() if k not in ('mode','name','duration','submode')}
+        data['title']=d.get('name') or d.get('title')
+        return jsonify(current_app.config['CREATION'].create(d['mode'],data))
     if d.get('mode')=='video_assembly':
         assembly=current_app.config['VIDEO_ASSEMBLY']
         return jsonify(assembly.snapshot(assembly.create(d.get('name'))['id']))
@@ -537,6 +559,8 @@ def resume_story(pid,index):
 @bp.get('/projects/<pid>')
 def get(pid):
     images=current_app.config.get('IMAGE_STUDIO')
+    if not (images and images.store.exists(pid)) and service().store.get(pid)['mode'] in ('authoring','movie'):
+        return jsonify(current_app.config['CREATION'].snapshot(pid))
     if not (images and images.store.exists(pid)) and service().store.get(pid)['mode']=='video_assembly':
         return jsonify(current_app.config['VIDEO_ASSEMBLY'].snapshot(pid))
     return jsonify(images.snapshot(pid) if images and images.store.exists(pid) else service().snapshot(service().store.get(pid)))
@@ -664,7 +688,7 @@ def files(pid,subpath):
 @bp.get('/health')
 def health():
     st=service();state=st.recipes.engine_catalog.status()
-    return jsonify(ok=True,version=5,local_server_version=1,assembly_contract_version=1,assembly_reference_version=1,assembly_track_version=1,assembly_source_parameters_version=1,assembly_tail_preparation_version=2,image_assets_enabled='IMAGE_STUDIO' in current_app.config,image_parameter_contract_version=st.ctx.get('image_parameter_contract_version'),startup_recovery=st.ctx.get('startup_recovery',True),deployment=str(st.ctx['root']),comfy_connected=state['connected'],engine=state,busy=st.jobs.is_busy(),job=st.jobs.current(),jobs=st.jobs.snapshot(),devices=state['devices'])
+    return jsonify(ok=True,version=5,creation_contract_version=1,local_server_version=1,assembly_contract_version=1,assembly_reference_version=1,assembly_track_version=1,assembly_source_parameters_version=1,assembly_tail_preparation_version=2,image_assets_enabled='IMAGE_STUDIO' in current_app.config,image_parameter_contract_version=st.ctx.get('image_parameter_contract_version'),startup_recovery=st.ctx.get('startup_recovery',True),deployment=str(st.ctx['root']),comfy_connected=state['connected'],engine=state,busy=st.jobs.is_busy(),job=st.jobs.current(),jobs=st.jobs.snapshot(),devices=state['devices'])
 
 @bp.post('/engine/connect')
 def connect_engine():

@@ -1,0 +1,14 @@
+[
+  {
+    "passed": true,
+    "view": "asset-picker",
+    "width": 1902,
+    "case": "asset-picker-1920"
+  },
+  {
+    "passed": true,
+    "view": "asset-picker",
+    "width": 742,
+    "case": "asset-picker-760"
+  }
+]

@@ -1,0 +1,93 @@
+[
+  {
+    "passed": true,
+    "mode": "swap",
+    "checks": [
+      "identical poll",
+      "status patch/editor identity",
+      "changed content/disclosure",
+      "focused draft",
+      "keyed task reorder"
+    ],
+    "case": "swap",
+    "evidence_run": "refresh"
+  },
+  {
+    "passed": true,
+    "mode": "image_story",
+    "checks": [
+      "identical poll",
+      "status patch/editor identity",
+      "changed content/disclosure",
+      "focused draft",
+      "keyed task reorder"
+    ],
+    "case": "image_story",
+    "evidence_run": "refresh"
+  },
+  {
+    "passed": true,
+    "mode": "text_story",
+    "checks": [
+      "identical poll",
+      "status patch/editor identity",
+      "changed content/disclosure",
+      "focused draft",
+      "keyed task reorder"
+    ],
+    "case": "text_story",
+    "evidence_run": "refresh"
+  },
+  {
+    "passed": true,
+    "mode": "image_assets",
+    "checks": [
+      "identical poll",
+      "status patch/editor identity",
+      "changed content/disclosure",
+      "focused draft",
+      "keyed task reorder"
+    ],
+    "case": "image_assets",
+    "evidence_run": "refresh"
+  },
+  {
+    "passed": true,
+    "mode": "video_assembly",
+    "checks": [
+      "identical poll",
+      "status patch/editor identity",
+      "changed content/disclosure",
+      "focused draft",
+      "keyed task reorder"
+    ],
+    "case": "video_assembly",
+    "evidence_run": "refresh"
+  },
+  {
+    "passed": true,
+    "mode": "authoring",
+    "checks": [
+      "identical poll",
+      "status patch/editor identity",
+      "changed content/disclosure",
+      "focused draft",
+      "keyed task reorder"
+    ],
+    "case": "authoring",
+    "evidence_run": "refresh"
+  },
+  {
+    "passed": true,
+    "mode": "movie",
+    "checks": [
+      "identical poll",
+      "status patch/editor identity",
+      "changed content/disclosure",
+      "focused draft",
+      "keyed task reorder"
+    ],
+    "case": "movie",
+    "evidence_run": "refresh"
+  }
+]
