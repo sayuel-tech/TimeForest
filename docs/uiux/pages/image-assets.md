@@ -46,3 +46,10 @@
 - [docs/frontend/image-workspace-ui.md](../../frontend/image-workspace-ui.md)
 
 维护此页时同时更新 catalog 对应条目、刷新机器图并执行链接检查；具体步骤见 [更新约定](../maintenance.md)。
+
+## R1布局接入（2026-09-10）
+
+原画布／遮罩／工具与候选保留，接入公共抽屉和步骤；窄屏不自动遮挡画布。真实鼠标遮罩与扩边保存见专用fixture。 布局以用户提供预览为目标，美术沿用原站。源码归属、检查与局限见[本次接入](../site-experience.md)。
+
+
+本轮信息密度、字体与动效更新（2026-09-10）见[修复记录](../../frontend/density-font-motion.md)。原版字体实际加载、标题字重与减少动态效果分别核对；原素材／媒体／正文和保存语义保留。

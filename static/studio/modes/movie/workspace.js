@@ -1,3 +1,5 @@
+import {enhanceMovieWorkspace} from '../../ui/experience-content.js';
+import {assertTimecodeInputs} from '../../ui/timecode-input.js';
 import {updateStatusRegion} from '../../ui/status-region.js';
 import {creationJobStatus} from '../../ui/creation-job-status.js';
 import {snapshotChange} from '../../core/snapshot-update.js';
@@ -33,7 +35,7 @@ const key=()=>crypto.randomUUID();
 export function mountWorkspace(root,initial){
   const controller=new AbortController(),query=new URLSearchParams(location.hash.split('?')[1]||'');
   const session={project:initial,dirty:false,working:false,actionPending:false,disposed:false,controller,request:api,version:0,emit(){}};
-  const ctx={root,session,step:Number(query.get('step')||0),selected:query.get('target')||query.get('origin_segment')||initial.content.segment_order[0]||'',viewTake:query.get('take')||query.get('origin_run'),inspectorTab:'source',expanded:new Set(),zoom:Math.min(100,Math.max(8,Number(query.get('zoom'))||30)),selectedItem:query.get('item')||'',generationEdit:null,editDraft:null,error:null};
+  const ctx={root,session,step:Number(query.get('step')||0),selected:query.get('target')||query.get('origin_segment')||initial.content.segment_order[0]||'',viewTake:query.get('take')||query.get('origin_run'),inspectorTab:'source',expanded:new Set(),zoom:Math.min(100,Math.max(8,Number(query.get('zoom'))||30)),selectedItem:query.get('item')||'',generationEdit:null,editDraft:null,timecodeDrafts:new Map(),error:null};
   let saved=structuredClone(initial),catalog=null,sourceView=null;
   const viewState=workspaceViewState(root);
   if(initial.movie_exports?.some(e=>e.export_id===query.get('origin_run')))ctx.step=1;
@@ -60,7 +62,9 @@ export function mountWorkspace(root,initial){
     return structuredClone(p().content.generation_drafts.find(d=>d.segment_id===ctx.selected)||{segment_id:ctx.selected,profile_id:b.profile_id,parameter_overrides:{},input_contract_id:s.input_contract.input_contract_id,reference_ids:s.references.map(r=>r.id),upstream_take_id:null,upstream_range:null});
   }
   async function save(){
+    assertTimecodeInputs(root,ctx.timecodeDrafts);
     if(session.working)return false;session.working=true;
+    root.querySelectorAll('.timecode-display').forEach(input=>input.readOnly=true);
     try{
       const latest=await api('/projects/'+p().id,'GET',undefined,controller.signal);
       if(ctx.generationEdit){const sid=ctx.generationEdit.segment_id,old=saved.content.generation_drafts.find(d=>d.segment_id===sid),now=latest.content.generation_drafts.find(d=>d.segment_id===sid);if(JSON.stringify(old)!==JSON.stringify(now)||JSON.stringify(saved.content.source_bundles)!==JSON.stringify(latest.content.source_bundles))throw Error('片段草稿或来源已被修改。当前输入保留，请核对后再保存。');}
@@ -68,10 +72,10 @@ export function mountWorkspace(root,initial){
       saved=latest;
       if(ctx.generationEdit){await api(`/movie/projects/${p().id}/generation-draft`,'POST',{revision:saved.revision,request_key:key(),...ctx.generationEdit});ctx.generationEdit=null;await reload();}
       if(ctx.editDraft){await api(`/movie/projects/${p().id}/edit/save`,'POST',{revision:saved.revision,request_key:key(),edit_content_hash:saved.edit_content_hash,order:ctx.editDraft.order,item_changes:ctx.editDraft.items.map(i=>({item_id:i.id,range:i.range,included:i.included}))});ctx.editDraft=null;await reload();}
-      session.dirty=false;return true;
-    }finally{session.working=false;}
+      ctx.timecodeDrafts.clear();session.dirty=false;return true;
+    }finally{session.working=false;root.querySelectorAll('.timecode-display').forEach(input=>input.readOnly=false);}
   }
-  async function leave(fn){if(session.dirty){const choice=await confirmLeave({save,signal:controller.signal});if(!['save','discard'].includes(choice))return;if(choice==='discard'){ctx.generationEdit=null;ctx.editDraft=null;session.project=structuredClone(saved);session.dirty=false;}}fn();render();}
+  async function leave(fn){if(session.dirty){const choice=await confirmLeave({save,signal:controller.signal});if(!['save','discard'].includes(choice))return;if(choice==='discard'){ctx.timecodeDrafts.clear();ctx.generationEdit=null;ctx.editDraft=null;session.project=structuredClone(saved);session.dirty=false;}}fn();render();}
   async function command(path,data={}){const result=await api(`/movie/projects/${p().id}/`+path,'POST',{revision:p().revision,request_key:key(),...data});await reload();return result;}
   function currentTake(){const choices=(p().movie_takes||[]).filter(t=>t.movie_segment_id===ctx.selected&&t.state!=='removed');return ctx.viewTake?choices.find(t=>t.take_id===ctx.viewTake):choices.find(t=>t.currently_adopted)||choices.at(-1);}
   async function showSource(t){sourceView=await api(`/movie/projects/${p().id}/takes/${t.take_id}/source`);render();}
@@ -122,8 +126,9 @@ export function mountWorkspace(root,initial){
     root.querySelectorAll('[data-item]').forEach(b=>{b.ondragstart=e=>e.dataTransfer.setData('text/plain',b.dataset.item);b.ondragover=e=>e.preventDefault();b.ondrop=e=>{e.preventDefault();const id=e.dataTransfer.getData('text/plain'),v=ensureEdit();if(!v.order.includes(id)||id===b.dataset.item)return;v.order.splice(v.order.indexOf(id),1);v.order.splice(v.order.indexOf(b.dataset.item),0,id);mark();render();};});
     root.querySelector('[data-zoom]')?.addEventListener('input',e=>{ctx.zoom=Number(e.target.value);root.querySelectorAll('[data-item]').forEach(b=>{const i=edit().items.find(i=>i.id===b.dataset.item);b.style.width=(i.range.out_ms-i.range.in_ms)/1000*ctx.zoom+'px';});});
     function changeRange(k,value){ensureEdit().items.find(i=>i.id===ctx.selectedItem).range[k]=value;mark();}
-    root.querySelectorAll('[data-range]').forEach(el=>el.oninput=()=>changeRange(el.dataset.range,Number(el.value)));on('[data-playhead]',e=>{changeRange(e.currentTarget.dataset.playhead,Math.round((root.querySelector('video')?.currentTime||0)*1000));render();});root.querySelector('[data-included]')?.addEventListener('change',e=>{ensureEdit().items.find(i=>i.id===ctx.selectedItem).included=e.target.checked;mark();render();});
+    root.querySelectorAll('[data-range]').forEach(el=>el.oninput=()=>changeRange(el.dataset.range,Number(el.value)));on('[data-playhead]',e=>{ctx.timecodeDrafts.delete('edit:'+ctx.selectedItem+':edit:'+e.currentTarget.dataset.playhead);changeRange(e.currentTarget.dataset.playhead,Math.round((root.querySelector('.media-player video')?.currentTime||0)*1000));render();});root.querySelector('[data-included]')?.addEventListener('change',e=>{ensureEdit().items.find(i=>i.id===ctx.selectedItem).included=e.target.checked;mark();render();});
     on('[data-return-generation]',()=>leave(()=>{ctx.selected=edit().items.find(i=>i.id===ctx.selectedItem).movie_segment_id;ctx.step=0;}));on('[data-item-source]',()=>run(()=>showSource(take(edit().items.find(i=>i.id===ctx.selectedItem).take_id))));on('[data-sync]',()=>run(sync));on('[data-edit-updates]',()=>run(updates));on('[data-export]',()=>run(exportMovie));
+    enhanceMovieWorkspace({ctx,project:p(),edit:edit(),mediaURL:url,currentTake:t,source,mark});
     restoreView();unbindPlayers.refresh();
   }
   async function openSettings(){

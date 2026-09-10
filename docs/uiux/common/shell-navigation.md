@@ -50,3 +50,11 @@
 - [docs/frontend/visual-design-standard-v2.md](../../frontend/visual-design-standard-v2.md)
 
 维护此页时同时更新 catalog 对应条目、刷新机器图并执行链接检查；具体步骤见 [更新约定](../maintenance.md)。
+
+
+## 本轮接入
+
+全站导航和连接状态已按最新反馈回到顶部，不再使用左侧全站栏或重复普通页顶栏。site-navigation测量实际顶栏高度，workbench据此保留正文及底栏空间；公共工作区步骤与底栏保留。窄屏目录／参考抽屉统一管理关闭、焦点及背景inert。 具体职责与证据见 [R1接入](../site-experience.md)。
+
+
+本轮信息密度、字体与动效更新（2026-09-10）见[修复记录](../../frontend/density-font-motion.md)。原版字体实际加载、标题字重与减少动态效果分别核对；原素材／媒体／正文和保存语义保留。

@@ -1,7 +1,7 @@
 import {addRecordButton,recordSource} from '../prompt-library/records.js';
 import {workbench,bindWorkbench} from '../../ui/workbench.js';
 import {shotHeading} from '../prompts/authoring.js';
-import {reviewProperties,reviewActions,selectionLabel} from './review-parts.js';
+import {reviewProperties,reviewActions,selectionLabel,videoCandidateHistory} from './review-parts.js';
 import { finishesReview } from "../../core/export-lifecycle.js";
 import {bindErrorFeedback} from '../../ui/error-feedback.js';
 import {recordConfirmation} from '../../ui/candidate-records.js';
@@ -13,7 +13,7 @@ export function createFeature(ctx) {
       s = p.segments[ctx.shot];
     const finalReview = finishesReview(p, ctx.shot);
     const rail=`<h3>制作进度</h3><div class="shot-nav">${p.segments.map((segment,i)=>`<button data-shot="${i}" class="${i===ctx.shot?'active':''}">P${i+1} · ${ctx.LABELS[segment.status]||segment.status}</button>`).join('')}</div>`;
-    const canvas=s?shotHeading(ctx,s)+`<div class="review-media">${ctx.reviewComparison(s)}</div>`+reviewActions(ctx,s,finalReview):'<p>先在编排准备片段。</p>';
+    const canvas=s?shotHeading(ctx,s)+`<div class="review-media">${ctx.reviewComparison(s)}</div>`+reviewActions(ctx,s,finalReview)+`<section class="review-candidates"><h3>候选结果</h3><p class="helper">查看、选用和加入资产库是独立操作。</p>${videoCandidateHistory(ctx,s)}</section>`:'<p>先在编排准备片段。</p>';
     ctx.$('#view').innerHTML=`${p.mode==='swap'&&!p.source_ready?'<div class="notice">当前参数需要重新准备源切片，无需重新上传。<button id="review-source">前往源视频准备</button></div>':''}<div id="run-progress">${ctx.progressCard()}</div><div class="review-toolbar"><div>${ctx.field('执行方式',`<select id="review-mode">${ctx.opts([['manual','人工逐段审核'],['automatic','全自动生成并合成']],p.review)}</select>`)}</div><div class="row"><button id="run-preflight" data-auto-save data-saved-label="检查工作流" data-dirty-label="保存并检查工作流">检查工作流</button>${p.busy?'<button id="pause">完成本段后暂停</button>':`<button id="run-all" ${p.review==='automatic'?'class="primary"':''} data-auto-save data-saved-label="${p.review==='automatic'?'生成全部并自动合成':'开始逐段制作'}" data-dirty-label="保存并开始制作">${ctx.dirty?'保存并开始制作':p.review==='automatic'?'生成全部并自动合成':'开始逐段制作'}</button>`}</div></div>${ctx.dirty?'<div class="notice review-draft"><p id="review-draft-note">生成前将自动保存；涉及结果过期或切换工作流时先确认。</p><button id="save-review">保存修改</button><button id="discard-review">放弃修改</button></div>':''}${workbench({kind:'review-desk',rail,canvas,inspector:s?reviewProperties(ctx,s):''})}`;
     bindWorkbench(ctx);bindErrorFeedback(ctx.root);
     if (ctx.$("#review-source"))

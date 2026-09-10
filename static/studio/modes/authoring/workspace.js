@@ -1,3 +1,4 @@
+import {enhanceAuthoringWorkspace} from '../../ui/experience-content.js';
 import {conversationKey} from '../../features/authoring-assist/conversation.js';
 import {snapshotChange} from '../../core/snapshot-update.js';
 import {projectContent,mergeProjectRuntime,acceptProjectRevision} from '../../contracts/project-refresh.js';
@@ -115,7 +116,7 @@ export function mountWorkspace(root,initial) {
     let canvas='',rail='',inspector='';
     if(ctx.step===0){const intent=content('intent');canvas=`<h2>从一个想法开始</h2>${textarea('你的故事或创作想法','intent',intent.story_text)}${field('希望的时长（秒）',`<input data-duration type="number" min="1" step=".01" value="${intent.target_duration_seconds??''}" placeholder="尚未确定也可以继续">`)}${textarea('风格与创作偏好','preferences',intent.preferences)}`;}
     if(ctx.step===1)canvas=`<h2>完整剧本</h2>${readingDisclosure('故事起点',content('intent').story_text||'尚未填写')}<div data-authoring-assist></div>${prose('screenplay','已确认或保存的完整剧本 · 查看／编辑')}`;
-    if(ctx.step===2)canvas=`<h2>剧本资产绑定</h2><div class="creation-asset-stage"><div data-reference-content></div></div><div class="creation-asset-writing"><h2>完整资产剧本</h2><div class="row"><button data-asset-task="asset_analysis">分析所需资产</button><button data-asset-task="asset_screenplay">创作完整资产剧本</button></div><div data-authoring-assist></div>${prose('screenplay','原完整剧本')}${prose('asset_screenplay','已保存的完整资产剧本 · 查看／编辑')}</div>`;
+    if(ctx.step===2)canvas=`<div class="creation-asset-stage"><div data-reference-content></div></div><div class="creation-asset-writing"><h2>完整资产剧本</h2><div class="row"><button data-asset-task="asset_analysis">分析所需资产</button><button data-asset-task="asset_screenplay">创作完整资产剧本</button></div><div data-authoring-assist></div>${prose('screenplay','原完整剧本')}${prose('asset_screenplay','已保存的完整资产剧本 · 查看／编辑')}</div>`;
     if(ctx.step>=3){
       if(ctx.step===3){
         canvas=`<h2>${esc(shot?.title||'切分镜')}</h2>${readingDisclosure('完整资产剧本',(content('asset_screenplay').blocks||[]).map(b=>b.text).join('\n\n'))}${shot?`<div class="row"><button data-shot-task="rewrite">修改当前分镜</button><button data-shot-task="split">在本分镜下切片段</button></div>`:''}<div data-authoring-assist></div>${shot?`<details class="saved-writing"><summary>已保存分镜 · 查看／编辑</summary>${field('分镜名称',`<input data-shot-title value="${esc(shot.title||'')}">`)}${textarea('分镜内容','shot',shot.text)}${field('分镜默认视频工作流（H3）',`<select data-shot-recipe><option value="dance_split" ${shot.workflow_recipe!=='official_image'?'selected':''}>跳舞 8＋4</option><option value="official_image" ${shot.workflow_recipe==='official_image'?'selected':''}>官方工作流</option></select>`,'本分镜片段默认沿用；片段可单独更改。')}</details><button data-add-segment>手动添加片段</button>`:'<button data-add-shot>手动添加分镜</button>'}`;
@@ -165,6 +166,7 @@ export function mountWorkspace(root,initial) {
     mountReferences({ctx,content,edit,save,run,render,reload,controller});
     mountImageHandoffs({ctx,content,row,save,run,render,reload,controller,returnContext:readReturnContext(params)});
     bindAuthoringPromptTools({ctx,controller,render});
+    enhanceAuthoringWorkspace(ctx);
     restoreView();
   }
   render();

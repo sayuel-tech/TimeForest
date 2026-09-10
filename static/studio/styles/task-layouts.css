@@ -8,7 +8,7 @@
 .desk-canvas>:not(.image-viewport,.image-compare,.review-media,.media-player,.field,.result-empty){flex-shrink:0}
 .desk-canvas>.field:not(:has(textarea)){flex:none}
 .desk-canvas textarea,.reading-editor textarea,.library-editor textarea,.prompt-text,.creation-prose{font-size:var(--text-reading);line-height:var(--leading-reading)}
-.desk-canvas .director-script,.desk-canvas .writing-script{font-size:var(--text-reading);line-height:var(--leading-reading);min-height:260px}
+.desk-canvas .director-script,.desk-canvas .writing-script{font-size:var(--text-reading);line-height:var(--leading-reading);min-height:160px}
 .desk-canvas>.field:has(textarea){width:100%;max-width:none}
 .creation-prose{width:100%;max-width:var(--reading-width)}
 .creation-prose{white-space:pre-wrap;overflow-wrap:anywhere}
@@ -22,7 +22,7 @@ dialog:has(.reading-document),dialog:has([data-records]){width:min(1040px,96vw)}
 .prompt-library-browser [data-detail] h3[tabindex="-1"]:focus{outline:none}
 .authoring-desk .desk-canvas>.field,.authoring-desk .desk-canvas>section{flex:none}
 .authoring-desk .desk-canvas>section{max-width:var(--reading-width);width:100%}
-.authoring-desk .director-script{min-height:300px}
+.authoring-desk .director-script{min-height:180px}
 .authoring-desk [data-text=preferences]{min-height:130px}
 .reference-contact-sheet:empty{display:none}
 .reference-contact-sheet:not(:has(figure)){flex:none;border:0;padding:0}
@@ -32,19 +32,19 @@ dialog:has(.reading-document),dialog:has([data-records]){width:min(1040px,96vw)}
 .swap-directing .source-stage .media-player{max-width:600px}
 .swap-directing .source-stage video{max-height:240px}
 .swap-script{overflow:visible}
-.swap-script textarea,.swap-script .final-prompt-preview textarea{font-size:var(--text-reading);line-height:var(--leading-reading);min-height:260px;max-height:none}
+.swap-script textarea,.swap-script .final-prompt-preview textarea{font-size:var(--text-reading);line-height:var(--leading-reading);min-height:160px;max-height:none}
 .image-workspace .image-prompt textarea{font-size:var(--text-reading);line-height:var(--leading-reading);height:112px;min-height:112px}
-.image-workspace .image-viewport.text-intent{flex:none;min-height:0;padding:18px}
-.image-workspace .image-asset-desk:has(.text-intent) .image-prompt{display:flex;flex-direction:column;flex:1;gap:10px;min-height:300px}
-.image-workspace .image-asset-desk:has(.text-intent) .image-prompt textarea{flex:1;min-height:280px}
+.image-workspace .image-viewport.text-intent{flex:none;min-height:0;padding:12px}
+.image-workspace .image-asset-desk:has(.text-intent) .image-prompt{display:flex;flex-direction:column;flex:1;gap:10px;min-height:180px}
+.image-workspace .image-asset-desk:has(.text-intent) .image-prompt textarea{flex:1;min-height:180px}
 .image-workspace .image-run-prompt{font-size:var(--text-summary);line-height:var(--leading-reading)}
-.mode-video-assembly .assembly-content textarea{min-height:260px;font-size:var(--text-reading);line-height:var(--leading-reading)}
+.mode-video-assembly .assembly-content textarea{min-height:160px;font-size:var(--text-reading);line-height:var(--leading-reading)}
 .prompt-tools button{font-size:var(--text-control);min-height:var(--control-compact)}
 dialog:has(.reading-editor){width:min(1040px,96vw)}
 .reading-editor{max-width:var(--reading-width);margin-inline:auto}
 .reading-editor textarea{width:100%;min-height:320px;height:58dvh;resize:vertical;padding:20px}
 dialog:has([data-prompt-form] textarea){width:min(1040px,96vw)}
-[data-prompt-form] textarea{font-size:var(--text-reading);line-height:var(--leading-reading);min-height:280px;resize:vertical}
+[data-prompt-form] textarea{font-size:var(--text-reading);line-height:var(--leading-reading);min-height:180px;resize:vertical}
 .reading-expand{margin:0 0 16px 8px}
 .desk-rail button,.property-tabs button{font-size:var(--text-control)}
 .desk-rail button{overflow-wrap:anywhere}
@@ -53,8 +53,8 @@ dialog:has([data-prompt-form] textarea){width:min(1040px,96vw)}
 .desk-canvas .media-player video{min-height:200px;max-height:58dvh;object-fit:contain}
 .review-media .swap-comparison video{max-height:48dvh;min-height:200px}
 .review-media .swap-comparison{gap:16px}
-.director-desk.review-desk{height:auto;min-height:520px;align-items:start}
-.review-desk>.desk-canvas{min-height:520px}
+.director-desk.review-desk{height:auto;min-height:0;align-items:start}
+.review-desk>.desk-canvas{min-height:0}
 .review-desk>.desk-inspector{max-height:75dvh}
 .review-desk .review-media{flex:none;overflow:visible}
 .director-desk.export-desk .desk-canvas>.media-player{flex:none}
@@ -67,7 +67,7 @@ dialog:has([data-prompt-form] textarea){width:min(1040px,96vw)}
 .library-pick-card strong{white-space:normal;overflow-wrap:anywhere;line-height:1.5}
 .library-pick-card small,.library-card small{font-size:var(--text-meta)}
 .archive-project-entry .project-cover{height:160px}
-.archive-project-entry .card-body{padding:18px}
+.archive-project-entry .card-body{padding:12px}
 .archive-project-entry .card-body h3{font-size:var(--title-section);overflow-wrap:anywhere}
 .archive-project-entry .card-body p{font-size:var(--text-summary)}
 .library-picker-results{grid-template-columns:repeat(auto-fill,minmax(min(220px,100%),1fr))}
@@ -95,6 +95,97 @@ dialog:has([data-prompt-form] textarea){width:min(1040px,96vw)}
  .settings-navigation{position:static}
  .settings-fields{max-height:none}
  .authoring-desk .desk-rail,.movie-generation-desk .desk-rail{max-height:240px}
- .reading-editor textarea{min-height:300px;padding:14px}
+ .reading-editor textarea{min-height:180px;padding:14px}
  .desk-canvas .media-player video{min-height:160px}
+}
+
+/* R1 layout integration; original TimeForest artwork and palette retained. */
+
+/* Existing five modes: task-specific canvas and comparison geometry are preserved. */
+.tf-experience .reference-contact-sheet { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:16px; }
+.tf-experience .reference-contact-sheet figure { width:110px; margin:0; }
+.tf-experience .reference-contact-sheet img { height:88px; width:100%; object-fit:contain; background:var(--paper-2); border-radius:6px; }
+.tf-experience .reference-contact-sheet figcaption { font-size:11px; line-height:1.4; padding-top:5px; }
+.tf-experience .swap-directing { display:grid; gap:16px; grid-template-columns:minmax(0,1fr) minmax(0,1fr); }
+.tf-experience .swap-comparison { display:grid; gap:16px; grid-template-columns:minmax(0,1fr) minmax(0,1fr); }
+.tf-experience .swap-comparison .media-player video { max-height:42dvh; }
+.tf-experience .image-review,.tf-experience .script-review { display:grid; grid-template-columns:minmax(0,1fr) 260px; gap:20px; }
+.tf-experience .reference-rail,.tf-experience .script-review-copy { padding:16px; background:var(--paper-2); border:1px solid var(--line); border-radius:var(--r-sm); }
+.tf-experience .reference-rail img { max-width:100%; object-fit:contain; max-height:160px; }
+.tf-experience .image-canvas,.tf-experience .canvas-viewport { border-radius:var(--r-sm); background:var(--paper-2); }
+.tf-experience .image-task-rail,.tf-experience .assembly-track { border-radius:var(--r-sm); }
+.tf-experience .source-character { max-height:160px; width:100%; object-fit:contain; background:var(--paper); border-radius:var(--r-sm); }
+
+@media(min-width:1700px){
+  .tf-experience .desk-canvas { padding-inline:32px; }
+  .tf-experience .candidate-gallery { grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); }
+}
+@media(max-width:1179px){
+  .tf-experience .director-desk,.tf-experience .director-desk[data-has-inspector=false] { grid-template-columns:var(--workspace-rail-width) minmax(0,1fr); }
+  .tf-experience .director-desk[data-has-rail=false] { grid-template-columns:minmax(0,1fr); }
+  .tf-experience .director-desk>.desk-inspector { display:none; }
+  .tf-experience .director-desk.inspector-open>.desk-inspector { display:block; position:absolute; top:0; right:0; width:min(350px,90%); height:100%; z-index:9; box-shadow:-8px 0 24px #201e1912; }
+  .tf-experience .desk-inspector>.desk-drawer-close { display:block; width:100%; margin-bottom:14px; }
+  .tf-experience .authoring-desk .desk-canvas>.workbench-view-tools { right:24px; }
+  .tf-experience .asset-need-grid { grid-template-columns:repeat(auto-fit,minmax(155px,1fr)); }
+  .tf-experience .image-review,.tf-experience .script-review { grid-template-columns:minmax(0,1fr) 210px; }
+}
+@media(max-width:849px){
+  .tf-experience .director-desk,.tf-experience .director-desk[data-has-rail=false],.tf-experience .director-desk[data-has-inspector=false],.tf-experience .director-desk.inspector-collapsed { grid-template-columns:minmax(0,1fr); }
+  .tf-experience .director-desk>.desk-rail { display:none; }
+  .tf-experience .director-desk.directory-open>.desk-rail { display:block; position:absolute; top:0; left:0; width:min(300px,90%); z-index:9; height:100%; box-shadow:8px 0 24px #201e1912; }
+  .tf-experience [data-toggle-directory],.tf-experience .desk-rail>.desk-drawer-close { display:block; }
+  .tf-experience .desk-rail>.desk-drawer-close { width:100%; margin-bottom:14px; }
+  .tf-experience .desk-canvas { padding:12px; }
+  .tf-experience .project-head { padding:12px 18px; }
+  .tf-experience .project-head .project-actions small { display:none; }
+  .tf-experience .library-layout,.tf-experience .prompt-library-layout { grid-template-columns:180px minmax(0,1fr); }
+  .tf-experience .library-sidebar { padding:16px 10px; }
+  .tf-experience #library-content { padding:12px; }
+  .tf-experience .image-review,.tf-experience .script-review { grid-template-columns:minmax(0,1fr); }
+}
+@media(max-width:600px){
+  .tf-experience .page { padding:12px 14px 32px; }
+  .tf-experience .project-page,.tf-experience .collection-page { padding:0; }
+  .tf-experience .workspace-identity { display:block; }
+  .tf-experience .back-link { display:none; }
+  .tf-experience .project-head { min-height:72px; gap:10px; padding:10px 14px; }
+  .tf-experience .project-head h1 { font-size:20px; }
+  .tf-experience .project-head .badge { font-size:10px; }
+  .tf-experience .project-summary { display:none; }
+  .tf-experience .project-kicker { margin-top:5px; }
+  .tf-experience .project-actions button { min-height:32px; padding:6px 8px; font-size:12px; }
+  .tf-experience .steps { padding:7px 10px; gap:5px; min-height:48px; }
+  .tf-experience .steps button { min-height:32px; padding:5px 8px; font-size:12px; }
+  .tf-experience .steps button .workspace-step-number { display:inline-grid; width:19px; height:19px; }
+  .tf-experience .desk-canvas { padding:10px 12px; }
+  .tf-experience .desk-canvas>h2 { font-size:18px; }
+  .tf-experience .authoring-desk .desk-canvas>.workbench-view-tools { right:12px; }
+  .tf-experience .writing-surface { min-height:180px; }
+  .tf-experience .writing-conversation.creation-assist { display:flex; flex-direction:column; gap:8px; padding:10px; }
+  .tf-experience .writing-conversation>.row { justify-content:flex-end; }
+  .tf-experience .writing-output-zone { padding:12px; }
+  .tf-experience .writing-output-zone textarea.writing-output { font-size:16px; min-height:160px; }
+  .tf-experience .savebar { min-height:48px; padding:6px 10px; gap:8px; flex-wrap:wrap; }
+  .tf-experience .workspace-support { font-size:11px; gap:5px; }
+  .tf-experience .savebar button { min-height:32px; padding:6px 8px; font-size:12px; }
+  .tf-experience .candidate-gallery { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .tf-experience .candidate-section-caption { display:block; }
+  .tf-experience .candidate-section-caption small { display:block; margin-top:4px; }
+  .tf-experience .swap-directing,.tf-experience .swap-comparison,.tf-experience .experience-compare { grid-template-columns:minmax(0,1fr); }
+  .tf-experience .movie-edit-desk>.desk-canvas { padding:14px 12px 22px; }
+  .tf-experience .movie-item-controls>.media-player video { max-height:28dvh; }
+  .tf-experience .asset-need-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .tf-experience .creation-asset-stage .asset-need-groups { max-height:none; }
+  .tf-experience .library-header,.tf-experience .prompt-library-header { padding:12px 14px; }
+  .tf-experience .library-layout,.tf-experience .prompt-library-layout { grid-template-columns:minmax(0,1fr); }
+  .tf-experience .library-sidebar { border-right:0; border-bottom:1px solid var(--line); max-height:200px; overflow:auto; }
+  .tf-experience .library-search select { max-width:100%; flex:1; }
+  .tf-experience .library-header h1 { font-size:24px; }
+  .tf-experience #library-content { padding:16px 14px; }
+  .tf-experience .asset-grid,.tf-experience .library-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+  .tf-experience #dialog-content { padding:20px 16px; }
+}
+@media(prefers-reduced-motion:reduce){
+  .tf-experience *, .tf-experience *::before,.tf-experience *::after { transition:none !important; animation:none !important; scroll-behavior:auto !important; }
 }

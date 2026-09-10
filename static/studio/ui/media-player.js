@@ -4,9 +4,8 @@ import {esc} from './primitives.js';
 export function mediaPlayer(url, label, note = '', {id='',className=''}={}) {
   if (!url) return `<div class="media-unavailable" role="status">${esc(label)}暂不可用，请检查源视频或重新准备片段。</div>`;
   return `<section class="media-player" data-media-player>
-    <div class="media-toolbar"><button type="button" data-media-play aria-label="播放${esc(label)}">▶ 播放</button><span data-media-status role="status">正在读取视频信息…</span><button type="button" data-media-retry hidden>重新加载</button><a href="${esc(url)}" target="_blank" rel="noreferrer" class="quiet">独立打开</a></div>
+    <div class="media-toolbar"><button type="button" data-media-play aria-label="播放${esc(label)}">▶ 播放</button><span data-media-status role="status">正在读取视频信息…</span><button type="button" data-media-retry hidden>重新加载</button><a href="${esc(url)}" target="_blank" rel="noreferrer" class="quiet">独立打开</a><details class="media-position"><summary>精确定位</summary><input class="media-seek" type="range" min="0" max="1" step=".05" value="0" disabled data-media-seek aria-label="${esc(label)}播放位置"></details></div>
     <video ${id?`id="${esc(id)}"`:''} ${className?`class="${esc(className)}"`:''} controls preload="metadata" playsinline src="${esc(url)}" aria-label="${esc(label)}"></video>
-    <input class="media-seek" type="range" min="0" max="1" step=".05" value="0" disabled data-media-seek aria-label="${esc(label)}播放位置">
     ${note ? `<p class="media-note">${esc(note)}</p>` : ''}
   </section>`;
 }

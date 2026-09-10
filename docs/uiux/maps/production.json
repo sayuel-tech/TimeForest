@@ -99,7 +99,7 @@
       ]
     },
     "static/studio/features/production/review-parts.js": {
-      "sha256": "27fabb98788d9187a5dc3ea239691d795101c4651fcb473da81b604a03450106",
+      "sha256": "7ddef054635591beafa69ebcea16526969344f630f70a0b2ad637931df40ecdf",
       "exports": [
         {
           "name": "selectionLabel",
@@ -115,7 +115,7 @@
         },
         {
           "name": "reviewActions",
-          "line": 24
+          "line": 23
         }
       ],
       "imports": [
@@ -131,7 +131,7 @@
       ]
     },
     "static/studio/features/production/review.js": {
-      "sha256": "479c25f1c68c93d0a6cbf8ca3f55ba13b31ffde472676018d8b9ae9cfa15b98d",
+      "sha256": "fe5d8878f2be31b5d4dad0a400bb43b6a6e5bc5fb98779858c00cb01f769f3c6",
       "exports": [
         {
           "name": "createFeature",
@@ -246,15 +246,15 @@
       ]
     },
     "static/studio/styles/media-player.css": {
-      "sha256": "6af72d751fde02a703bc38af8044f924e2c2b0bf9876cc7a2aea608588140cb8",
+      "sha256": "981eefc4a28048a97da3929d0c565f73aed67a2705b6149825aaa67364dd442c",
       "imported_by": []
     },
     "static/studio/styles/task-layouts.css": {
-      "sha256": "30bee9fd22edca749b56cc0770b8fddd249ce3c3000c7f95f3c209eb288ce113",
+      "sha256": "e61b2d0766d067066f609297317bd686cc39b75a5420b5d8f295b66fad5a4e3f",
       "imported_by": []
     },
     "static/studio/styles/workbench.css": {
-      "sha256": "3849df049437e28f6528e6a0fedbbfe433837eb050b0f00c5e54516bf82a79d2",
+      "sha256": "f3bc638ef5ed25ae7a29d05c438298e1aefeadeb0a33f03fefed45aca54e3fd9",
       "imported_by": []
     },
     "static/studio/ui/candidate-records.js": {
@@ -287,7 +287,7 @@
       ]
     },
     "static/studio/ui/media-player.js": {
-      "sha256": "a0588ef0e75153920a8cee4a6fcdc7449516cc7a342b0150d298228688e67fc9",
+      "sha256": "b819bcdf43e4f23b542903a8887e03f448be47865763b43af8baf892569bb658",
       "exports": [
         {
           "name": "mediaPlayer",
@@ -295,7 +295,7 @@
         },
         {
           "name": "bindMediaPlayers",
-          "line": 14
+          "line": 13
         }
       ],
       "imports": [

@@ -57,3 +57,7 @@ dialog:has(.prompt-picker){width:min(1160px,96vw)}
  .prompt-reading-navigation{gap:8px}
  .prompt-reading-navigation>.row{gap:6px}
 }
+
+/* R1 layout integration; original TimeForest artwork and palette retained. */
+.tf-experience .prompt-entry-list { scrollbar-width:thin; }
+.tf-experience .prompt-detail,.tf-experience .prompt-reader { background:var(--paper); border:1px solid var(--line); border-radius:var(--r-sm); }

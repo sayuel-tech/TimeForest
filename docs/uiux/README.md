@@ -33,3 +33,10 @@
 - [验证入口](verification.md)：链接、源图漂移和定向业务检查分开。
 
 详细字段仍查 [参数映射](../frontend/parameter-map.md)，公共契约仍查 [共享 UI](../frontend/shared-ui.md)，设计原则仍查 [设计规范 V2](../frontend/visual-design-standard-v2.md)。此目录负责定位、保留边界与证据，不复制第二套产品规范。
+
+## 已认可原型的全站接入
+
+[全站体验接入与验证边界](site-experience.md)：2026-09-10 用户确认功能位置与布局采用R1资料包，美术保留原项目。该记录对应已合回本地的实现与隔离检查；不表示生产加载、真实生成或整体体验已验收，不替代维护基线。
+
+
+最新首页／全站栏修订：用户要求恢复原版首页与顶部导航，覆盖R1这两处位置；按[首页卡](pages/home-projects.md)和[公共壳层](common/shell-navigation.md)维护。其他模块的信息密度反馈仍见维护基线。

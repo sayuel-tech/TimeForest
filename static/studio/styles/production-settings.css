@@ -62,3 +62,7 @@ dialog:has(.production-settings) {width:min(1100px,96vw);max-height:94dvh;paddin
   .settings-navigation button {flex-shrink:0}
   .settings-fields {max-height:50dvh}
 }
+
+/* R1 layout integration; original TimeForest artwork and palette retained. */
+.tf-experience .production-settings { font-size:14px; }
+.tf-experience .production-settings .field { margin-bottom:16px; }

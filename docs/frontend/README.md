@@ -317,3 +317,8 @@ flowchart LR
 
 
 现行设计依据已更新为[任务与可阅读性V2](visual-design-standard-v2.md)及[全站任务清单](page-purpose-design.md)。V1尺寸与截图检查不代表用户认可，R1—R4本期已修改真实页面，见[任务布局交付](readability-implementation.md)。阅读字号归design-tokens.css，任务组合归task-layouts.css，列表/全文在原prompt browser内切换；不改后端体系。
+
+
+## R1资料包布局的最新用户决定
+
+2026-09-10：以资料包预览的功能位置和区域组织为当前目标，保留原站水彩、纸色、字体及品牌。此R1资料包不是本文件旧R1—R4改造批次。公共导航／工作区／资产网格／电影剪辑的任务映射及窄屏抽屉替代范围见 [当前接入](../uiux/site-experience.md)，不再将其解释成保留旧布局的局部美化。原真实保存、确认、候选、固定资产、上下文与执行边界继续有效。

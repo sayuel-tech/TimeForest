@@ -27,7 +27,8 @@ export function mountAssist({ctx,content,edit,row,save,run,render,controller,rel
   const draft=ctx.dialogue(scope);
   const tasks=ctx.step===1?['screenplay_draft']:ctx.step===2?[ctx.assetTask||'asset_analysis']:ctx.step===3?[ctx.splitShot?'segment_plan':ctx.selected?'local_rewrite':'storyboard']:ctx.step===4&&ctx.selected?[ctx.clipTask==='rewrite'?'local_rewrite':'h3_prompt']:[];
   const jobs=scopedJobs(p,scope);
-  const current=jobs.at(-1),candidates=p.candidates.filter(c=>jobs.some(j=>j.job_id===c.job_id)&&c.disposition!=='discarded');
+  const current=jobs.at(-1);ctx.writingJob=current;
+  const candidates=p.candidates.filter(c=>jobs.some(j=>j.job_id===c.job_id)&&c.disposition!=='discarded');
   const candidate=candidates.find(c=>c.candidate_id===ctx.viewCandidate)||candidates.at(-1);
   const editingSaved=candidate?.disposition==='applied'&&candidate===candidates.at(-1)&&scope.layer!=='asset_bindings';
   function savedOutput(){

@@ -1,12 +1,14 @@
-/* Product UI scale. Editorial home artwork/hero and media geometry are exceptions. */
+/* Compact workbench scale; original font families and home artwork are preserved. */
 :root {
-  --text-body:15px; --text-control:14px; --text-meta:13px;
-  --text-reading:17px; --text-summary:16px; --leading-reading:1.8; --reading-width:920px;
-  --title-page:32px; --title-dialog:24px; --title-section:20px; --title-card:18px;
-  --control-height:44px; --control-compact:36px; --control-radius:10px;
-  --panel-padding:20px; --dialog-padding:24px; --layout-gap:20px;
-  --page-gutter:28px; --nav-width:200px;
+  --text-body:15px; --text-control:13px; --text-meta:12px;
+  --text-reading:16px; --text-summary:15px; --leading-reading:1.7; --reading-width:920px;
+  --title-page:22px; --title-dialog:24px; --title-section:18px; --title-card:16px;
+  --control-height:32px; --control-compact:28px; --control-radius:10px;
+  --panel-padding:12px; --dialog-padding:20px; --layout-gap:12px;
+  --page-gutter:20px; --nav-width:188px;
+  --workspace-inspector-width:248px; --workspace-rail-width:188px;
+  --workspace-radius:var(--r-md);
 }
 @media(max-width:760px) {
-  :root { --title-page:28px; --title-dialog:22px; --dialog-padding:20px; --page-gutter:20px; --layout-gap:16px; }
+  :root { --title-page:20px; --title-dialog:22px; --dialog-padding:20px; --page-gutter:16px; --layout-gap:14px; }
 }

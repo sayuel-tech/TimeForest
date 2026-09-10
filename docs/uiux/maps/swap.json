@@ -90,11 +90,11 @@
       "imported_by": []
     },
     "static/studio/styles/task-layouts.css": {
-      "sha256": "30bee9fd22edca749b56cc0770b8fddd249ce3c3000c7f95f3c209eb288ce113",
+      "sha256": "e61b2d0766d067066f609297317bd686cc39b75a5420b5d8f295b66fad5a4e3f",
       "imported_by": []
     },
     "static/studio/styles/workbench.css": {
-      "sha256": "3849df049437e28f6528e6a0fedbbfe433837eb050b0f00c5e54516bf82a79d2",
+      "sha256": "f3bc638ef5ed25ae7a29d05c438298e1aefeadeb0a33f03fefed45aca54e3fd9",
       "imported_by": []
     }
   }

@@ -62,3 +62,6 @@ style.css 是导入顺序，tokens 是基础色彩，design-tokens 是阅读与�
 - [docs/frontend/visual-design-standard-v2.md](../../frontend/visual-design-standard-v2.md)
 
 维护此页时同时更新 catalog 对应条目、刷新机器图并执行链接检查；具体步骤见 [更新约定](../maintenance.md)。
+
+
+本轮信息密度、字体与动效更新（2026-09-10）见[修复记录](../../frontend/density-font-motion.md)。原版字体实际加载、标题字重与减少动态效果分别核对；原素材／媒体／正文和保存语义保留。

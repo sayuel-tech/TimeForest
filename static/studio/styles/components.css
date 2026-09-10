@@ -1,12 +1,10 @@
 button,
-.btn {
+.btn{
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 12px;
-  min-height: var(--control-height);
-  padding: 10px 16px;
+  justify-content: center;gap:6px;
+  min-height: var(--control-height);padding:5px 10px;
   font-size: var(--text-control);
   line-height: 1.5;
   border: 1px solid var(--line);
@@ -45,10 +43,9 @@ button.sage {
   color: white;
   border-color: var(--sage);
 }
-button.quiet {
+button.quiet{
   border-color: transparent;
-  background: transparent;
-  padding: 9px 4px;
+  background: transparent;padding:5px 4px;
   box-shadow: none;
   font-weight: 400;
   text-decoration: underline;
@@ -63,12 +60,10 @@ button:disabled {
   transform: none;
   box-shadow: none;
 }
-.field {
+.field{
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-width: 0;
-  margin: 0 0 24px;
+  flex-direction: column;gap:4px;
+  min-width: 0;margin:0 0 12px;
 }
 .field > span {
   font-weight: 500;
@@ -76,13 +71,12 @@ button:disabled {
 }
 input:not([type="checkbox"]),
 textarea,
-select {
+select{
   width: 100%;
   background: #fcfaf5;
   border: 1px solid #cfc5b5;
   border-radius: 11px;
-  min-height: var(--control-height);
-  padding: 10px 12px;
+  min-height: var(--control-height);padding:5px 8px;
   font-size: var(--text-control);
   line-height: 1.5;
   transition:
@@ -249,9 +243,7 @@ details[open] > summary {
   gap: 20px;
   flex-wrap: wrap;
 }
-.toolbar .field {
-  margin: 0;
-}
+.toolbar .field{margin:0 0 12px;gap:4px;}
 .savebar {
   position: sticky;
   bottom: 16px;
@@ -519,3 +511,20 @@ dialog::backdrop {
 .run-status-row small {display:block;font-size:12px}
 .run-timing {flex-shrink:0}
 .run-timing .run-clock {white-space:nowrap}
+
+/* R1 layout integration; original TimeForest artwork and palette retained. */
+.tf-experience .notice,.tf-experience .workspace-draft-note { border:1px solid var(--line); border-radius:var(--r-sm); padding:10px 14px; margin:10px 20px; box-shadow:none; }
+.tf-experience .notice p { margin:0; }
+.tf-experience .skip-link { position:fixed; top:-100px; left:90px; background:var(--paper); padding:12px 20px; z-index:1000; }
+.tf-experience .skip-link:focus { top:8px; }
+.tf-experience dialog { background:var(--paper); color:var(--ink); border:1px solid var(--line); border-radius:12px; padding:0; max-height:90dvh; max-width:calc(100vw - 32px); box-shadow:0 20px 90px #201e1930; }
+.tf-experience dialog::backdrop { background:rgba(32,30,25,.3); }
+.tf-experience #dialog-content { padding:24px; }
+.tf-experience .dialog-heading { margin-bottom:18px; }
+.tf-experience .dialog-heading h2 { margin:8px 0; font-size:24px; }
+.tf-experience .dialog-heading p { color:var(--muted); font-size:14px; line-height:1.8; }
+.tf-experience .dialog-actions { gap:8px; padding-top:18px; margin-top:18px; border-top:1px solid var(--line); }
+.tf-experience #toast { border-radius:var(--r-sm); background:var(--success); color:var(--paper); }
+
+/* Touch targets keep their physical size; compact dimensions apply to pointer workspaces. */
+@media(pointer:coarse){button,.btn,select,input:not([type=range]):not([type=checkbox]):not([type=radio]){min-height:44px !important}input:not([type=range]),textarea,select{font-size:16px !important}}

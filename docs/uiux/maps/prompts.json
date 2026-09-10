@@ -207,15 +207,15 @@
       ]
     },
     "static/studio/styles/collection-navigation.css": {
-      "sha256": "7d3e5afd9779960a8d092f573ec47c752106d9b8249691c7d02542876bef4b62",
+      "sha256": "96f079aa8af3395789d05466f6482e4db6022dac70d127458e0bc3e476fdf8c3",
       "imported_by": []
     },
     "static/studio/styles/prompt-library.css": {
-      "sha256": "57e940248ca286668c6706baacb9bb1381720e1646fc1562301c838c2f15cb74",
+      "sha256": "b42b7c4e84ba06f69b30b358f36ff38b2941cda7dcdd4aac8e4f781de1bed018",
       "imported_by": []
     },
     "static/studio/styles/task-layouts.css": {
-      "sha256": "30bee9fd22edca749b56cc0770b8fddd249ce3c3000c7f95f3c209eb288ce113",
+      "sha256": "e61b2d0766d067066f609297317bd686cc39b75a5420b5d8f295b66fad5a4e3f",
       "imported_by": []
     },
     "static/studio/ui/prompt-editor.js": {

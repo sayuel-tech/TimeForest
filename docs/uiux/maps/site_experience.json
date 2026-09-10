@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "topic": "site_experience",
+  "evidence": "Mechanical current-source map; not UI acceptance or a match to historical screenshots.",
+  "sources": {
+    "static/studio/styles/creation.css": {
+      "sha256": "5d512d8db62030a60bd0c0bc117574513f0213027cb72d4441ce8d804d1582a3",
+      "imported_by": []
+    },
+    "static/studio/styles/shell.css": {
+      "sha256": "a23d18dbbd6cdd35da19a6867cef0bb363c5e023c0836215065acfdaa9895449",
+      "imported_by": []
+    },
+    "static/studio/styles/task-layouts.css": {
+      "sha256": "e61b2d0766d067066f609297317bd686cc39b75a5420b5d8f295b66fad5a4e3f",
+      "imported_by": []
+    },
+    "static/studio/styles/workbench.css": {
+      "sha256": "f3bc638ef5ed25ae7a29d05c438298e1aefeadeb0a33f03fefed45aca54e3fd9",
+      "imported_by": []
+    },
+    "static/studio/ui/experience-content.js": {
+      "sha256": "540ac7de04400a417eaec8f2a4acf256a2e23bfbb5b6bd7b9fc532c384657543",
+      "exports": [
+        {
+          "name": "enhanceAuthoringWorkspace",
+          "line": 33
+        },
+        {
+          "name": "enhanceMovieWorkspace",
+          "line": 94
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/timecode-input.js"
+      ],
+      "imported_by": [
+        "static/studio/modes/authoring/workspace.js",
+        "static/studio/modes/movie/workspace.js"
+      ]
+    },
+    "static/studio/ui/site-navigation.js": {
+      "sha256": "462217c9b793f8b6a3fab3c3ee816023371d4d7a7ffc8db3a667783e24674b6c",
+      "exports": [
+        {
+          "name": "updateSiteNavigation",
+          "line": 2
+        },
+        {
+          "name": "mountSiteNavigation",
+          "line": 12
+        }
+      ],
+      "imports": [],
+      "imported_by": [
+        "static/studio/app/bootstrap.js"
+      ]
+    },
+    "static/studio/ui/timecode-input.js": {
+      "sha256": "6ab3e7820f2997aaaf81c246831ecfa62168e6585d3835d72c34322b21adab3c",
+      "exports": [
+        {
+          "name": "formatTimecode",
+          "line": 2
+        },
+        {
+          "name": "parseTimecode",
+          "line": 7
+        },
+        {
+          "name": "bindTimecodeInputs",
+          "line": 21
+        },
+        {
+          "name": "assertTimecodeInputs",
+          "line": 60
+        }
+      ],
+      "imports": [],
+      "imported_by": [
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/ui/experience-content.js"
+      ]
+    }
+  }
+}

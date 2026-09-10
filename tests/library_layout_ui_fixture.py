@@ -1,5 +1,5 @@
 """Two real temporary libraries: navigation, selection and import cancellation at two widths."""
-import json,sys,threading
+import json,sys,threading,subprocess,re,html
 from pathlib import Path
 from werkzeug.serving import make_server,WSGIRequestHandler
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
@@ -20,14 +20,15 @@ import * as ui from '/static/studio/ui/primitives.js';
 const root=document.querySelector('#app'),view=new URLSearchParams(location.search).get('view'),controller=new AbortController();
 const assert=(v,m)=>{if(!v)throw Error(m)},pause=()=>new Promise(r=>setTimeout(r,40)),wait=async(fn)=>{for(let i=0;i<150;i++){if(fn())return;await pause();}throw Error('timed out '+fn)};
 try{
+ const route=view==='home'?'#/':view==='archive'?'#/archive':view==='prompts'?'#/prompts':view==='storage'||view==='trash'?'#/assets?view='+view:'#/assets';history.replaceState(null,'',route);
  if(view==='asset-picker'){
   void pickLibraryAsset({kind:'image',signal:controller.signal});await wait(()=>document.querySelector('.library-pick-card'));assert(parseFloat(getComputedStyle(document.querySelector('.library-picker h2')).fontSize)<=24,'asset picker heading scale');
  }else if(view==='home'){
-  setCreationEnabled(1);setAssemblyEnabled(1);setImageAssetsEnabled(true);renderHome(root,[],()=>{});
+  setCreationEnabled(1);setAssemblyEnabled(1);setImageAssetsEnabled(true);const projects=await api('/projects');renderHome(root,projects.projects,()=>{});assert(root.querySelector('.hero')&&!root.querySelector('.resume-project'),'original homepage not restored');assert(root.querySelector('#modes').compareDocumentPosition(root.querySelector('.recent'))&Node.DOCUMENT_POSITION_FOLLOWING,'recent projects precede creation modes');
  }else if(view==='archive'){
   root.id='app';await archive({...ui,api,MODES:Object.fromEntries(listModes().map(m=>[m.id,m])),projectCard,isCurrent:()=>true}).archive();
  }else if(view==='global-tasks'){
-  const button=document.createElement('button');button.id='global-tasks';button.textContent='任务列表';root.append(button);mountTaskCenter();button.click();await wait(()=>document.querySelector('#task-center').open);
+  const button=document.querySelector('#global-tasks')||document.createElement('button');button.id='global-tasks';button.textContent='任务列表';if(!button.isConnected)root.append(button);mountTaskCenter();button.click();await wait(()=>document.querySelector('#task-center').open);
  }else if(['tasks','storage','organize','trash','detail'].includes(view)){
   if(view==='detail'){const data=await fetch('/api/v5/library/assets').then(r=>r.json());await mountLibrary(root,'#/assets/'+data.items[0].id,controller.signal);}
   else await mountLibrary(root,'#/assets?view='+view,controller.signal);
@@ -67,6 +68,9 @@ def main():
     for purpose,branch in [('video','video:h3'),('image','image:krea2')]:
         for i in range(6):case.post('/prompt-library/entries',dict(title=f'森林镜头 · {i+1}',purpose=purpose,branch=branch,content=dict(type='text',text='人物沿着林间小路向前走，镜头从侧面缓缓跟随。保留傍晚的柔和光线与安静的树林。')))
     page='<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="/static/studio/style.css"><main id="app" class="page"></main><dialog id="dialog"><div id="dialog-content"></div></dialog><div id="toast"></div>'+SCRIPT
+    if '--r1' in sys.argv:
+        from tests.uiux_r1_shell import application_shell
+        page=application_shell(page,root_id='app')
     def app(env,start):
         if env['PATH_INFO']=='/layout-check':start('200 OK',[('Content-Type','text/html; charset=utf-8')]);return [page.encode()]
         return case.app(env,start)
@@ -74,11 +78,18 @@ def main():
         def log(self,*a,**k):pass
     server=make_server('127.0.0.1',0,app,threaded=True,request_handler=Quiet);threading.Thread(target=server.serve_forever,daemon=True).start()
     try:
-        for width in [1920,760]:
+        for width in next(([int(x) for x in a.split('=',1)[1].split(',')] for a in sys.argv if a.startswith('--widths=')),[1440,760,430] if '--r1' in sys.argv else [1920,760]):
             views=['home','archive','tasks','storage','organize','trash','detail','global-tasks'] if '--general' in sys.argv else ['assets','prompts','imports','picker-empty','picker-filled']
             chosen=next((a.split('=',1)[1] for a in sys.argv if a.startswith('--views=')),None)
             if chosen:views=chosen.split(',')
-            for view in views:checks.append(capture(out,f'{view}-{width}',f'http://127.0.0.1:{server.server_port}/layout-check?view={view}',width))
+            for view in views:
+                name=f'{view}-{width}';url=f'http://127.0.0.1:{server.server_port}/layout-check?view={view}'
+                if '--r1' not in sys.argv:checks.append(capture(out,name,url,width));continue
+                result=subprocess.run([sys.executable,str(Path(__file__).with_name('uiux_browser_capture.py')),url,str(out/(name+'.png')),str(width),str(next((int(a.split('=',1)[1]) for a in sys.argv if a.startswith('--height=')),960 if width==1440 else 900))],capture_output=True,timeout=60)
+                dom=result.stdout.decode('utf-8','replace');(out/(name+'.html')).write_text(dom,encoding='utf-8');match=re.search(r'data-check="([^"]+)"',dom)
+                data=json.loads(html.unescape(match[1])) if match else dict(passed=False,error=result.stderr.decode('utf-8','replace')[-1000:])
+                data['case']=name;checks.append(data);print(json.dumps(data,ensure_ascii=False),flush=True)
+
     finally:server.shutdown();server.server_close();case.doCleanups()
     (out/'checks.json').write_text(json.dumps(checks,ensure_ascii=False,indent=2),encoding='utf-8')
     if not all(c['passed'] for c in checks):raise SystemExit(1)

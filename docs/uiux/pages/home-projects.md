@@ -43,3 +43,7 @@
 - [docs/project-archive-deletion.md](../../project-archive-deletion.md)
 
 维护此页时同时更新 catalog 对应条目、刷新机器图并执行链接检查；具体步骤见 [更新约定](../maintenance.md)。
+
+## 最新首页恢复（2026-09-10）
+
+用户已退回R1的最近项目优先首页，恢复原版森林主视觉、创作方式、最近项目的顺序，保留原插画及窄屏主视觉。renderHome复用接入前模板，项目卡仍使用当前真实类型摘要；hero-start只滚动到创作方式，不改变路由或创建项目。首页不使用工作区专属tf-experience皮肤。全站导航与状态恢复顶部，普通页不叠加第二个页头。当前状态及检查见[本次接入](../site-experience.md)。

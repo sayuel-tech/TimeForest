@@ -9,7 +9,8 @@
         "首页",
         "项目档案",
         "新建",
-        "继续创作"
+        "继续创作",
+        "恢复原版首页"
       ],
       "source_patterns": [
         "static/studio/pages/home.js",
@@ -447,7 +448,9 @@
         "侧栏",
         "属性",
         "步骤",
-        "响应式"
+        "响应式",
+        "顶部全站导航",
+        "连接状态"
       ],
       "source_patterns": [
         "static/index.html",
@@ -634,6 +637,7 @@
         "static/studio/ui/draft-status.js",
         "static/studio/ui/empty-state.js",
         "static/studio/ui/error-feedback.js",
+        "static/studio/ui/experience-content.js",
         "static/studio/ui/input-inventory.js",
         "static/studio/ui/library-navigation.js",
         "static/studio/ui/media-player.js",
@@ -645,9 +649,11 @@
         "static/studio/ui/reference-metadata.js",
         "static/studio/ui/result-view.js",
         "static/studio/ui/run-timing.js",
+        "static/studio/ui/site-navigation.js",
         "static/studio/ui/source-navigation.js",
         "static/studio/ui/source-parameters.js",
         "static/studio/ui/status-region.js",
+        "static/studio/ui/timecode-input.js",
         "static/studio/ui/workbench.js",
         "static/studio/ui/workspace-actions.js",
         "static/studio/ui/workspace-chrome.js",
@@ -683,11 +689,13 @@
       "tests": [
         "tools/check_ui_design.mjs",
         "tests/ui_design.test.mjs",
-        "tests/creation_art_ui_fixture.py"
+        "tests/creation_art_ui_fixture.py",
+        "tests/visual_style_fixture.py"
       ],
       "references": [
         "docs/image-assets-art.md",
-        "docs/frontend/visual-design-standard-v2.md"
+        "docs/frontend/visual-design-standard-v2.md",
+        "docs/frontend/density-font-motion.md"
       ],
       "entrypoints": [
         "static/assets/fonts/fonts.css",
@@ -711,6 +719,48 @@
         "static/studio/styles/video-assembly.css",
         "static/studio/styles/workbench.css",
         "static/styles/tokens.css"
+      ]
+    },
+    {
+      "id": "site_experience",
+      "title": "R1布局与原站美术接入",
+      "doc": "site-experience.md",
+      "aliases": [
+        "全站重构",
+        "原型V1",
+        "统一导航",
+        "时间码"
+      ],
+      "source_patterns": [
+        "static/studio/ui/experience-content.js",
+        "static/studio/ui/site-navigation.js",
+        "static/studio/ui/timecode-input.js",
+        "static/studio/styles/shell.css",
+        "static/studio/styles/workbench.css",
+        "static/studio/styles/creation.css",
+        "static/studio/styles/task-layouts.css"
+      ],
+      "tests": [
+        "tests/studio_experience_timecode.test.mjs",
+        "tests/uiux_image_canvas_fixture.py",
+        "tests/site_layout_ui_fixture.py",
+        "tests/creation_experience_ui_fixture.py",
+        "tests/creation_ui_fixture.py",
+        "tests/library_layout_ui_fixture.py",
+        "tests/visual_style_fixture.py"
+      ],
+      "references": [
+        "docs/uiux/README.md",
+        "docs/frontend/density-font-motion.md"
+      ],
+      "entrypoints": [
+        "static/studio/styles/creation.css",
+        "static/studio/styles/shell.css",
+        "static/studio/styles/task-layouts.css",
+        "static/studio/styles/workbench.css",
+        "static/studio/ui/experience-content.js",
+        "static/studio/ui/site-navigation.js",
+        "static/studio/ui/timecode-input.js"
       ]
     }
   ]

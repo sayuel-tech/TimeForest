@@ -137,3 +137,8 @@ AI尾部的媒体预处理保留源视频显示几何，经LoadVideo(101)→视�
 ## V3.0 剧本与电影接入
 
 剧本服务配置由 authoring-assist 适配公共 production-settings，参数在临时副本中编辑，取消不保存；DeepSeek Chat 的 model_id 可编辑，无自动换模。电影 parameters 调原 workflow-settings，catalog 来自 creation/movie.py 的原 Recipes 投影，8 个 profile 保留 full/structured；排除电影业务不使用的 export_fps。导出尺寸/画幅在导出确认中，作用于成片，不回写 H3 默认采样。准备快照冻结真实参数，来源页只展示固定制作记录。
+
+
+### R1时间码呈现
+
+电影生成上游区间和剪辑入出点仍分别保存 upstream_range 与 range 的 in_ms/out_ms 整数毫秒。ui/timecode-input.js 只转换显示为分:秒.毫秒；原始输入按片段／剪辑项保存在 ctx.timecodeDrafts。非法值、范围越界和出点不晚于入点通过原save门阻止保存；错误重绘保留输入，保存中只读，成功或明确放弃后清理。播放取点明确读取主播放器，不读取新增候选缩略视频。参数默认与执行字段未改变。

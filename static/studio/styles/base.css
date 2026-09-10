@@ -253,3 +253,8 @@ h4,
 .notice {
   overflow-wrap: anywhere;
 }
+
+/* R1 layout integration; original TimeForest artwork and palette retained. */
+.tf-experience { background:var(--paper); color:var(--ink); }
+.tf-experience *, .tf-experience *::before, .tf-experience *::after { box-sizing:border-box; }
+.tf-experience [hidden] { display:none !important; }

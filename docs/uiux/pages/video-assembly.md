@@ -48,3 +48,7 @@ track.js 管显示和排序，workspace.js 管当前对象/保存与生成协调
 - [docs/video-assembly.md](../../video-assembly.md)
 
 维护此页时同时更新 catalog 对应条目、刷新机器图并执行链接检查；具体步骤见 [更新约定](../maintenance.md)。
+
+## R1布局接入（2026-09-10）
+
+原轨道、续写与普通拼接保留，接入公共导航、底栏和按需参考抽屉，不改变track_order和固定声画尾部。 布局以用户提供预览为目标，美术沿用原站。源码归属、检查与局限见[本次接入](../site-experience.md)。

@@ -348,7 +348,7 @@
       ]
     },
     "static/studio/styles/components.css": {
-      "sha256": "96f8b268f73ec290ebb84c9dae79abe0f9b40931b67b040b2b77976c83bfdd97",
+      "sha256": "44fe44f2cbdf284fc46902312b4056de293866653d80b60e2368210858e9c65f",
       "imported_by": []
     },
     "static/studio/styles/task-center.css": {
@@ -571,6 +571,27 @@
         "static/studio/ui/production-settings.js"
       ]
     },
+    "static/studio/ui/experience-content.js": {
+      "sha256": "540ac7de04400a417eaec8f2a4acf256a2e23bfbb5b6bd7b9fc532c384657543",
+      "exports": [
+        {
+          "name": "enhanceAuthoringWorkspace",
+          "line": 33
+        },
+        {
+          "name": "enhanceMovieWorkspace",
+          "line": 94
+        }
+      ],
+      "imports": [
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/timecode-input.js"
+      ],
+      "imported_by": [
+        "static/studio/modes/authoring/workspace.js",
+        "static/studio/modes/movie/workspace.js"
+      ]
+    },
     "static/studio/ui/input-inventory.js": {
       "sha256": "8e6d4de79666792d98f0c2f09a0f8663802a294368e4c339a3239aa0cf03eeeb",
       "exports": [
@@ -613,7 +634,7 @@
       ]
     },
     "static/studio/ui/media-player.js": {
-      "sha256": "a0588ef0e75153920a8cee4a6fcdc7449516cc7a342b0150d298228688e67fc9",
+      "sha256": "b819bcdf43e4f23b542903a8887e03f448be47865763b43af8baf892569bb658",
       "exports": [
         {
           "name": "mediaPlayer",
@@ -621,7 +642,7 @@
         },
         {
           "name": "bindMediaPlayers",
-          "line": 14
+          "line": 13
         }
       ],
       "imports": [
@@ -793,6 +814,7 @@
         "static/studio/ui/creation-job-status.js",
         "static/studio/ui/empty-state.js",
         "static/studio/ui/error-feedback.js",
+        "static/studio/ui/experience-content.js",
         "static/studio/ui/input-inventory.js",
         "static/studio/ui/library-navigation.js",
         "static/studio/ui/media-player.js",
@@ -1035,6 +1057,23 @@
         "static/studio/ui/creation-job-status.js"
       ]
     },
+    "static/studio/ui/site-navigation.js": {
+      "sha256": "462217c9b793f8b6a3fab3c3ee816023371d4d7a7ffc8db3a667783e24674b6c",
+      "exports": [
+        {
+          "name": "updateSiteNavigation",
+          "line": 2
+        },
+        {
+          "name": "mountSiteNavigation",
+          "line": 12
+        }
+      ],
+      "imports": [],
+      "imported_by": [
+        "static/studio/app/bootstrap.js"
+      ]
+    },
     "static/studio/ui/source-navigation.js": {
       "sha256": "630682d8d4d6a22bb00cf553d555266aae3a9dcdda68164bda071ce1bdbb39cd",
       "exports": [
@@ -1096,8 +1135,34 @@
         "static/studio/pages/asset-library/uploads.js"
       ]
     },
+    "static/studio/ui/timecode-input.js": {
+      "sha256": "6ab3e7820f2997aaaf81c246831ecfa62168e6585d3835d72c34322b21adab3c",
+      "exports": [
+        {
+          "name": "formatTimecode",
+          "line": 2
+        },
+        {
+          "name": "parseTimecode",
+          "line": 7
+        },
+        {
+          "name": "bindTimecodeInputs",
+          "line": 21
+        },
+        {
+          "name": "assertTimecodeInputs",
+          "line": 60
+        }
+      ],
+      "imports": [],
+      "imported_by": [
+        "static/studio/modes/movie/workspace.js",
+        "static/studio/ui/experience-content.js"
+      ]
+    },
     "static/studio/ui/workbench.js": {
-      "sha256": "8daa064d366238192815d16b58a420b63fa4e3ae3f507ba38cc542a45c987137",
+      "sha256": "6d57285bce24526b20f92baeaf8f7548f56baf365caf3fb2f4b17cf6c941778a",
       "exports": [
         {
           "name": "workbench",
@@ -1109,11 +1174,11 @@
         },
         {
           "name": "bindWorkbench",
-          "line": 15
+          "line": 16
         },
         {
           "name": "fitWorkbench",
-          "line": 42
+          "line": 84
         }
       ],
       "imports": [
@@ -1138,7 +1203,7 @@
       ]
     },
     "static/studio/ui/workspace-actions.js": {
-      "sha256": "da5af74649a68c462d5c4dab3b183863a6c03c1c3d626599e0ccabfac1f2e255",
+      "sha256": "92f71a4dc872e92884778d0b73676dc930438055deaf4831bf51e3e0324ebdc2",
       "exports": [
         {
           "name": "workspaceActionGroups",
@@ -1160,7 +1225,7 @@
       ]
     },
     "static/studio/ui/workspace-chrome.js": {
-      "sha256": "b84e37e54de1656426117c1490c0c51977fc3faccf62bae2b82c20487f44ce3d",
+      "sha256": "d0999fd58f86c5c6e1a79199c82218394f3bce13246f196013b56cc075c6370f",
       "exports": [
         {
           "name": "workspaceHeader",

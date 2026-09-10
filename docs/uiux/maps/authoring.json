@@ -4,7 +4,7 @@
   "evidence": "Mechanical current-source map; not UI acceptance or a match to historical screenshots.",
   "sources": {
     "static/studio/features/authoring-assist/binding-cards.js": {
-      "sha256": "895495c000737e97154de3f3c531635d593cd07fd9b74c1ef48a12d31d4e1651",
+      "sha256": "76ce0c2998874bec25d8d15c2b84508d73fbf8790ded42a645c94e0713495e05",
       "exports": [
         {
           "name": "resolveBindings",
@@ -84,7 +84,7 @@
       ]
     },
     "static/studio/features/authoring-assist/index.js": {
-      "sha256": "fa7019059d4c3d5e0483b6ac4ba7b97d0b0b7d99c184f9f8594ac09f93343056",
+      "sha256": "eca21272a63f535c2d04be8ae05f707ed778aee354d75048d7ac7e1578151b64",
       "exports": [
         {
           "name": "updateAssistStatus",
@@ -96,7 +96,7 @@
         },
         {
           "name": "bodyText",
-          "line": 100
+          "line": 101
         }
       ],
       "imports": [
@@ -202,7 +202,7 @@
       ]
     },
     "static/studio/features/shot-segment-tree/index.js": {
-      "sha256": "7bfb71589a10aabf8a56a36e5a1112f34fbabd5d7a557219578b0f0393a9ad5b",
+      "sha256": "bebfa3e46d0e0b6649a256d34ae62d8a370171803d9300b1f48cfd7e2d347403",
       "exports": [
         {
           "name": "shotSegmentTree",
@@ -241,11 +241,11 @@
       ]
     },
     "static/studio/modes/authoring/workspace.js": {
-      "sha256": "eb9bbaf5db095453df9888e6ce9bf555c0baa99c6406d79bd90e539114e6fbe9",
+      "sha256": "56bbf899033eb5564e6b0ccc5ac9e0a1f690bb250ff7132d70976027168a4485",
       "exports": [
         {
           "name": "mountWorkspace",
-          "line": 29
+          "line": 30
         }
       ],
       "imports": [
@@ -265,6 +265,7 @@
         "static/studio/ui/draft-status.js",
         "static/studio/ui/empty-state.js",
         "static/studio/ui/error-feedback.js",
+        "static/studio/ui/experience-content.js",
         "static/studio/ui/primitives.js",
         "static/studio/ui/prompt-editor.js",
         "static/studio/ui/source-navigation.js",
@@ -278,15 +279,15 @@
       ]
     },
     "static/studio/styles/creation.css": {
-      "sha256": "4d2f7af4570cc721b840479476aee71df3199cb3b365229abb503dd3f082a9f0",
+      "sha256": "5d512d8db62030a60bd0c0bc117574513f0213027cb72d4441ce8d804d1582a3",
       "imported_by": []
     },
     "static/studio/styles/task-layouts.css": {
-      "sha256": "30bee9fd22edca749b56cc0770b8fddd249ce3c3000c7f95f3c209eb288ce113",
+      "sha256": "e61b2d0766d067066f609297317bd686cc39b75a5420b5d8f295b66fad5a4e3f",
       "imported_by": []
     },
     "static/studio/styles/workbench.css": {
-      "sha256": "3849df049437e28f6528e6a0fedbbfe433837eb050b0f00c5e54516bf82a79d2",
+      "sha256": "f3bc638ef5ed25ae7a29d05c438298e1aefeadeb0a33f03fefed45aca54e3fd9",
       "imported_by": []
     }
   }

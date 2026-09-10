@@ -50,7 +50,7 @@
 }
 .library-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(210px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(180px, 100%), 1fr));
   gap: 16px;
 }
 .library-card {
@@ -73,7 +73,7 @@
 }
 .library-card figure {
   margin: 0;
-  height: 160px;
+  height: 128px;
   background: var(--paper-2);
   overflow: hidden;
   display: grid;
@@ -85,7 +85,7 @@
   object-fit: contain;
 }
 .library-card .library-card-copy {
-  padding: 12px 14px 14px;
+  padding: 8px 10px 10px;
 }
 .library-card h3 {
   font-size: 18px;
@@ -361,7 +361,7 @@ dialog:has(.library-picker) {
 .recycle-categories span {font-size:12px;font-variant-numeric:tabular-nums}
 .recycle-list {display:grid;gap:10px}
 .recycle-item {display:flex;gap:16px;align-items:center;padding:14px;border:var(--desk-border);border-radius:var(--desk-radius);background:var(--paper)}
-.recycle-item>img,.recycle-icon {width:72px;height:72px;object-fit:contain;flex-shrink:0;border-radius:8px;background:var(--paper-2)}
+.recycle-item>img,.recycle-icon {width:72px;height:72px;object-fit:contain;flex-shrink:0;border-radius:var(--r-sm);background:var(--paper-2)}
 .recycle-icon {display:grid;place-items:center;font-size:28px;color:var(--sage)}
 .recycle-copy {flex:1;min-width:0}
 .recycle-copy h3 {font-size:18px;margin:0 0 4px;overflow-wrap:anywhere}
@@ -392,3 +392,8 @@ dialog:has(.library-picker) {
 .library-grid.list .library-card figure{width:100%}
 .library-card h3{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .library-card small{font-size:12px;line-height:1.6}
+
+/* R1 layout integration; original TimeForest artwork and palette retained. */
+.tf-experience .asset-grid,.tf-experience .library-grid { gap:16px; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); }
+.tf-experience .asset-card { border:1px solid var(--line); border-radius:var(--r-sm); overflow:hidden; background:var(--paper); box-shadow:none; }
+.tf-experience .asset-card img { background:var(--paper-2); }

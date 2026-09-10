@@ -4,7 +4,7 @@
   "evidence": "Mechanical current-source map; not UI acceptance or a match to historical screenshots.",
   "sources": {
     "static/index.html": {
-      "sha256": "7b79c559642dfc6ee95b13c6e1e900d75645133f1eaea97539140fd7d7d79bda",
+      "sha256": "7533d8c56f73015966aff81ef3b0d8716da851053d17f01876046eea1a444c8f",
       "imported_by": []
     },
     "static/studio/app.js": {
@@ -16,7 +16,7 @@
       "imported_by": []
     },
     "static/studio/app/bootstrap.js": {
-      "sha256": "54054c57e5b875ae7e1ebf6f5981afe487acbf42dbf56dfb99a5e0bd6a7639a9",
+      "sha256": "350844b7b37c9a93dd48b20b8e4d0dc24673175231ce77cf2ebd61d269510397",
       "exports": [],
       "imports": [
         "static/studio/app/image-workspace-controller.js",
@@ -33,7 +33,8 @@
         "static/studio/pages/home.js",
         "static/studio/pages/prompt-library/index.js",
         "static/studio/ui/choice-dialog.js",
-        "static/studio/ui/primitives.js"
+        "static/studio/ui/primitives.js",
+        "static/studio/ui/site-navigation.js"
       ],
       "imported_by": [
         "static/studio/app.js"
@@ -82,19 +83,19 @@
       ]
     },
     "static/studio/styles/shell.css": {
-      "sha256": "6e3033db3c41db63ffe57144239a5bbdf717ae860ca3b6008ccec2920734b125",
+      "sha256": "a23d18dbbd6cdd35da19a6867cef0bb363c5e023c0836215065acfdaa9895449",
       "imported_by": []
     },
     "static/studio/styles/task-layouts.css": {
-      "sha256": "30bee9fd22edca749b56cc0770b8fddd249ce3c3000c7f95f3c209eb288ce113",
+      "sha256": "e61b2d0766d067066f609297317bd686cc39b75a5420b5d8f295b66fad5a4e3f",
       "imported_by": []
     },
     "static/studio/styles/workbench.css": {
-      "sha256": "3849df049437e28f6528e6a0fedbbfe433837eb050b0f00c5e54516bf82a79d2",
+      "sha256": "f3bc638ef5ed25ae7a29d05c438298e1aefeadeb0a33f03fefed45aca54e3fd9",
       "imported_by": []
     },
     "static/studio/ui/workbench.js": {
-      "sha256": "8daa064d366238192815d16b58a420b63fa4e3ae3f507ba38cc542a45c987137",
+      "sha256": "6d57285bce24526b20f92baeaf8f7548f56baf365caf3fb2f4b17cf6c941778a",
       "exports": [
         {
           "name": "workbench",
@@ -106,11 +107,11 @@
         },
         {
           "name": "bindWorkbench",
-          "line": 15
+          "line": 16
         },
         {
           "name": "fitWorkbench",
-          "line": 42
+          "line": 84
         }
       ],
       "imports": [
@@ -135,7 +136,7 @@
       ]
     },
     "static/studio/ui/workspace-actions.js": {
-      "sha256": "da5af74649a68c462d5c4dab3b183863a6c03c1c3d626599e0ccabfac1f2e255",
+      "sha256": "92f71a4dc872e92884778d0b73676dc930438055deaf4831bf51e3e0324ebdc2",
       "exports": [
         {
           "name": "workspaceActionGroups",
@@ -157,7 +158,7 @@
       ]
     },
     "static/studio/ui/workspace-chrome.js": {
-      "sha256": "b84e37e54de1656426117c1490c0c51977fc3faccf62bae2b82c20487f44ce3d",
+      "sha256": "d0999fd58f86c5c6e1a79199c82218394f3bce13246f196013b56cc075c6370f",
       "exports": [
         {
           "name": "workspaceHeader",

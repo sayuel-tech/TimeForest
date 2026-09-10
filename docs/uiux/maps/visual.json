@@ -16,23 +16,23 @@
       "imported_by": []
     },
     "static/studio/styles/base.css": {
-      "sha256": "f1c718b99bccd4b0079464243c4cd12f15ee4fcffd54d9b91b5edd0b29bf6a2f",
+      "sha256": "46c70bf30f7ad50ecffb1946767c9b43b4cbf4cc05f61a04d7e8b5184f4ca23b",
       "imported_by": []
     },
     "static/studio/styles/collection-navigation.css": {
-      "sha256": "7d3e5afd9779960a8d092f573ec47c752106d9b8249691c7d02542876bef4b62",
+      "sha256": "96f079aa8af3395789d05466f6482e4db6022dac70d127458e0bc3e476fdf8c3",
       "imported_by": []
     },
     "static/studio/styles/components.css": {
-      "sha256": "96f8b268f73ec290ebb84c9dae79abe0f9b40931b67b040b2b77976c83bfdd97",
+      "sha256": "44fe44f2cbdf284fc46902312b4056de293866653d80b60e2368210858e9c65f",
       "imported_by": []
     },
     "static/studio/styles/creation.css": {
-      "sha256": "4d2f7af4570cc721b840479476aee71df3199cb3b365229abb503dd3f082a9f0",
+      "sha256": "5d512d8db62030a60bd0c0bc117574513f0213027cb72d4441ce8d804d1582a3",
       "imported_by": []
     },
     "static/studio/styles/design-tokens.css": {
-      "sha256": "e009f961ba810b5f636ebbcda63d9784d6aae40f113582da4bc0dafca1289157",
+      "sha256": "0464a5a147a7d70ed5db3d71e7db6dceecdee2e5ca39ab53355b3f749eab0b44",
       "imported_by": []
     },
     "static/studio/styles/fonts/fonts.css": {
@@ -44,11 +44,11 @@
       "imported_by": []
     },
     "static/studio/styles/library.css": {
-      "sha256": "0ff0e9826cab546737782328d728086795dfca364e89ad6da478d0e152501675",
+      "sha256": "50336f97de6d90c7d107e159d7f34aab2206aa7efad477970e99baaba415b183",
       "imported_by": []
     },
     "static/studio/styles/media-player.css": {
-      "sha256": "6af72d751fde02a703bc38af8044f924e2c2b0bf9876cc7a2aea608588140cb8",
+      "sha256": "981eefc4a28048a97da3929d0c565f73aed67a2705b6149825aaa67364dd442c",
       "imported_by": []
     },
     "static/studio/styles/modes.css": {
@@ -56,15 +56,15 @@
       "imported_by": []
     },
     "static/studio/styles/production-settings.css": {
-      "sha256": "07b3cd7f58759afe62098e2106d75bcd781454f4ce1a0664b35a81288df5cf63",
+      "sha256": "fa7b65dfb61128510d076ad60dea25298fa7dd441374cb5ef41cc53bb17dd377",
       "imported_by": []
     },
     "static/studio/styles/prompt-library.css": {
-      "sha256": "57e940248ca286668c6706baacb9bb1381720e1646fc1562301c838c2f15cb74",
+      "sha256": "b42b7c4e84ba06f69b30b358f36ff38b2941cda7dcdd4aac8e4f781de1bed018",
       "imported_by": []
     },
     "static/studio/styles/shell.css": {
-      "sha256": "6e3033db3c41db63ffe57144239a5bbdf717ae860ca3b6008ccec2920734b125",
+      "sha256": "a23d18dbbd6cdd35da19a6867cef0bb363c5e023c0836215065acfdaa9895449",
       "imported_by": []
     },
     "static/studio/styles/task-center.css": {
@@ -72,7 +72,7 @@
       "imported_by": []
     },
     "static/studio/styles/task-layouts.css": {
-      "sha256": "30bee9fd22edca749b56cc0770b8fddd249ce3c3000c7f95f3c209eb288ce113",
+      "sha256": "e61b2d0766d067066f609297317bd686cc39b75a5420b5d8f295b66fad5a4e3f",
       "imported_by": []
     },
     "static/studio/styles/video-assembly.css": {
@@ -80,7 +80,7 @@
       "imported_by": []
     },
     "static/studio/styles/workbench.css": {
-      "sha256": "3849df049437e28f6528e6a0fedbbfe433837eb050b0f00c5e54516bf82a79d2",
+      "sha256": "f3bc638ef5ed25ae7a29d05c438298e1aefeadeb0a33f03fefed45aca54e3fd9",
       "imported_by": []
     },
     "static/styles/tokens.css": {

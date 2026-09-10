@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>时间森林H3导演工作台</title>
     <link rel="icon" href="/static/assets/brand/favicon.svg" />
-    <link rel="stylesheet" href="/static/studio/style.css?v=6.3.33" />
+    <link rel="stylesheet" href="/static/studio/style.css?v=6.3.34" />
   </head>
-  <body>
-    <header>
-      <nav>
-        <a class="brand" href="#/"
+  <body class="tf-experience">
+    <a class="skip-link" href="#app" data-skip-workspace>跳到当前工作区</a>
+    <header class="site-header" aria-label="全站导航与状态">
+      <nav aria-label="全站导航">
+        <a class="brand" href="#/" data-site-section="home"
           ><img
             src="/static/assets/brand/brand-mark.svg"
             alt=""
@@ -22,18 +23,18 @@
           ></a
         >
         <div class="nav-end">
-          <button id="global-tasks" type="button">任务列表</button><a href="#/archive">项目档案</a
-          ><a href="#/assets">资产库</a
-          ><a href="#/prompts">提示词库</a><span id="health" class="badge" role="status">连接中</span>
+          <button id="global-tasks" type="button">任务列表</button><a href="#/archive" data-site-section="projects">项目档案</a
+          ><a href="#/assets" data-site-section="assets">资产库</a
+          ><a href="#/prompts" data-site-section="prompts">提示词库</a><details class="header-more"><summary>更多</summary><div><a href="#/assets?view=trash" data-site-section="trash">回收站</a><a href="#/assets?view=storage" data-site-section="storage">存储与备份</a></div></details><span id="health" class="badge" role="status">连接中</span>
         </div>
       </nav>
     </header>
-    <main id="app" class="page"></main>
+    <main id="app" class="page" tabindex="-1"></main>
     <footer class="site-footer">
       <span>TIME FOREST</span>每一个镜头，都值得认真完成。
     </footer>
     <dialog id="dialog"><div id="dialog-content"></div></dialog>
     <div id="toast" role="status" aria-live="polite"></div>
-    <script type="module" src="/static/studio/app.js?v=6.3.33"></script>
+    <script type="module" src="/static/studio/app.js?v=6.3.34"></script>
   </body>
 </html>

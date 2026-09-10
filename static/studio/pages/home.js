@@ -1,9 +1,18 @@
 import {bindDecorativeArt} from '../ui/empty-state.js';
-import { esc, fmt, status } from "../ui/primitives.js";
-import { getMode, listModes } from "../app/mode-registry.js";
-export function projectCard(p) {
-  const mode = getMode(p.mode);
-  return `<a class="project-card" href="#/p/${p.id}">${p.cover ? `<img class="project-cover" loading="lazy" src="${esc(p.cover)}" alt="${esc(p.name)}项目参考图">` : `<div class="project-cover text-cover"><span class="eyebrow">${mode?.code || "PROJECT"}</span><span>${esc(p.name)}</span></div>`}<div class="card-body"><div class="row between"><span class="eyebrow">${mode?.code || esc(p.mode)}</span>${status(p.status)}</div><h3>${esc(p.name)}</h3><small>${p.kind === 'assembly' ? `${fmt(p.duration)}秒 · ${p.segments}个视频` : p.kind === 'image' ? `${p.tasks}个任务 · ${p.outputs}张候选 · ${p.selected}张已选` : `${fmt(p.duration)}秒 · ${p.segments}段 · ${p.accepted}段已接受`}</small></div></a>`;
+import {esc,fmt,status} from '../ui/primitives.js';
+import {getMode,listModes} from '../app/mode-registry.js';
+
+function count(value){if(Array.isArray(value))return value.length;if(value===null||value===undefined||value==='')return null;const n=Number(value);return Number.isFinite(n)&&n>=0?n:null;}
+function projectSummary(p){
+  if(p.kind==='authoring')return '剧本、资产与分镜 · 继续创作';
+  if(p.kind==='movie')return '片段生成与剪辑 · 继续制作';
+  if(p.kind==='image'){const tasks=count(p.tasks),outputs=count(p.outputs);return tasks===null||outputs===null?'图片任务与候选 · 继续创作':`${tasks} 个任务 · ${outputs} 张候选`;}
+  const seconds=count(p.duration),segments=count(p.segments);
+  return [seconds!==null?`${fmt(seconds)} 秒`:null,segments!==null?`${segments} ${p.kind==='assembly'?'个视频':'个片段'}`:null].filter(Boolean).join(' · ')||'继续上一次的制作';
+}
+export function projectCard(p){
+  const mode=getMode(p.mode);
+  return `<a class="project-card" href="#/p/${encodeURIComponent(p.id)}">${p.cover?`<img class="project-cover" loading="lazy" src="${esc(p.cover)}" alt="${esc(p.name)}项目参考图">`:`<div class="project-cover text-cover"><span class="eyebrow">${esc(mode?.name||'创作项目')}</span><span>${esc(p.name)}</span></div>`}<div class="card-body"><div class="row between"><span class="eyebrow">${esc(mode?.name||p.mode)}</span>${p.status?status(p.status):''}</div><h3>${esc(p.name)}</h3><small>${esc(projectSummary(p))}</small><span class="project-resume">继续制作 <span aria-hidden="true">↗</span></span></div></a>`;
 }
 export function renderHome(root, projects, create) {
   const items = projects.filter((p) => !p.archived);

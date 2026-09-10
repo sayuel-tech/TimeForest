@@ -425,7 +425,10 @@
         "PROJECT_GUIDE.md",
         "docs/maintenance-baseline.md",
         "docs/frontend/visual-design-standard-v2.md",
-        "docs/frontend/page-purpose-design.md"
+        "docs/frontend/page-purpose-design.md",
+        "docs/uiux/site-experience.md",
+        "docs/uiux/maps/site_experience.json",
+        "docs/frontend/density-font-motion.md"
       ]
     }
   ]

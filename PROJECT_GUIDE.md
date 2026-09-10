@@ -1,10 +1,14 @@
 # 时间森林项目地图
 
+当前信息密度、原版字体与动效的职责／检查入口见[修复记录](docs/frontend/density-font-motion.md)；全局字号归design-tokens，字族归base及字体资源，媒体精确定位仍在公共media-player。
+
+R1工作区已合回真实维护源码；后续按用户要求恢复原版首页与顶部全站导航（home.js／index.html／site-navigation.js），左侧全站栏不再使用；唯一进度与下一次接续见 [维护基线](docs/maintenance-baseline.md)。R1资料包布局、原站美术与真实业务接入见 [实际映射](docs/uiux/site-experience.md)：全站导航 ui/site-navigation、主区适配 ui/experience-content、电影时间码 ui/timecode-input；资产卡片仍在 binding-cards。
+
 UI/UX 与美术维护使用 [分层任务索引](docs/uiux/README.md)：先查页面卡，再按需读取公共交互、视觉资源或跨页流程；包含源码符号、定向检查及保留依据。
 
 
 
-剧本/电影当前入口：[交互流程纠偏方案](docs/product/creation-experience-correction.md)。2026-09-09用户否定整体功能体验完成度；下文已有实现映射仍有效，历史完成描述不代表新纠偏已实施。纠偏已有代码交付，资产页最新反馈与未验收边界以维护基线为准。
+剧本/电影当前入口：[交互流程纠偏方案](docs/product/creation-experience-correction.md)。2026-09-09纠偏及2026-09-10 R1布局、后续密度修复已有代码接入；下文映射只定位实现，不代表整体创作流程可用或用户已认可。资产页具名网格已实施，最新反馈与未验收边界以维护基线为准。
 
 
 

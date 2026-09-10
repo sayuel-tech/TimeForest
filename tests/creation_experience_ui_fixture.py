@@ -24,9 +24,9 @@ try{
  await click('[data-apply-candidate]');await settled();assert((await get()).content.confirmations.some(c=>c.layer==='screenplay'),'not confirmed');
  const recorded=JSON.stringify((await get()).candidates.at(-1).payload);input('[data-candidate-text]','张三与王五在修车铺相遇。确认后仍可修改完整剧本。');await click('[data-save-output]');await settled();assert((await get()).content.layers.find(l=>l.layer==='screenplay').content.blocks[0].text.includes('确认后仍可修改'),'confirmed output cannot be edited');assert(JSON.stringify((await get()).candidates.at(-1).payload)===recorded,'editing overwrote historic LLM output');
  await click('[data-nav-step="2"]');assert(!root.querySelector('.desk-inspector'),'asset page still has right inspector');assert(!root.querySelector('[data-candidate-text]'),'screenplay candidate leaked');
- await generate('asset_analysis');await click('[data-apply-candidate]');await settled();assert(root.querySelectorAll('[data-need-card]').length===3,'needs not turned into cards');
+ await generate('asset_analysis');await click('[data-apply-candidate]');await settled();assert(root.querySelectorAll('[data-need-card]').length===3,'needs not turned into cards');const revision=(await get()).revision;await click('[data-need-filter=character]');w.render();assert(root.querySelector('[data-need-filter=character]').getAttribute('aria-pressed')==='true','category view lost after redraw');assert((await get()).revision===revision,'filter wrote project');await click('[data-need-filter=all]');
  for(const e of root.querySelectorAll('[data-need-source]')){e.value='text_only';e.dispatchEvent(new Event('change'));}
- await click('[data-save]');await settled();await click('[data-bind-existing]');await settled();assert((await get()).content.layers.find(l=>l.layer==='asset_bindings').content.bindings.some(b=>b.state==='bound'&&b.reference_id),'existing reference was not bound to named card');
+ await click('[data-save]');await settled();root.querySelector('[data-bind-existing]').closest('.asset-need-options').open=true;root.querySelector('[data-bind-existing]').closest('details').open=true;await click('[data-bind-existing]');await settled();assert((await get()).content.layers.find(l=>l.layer==='asset_bindings').content.bindings.some(b=>b.state==='bound'&&b.reference_id),'existing reference was not bound to named card');
  await click('[data-save]');await settled();await click('[data-asset-task="asset_screenplay"]');await generate('asset_screenplay');await click('[data-apply-candidate]');await settled();
  await click('[data-select=""]');await generate('storyboard');await click('[data-apply-candidate]');await settled();const shot=(await get()).content.layers.find(l=>l.layer==='storyboard').content.shots[0];
  await click('[data-select="'+shot.ref+'"]');assert(w.ctx.step===3,'shot route');input('[data-ai-instruction]','只改当前分镜');await generate('local_rewrite');input('[data-candidate-text]','两人在修车铺相遇，欲言又止。');await click('[data-apply-candidate]');await settled();assert((await get()).content.confirmations.some(c=>c.layer==='storyboard'&&c.target_id===shot.ref),'shot confirmation not scoped');await click('[data-shot-task="split"]');await generate('segment_plan');await click('[data-apply-candidate]');await settled();
@@ -36,12 +36,12 @@ try{
  await click('[data-nav-step="2"]');assert(root.querySelector('[data-select="'+segment.ref+'"]'),'cross-page directory lost segment');await click('[data-select="'+segment.ref+'"]');assert(w.ctx.step===4,'directory filtered instead of navigated');
  assert(root.querySelector('.creation-assist').getBoundingClientRect().top<root.querySelector('.writing-output').getBoundingClientRect().top,'output above communication');
  assert(document.documentElement.scrollWidth<=innerWidth+2,'horizontal clipping');
- const finalPage=new URLSearchParams(location.search).get('page');if(finalPage){await click('[data-nav-step="'+finalPage+'"]');}root.querySelector('.desk-canvas').scrollTop=0;w.dispose();document.body.dataset.check=JSON.stringify({passed:true,steps:5,scope:'real save/confirm/asset needs/tree/source/fake LLM'});
+ const finalPage=new URLSearchParams(location.search).get('page');if(finalPage){await click('[data-nav-step="'+finalPage+'"]');}root.querySelectorAll('.asset-need-options[open]').forEach(d=>d.querySelector('summary').click());root.querySelector('.desk-canvas').scrollTop=0;const bodyArea=root.querySelector('[data-candidate-text]');let readableLines=null;if(bodyArea&&finalPage==='2'){const b=bodyArea.getBoundingClientRect(),st=getComputedStyle(bodyArea);let bottom=Math.min(b.bottom,root.querySelector('.savebar').getBoundingClientRect().top);for(let parent=bodyArea.parentElement;parent&&parent!==root;parent=parent.parentElement)if(['auto','hidden','scroll'].includes(getComputedStyle(parent).overflowY))bottom=Math.min(bottom,parent.getBoundingClientRect().bottom);readableLines=Math.max(0,Math.floor((bottom-b.top-parseFloat(st.paddingTop))/parseFloat(st.lineHeight)));}if(new URLSearchParams(location.search).get('density')==='1')assert(readableLines>=6,'density: fewer than six visible body lines: '+readableLines);if(innerWidth===1440&&finalPage==='2')assert(root.querySelector('[data-candidate-text]').getBoundingClientRect().top<root.querySelector('.savebar').getBoundingClientRect().top,'asset script body absent from first viewport');w.dispose();document.body.dataset.check=JSON.stringify({passed:true,steps:5,scope:'real save/confirm/asset needs/tree/source/fake LLM',readableLines,geometry:[...root.querySelectorAll('.asset-needs-heading,.asset-needs-toolbar,.asset-need-card,.asset-need-title,.asset-need-description,.asset-need-actions,.asset-need-options')].slice(0,8).map(e=>({cls:e.className,h:e.getBoundingClientRect().height,margin:getComputedStyle(e).margin,padding:getComputedStyle(e).padding,gap:getComputedStyle(e).gap}))});
 }catch(e){w?.dispose();document.body.dataset.check=JSON.stringify({passed:false,error:e.stack});}
 </script>'''
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--out',required=True);parser.add_argument('--width',type=int,default=1440);parser.add_argument('--page',default='');args=parser.parse_args();out=Path(args.out);out.mkdir(parents=True,exist_ok=True)
+    parser=argparse.ArgumentParser();parser.add_argument('--out',required=True);parser.add_argument('--width',type=int,default=1440);parser.add_argument('--page',default='');parser.add_argument('--r1',action='store_true');parser.add_argument('--height',type=int);parser.add_argument('--density',action='store_true');args=parser.parse_args();out=Path(args.out);out.mkdir(parents=True,exist_ok=True)
     case=CreationTests();case.setUp();case.configure_fake();calls=[]
     picture=io.BytesIO();Image.new('RGB',(32,32),(80,120,90)).save(picture,format='PNG');picture.seek(0)
     item=case.c.post('/api/v5/library/uploads',data={'file':(picture,'fixture.png'),'key':'fixture-image'},content_type='multipart/form-data').get_json()
@@ -55,6 +55,7 @@ def main():
                 for row in sample['payload'].get(array,[]):row['source_refs']=[] if 'source_refs' in row else row.get('source_refs',[])
             if task in ('screenplay_draft','asset_screenplay'):
                 for row in sample['payload']['blocks']:row.pop('source_refs',None)
+            if task=='asset_screenplay':sample['payload']['blocks'][0]['text']='\n'.join(['清晨的修车铺里，张三收起扳手，王五把旧车推进门。窗外雨声渐轻，两人开始谈起昨天未说完的事。']*12)
             if task=='asset_analysis':sample['payload']['needs']=[dict(ref='new_'+str(i),kind='character',name=name,description='剧本中的人物',source_refs=[],media_need='recommended',suggested_asset_refs=[]) for i,name in enumerate(['张三','王五','李四'])]
             if task=='segment_plan':
                 for row in sample['payload']['segments']:row['shot_ref']=context['target']['target_ids'][0]
@@ -62,12 +63,21 @@ def main():
     case.service.writing.providers.transport=Fake()
     class Quiet(WSGIRequestHandler):
         def log(self,*args,**kwargs):pass
+    page=PAGE
+    if args.r1:
+        from tests.uiux_r1_shell import application_shell
+        page=application_shell(page)
     def app(env,start):
-        if env['PATH_INFO']=='/experience':start('200 OK',[('Content-Type','text/html; charset=utf-8')]);return [PAGE.encode()]
+        if env['PATH_INFO']=='/experience':start('200 OK',[('Content-Type','text/html; charset=utf-8')]);return [page.encode()]
         return case.app(env,start)
     server=make_server('127.0.0.1',0,app,threaded=True,request_handler=Quiet);threading.Thread(target=server.serve_forever,daemon=True).start()
     try:
-        result=subprocess.run(['C:/Program Files/Google/Chrome/Application/chrome.exe','--headless=new','--disable-gpu','--no-first-run','--disable-background-networking',f'--user-data-dir={out/"profile"}',f'--window-size={args.width},1100','--virtual-time-budget=20000',f'--screenshot={out/"page.png"}','--dump-dom',f'http://127.0.0.1:{server.server_port}/experience?pid={case.p["id"]}&page={args.page}'],capture_output=True,timeout=50)
+        url=f'http://127.0.0.1:{server.server_port}/experience?pid={case.p["id"]}&page={args.page}&density={int(args.density)}'
+        if args.r1:
+            command=[sys.executable,str(Path(__file__).with_name('uiux_browser_capture.py')),url,str(out/'page.png'),str(args.width),str(args.height or (960 if args.width==1440 else 900))]
+        else:
+            command=['C:/Program Files/Google/Chrome/Application/chrome.exe','--headless=new','--disable-gpu','--no-first-run','--disable-background-networking',f'--user-data-dir={out/"profile"}',f'--window-size={args.width},1100','--virtual-time-budget=20000',f'--screenshot={out/"page.png"}','--dump-dom',url]
+        result=subprocess.run(command,capture_output=True,timeout=60)
         dom=result.stdout.decode('utf-8','replace');(out/'page.html').write_text(dom,encoding='utf-8');match=re.search(r'data-check="([^"]+)"',dom);check=json.loads(html.unescape(match[1])) if match else dict(passed=False,error='No completion marker')
         check['requests']=len(calls);check['continued_from_output']=any(any(m['reference_key'].startswith('basis:') for m in c['materials']) for c in calls)
         (out/'checks.json').write_text(json.dumps(check,ensure_ascii=False,indent=2),encoding='utf-8');print(json.dumps(check,ensure_ascii=False))

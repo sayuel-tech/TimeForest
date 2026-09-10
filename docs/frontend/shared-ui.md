@@ -126,3 +126,16 @@ ui/library-navigation拥有分组/父子/选中与语义属性，styles/collecti
 `styles/task-layouts.css`组合公共读写、媒体、参数和主/辅区域，`design-tokens.css`定义reading/summary/leading/width角色。`workbench`依据有无插槽分配列，统一属性开关且不重建草稿。`ui/prompt-editor.js`提供`readingDisclosure`（摘要与原文）、`openReading`（只读）、`expandPrompt`（返回草稿）；用途不同不能互换保存语义。提示词浏览器使用list/read两视图，切换保留列表DOM与返回状态；资产资料展开仍触发原gather持久本机草稿。
 
 所有调用方与有限验证见[交付](readability-implementation.md)。共享机制、基础容器、任务组合、模式数据适配分层维护；修改公共呈现核对其调用方，不再在模式私有样式复制同类阅读字号。
+
+
+## R1布局与原站美术（2026-09-10）
+
+用户已明确以资料包的功能位置和布局为目标，原站水彩／字体／品牌保留。全站导航由 ui/site-navigation.js 配合 static/index.html；公共 workbench 接入目录／参考抽屉、背景 inert 和焦点返回，不由模式复制。窄屏主区滚动与底栏按公共外壳处理，替代旧整页堆叠规则。资产网格仍由 binding-cards 适配真实需求，电影的原始时间码草稿与数值保存分开。表层组合 ui/experience-content.js 不接管 Session 或 API。完整映射、调用方与检查见 [R1接入](../uiux/site-experience.md)。
+
+
+首页／全站栏后续修订（2026-09-10）：用户要求恢复原版首页与顶部导航，覆盖前述R1全局位置约定。site-navigation维护选中状态、首页皮肤边界和--site-header-height测量；workbench消费实际可用高度。原工作区目录／参考抽屉及保存门保留，全站栏不再占左侧宽度。归属和证据见R1接入记录。
+
+
+## 密度与原版字体／动效补充
+
+2026-09-10已按用户要求实施本轮紧凑尺度、重复信息合行、资产描述与精确定位展开、目录摘要及原版字重／悬停恢复。保持原首页和顶部导航。具体数值、实际字体证据、常用窗口的正文容量与保存保护检查见 [本轮修复](density-font-motion.md)，不以旧布局通过数量替代本轮结果。

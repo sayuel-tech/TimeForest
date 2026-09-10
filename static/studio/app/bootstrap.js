@@ -1,3 +1,4 @@
+import {mountSiteNavigation} from '../ui/site-navigation.js';
 import {closePromptEditor} from '../features/prompt-library/editor.js';
 import { api, readLegacyProject } from "../core/api-client.js";
 import { assertImageCatalog } from "../core/image-catalog.js";
@@ -222,6 +223,7 @@ document.addEventListener(
     }),
   true,
 );
+mountSiteNavigation(root);
 mountTaskCenter();
 await health();
 await route();

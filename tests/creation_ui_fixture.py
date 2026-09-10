@@ -50,13 +50,14 @@ try{
    await click('[data-preflight]');await wait(settled);assert(!workspace.ctx.error,workspace.ctx.error?.message);
    await click('[data-generate]');await wait(settled);assert(!workspace.ctx.error,workspace.ctx.error?.message);await wait(async()=>{const next=await get();return next.movie_takes?.length>0;});workspace.session.receive(await get());
    await click('[data-adopt]');await wait(settled);await click('[data-edit-next]');await click('[data-initialize]');await wait(settled);assert(root.querySelector('.movie-track-item'),'no timeline');
+   if(root.querySelector('.timecode-display')){const video=root.querySelector('.media-player video');await wait(()=>video.readyState>0);video.currentTime=.75;await wait(()=>Math.abs(video.currentTime-.75)<.05);await click('[data-playhead=in_ms]');assert(Number(root.querySelector('[data-range=in_ms]').value)===750,'playhead read the wrong video');input('.timecode-display','00:bad');await click('[data-save]');await wait(settled);assert(workspace.ctx.error,'invalid time accepted');assert(root.querySelector('.timecode-display').value==='00:bad','invalid time draft lost after save failure');input('.timecode-display','00:00.500');}
    input('[data-range="in_ms"]',500);input('[data-range="out_ms"]',4000);await click('[data-save]');await wait(settled);assert((await get()).content.edit.items[0].range.in_ms===500,'edit range not saved');
    assert(root.querySelector('[data-return-generation]'),'generation return missing');const returnShot=new URLSearchParams(root.querySelector('a[href*="step=3"]').getAttribute('href').split('?')[1]).get('target');assert(returnShot===(await get()).content.source_bundles.at(-1).shot_id,'return link points to clip instead of parent shot');
    await click('[data-preview-edit]');await wait(()=>document.querySelector('[data-preview-label]'));assert(document.querySelector('dialog[open] video'),'preview missing native player');await click('dialog[open] [data-close]');await wait(settled);
    const source=root.querySelector('a[href*="step=3"]');source.click();const back=readReturnContext(new URLSearchParams(location.hash.split('?')[1]));assert(back,'actual project identity rejected');assert(back.origin_item_id===(await get()).content.edit.order[0],'source return lost item');assert(back.origin_page==='editing','source return lost page');assert(returnHref(back).startsWith('#/p/'+pid+'?step=1&'),'return route lost project/page');
  }
  const action=root.querySelector('[data-export]')||root.querySelector('[data-next]');if(innerWidth<=850){action.scrollIntoView({block:'center',behavior:'instant'});}const rect=action.getBoundingClientRect();assert(rect.width>0&&rect.top>=0&&rect.bottom<=innerHeight+2,'primary action not reachable '+JSON.stringify({top:rect.top,bottom:rect.bottom,scrollY,height:innerHeight}));assert(rect.left>=0&&rect.right<=innerWidth,'primary action clipped horizontally');
- workspace.dispose();window.scrollTo({top:0,left:0,behavior:'instant'});await pause();document.body.dataset.check=JSON.stringify({passed:true});
+ root.querySelector('.desk-canvas').scrollTop=0;if(innerWidth>=1200&&innerHeight>=768&&root.querySelector('.timecode-display'))assert([...root.querySelectorAll('.timecode-display')].every(e=>e.getBoundingClientRect().bottom<=root.querySelector('.savebar').getBoundingClientRect().top),'range controls below first viewport');workspace.dispose();window.scrollTo({top:0,left:0,behavior:'instant'});await pause();document.body.dataset.check=JSON.stringify({passed:true});
 }catch(error){workspace?.dispose();document.body.dataset.check=JSON.stringify({passed:false,error:error.stack});}
 </script>'''
 
@@ -64,17 +65,35 @@ class Quiet(WSGIRequestHandler):
     def log_message(self,*args):pass
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--out',required=True);parser.add_argument('--width',type=int,default=1440);args=parser.parse_args();out=Path(args.out).resolve();out.mkdir(parents=True,exist_ok=True)
+    parser=argparse.ArgumentParser();parser.add_argument('--out',required=True);parser.add_argument('--width',type=int,default=1440);parser.add_argument('--r1',action='store_true');parser.add_argument('--height',type=int);args=parser.parse_args();out=Path(args.out).resolve();out.mkdir(parents=True,exist_ok=True)
     case=MovieTests();case.setUp();case.setup_movie()
+    if args.r1:
+        from h3ui.video_assembly import media
+        sample=case.root/'uiux-playable.mp4'
+        media.command(['ffmpeg','-nostdin','-y','-v','error','-loop','1','-i',Path('static/assets/movie/empty-edit.webp').resolve(),'-t','5','-vf','scale=640:360:force_original_aspect_ratio=decrease,pad=640:360:(ow-iw)/2:(oh-ih)/2','-r','24','-c:v','libx264','-pix_fmt','yuv420p',sample])
+        def fake_playable(project,record,directory,event,progress):
+            import shutil
+            target=directory/'fixture.mp4';shutil.copy2(sample,target)
+            return str(target),dict(duration=5,width=640,height=360,audio=False)
+        case.service.movie.execution.backend=fake_playable
+    page=PAGE
+    if args.r1:
+        from tests.uiux_r1_shell import application_shell
+        page=application_shell(page)
     def app(environ,start):
-        if environ['PATH_INFO']=='/creation-fixture':start('200 OK',[('Content-Type','text/html; charset=utf-8')]);return [PAGE.encode()]
+        if environ['PATH_INFO']=='/creation-fixture':start('200 OK',[('Content-Type','text/html; charset=utf-8')]);return [page.encode()]
         return case.app(environ,start)
     server=make_server('127.0.0.1',0,app,handler_class=Quiet);threading.Thread(target=server.serve_forever,daemon=True).start();checks=[]
     try:
         for mode,pid in [('authoring',case.p['id']),('movie',case.movie['id'])]:
             if mode=='authoring':
                 p=case.service.create('authoring',dict(title='UI 隔离剧本',request_key='ui-create'));pid=p['id']
-            result=subprocess.run(['C:/Program Files/Google/Chrome/Application/chrome.exe','--headless=new','--disable-gpu','--no-first-run','--disable-background-networking',f'--user-data-dir={out/("profile-"+mode)}',f'--window-size={args.width},1000','--virtual-time-budget=20000',f'--screenshot={out/(mode+".png")}','--dump-dom',f'http://127.0.0.1:{server.server_port}/creation-fixture?pid={pid}'],capture_output=True,timeout=50)
+            url=f'http://127.0.0.1:{server.server_port}/creation-fixture?pid={pid}'
+            if args.r1:
+                command=[sys.executable,str(Path(__file__).with_name('uiux_browser_capture.py')),url,str(out/(mode+'.png')),str(args.width),str(args.height or (960 if args.width==1440 else 900))]
+            else:
+                command=['C:/Program Files/Google/Chrome/Application/chrome.exe','--headless=new','--disable-gpu','--no-first-run','--disable-background-networking',f'--user-data-dir={out/("profile-"+mode)}',f'--window-size={args.width},1000','--virtual-time-budget=20000',f'--screenshot={out/(mode+".png")}','--dump-dom',url]
+            result=subprocess.run(command,capture_output=True,timeout=60)
             dom=result.stdout.decode('utf-8','replace');(out/(mode+'.html')).write_text(dom,encoding='utf-8');match=re.search(r'data-check="([^"]+)"',dom)
             data=json.loads(html.unescape(match[1])) if match else dict(passed=False,error='No browser completion marker')
             checks.append(dict(mode=mode,**data));print(json.dumps(checks[-1],ensure_ascii=False),flush=True)

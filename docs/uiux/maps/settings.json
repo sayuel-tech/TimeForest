@@ -90,11 +90,11 @@
       ]
     },
     "static/studio/styles/components.css": {
-      "sha256": "96f8b268f73ec290ebb84c9dae79abe0f9b40931b67b040b2b77976c83bfdd97",
+      "sha256": "44fe44f2cbdf284fc46902312b4056de293866653d80b60e2368210858e9c65f",
       "imported_by": []
     },
     "static/studio/styles/production-settings.css": {
-      "sha256": "07b3cd7f58759afe62098e2106d75bcd781454f4ce1a0664b35a81288df5cf63",
+      "sha256": "fa7b65dfb61128510d076ad60dea25298fa7dd441374cb5ef41cc53bb17dd377",
       "imported_by": []
     },
     "static/studio/ui/model-selector.js": {

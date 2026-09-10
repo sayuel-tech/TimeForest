@@ -4,11 +4,11 @@
   "evidence": "Mechanical current-source map; not UI acceptance or a match to historical screenshots.",
   "sources": {
     "static/studio/modes/movie/workspace.js": {
-      "sha256": "3de14d36809b2ee697e9da67bfb715f0044624d2e8fac074fb621eb1b13812d9",
+      "sha256": "d49060ee79b93c450db414770ad831aa3b3fc2d556c55c799d8007bd9bcbe778",
       "exports": [
         {
           "name": "mountWorkspace",
-          "line": 33
+          "line": 35
         }
       ],
       "imports": [
@@ -29,6 +29,7 @@
         "static/studio/ui/draft-status.js",
         "static/studio/ui/empty-state.js",
         "static/studio/ui/error-feedback.js",
+        "static/studio/ui/experience-content.js",
         "static/studio/ui/media-player.js",
         "static/studio/ui/primitives.js",
         "static/studio/ui/prompt-editor.js",
@@ -37,6 +38,7 @@
         "static/studio/ui/run-timing.js",
         "static/studio/ui/source-parameters.js",
         "static/studio/ui/status-region.js",
+        "static/studio/ui/timecode-input.js",
         "static/studio/ui/workbench.js",
         "static/studio/ui/workspace-actions.js",
         "static/studio/ui/workspace-chrome.js",
@@ -47,15 +49,15 @@
       ]
     },
     "static/studio/styles/creation.css": {
-      "sha256": "4d2f7af4570cc721b840479476aee71df3199cb3b365229abb503dd3f082a9f0",
+      "sha256": "5d512d8db62030a60bd0c0bc117574513f0213027cb72d4441ce8d804d1582a3",
       "imported_by": []
     },
     "static/studio/styles/task-layouts.css": {
-      "sha256": "30bee9fd22edca749b56cc0770b8fddd249ce3c3000c7f95f3c209eb288ce113",
+      "sha256": "e61b2d0766d067066f609297317bd686cc39b75a5420b5d8f295b66fad5a4e3f",
       "imported_by": []
     },
     "static/studio/styles/workbench.css": {
-      "sha256": "3849df049437e28f6528e6a0fedbbfe433837eb050b0f00c5e54516bf82a79d2",
+      "sha256": "f3bc638ef5ed25ae7a29d05c438298e1aefeadeb0a33f03fefed45aca54e3fd9",
       "imported_by": []
     }
   }

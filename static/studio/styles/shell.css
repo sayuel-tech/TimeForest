@@ -496,3 +496,55 @@ header nav {
     max-width: 110px;
   }
 }
+
+/* R1 layout integration; original TimeForest artwork and palette retained. */
+.tf-experience .page { margin:0; max-width:none; min-width:0; min-height:calc(100dvh - var(--site-header-height,72px)); padding:28px 36px 48px; }
+.tf-experience .site-footer { margin-left:0; background:var(--paper); font-size:12px; }
+.tf-experience.workspace-open { overflow:hidden; }
+.tf-experience.workspace-open>.site-footer { display:none; }
+
+/* Page families keep their own primary objects, but share a stable shell. */
+.tf-experience .project-page { padding:0; height:calc(100dvh - var(--site-header-height,72px)); min-height:0; overflow:hidden; display:flex; flex-direction:column; }
+.tf-experience .project-head{ display:flex; justify-content:space-between; align-items:center; margin:0;padding:6px 16px;gap:12px;min-height:56px; border-bottom:1px solid var(--line); flex:none; background:var(--paper); }
+.tf-experience .workspace-identity{ min-width:0; display:grid; grid-template-columns:auto minmax(0,1fr); align-items:center;column-gap:10px;row-gap:2px; }
+.tf-experience .back-link { grid-row:1; white-space:nowrap; text-decoration:none; color:var(--muted); font-size:12px; }
+.tf-experience .workspace-title-line { display:flex; align-items:center; min-width:0; gap:12px; }
+.tf-experience .project-head h1{ font-family:var(--serif);font-size:var(--title-page);font-weight:500;line-height:1.25; margin:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.tf-experience .project-kicker{ grid-column:1/-1; display:flex; align-items:center; flex-wrap:wrap;gap:8px; margin:0;line-height:1.4;}
+.tf-experience .project-kicker>.eyebrow { color:var(--muted); font-size:12px; letter-spacing:0; }
+.tf-experience .project-summary { color:var(--muted); font-size:12px; }
+.tf-experience .project-actions{ flex:none;display:flex;align-items:center;gap:8px;}
+.tf-experience .project-actions small{ margin-top:4px; font-size:11px;margin:0;line-height:1.4;max-width:160px;}
+.tf-experience .steps{ margin:0;padding:4px 12px;gap:8px;min-height:36px; display:flex; border-bottom:1px solid var(--line); align-items:center; overflow:auto; background:var(--paper); flex:none; scrollbar-width:thin; }
+.tf-experience .steps button{ display:inline-flex; align-items:center;gap:6px; border:0; border-radius:6px; color:var(--muted);padding:3px 8px;min-height:28px; white-space:nowrap; background:transparent; }
+.tf-experience .steps button.active { background:var(--sage-soft); color:var(--success); box-shadow:none; font-weight:600; }
+.tf-experience .steps button .workspace-step-number { display:inline-grid; place-items:center; margin:0; width:21px; height:21px; border-radius:50%; border:1px solid var(--line); color:var(--muted); font-size:11px; }
+.tf-experience .steps button.active .workspace-step-number { color:var(--paper); background:var(--success); border-color:var(--success); }
+.tf-experience .steps button .workspace-step-label { display:inline; margin:0; color:inherit; font:inherit; }
+.tf-experience #project-errors:empty,.tf-experience #source-progress:empty { display:none; }
+.tf-experience .project-cover { height:148px; width:100%; object-fit:contain; background:var(--paper-2); }
+.tf-experience .text-cover { padding:18px 22px; gap:10px; font-size:22px; }
+.tf-experience .card-body { padding:17px 20px; }
+.tf-experience .card-body h3 { font-size:19px; margin:8px 0; }
+.tf-experience .card-body p { min-height:0; font-size:13px; line-height:1.75; margin:8px 0; }
+.tf-experience .project-resume { display:flex; align-items:center; justify-content:space-between; color:var(--success); font-size:12px; padding-top:12px; margin-top:12px; border-top:1px solid var(--line); }
+
+/* Original top navigation; actual height is shared with workspace geometry. */
+.site-header{position:sticky;top:0;z-index:40;background:var(--paper);border-bottom:1px solid var(--line)}
+.site-header>nav{height:auto;min-height:60px;max-width:none;padding:6px 20px;gap:24px}
+.site-header .nav-end{display:flex;flex-direction:row;align-items:center;justify-content:flex-end;gap:18px;min-width:0;flex-wrap:wrap}
+.site-header .nav-end>a,.site-header summary{font-size:var(--text-control);white-space:nowrap;text-decoration:none;color:var(--muted)}
+.site-header [data-site-section].active:not(.brand){color:var(--success);text-decoration:underline;text-underline-offset:6px}
+.site-header #health{display:inline-flex;white-space:nowrap;font-size:12px}
+.site-header #global-tasks{min-height:32px;padding:6px 10px;white-space:normal}
+.header-more{position:relative;margin:0;padding:0;border:0}
+.header-more>summary{padding:6px;cursor:pointer}
+.header-more>div{position:absolute;right:0;top:100%;min-width:150px;padding:8px;background:var(--paper);border:1px solid var(--line);border-radius:var(--r-sm);box-shadow:var(--shadow);display:grid;gap:4px}
+.header-more a{padding:8px 10px;white-space:nowrap;text-decoration:none;color:var(--ink)}
+.skip-link{position:fixed;top:-100px;left:16px;background:var(--paper);padding:12px;z-index:1000}
+.skip-link:focus{top:8px}
+@media(max-width:1000px){.site-header>nav{gap:12px;padding:6px 20px;min-height:60px;}.site-header .brand b{font-size:16px}.site-header .nav-end{gap:10px}}
+@media(max-width:650px){.site-header>nav{flex-wrap:wrap;gap:8px;min-height:60px;padding:6px 20px;}.site-header .brand{gap:8px}.site-header .brand img{width:28px;height:28px}.site-header .brand small{display:none}.site-header .nav-end{width:100%;justify-content:space-between;gap:8px}.site-header .nav-end>a,.site-header summary{font-size:12px}.site-header #global-tasks{font-size:12px}.site-header #health{font-size:11px}.site-header .brand b{font-size:16px}}
+
+/* Home retains its original call-to-action scale. */
+.home-page .btn{min-height:44px;padding:10px 16px;font-size:14px}

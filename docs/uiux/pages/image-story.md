@@ -42,3 +42,7 @@
 - [docs/frontend/parameter-map.md](../../frontend/parameter-map.md)
 
 维护此页时同时更新 catalog 对应条目、刷新机器图并执行链接检查；具体步骤见 [更新约定](../maintenance.md)。
+
+## R1布局接入（2026-09-10）
+
+公共目录与参考区接入；审核候选记录移至主区，原参考绑定、依赖失效、分段和导出不变。 布局以用户提供预览为目标，美术沿用原站。源码归属、检查与局限见[本次接入](../site-experience.md)。
