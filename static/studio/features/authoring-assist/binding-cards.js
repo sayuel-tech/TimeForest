@@ -24,11 +24,16 @@ export function resolveBindings(project,data,target=''){
 export function mountBindingCards({ctx,content,edit,save,run,render,reload,controller},box){
   const p=ctx.session.project,data=content('asset_bindings'),needs=data.needs||[],target=ctx.step===2?'':ctx.selected;
   const segment=content('segment').segments?.find(s=>s.ref===target),scope=target?(segment?'segment':'shot'):'project',id=target||p.id;
+  const shots=content('storyboard').shots||[],parent=shots.find(s=>s.ref===(segment?.shot_ref||target));
+  const shotName=parent?`分镜 ${shots.indexOf(parent)+1} · ${parent.title||'未命名'}`:'所属分镜';
+  const clipNumber=segment?(content('segment').segments||[]).filter(s=>s.shot_ref===segment.shot_ref).findIndex(s=>s.ref===target)+1:0;
+  const scopeName=segment?`${shotName} / 片段 ${clipNumber}`:shotName;
+  const overrides=(data.bindings||[]).filter(b=>b.scope_kind===scope&&b.scope_ids.includes(id)&&(b.state!=='inherit'||b.source==='project')).length;
   const refs=p.creation_references||[],effective=resolveBindings(p,data,target);
   const sourceLabel=b=>!b.scope_ids?.length?'尚未绑定':b.scope_kind==='project'?'全剧基础资产':b.scope_kind==='segment'?'本片段独立设定':`分镜「${content('storyboard').shots?.find(s=>b.scope_ids.includes(s.ref))?.title||'未命名'}」`;
   const lookup=b=>refs.find(r=>b.reference_id?r.id===b.reference_id:r.library_reference.asset===b.asset_ref&&r.library_reference.version===b.asset_version);
   const sourceHref=b=>`#/p/${p.id}?step=${b.scope_kind==='project'?2:b.scope_kind==='shot'?3:4}${b.scope_kind==='project'?'':'&target='+b.scope_ids[0]}`;
-  const choices=segment?[['parent','沿用所属分镜'],['project','直接沿用全剧'],['independent','本片段独立设定']]:[['parent','沿用全剧'],['independent','本分镜独立设定']];
+  const choices=segment?[['parent',`沿用${shotName}`],['project','直接沿用全剧'],['independent','本片段独立设定']]:[['parent','沿用全剧'],['independent','本分镜独立设定']];
   ctx.bindingViews ||= new Map();
   const viewKey=scope+':'+id;
   const view=ctx.bindingViews.get(viewKey)||{kind:'all',missing:false};ctx.bindingViews.set(viewKey,view);
@@ -37,14 +42,22 @@ export function mountBindingCards({ctx,content,edit,save,run,render,reload,contr
     <div class="asset-needs-toolbar"><div class="asset-needs-filters" aria-label="筛选资产需求"><button type="button" data-need-filter="all">全部</button>${Object.entries(labels).filter(([kind])=>needs.some(n=>n.kind===kind)).map(([kind,label])=>`<button type="button" data-need-filter="${kind}">${label}</button>`).join('')}<label class="check"><input type="checkbox" data-missing-only ${view.missing?'checked':''}>待落实 ${pending}</label></div>${scope==='project'?'<button class="quiet" data-add-need>＋ 补充需求</button>':''}</div>
     ${!needs.length?'<div class="empty asset-needs-empty"><h3>先为故事列出需要的人物与场景</h3><p>可以分析已写好的剧本，也可以用“补充需求”手动建立具名位置。</p></div>':''}
     <div class="asset-need-grid asset-need-groups" id="asset-needs-scroll">${needs.map((n,i)=>{const b=effective[i],r=b.state==='bound'?lookup(b):null;return `<section class="asset-need-card" data-need-card="${esc(n.ref)}" data-need-kind-value="${esc(n.kind)}" data-missing="${b.state==='pending'}">
-      <div class="asset-need-media"><span class="asset-need-kind">${esc(labels[n.kind]||n.kind)}</span>${r?`<a href="${esc(r.url)}" target="_blank" rel="noopener" aria-label="预览${esc(n.name)}">${r.kind==='image'?`<img src="${esc(r.url)}" alt="${esc(n.name)}" loading="lazy">`:`<span class="asset-need-placeholder">声音素材 · ${esc(r.name)}</span>`}</a>`:`<span class="asset-need-placeholder">${esc({pending:'等待一份合适的素材',text_only:'仅用文字设定',disabled:'当前范围不使用'}[b.state]||'等待绑定素材')}</span>`}</div>
+      <div class="asset-need-media"><span class="asset-need-kind">${esc(labels[n.kind]||n.kind)}</span>${r?`<a href="${esc(r.url)}" target="_blank" rel="noopener" aria-label="预览${esc(n.name)}">${r.kind==='image'?`<img src="${esc(r.url)}" alt="${esc(n.name)}" loading="lazy">`:`<span class="asset-need-placeholder">声音素材 · ${esc(r.name)}</span>`}</a>`:`<button type="button" class="asset-need-slot" data-need-pick="${esc(n.ref)}" aria-label="为${esc(n.name)}绑定${esc(labels[n.kind]||'素材')}"><span aria-hidden="true">＋</span><span>${esc({text_only:'文字设定 · 可添加素材',disabled:'未使用 · 可重新绑定'}[b.state]||'绑定'+(labels[n.kind]||'素材'))}</span></button>`}</div>
       <div class="asset-need-title"><h3>${esc(n.name)}</h3><span class="badge">${esc({pending:'待落实',bound:'已绑定',text_only:'文字',disabled:'不使用',inherit:'沿用'}[b.state]||b.state)}</span></div><p class="asset-need-description">${esc(n.description)}</p>
       ${b.scope_ids?.length?`<a class="asset-need-origin" href="${sourceHref(b)}">${esc(sourceLabel(b))} ↗</a>`:'<span class="asset-need-origin">尚未绑定</span>'}
-      <div class="asset-need-actions"><button data-need-pick="${esc(n.ref)}">${r?'更换素材':'＋ 选素材'}</button></div>
+      ${r?`<div class="asset-need-actions"><button data-need-pick="${esc(n.ref)}" aria-label="更换${esc(n.name)}的素材">更换素材</button></div>`:''}
       <details class="asset-need-options" data-view-key="need-options:${esc(n.ref)}"><summary aria-label="${esc(n.name)}的更多操作">更多…</summary>
       <label class="upload">本地上传<input data-need-file="${esc(n.ref)}" type="file" accept="${['voice','audio','sound'].includes(n.kind)?'audio/*':'image/*'}" hidden></label>
       ${field('素材来源',`<select data-need-source="${esc(n.ref)}">${opts([...(target?[['inherit','沿用基础来源'],...(segment?[['project','直接沿用全剧']]:[])]:[]),['bound','本处绑定'],['pending','解除绑定／待补'],['text_only','仅用文字'],['disabled','本处不使用']],data.bindings?.find(b=>b.need_ref===n.ref&&b.scope_ids.includes(id))?.source==='project'?'project':data.bindings?.find(b=>b.need_ref===n.ref&&b.scope_ids.includes(id))?.state||(target?'inherit':'pending'))}</select>`)}${field('使用说明',`<textarea data-need-text="${esc(n.ref)}">${esc(b.text_override||'')}</textarea>`)}${scope==='project'?`${field('需求名称',`<input data-need-name="${esc(n.ref)}" value="${esc(n.name)}">`)}${field('类别',`<select data-need-kind="${esc(n.ref)}">${opts(Object.entries(labels),n.kind)}</select>`)}${['costume','voice'].includes(n.kind)?field('关联角色',`<select data-need-subject_ref="${esc(n.ref)}">${opts([['','请选择角色'],...needs.filter(x=>x.kind==='character').map(x=>[x.ref,x.name])],n.subject_ref||'')}</select>`):''}${field('需求描述',`<textarea data-need-description="${esc(n.ref)}">${esc(n.description)}</textarea>`)}<button data-need-delete="${esc(n.ref)}">移除此需求</button>`:''}<p class="helper">只改变当前范围，不删除资产原件，不自动生成。</p></details></section>`;}).join('')}</div><p class="helper" data-no-needs hidden>这个筛选下没有资产需求。</p>`;
   if(scope==='project'){box.classList.add('asset-needs-board');const help=box.querySelector('.asset-needs-help');box.querySelector('.asset-needs-toolbar').append(help);}
+  if(target){
+    const heading=box.querySelector('.asset-needs-heading h2');heading.classList.add('asset-scope-context');heading.textContent=scopeName+' · 资产';
+    box.querySelector('[data-asset-policy]').closest('.field').insertAdjacentHTML('afterend',`<details class="asset-policy-details" data-binding-policy-note><summary>${overrides?`${overrides} 项单独设置`:'按基础来源使用'}</summary><p class="helper">切换基础来源不会清除单项设置。逐项来源见卡片；在“更多”中可恢复沿用。</p></details>`);
+  }
+  if(ctx.navigateWriting)box.querySelectorAll('.asset-need-origin[href]').forEach(link=>link.onclick=e=>{
+    if(e.button!==0||e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;
+    e.preventDefault();const query=new URLSearchParams(link.hash.split('?')[1]);void ctx.navigateWriting(Number(query.get('step')),query.get('target')||'');
+  });
   function filterNeeds(){
     let visible=0;box.querySelectorAll('[data-need-card]').forEach(card=>{card.hidden=(view.kind!=='all'&&card.dataset.needKindValue!==view.kind)||(view.missing&&card.dataset.missing!=='true');if(!card.hidden)visible++;});
     box.querySelectorAll('[data-need-filter]').forEach(button=>{const active=button.dataset.needFilter===view.kind;button.setAttribute('aria-pressed',String(active));});

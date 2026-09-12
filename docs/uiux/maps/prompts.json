@@ -56,7 +56,7 @@
       ]
     },
     "static/studio/features/prompt-library/browser.js": {
-      "sha256": "ff4a31f72320e0fd8e0217ccfa0fd64cd28ce3cc9734a63c93dfd95259083fba",
+      "sha256": "3b792b8b8c8fa9cb72e958dbd496490a1a74e1624f06761e93f76adde9eb954d",
       "exports": [
         {
           "name": "mountPromptBrowser",
@@ -215,7 +215,7 @@
       "imported_by": []
     },
     "static/studio/styles/task-layouts.css": {
-      "sha256": "e61b2d0766d067066f609297317bd686cc39b75a5420b5d8f295b66fad5a4e3f",
+      "sha256": "8f96b03c8aaea571e9554d4e9344806d820855f38e3cff119ee2eab890ae0de1",
       "imported_by": []
     },
     "static/studio/ui/prompt-editor.js": {

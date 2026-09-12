@@ -185,3 +185,5 @@ UI、UX与代码复用现状：[6.3.21静态审查](docs/ui-code-reuse-audit-202
 
 
 [现行设计规范V2](docs/frontend/visual-design-standard-v2.md)先定义页面任务与阅读/比较目标，[页面任务卡](docs/frontend/page-purpose-design.md)包含七模式逐步骤及库/管理页清单；V1尺寸规则保留为实现历史，R1—R4本期改造已落地，见[任务布局交付](docs/frontend/readability-implementation.md)。公共阅读角色与组合归styles/task-layouts.css、查找/全文归features/prompt-library/browser.js、只读/展开编辑归ui/prompt-editor.js。styles/design-tokens.css由static/studio/style.css加载。基础字体在base.css、控件/弹窗在components.css、参数在production-settings.css，模式不复制。tests/site_layout_ui_fixture.py检查七模式各步骤与参数；tests/library_layout_ui_fixture.py含选择器及--general普通页面；tools/check_ui_design.mjs防止重复尺寸定义。
+
+图片多图维护补充（2026-09-12）：dual工具支持默认A/B、最多A—I；前端槽位定义在static/studio/core/image-inputs.js，保存／编译仍在h3ui/image_studio。3—9图的配套ComfyUI扩展源码与部署说明在[comfyui_nodes](comfyui_nodes/README.md)，不修改生产节点目录。真实绑定见参数映射、当前部署边界见维护基线。

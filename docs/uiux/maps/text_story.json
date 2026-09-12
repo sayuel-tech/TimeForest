@@ -4,7 +4,7 @@
   "evidence": "Mechanical current-source map; not UI acceptance or a match to historical screenshots.",
   "sources": {
     "static/studio/modes/text-story/workspace.js": {
-      "sha256": "dd28bc05ee4228fec57a1a56cdffce668e6de470ebf7d0b8466ea2a22fd6af60",
+      "sha256": "240d4d7873e1dd5a01e4ba0427af62d4965e891fd6a4a6bb82f5215cd6bb3cde",
       "exports": [
         {
           "name": "navigation",
@@ -20,7 +20,7 @@
         },
         {
           "name": "reviewComparison",
-          "line": 23
+          "line": 25
         }
       ],
       "imports": [
@@ -34,15 +34,15 @@
       ]
     },
     "static/studio/styles/modes.css": {
-      "sha256": "b3cd2d85c9547ae9e5742d6a043955122cee889a19a35f5e68b090be849f00ce",
+      "sha256": "777a19acfe57d37b967dbf7fb1c8601a7f42e11e12bd09263755f87e3e357307",
       "imported_by": []
     },
     "static/studio/styles/task-layouts.css": {
-      "sha256": "e61b2d0766d067066f609297317bd686cc39b75a5420b5d8f295b66fad5a4e3f",
+      "sha256": "8f96b03c8aaea571e9554d4e9344806d820855f38e3cff119ee2eab890ae0de1",
       "imported_by": []
     },
     "static/studio/styles/workbench.css": {
-      "sha256": "f3bc638ef5ed25ae7a29d05c438298e1aefeadeb0a33f03fefed45aca54e3fd9",
+      "sha256": "aef5133eacf51386819f7db3f5ab5897438d0881d2b26fefe92f994ba1911c1d",
       "imported_by": []
     }
   }

@@ -152,7 +152,7 @@
       ]
     },
     "static/studio/features/prompts/authoring.js": {
-      "sha256": "25e03b042ce1a821da68beabf05c2bbfc98b75513af0d40ee6845855e8653e66",
+      "sha256": "f1e9b95f5b5816d8f3ad6c8de67da965dca18067a5cb6a5546377109b3eb860c",
       "exports": [
         {
           "name": "assetCommands",
@@ -250,11 +250,11 @@
       "imported_by": []
     },
     "static/studio/styles/task-layouts.css": {
-      "sha256": "e61b2d0766d067066f609297317bd686cc39b75a5420b5d8f295b66fad5a4e3f",
+      "sha256": "8f96b03c8aaea571e9554d4e9344806d820855f38e3cff119ee2eab890ae0de1",
       "imported_by": []
     },
     "static/studio/styles/workbench.css": {
-      "sha256": "f3bc638ef5ed25ae7a29d05c438298e1aefeadeb0a33f03fefed45aca54e3fd9",
+      "sha256": "aef5133eacf51386819f7db3f5ab5897438d0881d2b26fefe92f994ba1911c1d",
       "imported_by": []
     },
     "static/studio/ui/candidate-records.js": {

@@ -212,10 +212,10 @@
 .mode-text-story .script-prose {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-  font-size: 14px;
+  font-size: var(--text-reading);
   max-height: 55vh;
   overflow: auto;
-  line-height: 1.95;
+  line-height: var(--leading-reading);
 }
 .mode-swap .swap-source-grid {
   display: grid;

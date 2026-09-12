@@ -49,15 +49,15 @@
       ]
     },
     "static/studio/styles/creation.css": {
-      "sha256": "5d512d8db62030a60bd0c0bc117574513f0213027cb72d4441ce8d804d1582a3",
+      "sha256": "e7265862e14da5cb628c2394473aa583487e7cb74c5aeb9b7685a7f1407eadab",
       "imported_by": []
     },
     "static/studio/styles/task-layouts.css": {
-      "sha256": "e61b2d0766d067066f609297317bd686cc39b75a5420b5d8f295b66fad5a4e3f",
+      "sha256": "8f96b03c8aaea571e9554d4e9344806d820855f38e3cff119ee2eab890ae0de1",
       "imported_by": []
     },
     "static/studio/styles/workbench.css": {
-      "sha256": "f3bc638ef5ed25ae7a29d05c438298e1aefeadeb0a33f03fefed45aca54e3fd9",
+      "sha256": "aef5133eacf51386819f7db3f5ab5897438d0881d2b26fefe92f994ba1911c1d",
       "imported_by": []
     }
   }

@@ -24,7 +24,7 @@ export async function pickLibraryAsset({
       serial = 0,
       finished = false;
     const dialog = modal(
-      `<div class="library-picker"><span class="eyebrow">ASSET LIBRARY</span><h2>${esc(title)}</h2><form class="library-search"><input name="q" placeholder="搜索资产名称" aria-label="搜索资产名称"><select name="category" aria-label="分类">${opts([["", "所有分类"], ...catalog.categories.map((c) => [c.id, c.name])], "")}</select><button>查找</button></form><div class="library-picker-results" aria-live="polite"></div><div class="library-pagination"><button data-page="-1">上一页</button><span></span><button data-page="1">下一页</button></div><p class="helper">这里仅选择资产；引用用途、绑定内容和工作流变化会在下一步核对。资料PROMPT不会进入制作。</p>${multiple?'<button type="button" class="primary picker-apply" disabled>导入所选视频（0）</button>':''}<button type="button" class="picker-cancel">取消</button></div>`,
+      `<div class="library-picker"><span class="eyebrow">ASSET LIBRARY</span><h2>${esc(title)}</h2><form class="library-search"><input name="q" placeholder="搜索资产名称" aria-label="搜索资产名称"><select name="category" aria-label="分类">${opts([["", "所有分类"], ...catalog.categories.map((c) => [c.id, c.name])], "")}</select><button>查找</button></form><p class="helper" data-picker-count role="status"></p><div class="library-picker-results" aria-live="polite"></div><div class="library-pagination"><button data-page="-1">上一页</button><span></span><button data-page="1">下一页</button></div><p class="helper">这里仅选择资产；引用用途、绑定内容和工作流变化会在下一步核对。资料PROMPT不会进入制作。</p>${multiple?'<button type="button" class="primary picker-apply" disabled>导入所选视频（0）</button>':''}<button type="button" class="picker-cancel">取消</button></div>`,
     );
     const view = dialog.querySelector(".library-picker");
     const actions=document.createElement('div');actions.className='dialog-actions';
@@ -67,10 +67,11 @@ export async function pickLibraryAsset({
           data.items
             .map(
               (item) =>
-                `<div class="library-pick-entry"><button class="library-pick-card" ${multiple?`aria-pressed="${selected.has(item.id)}"`:""} data-pick="${item.id}" ${exclude.includes(item.id) ? "disabled" : ""}>${thumbnail(item)}<strong>${esc(item.name)}</strong><small>${esc(mediaSummary(primaryMedia(item)))}</small></button><details data-preview="${item.id}"><summary>预览与来源</summary><div data-preview-content></div></details></div>`,
+                `<div class="library-pick-entry"><button class="library-pick-card" ${multiple?`aria-pressed="${selected.has(item.id)}"`:""} data-pick="${item.id}" ${exclude.includes(item.id) ? "disabled" : ""}>${thumbnail(item)}<strong>${esc(item.name)}</strong><small>${esc(mediaSummary(primaryMedia(item)))}</small><span data-pick-action>${exclude.includes(item.id)?'已在当前选择中':multiple?(selected.has(item.id)?'已勾选':'勾选资产'):'选择此资产'}</span></button><details data-preview="${item.id}"><summary>预览与来源</summary><div data-preview-content></div></details></div>`,
             )
             .join("") ||
-          '<p class="empty">没有符合条件的资产，可先在资产库上传。</p>';
+          `<p class="empty">${search.get('q')||search.get('category')?'没有符合当前查找条件的资产，请调整关键词或分类。':'暂无可选资产，可先在资产库上传。'}</p>`;
+        view.querySelector('[data-picker-count]').textContent=`${catalog.categories.find(c=>c.id===search.get('category'))?.name||'所有分类'} · ${data.total} 项${search.get('q')?' · 搜索：'+search.get('q'):''}`;
         view.querySelector(".library-pagination span").textContent =
           `${page} / ${Math.max(1, Math.ceil(data.total / 12))}`;
         view.querySelector('[data-page="-1"]').disabled = page === 1;
@@ -87,7 +88,7 @@ export async function pickLibraryAsset({
               const item=await libraryApi('/assets/'+details.dataset.preview+'?version='+encodeURIComponent(summary.version),'GET',undefined,controller.signal);
               if(finished||current!==serial||!box.isConnected)return;
               const matching=item.snapshot.media.filter(m=>!kind||m.meta.kind===kind);
-              box.innerHTML=matching.map(m=>`<section>${mediaPlayer(m)}<p>${esc(mediaSummary(m))}</p><div data-origin-media="${m.id}"></div></section>`).join('');
+              box.innerHTML=`<p>${esc(item.name)} · 选择时引用此预览的固定版本</p>`+matching.map(m=>`<section>${mediaPlayer(m)}<p>${esc(mediaSummary(m))}</p><div data-origin-media="${m.id}"></div></section>`).join('');
               for(const m of matching)void mountAssetOrigin(box.querySelector(`[data-origin-media="${m.id}"]`),{asset:item.id,version:item.snapshot.id,media:m.id,supported:item.asset_origin_version===1},controller.signal);
             }catch(error){if(!finished&&box.isConnected){details.dataset.loaded='';box.textContent=error.message;}}
           };
@@ -106,7 +107,7 @@ export async function pickLibraryAsset({
                 if(finished||current!==serial||!dialog.open)return;
                 if(multiple){
                   if(selected.has(item.id))selected.delete(item.id);else selected.set(item.id,item);
-                  button.setAttribute("aria-pressed",String(selected.has(item.id)));button.disabled=false;
+                  button.setAttribute("aria-pressed",String(selected.has(item.id)));button.querySelector("[data-pick-action]").textContent=selected.has(item.id)?"已勾选":"勾选资产";button.disabled=false;
                   const apply=view.querySelector(".picker-apply");apply.disabled=!selected.size;apply.textContent=`导入所选视频（${selected.size}）`;
                 }else done(item);
               } catch (error) {

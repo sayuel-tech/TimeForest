@@ -1,5 +1,5 @@
 """Shared results in five actual UI adapters; synthetic media, isolated APIs, no generation."""
-import argparse, copy, json, sys, threading
+import argparse, copy, json, sys, threading, html, re
 from pathlib import Path
 from http.server import ThreadingHTTPServer
 from types import SimpleNamespace
@@ -30,6 +30,13 @@ try{
    const outputs=(await get()).outputs;target=outputs[0].id;
    await click('[data-output="'+target+'"]');
    assert(!selected(await get()),'viewing selected an image');
+   assert(document.querySelector('.image-result-context').textContent==='正在查看：候选 1 · 尚未选定候选','initial image identity');
+   const main=document.querySelector('#image-result-main'),box=main.parentElement;
+   await wait(()=>main.complete&&main.naturalWidth>0);
+   assert(box.getBoundingClientRect().top<document.querySelector('.result-candidates').getBoundingClientRect().top,'candidate list precedes main image');
+   assert(main.clientHeight<=box.clientHeight&&box.clientHeight>=240,'main image clipped or too small');
+   await click('#image-compare-toggle');assert(box.querySelector('[data-original]')&&!selected(await get()),'comparison changed selection');
+   await click('#image-compare-toggle');assert(!box.querySelector('[data-original]'),'comparison failed to close');
    assert(document.querySelector('[data-output="'+target+'"] .candidate-state').textContent.includes('正在查看'),'view marker missing');
    ingest='#image-quick-ingest';remove='[data-record-remove="'+outputs[0].run+'"]';restore='[data-record-restore="'+outputs[0].run+'"]';
  }else if(assembly){
@@ -82,6 +89,8 @@ try{
    await click('[data-workspace-step="results"]');
    const other=(await get()).outputs.find(o=>o.id!==target);await click('[data-output="'+other.id+'"]');
    assert(selected(await get())===target,'viewing changed selected image');
+   const current=await get(),ordered=current.outputs.filter(o=>o.task===other.task);
+   assert(document.querySelector('.image-result-context').textContent===`正在查看：候选 ${ordered.findIndex(o=>o.id===other.id)+1} · 已选定：候选 ${ordered.findIndex(o=>o.id===target)+1}`,'viewed and selected image identity');
  }else{
    document.querySelector('.attempt').open=true;await click('[data-select-attempt="candidate-a"]');
    assert(document.querySelector('#dialog').textContent.includes('自动合成'),'selection confirmation hides export');
@@ -94,6 +103,7 @@ try{
  assert(document.documentElement.scrollWidth<=innerWidth+1,'horizontal overflow');
  const actions=document.querySelector('.result-actions');assert(actions?.querySelector('.result-collect'),'collection grouping missing');
  if(!image&&!assembly){document.querySelector('.attempt').open=true;document.querySelector('.attempt').scrollIntoView({block:'start'})}
+ else if(image)document.querySelector('.desk-canvas').scrollTop=0;
  else document.querySelector('.result-actions').scrollIntoView({block:'end'});
  await new Promise(r=>setTimeout(r,300));
  document.body.dataset.check=JSON.stringify({passed:true,mode:assembly?'video_assembly':initial.mode,width:innerWidth,checks:['view vs select','collect keeps step and selection','remove/restore',...(image?['image selection']:['playback/pause/seek/error/retry']),...(assembly?['assembly replacement slot']:image?[]:['original confirmation semantics'])]});
@@ -124,7 +134,7 @@ class ResultFixture(RealImageFixture):
         return super().request(method,path,body)
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--evidence-dir',required=True);parser.add_argument('--only',choices=['original','assembly']);parser.add_argument('--modes',default='swap,image_story,text_story,image_assets');args=parser.parse_args();out=Path(args.evidence_dir);out.mkdir(parents=True,exist_ok=True);checks=[]
+    parser=argparse.ArgumentParser();parser.add_argument('--evidence-dir',required=True);parser.add_argument('--only',choices=['original','assembly']);parser.add_argument('--modes',default='swap,image_story,text_story,image_assets');parser.add_argument('--exact-image-layout',action='store_true');args=parser.parse_args();out=Path(args.evidence_dir);out.mkdir(parents=True,exist_ok=True);checks=[]
     TrackTests.setUpClass()
     try:
         if args.only!='assembly':
@@ -133,6 +143,8 @@ def main():
                     if self.path.startswith('/?') and content_type.startswith('text/html'):body=body.replace(b'</body>',SCRIPT.encode()+b'</body>')
                     super().send(status,body,content_type)
                 def do_GET(self):
+                    if self.path.startswith('/api/v5/prompt-library/pending/'):
+                        self.send(200,dict(items=[]));return
                     if self.path=='/fixture-video.mp4':
                         data=TrackTests.sound.read_bytes();start=0;end=len(data)-1;partial=self.headers.get('Range')
                         if partial:
@@ -145,9 +157,15 @@ def main():
             try:
                 for mode in ['swap','image_story','text_story','image_assets']:
                     if mode not in args.modes.split(','):continue
-                    for width in [1280,760]:
+                    for width in ([1366,430] if args.exact_image_layout else [1280,760]):
                         fixture.reset();fixture.seed_results();pid=next(k for k,p in fixture.projects.items() if p['mode']==mode)
-                        checks.append(capture(out,mode+'-'+str(width),f'http://127.0.0.1:{server.server_port}/?check=1#/p/{pid}',width))
+                        url=f'http://127.0.0.1:{server.server_port}/?check=1#/p/{pid}'
+                        if args.exact_image_layout:
+                            from tests.uiux_browser_capture import capture as exact_capture
+                            dom=exact_capture(url,out/(mode+'-'+str(width)+'.png'),width,768 if width==1366 else 900)
+                            (out/(mode+'-'+str(width)+'.html')).write_text(dom,encoding='utf-8')
+                            checks.append(json.loads(html.unescape(re.search(r'data-check="([^"]+)"',dom)[1])))
+                        else: checks.append(capture(out,mode+'-'+str(width),url,width))
             finally:server.shutdown();server.server_close();fixture.close()
         if args.only!='original':
             for width in [1280,760]:

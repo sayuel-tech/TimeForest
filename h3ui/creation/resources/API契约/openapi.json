@@ -3888,7 +3888,8 @@
                 "type": "string",
                 "enum": [
                   "lm_studio",
-                  "deepseek"
+                  "deepseek",
+                  "openai_compatible"
                 ]
               },
               "api_style": {
@@ -3943,7 +3944,8 @@
                 "type": "string",
                 "enum": [
                   "json_schema",
-                  "json_object"
+                  "json_object",
+                  "prompt_json"
                 ]
               },
               "vision": {
@@ -9010,7 +9012,8 @@
             "type": "string",
             "enum": [
               "lm_studio",
-              "deepseek"
+              "deepseek",
+              "openai_compatible"
             ]
           },
           "api_style": {
@@ -9065,7 +9068,8 @@
             "type": "string",
             "enum": [
               "json_schema",
-              "json_object"
+              "json_object",
+              "prompt_json"
             ]
           },
           "vision": {
@@ -10966,7 +10970,8 @@
                   "type": "string",
                   "enum": [
                     "lm_studio",
-                    "deepseek"
+                    "deepseek",
+                    "openai_compatible"
                   ]
                 },
                 "api_style": {
@@ -11021,7 +11026,8 @@
                   "type": "string",
                   "enum": [
                     "json_schema",
-                    "json_object"
+                    "json_object",
+                    "prompt_json"
                   ]
                 },
                 "vision": {

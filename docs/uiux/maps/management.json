@@ -4,7 +4,7 @@
   "evidence": "Mechanical current-source map; not UI acceptance or a match to historical screenshots.",
   "sources": {
     "static/studio/features/task-center/index.js": {
-      "sha256": "b6ea48f0bbd1095d64274a9fe8999a6bf0b619d8b8268f79b2bb982022ab36a9",
+      "sha256": "fdcb98f932f03076d7765ea7bfc9c64751d9ee19e0106f4cee5a423900bfe296",
       "exports": [
         {
           "name": "confirmation",
@@ -51,7 +51,7 @@
       ]
     },
     "static/studio/pages/asset-library/index.js": {
-      "sha256": "bc2b43804c01682d2ed5260e8e934768ef561683a572028746c14034c14db472",
+      "sha256": "f6e9c67dfb1be6ff632a3d7727aaa1717587aed4280cc81fdbd173d52d0d5107",
       "exports": [
         {
           "name": "mountLibrary",
@@ -79,7 +79,7 @@
       ]
     },
     "static/studio/pages/asset-library/recycle-bin.js": {
-      "sha256": "e369ac0248f6bd538becdda8c5d891018dbb73be8ec4cc6040306665a985b71b",
+      "sha256": "d730986103be5b2aced474cc9e8febdaefea890497bb4015155c092cec59d20c",
       "exports": [
         {
           "name": "recycleCategories",
@@ -112,7 +112,7 @@
       ]
     },
     "static/studio/styles/library.css": {
-      "sha256": "50336f97de6d90c7d107e159d7f34aab2206aa7efad477970e99baaba415b183",
+      "sha256": "68f5b44593d0f647d0dfe144edb97456f8eeae8e7aadfc75795891e7c83f656e",
       "imported_by": []
     },
     "static/studio/styles/task-center.css": {

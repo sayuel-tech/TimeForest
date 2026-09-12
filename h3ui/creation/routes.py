@@ -67,7 +67,7 @@ def image_bind_apply(pid):return jsonify(service().handoffs.apply(pid,body()))
 
 
 @bp.get('/authoring/providers')
-def providers(): return jsonify(items=service().writing.providers.list())
+def providers(): return jsonify(items=service().writing.providers.list(),custom_chat_version=1)
 
 
 @bp.post('/authoring/providers/save')

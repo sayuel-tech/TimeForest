@@ -185,6 +185,24 @@
         "static/studio/features/image-settings/index.js"
       ]
     },
+    "static/studio/core/image-inputs.js": {
+      "sha256": "47d677fdd7025f521dcee61aabc200fd91a71a8cc02d018fb9b8f8c1b7c00351",
+      "exports": [
+        {
+          "name": "imageSlots",
+          "line": 2
+        },
+        {
+          "name": "visibleImageSlots",
+          "line": 3
+        }
+      ],
+      "imports": [],
+      "imported_by": [
+        "static/studio/app/image-workspace-controller.js",
+        "static/studio/features/image-results/workspace-view.js"
+      ]
+    },
     "static/studio/core/image-session.js": {
       "sha256": "5fb2563bfdc4f0569f0c349fcb570ba22dc2fc50ef7e3c5cac310f90bc22ae41",
       "exports": [
@@ -572,7 +590,7 @@
       ]
     },
     "static/studio/ui/experience-content.js": {
-      "sha256": "540ac7de04400a417eaec8f2a4acf256a2e23bfbb5b6bd7b9fc532c384657543",
+      "sha256": "1d04bc96ad79c7dfc98d555d3796a8880f6459e4bcd7f3ef097f2e2eea4c06ef",
       "exports": [
         {
           "name": "enhanceAuthoringWorkspace",
@@ -580,7 +598,7 @@
         },
         {
           "name": "enhanceMovieWorkspace",
-          "line": 94
+          "line": 108
         }
       ],
       "imports": [

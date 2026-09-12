@@ -90,6 +90,10 @@ class Movie:
         known={s['ref'] for s in segments}
         if set(ids)-known:raise ValueError('选择的剧本片段不存在')
         selected=[s for s in segments if not ids or s['ref'] in ids]
+        # Match the script directory: shots first, stable segment order within each shot.
+        shots=(self.c.layer(source,'storyboard') or {}).get('content',{}).get('shots',[])
+        positions={shot['ref']:index for index,shot in enumerate(shots)}
+        selected.sort(key=lambda segment:positions.get(segment['shot_ref'],len(positions)))
         for segment in selected:
             bundle,artifact=self.source(source,segment)
             p['content']['source_bundles'].append(bundle);p['artifacts'][bundle['snapshot_artifact_id']]=artifact

@@ -9,9 +9,16 @@ from pathlib import Path
 SOURCE = Path(__file__).parent / 'sources' / 'krea-edit.json'
 SOURCE_HASH = hashlib.sha256(SOURCE.read_bytes()).hexdigest()
 PLUGIN_VERSION = '86f886dac23013d88996e3a2e99093ba44d322fb'
-TOOLS = {'single': '单图编辑', 'dual': '双图编辑', 'region': '局部重绘／移除', 'outpaint': '图像扩展', 'text': '文生图'}
+TOOLS = {'single': '单图编辑', 'dual': '多图编辑', 'region': '局部重绘／移除', 'outpaint': '图像扩展', 'text': '文生图'}
 OUTPUTS = {'single': 27, 'dual': 2, 'region': 91, 'outpaint': 66, 'text': 27}
 TEXT_ADAPTER_REVISION = 1
+IMAGE_SLOTS = tuple('ABCDEFGHI')
+MULTIREF_NODES = {'TimeForestKreaMultiRefEncode', 'TimeForestKreaMultiRefPatch'}
+MULTIREF_REVISION = 1
+
+
+def active_slots(task):
+    return IMAGE_SLOTS if task['submode'] == 'dual' else (() if task['submode'] == 'text' else ('A',))
 DEFAULTS = dict(megapixels=1, output_mp=1.5, ratio='2:3', steps=10, cfg=1,
                 sampler_name='euler', scheduler='simple', seed=None, ref_boost=4,
                 ref_boost_a=1, grounding_px=768, fit_mode='fit', strength_model=1,
@@ -124,6 +131,8 @@ def compile_graph(mode, prompt, files, raw=None, models=None, prefix='time-fores
         raise ValueError('请选择工具并填写编辑指令')
     if mode!='text' and (not files.get('A') or (mode == 'dual' and not files.get('B'))):
         raise ValueError('缺少图片A或B')
+    if mode == 'dual' and any(slot not in IMAGE_SLOTS for slot in files):
+        raise ValueError('图片编辑最多支持9张图片（A—I）')
     p = settings(raw)
     if p['seed'] is None:
         raise ValueError('提交前必须确定实际种子')
@@ -187,5 +196,35 @@ def compile_graph(mode, prompt, files, raw=None, models=None, prefix='time-fores
     if mode == 'dual':
         w, h = scale_size(*map(int, p['ratio'].split(':')), p['megapixels'])
         result['4']['inputs'].update(width=w, height=h)
+        extra = [slot for slot in IMAGE_SLOTS[2:] if files.get(slot)]
+        if extra:
+            # Preserve the source two-image graph exactly; only extended tasks
+            # use the companion nodes with all references on both conditions.
+            refs = {}
+            for slot in IMAGE_SLOTS:
+                if not files.get(slot): continue
+                key = 'ref_' + slot
+                result[key] = dict(class_type='LoadImage', inputs={'image': files[slot]})
+                refs['image_' + slot.lower()] = [key, 0]
+            for entry in result.values():
+                if entry['class_type'] == 'Krea2EditGroundedEncode':
+                    old = entry['inputs']
+                    entry.update(class_type='TimeForestKreaMultiRefEncode', inputs={
+                        **{k: v for k, v in old.items() if k not in ('image', 'image_b')}, **refs})
+                elif entry['class_type'] == 'Krea2EditModelPatch':
+                    old = entry['inputs']
+                    entry.update(class_type='TimeForestKreaMultiRefPatch', inputs={
+                        **{k: v for k, v in old.items() if k in ('model', 'vae', 'ref_boost', 'ref_boost_a', 'fit_mode')},
+                        'target_latent': ['4', 0], **refs})
+            # Discard source nodes no longer connected after replacing the patch.
+            reachable = set()
+            def visit(key):
+                if key in reachable: return
+                reachable.add(key)
+                for value in result[key]['inputs'].values():
+                    if isinstance(value, list) and len(value) == 2 and str(value[0]) in result:
+                        visit(str(value[0]))
+            visit(str(OUTPUTS[mode]))
+            result = {key: value for key, value in result.items() if key in reachable}
     if size and mode == 'outpaint': geometry(mode, *size, p)
     return result, str(OUTPUTS[mode])

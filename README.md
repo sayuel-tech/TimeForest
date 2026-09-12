@@ -1,6 +1,6 @@
 # 时间森林 TimeForest
 
-**v6.3.34 功能状态：剧本创作模式和电影创作模式目前不可用。** 本版保留开发中的页面与代码，尚未完成可用性与完整创作流程验收；请勿将这两个模式视为已交付功能。后续状态以版本说明为准。
+**v6.3.35 功能状态：剧本创作模式和电影创作模式目前不可用。** 本版保留开发中的页面与代码，尚未完成可用性与完整创作流程验收；请勿将这两个模式视为已交付功能。后续状态以版本说明为准。
 
 **让 AI 创作，拥有一张赏心悦目的工作台。**
 
@@ -125,13 +125,17 @@
 
 项目代码沿用 [MIT 许可](LICENSE)。模型、插件、工作流和其他资源遵循各自的使用条件，详见[第三方来源](THIRD_PARTY_NOTICES.md)。
 
-当前网站基线为 **v6.3.34**；配套工作流与编译器未变，继续使用下方 **v6.3.33** 配套包。
+## 本版更新
+
+默认双图的多图编辑现可添加至9图；剧本云端LLM支持自定义服务与模型。剧本/电影整体仍处开发中，目前不可用。
+
+3—9图需要安装[配套扩展节点](comfyui_nodes/README.md)，详见[完整升级说明](docs/release-distribution.md)。两图继续原用法。
 
 ## 安装与启动
 
 > 工作流与模型名称清单作为同版 GitHub Release 附件分发，源码 Git 树不包含原始图与压缩包。首次运行前，请下载下方配套工具包，按[配套安装说明](docs/release-distribution.md)补齐文件。
 
-**v6.3.33 配套工具包：[下载 ZIP](https://github.com/sayuel-tech/TimeForest/releases/download/v6.3.33/TimeForest-Companion-v6.3.33.zip) · [GitHub Release](https://github.com/sayuel-tech/TimeForest/releases/tag/v6.3.33)**
+**v6.3.35 配套工具包：[下载 ZIP](https://github.com/sayuel-tech/TimeForest/releases/download/v6.3.35/TimeForest-Companion-v6.3.35.zip) · [GitHub Release](https://github.com/sayuel-tech/TimeForest/releases/tag/v6.3.35)**
 
 同页提供 `SHA256SUMS.txt`，无需网盘或提取码。
 

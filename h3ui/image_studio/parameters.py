@@ -32,10 +32,11 @@ def public_parameters():
     result = {tool: copy.deepcopy(COMMON) for tool in ('single', 'dual', 'region', 'outpaint')}
     for tool in ('single', 'region'):
         result[tool].append(copy.deepcopy(AREA))
+    next(f for f in result['dual'] if f['key']=='ref_boost')['help']='作用于最后一张实际参考图；双图时为 B，不是保真百分比。'
     result['dual'].extend([
-        {**copy.deepcopy(AREA), 'label': '输出像素面积（MP）', 'help': '同时控制两张输入的处理面积及按输出比例创建的最终画布；1 MP 按 1024×1024 像素计算。'},
-        field('ratio', '输出比例', 'picture', 'select', options=['1:1', '2:3', '3:2', '16:9', '9:16', '4:3', '3:4'], quick=True, help='与输出像素面积共同决定双图结果尺寸，边长按 8 像素对齐。'),
-        field('ref_boost_a', '图片 A 参考权重', 'assets', min=0, max=20, step=.1, advanced=True, help='仅双图分支使用的图片 A 独立参考权重。'),
+        {**copy.deepcopy(AREA), 'label': '输出像素面积（MP）', 'help': '控制按输出比例创建的最终画布面积；1 MP 按 1024×1024 像素计算。'},
+        field('ratio', '输出比例', 'picture', 'select', options=['1:1', '2:3', '3:2', '16:9', '9:16', '4:3', '3:4'], quick=True, help='与输出像素面积共同决定多图结果尺寸，边长按 8 像素对齐。'),
+        field('ref_boost_a', '图片 A／前序参考权重', 'assets', min=0, max=20, step=.1, advanced=True, help='双图时作用于 A；多图时作用于最后一张之前的所有参考。'),
     ])
     result['outpaint'].append(field('output_mp', '输出像素面积（MP）', 'picture', min=.25, max=2, step=.05, quick=True,
                                   help='先将原图处理为固定 1 MP，再扩边；本值控制扩边后用于生成的最终画布面积。'))

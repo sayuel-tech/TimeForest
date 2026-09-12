@@ -73,8 +73,9 @@ class Runner:
             seed=task['settings']['seed'] if task['settings']['seed'] is not None else secrets.randbelow(2**53)
             task=copy.deepcopy(task);task['settings']['seed']=seed
             snapshot=copy.deepcopy(task)
-            snapshot['inputs']={role:self.store.get('inputs',task[role],pid) for role in ('A','B','mask') if task.get(role)} if task['submode']!='text' else {}
+            snapshot['inputs']={role:self.store.get('inputs',task[role],pid) for role in (*compiler.active_slots(task), *(['mask'] if task['submode']=='region' else [])) if task.get(role)} if task['submode']!='text' else {}
             if task['submode']=='text':snapshot.update(A=None,B=None,mask=None,adapter_revision=compiler.TEXT_ADAPTER_REVISION)
+            if task['submode']=='dual' and any(task.get(slot) for slot in compiler.IMAGE_SLOTS[2:]):snapshot['multi_reference_revision']=compiler.MULTIREF_REVISION
             run=dict(id=uid(),project=pid,task=tid,state='waiting',created=time.time(),seed=seed,snapshot=snapshot,
                      geometry=pre['geometry'],
                      source_revision=revision,request_key=key,source_hash=compiler.SOURCE_HASH,plugin_version=compiler.PLUGIN_VERSION,
@@ -157,6 +158,8 @@ class Runner:
         t=run['snapshot']
         missing=catalog.get('missing_by_tool',{}).get(t['submode'],catalog['missing'])
         if missing:raise ValueError('缺少节点，请正常重启ComfyUI加载插件：'+', '.join(missing))
+        if t['submode']=='dual' and any(t.get(slot) for slot in compiler.IMAGE_SLOTS[2:]) and catalog.get('multi_reference_nodes_missing'):
+            raise ValueError('3—9图编辑需要加载随网站提供的 timeforest_krea_multiref 扩展节点；安装说明见 comfyui_nodes/README.md。缺少：'+', '.join(catalog['multi_reference_nodes_missing']))
         engine_models=json.loads((self.st.root/'image-catalog.json').read_text(encoding='utf-8'))['models']
         for role in compiler.model_roles(t['submode']):
             name=t['models'][role]

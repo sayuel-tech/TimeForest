@@ -44,7 +44,7 @@ export function createFeature(ctx) {
         const ps = d.projects.filter(p => p.name.toLowerCase().includes(q) && (!mode || p.mode === mode));
         ctx.$("#archive-items").innerHTML = ps.length ? `<div class="grid3">${ps.map(p => {
           const busy = p.busy || ["generating", "preparing", "assembling"].includes(p.status);
-          const card = deleted ? ctx.projectCard(p).replace(/^<a [^>]*>/, '<article class="project-card">').replace(/<\/a>$/, '</article>') : ctx.projectCard(p);
+          const card = deleted ? ctx.projectCard(p,{deleted:true}).replace(/^<a [^>]*>/, '<article class="project-card">').replace(/<\/a>$/, '</article>') : ctx.projectCard(p);
           return `<div class="archive-project-entry">${card}<div class="archive-project-actions"><span class="muted">${busy ? "任务处理中" : deleted ? "可恢复" : ""}</span><button class="quiet" data-project-trash="${p.id}" aria-label="${deleted ? "恢复" : "删除"}项目：${ctx.esc(p.name)}" ${busy ? "disabled" : ""}>${deleted ? "恢复项目" : "删除项目"}</button></div></div>`;
         }).join("")}</div>` : `<div class="panel empty">${deleted ? "没有已删除的项目" : "没有匹配的项目"}</div>`;
         document.querySelectorAll("[data-project-trash]").forEach(b => b.onclick = () => changeArchive(ps.find(p => p.id === b.dataset.projectTrash), false, b));

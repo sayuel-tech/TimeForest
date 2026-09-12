@@ -224,7 +224,8 @@
         "h3ui/segmenter.py",
         "h3ui/studio_sources/manifest.json",
         "h3ui/studio_sources/impact.json",
-        "h3ui/video_assembly/*.py"
+        "h3ui/video_assembly/*.py",
+        "comfyui_nodes/**/*.py"
       ],
       "docs": [
         "docs/product/video-assembly-plan.md",
@@ -240,7 +241,8 @@
         "docs/candidate-records.md",
         "docs/recycle-bin.md",
         "docs/video-assembly.md",
-        "docs/product/prompt-library-execution-plan.md"
+        "docs/product/prompt-library-execution-plan.md",
+        "comfyui_nodes/README.md"
       ]
     },
     {
@@ -384,6 +386,7 @@
         "docs/uiux/audit/evidence.md",
         "docs/uiux/audit/findings.md",
         "docs/uiux/audit/inventory.md",
+        "docs/uiux/audit/task-led-closeout.md",
         "docs/uiux/catalog.json",
         "docs/uiux/common/production.md",
         "docs/uiux/common/settings.md",
@@ -428,7 +431,8 @@
         "docs/frontend/page-purpose-design.md",
         "docs/uiux/site-experience.md",
         "docs/uiux/maps/site_experience.json",
-        "docs/frontend/density-font-motion.md"
+        "docs/frontend/density-font-motion.md",
+        "docs/uiux/task-led-plan.md"
       ]
     }
   ]

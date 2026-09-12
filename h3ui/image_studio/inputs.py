@@ -4,6 +4,7 @@ import shutil
 from pathlib import Path
 from PIL import Image, ImageOps
 from .store import uid
+from .compiler import active_slots
 
 
 def prepare(store, pid, stream, name, provenance=None, mask=False):
@@ -51,8 +52,8 @@ def execution_inputs(store, pid, task, directory):
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=True)
     result = {}
-    for slot in ('A', 'B'):
-        if not task.get(slot) or (slot == 'B' and task['submode'] != 'dual'): continue
+    for slot in active_slots(task):
+        if not task.get(slot): continue
         record = store.get('inputs', task[slot], pid)
         dest = directory / (slot+'.png')
         if slot == 'A' and task['submode'] == 'region':

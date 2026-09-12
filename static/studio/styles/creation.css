@@ -75,7 +75,7 @@
 .tf-experience .authoring-desk.inspector-collapsed .desk-canvas>.workbench-view-tools,.tf-experience .asset-binding-desk .desk-canvas>.workbench-view-tools { right:24px; }
 .tf-experience .authoring-desk .desk-canvas>h2 { margin-bottom:0; flex:none; }
 .tf-experience .authoring-desk .reading-disclosure { margin:0; padding:0 0 8px; flex:none; }
-.tf-experience .writing-surface{ display:flex; flex-direction:column; flex:1;min-height:180px;gap:8px; }
+.tf-experience .writing-surface{ display:flex; flex-direction:column; flex:1;min-height:min-content;gap:8px; }
 .tf-experience .writing-conversation.creation-assist{ flex:none; display:grid; grid-template-columns:minmax(0,1fr) auto;gap:6px 10px; margin:0;padding:8px 10px; background:var(--paper-2); border:1px solid var(--line); border-radius:var(--r-sm); }
 .tf-experience .writing-conversation>h3 { grid-column:1; grid-row:1; color:var(--success); font-size:14px; }
 .tf-experience .writing-conversation>.field:first-of-type { grid-column:1/-1; grid-row:2; }
@@ -191,16 +191,28 @@
 .tf-experience .asset-needs-heading h2{line-height:1.35;margin:2px 0;font-size:var(--title-section);}
 .tf-experience .asset-needs-heading p{font-size:12px;line-height:1.4;margin:0}
 .tf-experience .asset-needs-toolbar{margin-bottom:6px;gap:6px;}
-.tf-experience .asset-need-card{display:grid;grid-template-columns:minmax(0,1fr);gap:3px;}
-.tf-experience .asset-need-media,.tf-experience .asset-need-card .asset-need-media img{height:64px;}
-.tf-experience .asset-need-title h3{line-height:1.4;margin:0;font-size:13px;}
-.tf-experience .asset-need-actions{grid-row:4;align-self:start;justify-self:start;z-index:1;width:max-content;padding-bottom:4px;}
-.tf-experience .asset-need-options{grid-row:4;grid-column:1;margin:0;padding-bottom:4px;}
-.tf-experience .asset-need-options>summary{margin-left:76px;min-height:28px;line-height:20px;text-align:right;padding:4px 0;}
-.tf-experience .asset-need-options[open]>summary{margin-bottom:10px}
-
-.tf-experience .asset-need-card>*{grid-column:1}
-@media(max-width:600px){.tf-experience .asset-need-grid.asset-need-groups{grid-template-columns:repeat(auto-fill,minmax(min(155px,100%),1fr));gap:8px;}.tf-experience .asset-need-options>summary{margin-left:76px;min-height:28px;line-height:20px;padding:4px 0;}.tf-experience .asset-need-title{flex-wrap:wrap}.tf-experience .asset-need-title .badge{font-size:10px}}
+/* Named binding slots: same paper/typography as home; task-sized media. */
+.tf-experience .asset-need-grid.asset-need-groups{grid-template-columns:repeat(auto-fill,minmax(min(200px,100%),1fr));gap:16px;}
+.tf-experience .asset-need-card{display:flex;flex-direction:column;gap:10px;padding:12px;background:var(--paper);border-radius:var(--r-md);box-shadow:0 1px 3px #30291905;}
+.tf-experience .asset-need-media,.tf-experience .asset-need-card .asset-need-media img{height:112px;}
+.tf-experience .asset-need-media{border-radius:var(--r-sm);overflow:hidden;}
+.tf-experience .asset-need-kind{pointer-events:none;font-size:12px;}
+.tf-experience .asset-need-slot{width:100%;height:100%;border:1px dashed var(--line);background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:26px 8px 8px;color:var(--sage);font-size:var(--text-body);border-radius:var(--r-sm);}
+.tf-experience .asset-need-slot>span:first-child{font-size:24px;line-height:1;}
+.tf-experience .asset-need-slot:hover{background:var(--sage-soft);}
+.tf-experience .asset-need-slot:focus-visible{outline:2px solid var(--sage);outline-offset:-3px;}
+.tf-experience .asset-need-title{padding:0;flex-wrap:wrap;gap:6px;}
+.tf-experience .asset-need-title h3{font-size:var(--title-card);font-weight:500;line-height:1.5;}
+.tf-experience .asset-need-title .badge{font-size:var(--text-meta);}
+.tf-experience .asset-need-origin{padding:0;font-size:var(--text-meta);}
+.tf-experience .asset-scope-context{font-size:var(--text-body);line-height:var(--leading-reading);overflow-wrap:anywhere;}
+.tf-experience .asset-policy-details{font-size:var(--text-meta);margin:0 0 10px;color:var(--muted);}
+.tf-experience .asset-need-actions{padding:0;}
+.tf-experience .asset-need-options{margin:0;padding:0;}
+.tf-experience .asset-need-options>summary{margin:0;padding:4px 0;min-height:32px;text-align:left;font-size:var(--text-control);}
+.tf-experience .asset-need-options .asset-need-description{padding:0;font-size:var(--text-body);}
+.tf-experience .asset-need-options[open]>summary{margin-bottom:10px;}
+@media(max-width:600px){.tf-experience .asset-need-grid.asset-need-groups{grid-template-columns:repeat(auto-fill,minmax(min(180px,100%),1fr));gap:12px;}.tf-experience .asset-need-slot{min-height:44px;}}
 
 .tf-experience .asset-writing-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px;}
 .tf-experience .asset-writing-header h2{margin:0;font-size:var(--title-section)}
@@ -258,8 +270,29 @@
 .tf-experience .asset-writing-header h2{margin-right:auto}
 @media(max-width:900px){.asset-needs-board{grid-template-columns:minmax(0,1fr)}.asset-needs-board>.asset-needs-toolbar{grid-column:1;grid-row:2;justify-content:flex-start}.tf-experience .creation-asset-writing .writing-conversation>.row{grid-row:2}.tf-experience .creation-asset-writing .writing-conversation>.field:first-of-type{grid-row:1}}
 
-.writing-version-label>.writing-output-heading{display:inline-flex;width:calc(100% - 16px);vertical-align:middle;margin:0;flex-wrap:wrap}
+.tf-experience .writing-dialogue-expanded.creation-assist{padding:12px;gap:8px 12px;}
+.tf-experience .writing-dialogue-expanded>.field:first-of-type{grid-column:1/-1;grid-row:2;}
+.tf-experience .writing-dialogue-expanded [data-ai-instruction]{height:88px;min-height:88px;max-height:240px;font-size:var(--text-reading);line-height:var(--leading-reading);padding:8px 10px;}
+.tf-experience .writing-dialogue-expanded>.row{grid-column:1/-1;grid-row:4;max-width:none;justify-content:flex-end;}
+.tf-experience .writing-dialogue-expanded .writing-options[open]{grid-row:3;}
+.tf-experience .writing-output-heading>.writing-version-choices{display:flex;flex:1;min-width:0;flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;gap:8px;padding:4px 0;}
+.tf-experience .writing-output-heading>h3,.tf-experience .writing-output-heading>button{flex:none;}
+.tf-experience .writing-version-choices>button{flex:none;}
+.tf-experience .writing-output-empty{font-size:var(--text-reading);line-height:var(--leading-reading);color:var(--muted);padding:16px 4px;}
+@media(max-width:600px){.tf-experience .writing-dialogue-expanded .writing-options{grid-row:3;grid-column:1;}.tf-experience .writing-dialogue-expanded>.field:first-of-type{grid-row:2;}}
 .asset-writing-header:has(.writing-options[open]){flex-wrap:wrap}
 
 .movie-item-heading{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin:0 0 8px}
 .movie-item-heading h3{margin:0;font-size:15px}
+.tf-experience .movie-viewing-heading{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:8px 0;color:var(--ink);}
+.tf-experience .movie-viewing-heading strong{font-size:var(--text-body);font-weight:500;}
+.tf-experience .movie-viewing-heading span{font-size:var(--text-meta);color:var(--muted);}
+.tf-experience .movie-generation-desk .desk-canvas>.media-player{flex:none;}
+.tf-experience .movie-generation-desk .desk-canvas>h2{margin-bottom:0;}
+.tf-experience .movie-generation-desk .desk-canvas>.media-player video{height:32dvh;min-height:180px;max-height:340px;}
+.tf-experience .movie-generation-desk .candidate-gallery{grid-template-columns:repeat(auto-fill,minmax(min(160px,100%),180px));justify-content:start;}
+.tf-experience .movie-generation-desk .candidate-media{height:90px;aspect-ratio:auto;}
+.tf-experience .movie-trim-summary{display:block;margin:4px 0 0;color:var(--muted);font-size:var(--text-meta);font-weight:400;}
+.tf-experience .movie-item-heading h3{font-size:var(--text-body);overflow-wrap:anywhere;}
+.tf-experience .movie-track-item{display:grid;grid-template-columns:auto 1fr;align-content:center;column-gap:6px;}
+.tf-experience .movie-track-item>.movie-clip-title{grid-column:1/-1;margin-top:4px;}

@@ -32,6 +32,11 @@ try{
  await wait(()=>document.body.dataset.pointerStroke==='done');
  assert(canvas.toDataURL()!==before,'Pointer stroke did not reach the real canvas');
  const edited=canvas.toDataURL();await click('[data-mask=undo]');assert(canvas.toDataURL()===before,'Mask undo changed geometry');await click('[data-mask=redo]');assert(canvas.toDataURL()===edited,'Mask redo lost stroke');
+ const settingsBefore=JSON.stringify((await get()).tasks.find(t=>t.id===region.id));
+ await click('#image-settings');await wait(()=>document.querySelector('#cancel-settings'));
+ await click('#cancel-settings');await wait(()=>!document.querySelector('#dialog').open);
+ assert(root.querySelector('canvas')===canvas&&canvas.toDataURL()===edited,'Parameter cancel rebuilt canvas or lost unsaved mask');
+ assert(JSON.stringify((await get()).tasks.find(t=>t.id===region.id))===settingsBefore,'Parameter cancel saved or uploaded mask');
  const oldMask=region.mask;await click('#image-save');await wait(async()=>{const p=await get();return p.tasks.find(t=>t.id===region.id).mask!==oldMask});
  const saved=(await get()).tasks.find(t=>t.id===region.id);assert(saved.A===region.A&&saved.mask,'Saving mask changed source');
  await select(outpaint);await wait(()=>root.querySelector('[data-setting=left]'));
@@ -41,7 +46,7 @@ try{
  assert((await get()).tasks.find(t=>t.id===region.id).mask===saved.mask,'Outpaint task overwrote the other task mask');
  assert(document.documentElement.scrollWidth<=innerWidth+1,'Canvas page horizontally clipped');
  root.querySelector('.desk-canvas').scrollTop=0;
- document.body.dataset.check=JSON.stringify({passed:true,width:innerWidth,checks:['real pointer mask','undo redo','mask persisted','outpaint 96px persisted','task isolation']});
+ document.body.dataset.check=JSON.stringify({passed:true,width:innerWidth,checks:['real pointer mask','undo redo','parameter cancel preserves unsaved canvas','mask persisted','outpaint 96px persisted','task isolation']});
 }catch(e){document.body.dataset.check=JSON.stringify({passed:false,error:e.stack})}
 </script>'''
 
@@ -66,7 +71,7 @@ def main():
     try:
         url=f'http://127.0.0.1:{server.server_port}/?uiux=canvas#/p/{fixture.pid}'
         result=subprocess.run([sys.executable,str(Path(__file__).with_name('uiux_browser_capture.py')),
-            url,str(output/'page.png'),str(width),str(960 if width==1440 else 900)],capture_output=True,timeout=60)
+            url,str(output/'page.png'),str(width),str(int(sys.argv[3]) if len(sys.argv)>3 else (960 if width==1440 else 900))],capture_output=True,timeout=60)
         dom=result.stdout.decode('utf-8','replace');(output/'page.html').write_text(dom,encoding='utf-8')
         match=re.search(r'data-check="([^"]+)"',dom)
         data=json.loads(html.unescape(match[1])) if match else dict(passed=False,error=result.stderr.decode('utf-8','replace')[-1200:])

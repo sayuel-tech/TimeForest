@@ -177,7 +177,7 @@ class AssetLineage:
             # prove what actually became the source of this particular output.
             if snapshot.get('submode')=='text': return
             inputs=mapping(snapshot.get('inputs'))
-            roles=['A']+(['B'] if snapshot.get('submode')=='dual' else [])+(['mask'] if snapshot.get('submode')=='region' else [])
+            roles=['A']+(list('BCDEFGHI') if snapshot.get('submode')=='dual' else [])+(['mask'] if snapshot.get('submode')=='region' else [])
             for role in roles:
                 if role in inputs:
                     self.input(mapping(inputs[role]).get('provenance'),pid,'image_'+role,parent,trail,depth)

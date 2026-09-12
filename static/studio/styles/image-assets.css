@@ -79,8 +79,8 @@
 .image-workspace .image-results-empty p{font-size:14px;margin:0;color:var(--muted)}
 /* Also used inside the shared media chooser dialog. */
 .removed-candidate-preview{width:54px;height:54px;object-fit:contain}
-.image-workspace .image-compare{min-height:160px;display:flex;align-items:center;justify-content:center;gap:12px;flex:1;background:var(--paper-2);border-radius:var(--r-sm);padding:12px;overflow:auto}
-.image-workspace .image-compare img{max-width:100%;max-height:100%;object-fit:contain;min-width:0}
+.image-workspace .image-compare{height:clamp(240px,34dvh,520px);min-height:240px;display:flex;align-items:center;justify-content:center;gap:12px;flex:none;background:var(--paper-2);border-radius:var(--r-sm);padding:12px;overflow:auto}
+.image-workspace .image-compare img{height:100%;max-width:100%;max-height:100%;object-fit:contain;min-width:0}
 .image-workspace .image-compare.split>img,.image-workspace .image-compare.split>figure{max-width:49%;flex:1}
 .image-workspace .image-compare figure{margin:0;text-align:center;font-size:12px}
 @media(max-width:850px),(max-height:620px){

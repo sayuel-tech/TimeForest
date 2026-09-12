@@ -51,7 +51,7 @@
       ]
     },
     "static/studio/modes/swap/workspace.js": {
-      "sha256": "0f09d5da605ca617ce8ce665640506ab02da59cc8a927c6450e84fab12bbee9f",
+      "sha256": "c05122c18b5c92468e694713255645b8713434d47ca36fb4058a4991eb34969c",
       "exports": [
         {
           "name": "navigation",
@@ -86,15 +86,15 @@
       ]
     },
     "static/studio/styles/modes.css": {
-      "sha256": "b3cd2d85c9547ae9e5742d6a043955122cee889a19a35f5e68b090be849f00ce",
+      "sha256": "777a19acfe57d37b967dbf7fb1c8601a7f42e11e12bd09263755f87e3e357307",
       "imported_by": []
     },
     "static/studio/styles/task-layouts.css": {
-      "sha256": "e61b2d0766d067066f609297317bd686cc39b75a5420b5d8f295b66fad5a4e3f",
+      "sha256": "8f96b03c8aaea571e9554d4e9344806d820855f38e3cff119ee2eab890ae0de1",
       "imported_by": []
     },
     "static/studio/styles/workbench.css": {
-      "sha256": "f3bc638ef5ed25ae7a29d05c438298e1aefeadeb0a33f03fefed45aca54e3fd9",
+      "sha256": "aef5133eacf51386819f7db3f5ab5897438d0881d2b26fefe92f994ba1911c1d",
       "imported_by": []
     }
   }

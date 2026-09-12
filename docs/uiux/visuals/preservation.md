@@ -15,7 +15,7 @@
 | 电影候选/剪辑空态 | static/assets/movie/empty-takes.webp、empty-edit.webp | modes/movie/workspace.js；历史候选空态已查看 |
 | 旧有项目/镜头空态 | static/assets/empty/empty-projects.svg、empty-shot.svg | home、editor-parts、export、设计检查页；属于仍有引用资源 |
 | 中英文文字体系 | static/assets/fonts/fonts.css；static/studio/styles/fonts/fonts.css | style.css 与 static/styles/tokens.css 两条导入链，保留本地字体与字形覆盖 |
-| 纸色/墨色/森林绿与阅读尺度 | static/styles/tokens.css；static/studio/styles/design-tokens.css | 颜色角色与17px阅读/16px摘要等是当前源码值；具体调整须检查调用方 |
+| 纸色/墨色/森林绿与阅读尺度 | static/styles/tokens.css；static/studio/styles/base.css、design-tokens.css | 色彩由base继续覆盖；当前阅读16px/摘要15px。数值是实现记录，不是已获认可的最终尺度；具体调整须检查调用方 |
 | 图片计时呈现及共同运行状态 | static/studio/ui/run-timing.js；styles/components.css | AGENTS 明确记载用户认可图片计时，并作为共同呈现依据 |
 | 同一会话列表/全文切换 | features/prompt-library/browser.js；ui/prompt-editor.js | 原阅读改造与本次历史截图支持保留方向，未重验全部交互 |
 | 草稿/返回/媒体保护 | core/async-state.js、snapshot-update.js；ui/workspace-view-state.js | 当前公共机制，不能因布局重构而丢弃 |

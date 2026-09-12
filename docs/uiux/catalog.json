@@ -22,6 +22,7 @@
       ],
       "tests": [
         "tests/site_layout_ui_fixture.py",
+        "tests/management_context_ui_fixture.py",
         "tests/readability_ui_fixture.py"
       ],
       "references": [
@@ -90,6 +91,7 @@
       ],
       "tests": [
         "tests/studio_asset_modes.test.mjs",
+        "tests/image_story_layout_ui_fixture.py",
         "tests/studio_frontend.test.mjs",
         "tests/readability_ui_fixture.py"
       ],
@@ -119,6 +121,7 @@
         "static/studio/styles/task-layouts.css"
       ],
       "tests": [
+        "tests/text_story_layout_ui_fixture.py",
         "tests/studio_frontend.test.mjs",
         "tests/studio_asset_modes.test.mjs",
         "tests/readability_ui_fixture.py"
@@ -143,7 +146,9 @@
         "文生图",
         "局部重绘",
         "扩图",
-        "图片任务"
+        "图片任务",
+        "多图编辑",
+        "九图编辑"
       ],
       "source_patterns": [
         "static/studio/app/image-workspace-controller.js",
@@ -151,12 +156,18 @@
         "static/studio/features/image-results/*.js",
         "static/studio/styles/image-assets.css",
         "static/studio/styles/workbench.css",
-        "static/studio/styles/task-layouts.css"
+        "static/studio/styles/task-layouts.css",
+        "static/studio/core/image-inputs.js"
       ],
       "tests": [
+        "tests/uiux_image_canvas_fixture.py",
+        "tests/result_experience_ui_fixture.py",
+        "tests/test_image_result_actions.py",
         "tests/studio_image_interactions.test.mjs",
         "tests/studio_image_clock.test.mjs",
-        "tests/image_parameter_ui_fixture.py"
+        "tests/image_parameter_ui_fixture.py",
+        "tests/image_multiref_ui_fixture.py",
+        "tests/test_image_multiref.py"
       ],
       "references": [
         "docs/image-assets.md",
@@ -164,6 +175,7 @@
       ],
       "entrypoints": [
         "static/studio/app/image-workspace-controller.js",
+        "static/studio/core/image-inputs.js",
         "static/studio/features/image-canvas/index.js",
         "static/studio/features/image-results/transfer.js",
         "static/studio/features/image-results/workspace-view.js",
@@ -192,6 +204,7 @@
       "tests": [
         "tests/studio_video_assembly.test.mjs",
         "tests/video_assembly_track_ui_fixture.py",
+        "tests/assembly_context_ui_fixture.py",
         "tests/video_assembly_draft_ui_fixture.py",
         "tests/assembly_import_ui_fixture.py"
       ],
@@ -234,6 +247,9 @@
       "tests": [
         "tests/creation_return_context.test.mjs",
         "tests/creation_experience_ui_fixture.py",
+        "tests/authoring_manual_text_ui_fixture.py",
+        "tests/authoring_provider_settings_ui_fixture.py",
+        "tests/test_authoring_custom_provider.py",
         "tests/test_creation_experience.py"
       ],
       "references": [
@@ -276,6 +292,7 @@
         "static/studio/styles/task-layouts.css"
       ],
       "tests": [
+        "tests/test_creation_import_order.py",
         "tests/creation_return_context.test.mjs",
         "tests/creation_ui_fixture.py",
         "tests/test_creation_movie.py"
@@ -315,6 +332,7 @@
       ],
       "tests": [
         "tests/library_layout_ui_fixture.py",
+        "tests/library_selection_context_ui_fixture.py",
         "tests/library_transfer_ui_fixture.py",
         "tests/asset_origin_ui_fixture.py",
         "tests/studio_library_usage.test.mjs"
@@ -374,6 +392,7 @@
       ],
       "tests": [
         "tests/prompt_library_ui_fixture.py",
+        "tests/library_selection_context_ui_fixture.py",
         "tests/test_prompt_library.py",
         "tests/readability_ui_fixture.py"
       ],
@@ -418,6 +437,7 @@
       ],
       "tests": [
         "tests/task_center_ui_fixture.py",
+        "tests/management_context_ui_fixture.py",
         "tests/studio_task_center.test.mjs",
         "tests/studio_recycle_bin.test.mjs",
         "tests/test_recycle_bin.py"
@@ -607,6 +627,7 @@
         "tests/async_experience_ui_fixture.py"
       ],
       "references": [
+        "docs/uiux/audit/task-led-closeout.md",
         "docs/frontend/refresh-and-libraries.md",
         "docs/frontend/experience-phase4.md"
       ],
@@ -618,6 +639,7 @@
         "static/studio/core/capability-client.js",
         "static/studio/core/export-lifecycle.js",
         "static/studio/core/image-catalog.js",
+        "static/studio/core/image-inputs.js",
         "static/studio/core/image-session.js",
         "static/studio/core/progress-channel.js",
         "static/studio/core/project-commands.js",

@@ -4,15 +4,16 @@
   "evidence": "Mechanical current-source map; not UI acceptance or a match to historical screenshots.",
   "sources": {
     "static/studio/app/image-workspace-controller.js": {
-      "sha256": "583403725f0a81d3d0d41c0c372eb0454454ba707c17b0b52d509ffed2614877",
+      "sha256": "23ce1b96040f89c508c98ba40e61f86668488621852676cc160867b56e4b15b8",
       "exports": [
         {
           "name": "mountWorkspace",
-          "line": 29
+          "line": 30
         }
       ],
       "imports": [
         "static/studio/core/async-state.js",
+        "static/studio/core/image-inputs.js",
         "static/studio/core/image-session.js",
         "static/studio/core/progress-channel.js",
         "static/studio/core/source-target.js",
@@ -39,6 +40,24 @@
       "imported_by": [
         "static/studio/app/bootstrap.js",
         "static/studio/app/mode-registry.js"
+      ]
+    },
+    "static/studio/core/image-inputs.js": {
+      "sha256": "47d677fdd7025f521dcee61aabc200fd91a71a8cc02d018fb9b8f8c1b7c00351",
+      "exports": [
+        {
+          "name": "imageSlots",
+          "line": 2
+        },
+        {
+          "name": "visibleImageSlots",
+          "line": 3
+        }
+      ],
+      "imports": [],
+      "imported_by": [
+        "static/studio/app/image-workspace-controller.js",
+        "static/studio/features/image-results/workspace-view.js"
       ]
     },
     "static/studio/features/image-canvas/index.js": {
@@ -75,50 +94,51 @@
       ]
     },
     "static/studio/features/image-results/workspace-view.js": {
-      "sha256": "cbc9f959d39978b7ee2cff6981a291010b8fedd35ca59bcff87c0ef1cc375935",
+      "sha256": "7c42fd327cfed9254a35e40a6b11150348aed4a2f77043c6a8534ed8dbfdc1fe",
       "exports": [
         {
           "name": "imageSteps",
-          "line": 15
+          "line": 16
         },
         {
           "name": "imageRunStates",
-          "line": 17
+          "line": 18
         },
         {
           "name": "chosenOutput",
-          "line": 20
+          "line": 21
         },
         {
           "name": "generationReason",
-          "line": 24
+          "line": 25
         },
         {
           "name": "taskStatus",
-          "line": 31
+          "line": 32
         },
         {
           "name": "imageActionBar",
-          "line": 35
+          "line": 36
         },
         {
           "name": "imageRecordHistory",
-          "line": 96
+          "line": 102
         },
         {
           "name": "imageRunClock",
-          "line": 106
+          "line": 114
         },
         {
           "name": "imageRunStatus",
-          "line": 117
+          "line": 125
         },
         {
           "name": "renderImageWorkspace",
-          "line": 124
+          "line": 132
         }
       ],
       "imports": [
+        "static/studio/core/image-inputs.js",
         "static/studio/core/task-state.js",
         "static/studio/features/image-settings/index.js",
         "static/studio/features/shot-segment-tree/return-context.js",
@@ -139,15 +159,15 @@
       ]
     },
     "static/studio/styles/image-assets.css": {
-      "sha256": "7d010d6fa2f3a97f8659eccd0785f980cff34e368d67e30f13670c592e0d658c",
+      "sha256": "50a9b498e0b794dc3cfeee3b90658dd8cbb077ea66a3d2af99100c0b3db32f09",
       "imported_by": []
     },
     "static/studio/styles/task-layouts.css": {
-      "sha256": "e61b2d0766d067066f609297317bd686cc39b75a5420b5d8f295b66fad5a4e3f",
+      "sha256": "8f96b03c8aaea571e9554d4e9344806d820855f38e3cff119ee2eab890ae0de1",
       "imported_by": []
     },
     "static/studio/styles/workbench.css": {
-      "sha256": "f3bc638ef5ed25ae7a29d05c438298e1aefeadeb0a33f03fefed45aca54e3fd9",
+      "sha256": "aef5133eacf51386819f7db3f5ab5897438d0881d2b26fefe92f994ba1911c1d",
       "imported_by": []
     }
   }

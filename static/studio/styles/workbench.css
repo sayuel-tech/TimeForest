@@ -254,6 +254,10 @@
 .tf-experience .inspector-collapsed .desk-inspector { display:none; }
 .tf-experience .workbench-view-tools { position:sticky; top:0; z-index:3; display:flex; justify-content:flex-end; gap:6px; height:0; margin:0; padding:0; overflow:visible; }
 .tf-experience .workbench-view-tools button { flex:none; font-size:11px; min-height:28px; padding:4px 8px; background:var(--paper); }
+@media (max-width:849px) {
+  /* Shot headers own their inspector action; keep the directory above that row. */
+  .tf-experience .desk-canvas:is(:has(> .shot-heading),:has(> .image-tools)) > .workbench-view-tools { position:static; height:auto; }
+}
 .tf-experience [data-toggle-directory],.tf-experience .desk-drawer-close { display:none; }
 .tf-experience .property-tabs { display:flex; gap:4px; padding:0 0 12px; border-bottom:1px solid var(--line); background:transparent; flex-wrap:wrap; }
 .tf-experience .property-tabs button { flex:1; min-width:0; padding:6px; min-height:32px; font-size:12px; border-color:transparent; background:transparent; }

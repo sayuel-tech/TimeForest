@@ -4,7 +4,7 @@
   "evidence": "Mechanical current-source map; not UI acceptance or a match to historical screenshots.",
   "sources": {
     "static/index.html": {
-      "sha256": "7533d8c56f73015966aff81ef3b0d8716da851053d17f01876046eea1a444c8f",
+      "sha256": "6e617553c64492cae3d24ede424b3299835a566700e4bbf63647b7f69d228c51",
       "imported_by": []
     },
     "static/studio/app.js": {
@@ -16,7 +16,7 @@
       "imported_by": []
     },
     "static/studio/app/bootstrap.js": {
-      "sha256": "350844b7b37c9a93dd48b20b8e4d0dc24673175231ce77cf2ebd61d269510397",
+      "sha256": "65cdad65f4b0bcbccd164dac50129103258cd960cd11a0d3b157113610cadc56",
       "exports": [],
       "imports": [
         "static/studio/app/image-workspace-controller.js",
@@ -87,11 +87,11 @@
       "imported_by": []
     },
     "static/studio/styles/task-layouts.css": {
-      "sha256": "e61b2d0766d067066f609297317bd686cc39b75a5420b5d8f295b66fad5a4e3f",
+      "sha256": "8f96b03c8aaea571e9554d4e9344806d820855f38e3cff119ee2eab890ae0de1",
       "imported_by": []
     },
     "static/studio/styles/workbench.css": {
-      "sha256": "f3bc638ef5ed25ae7a29d05c438298e1aefeadeb0a33f03fefed45aca54e3fd9",
+      "sha256": "aef5133eacf51386819f7db3f5ab5897438d0881d2b26fefe92f994ba1911c1d",
       "imported_by": []
     },
     "static/studio/ui/workbench.js": {

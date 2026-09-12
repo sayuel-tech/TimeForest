@@ -126,7 +126,7 @@ export async function mountLibrary(root, hash, signal) {
         )}</select>`,
       )}${ui.field(
         "图片编辑工具",
-        `<select name="image_tool">${ui.opts([["","全部"],["single","单图编辑"],["dual","双图编辑"],["region","局部重绘／移除"],["outpaint","图像扩展"],["text","文生图"]],params.get("image_tool"))}</select>`,
+        `<select name="image_tool">${ui.opts([["","全部"],["single","单图编辑"],["dual","多图编辑"],["region","局部重绘／移除"],["outpaint","图像扩展"],["text","文生图"]],params.get("image_tool"))}</select>`,
       )}${ui.field(
         "画幅",
         `<select name="aspect">${ui.opts(

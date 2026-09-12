@@ -28,7 +28,7 @@
       "imported_by": []
     },
     "static/studio/styles/creation.css": {
-      "sha256": "5d512d8db62030a60bd0c0bc117574513f0213027cb72d4441ce8d804d1582a3",
+      "sha256": "e7265862e14da5cb628c2394473aa583487e7cb74c5aeb9b7685a7f1407eadab",
       "imported_by": []
     },
     "static/studio/styles/design-tokens.css": {
@@ -40,11 +40,11 @@
       "imported_by": []
     },
     "static/studio/styles/image-assets.css": {
-      "sha256": "7d010d6fa2f3a97f8659eccd0785f980cff34e368d67e30f13670c592e0d658c",
+      "sha256": "50a9b498e0b794dc3cfeee3b90658dd8cbb077ea66a3d2af99100c0b3db32f09",
       "imported_by": []
     },
     "static/studio/styles/library.css": {
-      "sha256": "50336f97de6d90c7d107e159d7f34aab2206aa7efad477970e99baaba415b183",
+      "sha256": "68f5b44593d0f647d0dfe144edb97456f8eeae8e7aadfc75795891e7c83f656e",
       "imported_by": []
     },
     "static/studio/styles/media-player.css": {
@@ -52,7 +52,7 @@
       "imported_by": []
     },
     "static/studio/styles/modes.css": {
-      "sha256": "b3cd2d85c9547ae9e5742d6a043955122cee889a19a35f5e68b090be849f00ce",
+      "sha256": "777a19acfe57d37b967dbf7fb1c8601a7f42e11e12bd09263755f87e3e357307",
       "imported_by": []
     },
     "static/studio/styles/production-settings.css": {
@@ -72,7 +72,7 @@
       "imported_by": []
     },
     "static/studio/styles/task-layouts.css": {
-      "sha256": "e61b2d0766d067066f609297317bd686cc39b75a5420b5d8f295b66fad5a4e3f",
+      "sha256": "8f96b03c8aaea571e9554d4e9344806d820855f38e3cff119ee2eab890ae0de1",
       "imported_by": []
     },
     "static/studio/styles/video-assembly.css": {
@@ -80,7 +80,7 @@
       "imported_by": []
     },
     "static/studio/styles/workbench.css": {
-      "sha256": "f3bc638ef5ed25ae7a29d05c438298e1aefeadeb0a33f03fefed45aca54e3fd9",
+      "sha256": "aef5133eacf51386819f7db3f5ab5897438d0881d2b26fefe92f994ba1911c1d",
       "imported_by": []
     },
     "static/styles/tokens.css": {

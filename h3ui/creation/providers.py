@@ -1,4 +1,4 @@
-"""One DeepSeek Chat adapter. Reserved provider kinds have no network client."""
+"""Configurable Chat Completions adapter; reserved local providers remain disabled."""
 import json
 import os
 from urllib.request import Request, build_opener, HTTPRedirectHandler
@@ -57,16 +57,19 @@ class Providers:
         return config
 
     def supported(self,config):
-        if config['provider_kind']!='deepseek' or config['api_style']!='chat':
-            raise ProviderError('PROVIDER_NOT_IMPLEMENTED','本轮仅接入 DeepSeek Chat；该配置保留为未启用草稿。')
+        if config['provider_kind'] not in ('deepseek','openai_compatible') or config['api_style']!='chat':
+            raise ProviderError('PROVIDER_NOT_IMPLEMENTED','请选择 DeepSeek 或兼容 Chat Completions 的云端服务；其他接口尚未接入。')
 
     def save(self,data):
         request_contract('SaveProvider',data);config=dict(data['config']);endpoint(config['base_url'],'models')
         with self.store.lock:
             rows=self.list();previous=next((c for c in rows if c['config_id']==config['config_id']),None)
             config['credential_ref']=previous.get('credential_ref') if previous else None
-            if config['provider_kind']!='deepseek' or config['api_style']!='chat':config['enabled']=False
-            if config['structured_mode']!='json_object' and config['enabled']:raise ValueError('DeepSeek Chat 使用 JSON object 返回约定')
+            if config['provider_kind'] not in ('deepseek','openai_compatible') or config['api_style']!='chat':config['enabled']=False
+            if config['enabled']:
+                allowed=('json_object','prompt_json') if config['provider_kind']=='openai_compatible' else ('json_object',)
+                if config['structured_mode'] not in allowed:raise ValueError('当前接口不支持所选 JSON 返回方式')
+                if not config.get('model_id'):raise ValueError('请填写模型 ID')
             rows=[c for c in rows if c['config_id']!=config['config_id']]+[config]
             self.store.set_default('authoring_providers',rows)
         return config

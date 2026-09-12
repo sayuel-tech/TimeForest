@@ -28,6 +28,10 @@ dialog:has(.reading-document),dialog:has([data-records]){width:min(1040px,96vw)}
 .reference-contact-sheet:not(:has(figure)){flex:none;border:0;padding:0}
 .reference-contact-sheet{flex-basis:96px}
 .reference-contact-sheet img{height:62px}
+.image-story-references .reference-contact-sheet{margin-top:12px}
+.image-story-references .reference-contact-sheet figcaption,.image-review .reference-rail figcaption{font-size:var(--text-control);line-height:var(--leading-reading);white-space:normal;overflow-wrap:anywhere}
+.image-review .reference-rail figure{margin:0 0 16px}
+.image-review .reference-rail figure img{margin-bottom:4px}
 .swap-directing{grid-template-columns:minmax(0,1fr);overflow:visible;flex:none}
 .swap-directing .source-stage .media-player{max-width:600px}
 .swap-directing .source-stage video{max-height:240px}
@@ -161,7 +165,7 @@ dialog:has([data-prompt-form] textarea){width:min(1040px,96vw)}
   .tf-experience .desk-canvas { padding:10px 12px; }
   .tf-experience .desk-canvas>h2 { font-size:18px; }
   .tf-experience .authoring-desk .desk-canvas>.workbench-view-tools { right:12px; }
-  .tf-experience .writing-surface { min-height:180px; }
+  .tf-experience .writing-surface { min-height:min-content; }
   .tf-experience .writing-conversation.creation-assist { display:flex; flex-direction:column; gap:8px; padding:10px; }
   .tf-experience .writing-conversation>.row { justify-content:flex-end; }
   .tf-experience .writing-output-zone { padding:12px; }
@@ -189,3 +193,9 @@ dialog:has([data-prompt-form] textarea){width:min(1040px,96vw)}
 @media(prefers-reduced-motion:reduce){
   .tf-experience *, .tf-experience *::before,.tf-experience *::after { transition:none !important; animation:none !important; scroll-behavior:auto !important; }
 }
+/* Swap preparation: identify both inputs; keep import choices readable in the sidebar. */
+.tf-experience .source-character-card{margin:0 0 16px;}
+.tf-experience .source-character-card .source-character{display:block;margin-bottom:8px;}
+.tf-experience .source-character-card figcaption{font-size:var(--text-body);line-height:var(--leading-reading);overflow-wrap:anywhere;}
+.tf-experience .source-file-name{display:block;margin-top:4px;font:400 var(--text-meta)/1.5 var(--sans);color:var(--muted);overflow-wrap:anywhere;}
+.tf-experience .source-desk #property-character .import-options{grid-template-columns:minmax(0,1fr);}

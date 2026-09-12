@@ -24,5 +24,6 @@ export function shotHeading(ctx,s) {
 }
 
 export function shotPrompt(ctx,s) {
-  return ctx.project.mode==='swap'?ctx.swapPromptEditor(s):field(ctx.project.mode==='text_story'?'这一段发生什么？':'本段镜头与表演',`<textarea class="director-script ${ctx.project.mode==='text_story'?'writing-script':''}" data-field="prompt" data-segment="${s.id}" aria-label="P${s.index+1}提示词" placeholder="按顺序写下镜头、动作与原文台词……">${esc(s.prompt)}</textarea>`,'每15秒或不足15秒，为一个片段填写提示词。实际有效片长可略短；不会多出需要填写的提示词。');
+  // HTML removes the first newline after <textarea>; provide a sentinel so draft whitespace survives.
+  return ctx.project.mode==='swap'?ctx.swapPromptEditor(s):field(ctx.project.mode==='text_story'?'这一段发生什么？':'本段镜头与表演',`<textarea class="director-script ${ctx.project.mode==='text_story'?'writing-script':''}" data-field="prompt" data-segment="${s.id}" aria-label="P${s.index+1}提示词" placeholder="按顺序写下镜头、动作与原文台词……">\n${esc(s.prompt)}</textarea>`,'每15秒或不足15秒，为一个片段填写提示词。实际有效片长可略短；不会多出需要填写的提示词。');
 }

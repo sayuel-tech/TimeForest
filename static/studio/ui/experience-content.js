@@ -34,6 +34,11 @@ export function enhanceAuthoringWorkspace(ctx){
   const {root}=ctx;
   const box=root.querySelector('[data-authoring-assist]');
   root.dataset.experiencePage=['intent','writing','binding','storyboard','prompt'][ctx.step]||'writing';
+  if(ctx.step>=3&&ctx.selected){
+    const layers=ctx.session.project.content.layers,shots=layers.find(l=>l.layer==='storyboard')?.content.shots||[],segments=layers.find(l=>l.layer==='segment')?.content.segments||[];
+    const segment=segments.find(s=>s.ref===ctx.selected),shot=shots.find(s=>s.ref===(segment?.shot_ref||ctx.selected)),heading=root.querySelector('.desk-canvas > h2');
+    if(shot&&heading)heading.textContent=segment?`分镜 ${shots.indexOf(shot)+1} · ${shot.title||'未命名'} / 片段 ${segments.filter(s=>s.shot_ref===shot.ref).indexOf(segment)+1}`:`分镜 ${shots.indexOf(shot)+1} · ${shot.title||'未命名'}`;
+  }
   if(ctx.step===2){const writing=root.querySelector('.creation-asset-writing'),heading=writing?.querySelector(':scope > h2'),switcher=writing?.querySelector('[data-asset-task=asset_screenplay]');if(heading&&switcher){const bar=el('div','asset-writing-header');heading.before(bar);bar.append(heading,switcher);}
     const analyze=root.querySelector('[data-asset-task=asset_analysis]'),toolbar=root.querySelector('.asset-needs-toolbar');if(analyze&&toolbar){analyze.textContent='分析资产需求';toolbar.append(analyze);}const handoffs=root.querySelector('[data-view-key="image-handoffs"]');if(handoffs&&toolbar)toolbar.append(handoffs);const row=writing?.querySelector(':scope > .row');if(row&&!row.children.length)row.remove();}
   if(!box||box.dataset.experienceArranged)return;
@@ -44,9 +49,14 @@ export function enhanceAuthoringWorkspace(ctx){
   [...box.childNodes].filter(n=>n!==conversation).forEach(n=>output.append(n));
   if(conversation){
     conversation.classList.add('writing-conversation');conversation.setAttribute('aria-label','与 AI 沟通');
+    if(ctx.step!==2)conversation.classList.add('writing-dialogue-expanded');
     const options=el('details','writing-options');options.dataset.viewKey='writing-options:'+ctx.step+':'+(ctx.selected||'project');options.append(el('summary','','创作依据与参考'));
     const basis=conversation.querySelector('[data-writing-basis]')?.closest('.field'),images=conversation.querySelector(':scope > .check');
     if(basis)options.append(basis);if(images)options.append(images);conversation.append(options);
+    if(ctx.step===1){
+      const story=root.querySelector('.desk-canvas > .reading-disclosure');
+      if(story){const toggle=options.querySelector(':scope > summary');toggle.textContent='故事起点与创作依据';toggle.after(story);}
+    }
     if(ctx.step===2){const header=root.querySelector('.asset-writing-header');if(header){header.append(options);conversation.querySelector('h3')?.setAttribute('hidden','');}}
   }
   box.append(output);box.classList.add('writing-surface');
@@ -54,18 +64,22 @@ export function enhanceAuthoringWorkspace(ctx){
   if(heading){
     const bar=el('div','writing-output-heading');heading.before(bar);bar.append(heading);
     heading.textContent='当前输出';
-    const versions=output.querySelector(':scope > .row');if(versions)bar.append(versions);
+    const versions=output.querySelector(':scope > .row');if(versions){versions.classList.add('writing-version-choices');versions.setAttribute('aria-label','选择要查看的输出');bar.append(versions);}
     const candidateCount=output.querySelectorAll('[data-output]').length;
     if(candidateCount>1){const compare=el('button','quiet','比较版本');compare.type='button';compare.dataset.experienceCompare='';compare.onclick=()=>compareRecordedCandidates(ctx);bar.append(compare);}
   }
-  const instruction=box.querySelector('[data-ai-instruction]');if(instruction){instruction.rows=2;instruction.setAttribute('aria-label','本次修改要求');}
+  const instruction=box.querySelector('[data-ai-instruction]');if(instruction){instruction.rows=ctx.step===2?2:3;instruction.setAttribute('aria-label','本次修改要求');}
   output.querySelectorAll('textarea').forEach(t=>t.dataset.viewScroll='writing-text');
   const summary=output.querySelector('details[data-view-key^="candidate:"] > summary');
   if(summary){
     summary.classList.add('writing-version-label');
     summary.textContent=summary.textContent.replace('AI 返回的候选 · ','').replace('尚未写入正文','本次输出 · 尚未确认').replace('已保存内容，可继续编辑','已应用内容 · 可继续编辑');
   }
-  const outputHeading=output.querySelector('.writing-output-heading');if(summary&&outputHeading){const label=summary.textContent;summary.replaceChildren(outputHeading);summary.setAttribute('aria-label',label);}
+  // Keep version actions outside the disclosure: choosing a version must not fold the output.
+  if(!summary&&!output.querySelector('.writing-output')){
+    const empty=el('p','writing-output-empty','在上方写下想法或修改要求，返回的内容会显示在这里，核对后再确认。');
+    output.append(empty);
+  }
   // A long history is auxiliary, never another document-sized panel above the output.
   const history=output.querySelector('details[data-view-key^="writing-history:"]');
   if(history){history.classList.add('writing-conversation-history');history.dataset.viewScroll='writing-history';}
@@ -97,6 +111,17 @@ export function enhanceMovieWorkspace({ctx,project,edit,mediaURL,currentTake,sou
   canvas.dataset.movieExperienceArranged='true';
   if(ctx.step===0){
     const choices=(project.movie_takes||[]).filter(t=>t.movie_segment_id===ctx.selected&&t.state!=='removed');
+    const currentSource=source(ctx.selected),heading=canvas.querySelector(':scope > h2');
+    if(currentSource&&heading)heading.textContent=`${currentSource.shot.title||'分镜'} · 片段 ${project.content.segment_order.indexOf(ctx.selected)+1}`;
+    const formal=canvas.querySelector(':scope > .reading-disclosure'),sourcePanel=root.querySelector('#property-source');
+    if(formal&&sourcePanel)sourcePanel.append(formal);
+    const viewedPlayer=canvas.querySelector(':scope > .media-player');
+    if(viewedPlayer&&currentTake){
+      const adopted=choices.findIndex(t=>t.currently_adopted),viewed=choices.indexOf(currentTake);
+      const receipt=el('div','movie-viewing-heading');receipt.setAttribute('role','status');
+      receipt.append(el('strong','',`正在查看 · 候选 ${viewed+1}`),el('span','',adopted<0?'尚未采用结果':adopted===viewed?'此结果已采用':`当前采用候选 ${adopted+1} · 查看不会替换`));
+      viewedPlayer.before(receipt);
+    }
     const buttons=[...root.querySelectorAll('[data-run-view]')];
     if(buttons.length){
       const gallery=buttons[0].parentElement;gallery.classList.add('candidate-gallery');gallery.setAttribute('aria-label','候选结果：查看不等于采用');
@@ -122,7 +147,7 @@ export function enhanceMovieWorkspace({ctx,project,edit,mediaURL,currentTake,sou
       if(player){
         const preview=el('div','movie-preview-row'),facts=el('aside','movie-edit-facts');
         const included=edit.items.filter(i=>i.included&&edit.order.includes(i.id));
-        facts.innerHTML=`<b>${esc(project.name)}</b><strong>${formatTimecode(included.reduce((n,i)=>n+i.range.out_ms-i.range.in_ms,0))}</strong><p>已纳入成片 ${included.length} 个片段</p><p>未纳入 ${edit.items.filter(i=>!i.included).length} 个片段</p><p>当前预览所选片段；连续预览按剪辑顺序播放。接点在导出前核对。</p>`;
+        facts.innerHTML=`<b>${esc(project.name)}</b><strong>${formatTimecode(included.reduce((n,i)=>n+i.range.out_ms-i.range.in_ms,0))}</strong><p>当前预览所选片段；连续预览按轨道顺序播放。</p>`;
         controls.before(preview);preview.append(player,facts);preview.after(timeline);
         const zoom=canvas.querySelector('[data-zoom]')?.closest('label');if(zoom)timeline.prepend(zoom);
         const previewButton=canvas.querySelector('[data-preview-edit]'),exportButton=root.querySelector('[data-export]');if(previewButton&&exportButton)exportButton.before(previewButton);
@@ -140,6 +165,21 @@ export function enhanceMovieWorkspace({ctx,project,edit,mediaURL,currentTake,sou
     if(controls){const title=controls.querySelector(':scope > h3'),actions=controls.querySelector(':scope > .row');if(title&&actions){const heading=el('div','movie-item-heading');title.before(heading);heading.append(title,actions);}}
     const selected=edit.items.find(i=>i.id===ctx.selectedItem);
     const take=selected&&(project.movie_takes||[]).find(t=>t.take_id===selected.take_id);
+    if(controls&&selected){
+      const index=edit.order.indexOf(selected.id),src=source(selected.movie_segment_id);
+      const title=src?.segment?.title||src?.segment?.text?.split(/[。\n]/)[0]?.slice(0,28)||src?.shot?.title||'未命名片段';
+      controls.querySelector('.movie-item-heading h3').textContent=`轨道 ${index+1} · ${title}`;
+      controls.querySelector('[data-move="-1"]').disabled=index<=0;
+      controls.querySelector('[data-move="1"]').disabled=index>=edit.order.length-1;
+      const summary=el('span','movie-trim-summary',`${selected.included?'纳入成片':'已排除，不参与导出'} · 保留 ${formatTimecode(selected.range.out_ms-selected.range.in_ms)} · 原片 ${formatTimecode(take?.duration_ms||0)}`);
+      controls.querySelector('.movie-item-heading h3').append(summary);
+      controls.querySelectorAll('[data-range]').forEach(input=>input.addEventListener('input',()=>{
+        const start=Number(controls.querySelector('[data-range="in_ms"]').value),end=Number(controls.querySelector('[data-range="out_ms"]').value);
+        summary.textContent=end>start?`${selected.included?'纳入成片':'已排除，不参与导出'} · 保留 ${formatTimecode(end-start)} · 原片 ${formatTimecode(take?.duration_ms||0)}`:'出点须晚于入点 · 当前区间尚未保存';
+      }));
+      const relation=controls.querySelector(':scope > h3');
+      if(relation)relation.textContent=`来源 · ${src?.shot?.title||'分镜'} · 剧本片段 ${project.content.segment_order.indexOf(selected.movie_segment_id)+1}`;
+    }
     bindTimecodeInputs(root,{duration:take?.duration_ms,onDraftInput:mark,drafts:ctx.timecodeDrafts,scope:'edit:'+ctx.selectedItem});
     const header=canvas.querySelector(':scope > .row');
     if(header&&!header.querySelector('.movie-edit-summary')){

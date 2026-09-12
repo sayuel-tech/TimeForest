@@ -93,7 +93,7 @@ export function mountTaskCenter() {
     if(action&&!pending&&!busy){
       readSerial++;
       pending={task:renderedTasks[Number(action.dataset.taskIndex)],action:action.dataset.taskAction};
-      confirm.innerHTML=`<p>${esc(confirmation(pending.task,pending.action))}</p><div class="task-actions"><button type="button" data-no>返回</button><button type="button" class="primary" data-yes>确认${actions[pending.action]}</button></div>`;
+      confirm.innerHTML=`<h3>${esc(pending.task.name)}</h3><p class="helper">${esc(pending.task.title)} · ${esc(pending.task.id.slice(0,8))}</p><p>${esc(confirmation(pending.task,pending.action))}</p><div class="task-actions"><button type="button" data-no>返回</button><button type="button" class="primary" data-yes>确认${actions[pending.action]}</button></div>`;
       confirm.hidden=false;lock(true);confirm.querySelector('[data-no]').focus();
     }
     if(e.target.closest('[data-no]')&&!busy){clearConfirmation();dialog.querySelector('[data-filter]').focus();}

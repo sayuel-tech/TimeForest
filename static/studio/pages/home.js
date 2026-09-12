@@ -10,9 +10,9 @@ function projectSummary(p){
   const seconds=count(p.duration),segments=count(p.segments);
   return [seconds!==null?`${fmt(seconds)} 秒`:null,segments!==null?`${segments} ${p.kind==='assembly'?'个视频':'个片段'}`:null].filter(Boolean).join(' · ')||'继续上一次的制作';
 }
-export function projectCard(p){
+export function projectCard(p,{deleted=false}={}){
   const mode=getMode(p.mode);
-  return `<a class="project-card" href="#/p/${encodeURIComponent(p.id)}">${p.cover?`<img class="project-cover" loading="lazy" src="${esc(p.cover)}" alt="${esc(p.name)}项目参考图">`:`<div class="project-cover text-cover"><span class="eyebrow">${esc(mode?.name||'创作项目')}</span><span>${esc(p.name)}</span></div>`}<div class="card-body"><div class="row between"><span class="eyebrow">${esc(mode?.name||p.mode)}</span>${p.status?status(p.status):''}</div><h3>${esc(p.name)}</h3><small>${esc(projectSummary(p))}</small><span class="project-resume">继续制作 <span aria-hidden="true">↗</span></span></div></a>`;
+  return `<a class="project-card" href="#/p/${encodeURIComponent(p.id)}">${p.cover?`<img class="project-cover" loading="lazy" src="${esc(p.cover)}" alt="${esc(p.name)}项目参考图">`:`<div class="project-cover text-cover"><span class="eyebrow">${esc(mode?.name||'创作项目')}</span><span>${esc(p.name)}</span></div>`}<div class="card-body"><div class="row between"><span class="eyebrow">${esc(mode?.name||p.mode)}</span>${p.status?status(p.status):''}</div><h3>${esc(p.name)}</h3><small>${esc(projectSummary(p))}</small><span class="project-resume">${deleted?'恢复后可继续制作':'继续制作 <span aria-hidden="true">↗</span>'}</span></div></a>`;
 }
 export function renderHome(root, projects, create) {
   const items = projects.filter((p) => !p.archived);

@@ -4,7 +4,7 @@
   "evidence": "Mechanical current-source map; not UI acceptance or a match to historical screenshots.",
   "sources": {
     "static/studio/features/authoring-assist/binding-cards.js": {
-      "sha256": "76ce0c2998874bec25d8d15c2b84508d73fbf8790ded42a645c94e0713495e05",
+      "sha256": "8ec7ba75d9bc10a32cbec03a8b9d1969ac32117b644334530bebb31fe3aabf71",
       "exports": [
         {
           "name": "resolveBindings",
@@ -84,7 +84,7 @@
       ]
     },
     "static/studio/features/authoring-assist/index.js": {
-      "sha256": "eca21272a63f535c2d04be8ae05f707ed778aee354d75048d7ac7e1578151b64",
+      "sha256": "05e807da8a39b0db35cf3c539d188a46954424d72290763849197b4458f6de3a",
       "exports": [
         {
           "name": "updateAssistStatus",
@@ -241,7 +241,7 @@
       ]
     },
     "static/studio/modes/authoring/workspace.js": {
-      "sha256": "56bbf899033eb5564e6b0ccc5ac9e0a1f690bb250ff7132d70976027168a4485",
+      "sha256": "971f593908d1d2c923667866c69ee6bec9f2041984c462d002db7f9bbb773583",
       "exports": [
         {
           "name": "mountWorkspace",
@@ -279,15 +279,15 @@
       ]
     },
     "static/studio/styles/creation.css": {
-      "sha256": "5d512d8db62030a60bd0c0bc117574513f0213027cb72d4441ce8d804d1582a3",
+      "sha256": "e7265862e14da5cb628c2394473aa583487e7cb74c5aeb9b7685a7f1407eadab",
       "imported_by": []
     },
     "static/studio/styles/task-layouts.css": {
-      "sha256": "e61b2d0766d067066f609297317bd686cc39b75a5420b5d8f295b66fad5a4e3f",
+      "sha256": "8f96b03c8aaea571e9554d4e9344806d820855f38e3cff119ee2eab890ae0de1",
       "imported_by": []
     },
     "static/studio/styles/workbench.css": {
-      "sha256": "f3bc638ef5ed25ae7a29d05c438298e1aefeadeb0a33f03fefed45aca54e3fd9",
+      "sha256": "aef5133eacf51386819f7db3f5ab5897438d0881d2b26fefe92f994ba1911c1d",
       "imported_by": []
     }
   }

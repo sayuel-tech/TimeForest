@@ -103,9 +103,10 @@ export function mountWorkspace(root,initial) {
       if(choice==='discard'){ctx.pending.clear();ctx.dialoguePending.clear();ctx.providerDraft=null;session.project=structuredClone(saved);session.dirty=false;}}
     action();render();
   }
-  function textarea(label,name,value,attrs=''){return field(label,`<textarea class="director-script" data-text="${name}" ${attrs}>${esc(value||'')}</textarea>`);}
+  function textarea(label,name,value,attrs=''){return field(label,`<textarea class="director-script" data-text="${name}" ${attrs}>\n${esc(value||'')}</textarea>`);}
   function prose(name,title){const value=content(name);return `<details class="saved-writing" data-view-key="saved:${name}"><summary>${esc(title)}</summary>${textarea('已保存内容',name,(value.blocks||[]).map(b=>[b.heading,b.text].filter(Boolean).join('\n')).join('\n\n'))}</details>`;}
-  function navigate(step,target=''){ctx.step=Number(step);ctx.selected=target;ctx.splitShot=false;ctx.clipTask='prompt';ctx.viewCandidate=null;history.replaceState(null,'',`#/p/${session.project.id}?step=${ctx.step}${target?'&target='+encodeURIComponent(target):''}`);}
+  function navigate(step,target=''){ctx.step=Number(step);ctx.selected=target;ctx.splitShot=false;ctx.clipTask='prompt';ctx.viewCandidate=null;const segment=content('segment').segments?.find(s=>s.ref===target);if(segment)ctx.expanded.add(segment.shot_ref);history.replaceState(null,'',`#/p/${session.project.id}?step=${ctx.step}${target?'&target='+encodeURIComponent(target):''}`);}
+  ctx.navigateWriting=(step,target='')=>leave(()=>navigate(step,target));
   function render(){
     if(session.disposed)return;
     const restoreView=viewState.beforeRender(JSON.stringify([session.project.id,ctx.step,ctx.selected]));

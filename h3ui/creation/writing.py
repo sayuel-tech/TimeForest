@@ -85,6 +85,7 @@ class Writing:
         schema=read(spec['schema_file'])
         system=(ROOT/spec['common_template']).read_text(encoding='utf-8-sig')+'\n'+(ROOT/spec['task_template']).read_text(encoding='utf-8-sig')+'\n返回 JSON，严格遵循：\n'+json.dumps(schema,ensure_ascii=False)
         payload=dict(model=config['model_id'],messages=[dict(role='system',content=system),dict(role='user',content=json.dumps(c,ensure_ascii=False))],response_format={'type':'json_object'},max_tokens=c['budget']['output_tokens'] or config['max_output_tokens'] or 16384)
+        if config['structured_mode']=='prompt_json':payload.pop('response_format')
         images=self.creation.references.image_parts(p,c['materials'])
         if images:payload['messages'][1]['content']=[dict(type='text',text=json.dumps(c,ensure_ascii=False))]+images
         issues=[]
@@ -235,6 +236,7 @@ class Writing:
             spec=self.registry[contract]
             text=(ROOT/'运行模板/format_repair.txt').read_text(encoding='utf-8-sig')+'\n'+json.dumps(read(spec['schema_file']),ensure_ascii=False)
             payload=dict(model=config['model_id'],messages=[dict(role='system',content=text),dict(role='user',content=artifact['raw_final_text'])],response_format=dict(type='json_object'),max_tokens=config['max_output_tokens'] or 16384)
+            if config['structured_mode']=='prompt_json':payload.pop('response_format')
             jid=uid();job=dict(job_id=jid,kind='authoring',project_id=p['id'],state='queued',phase='等待格式修复',event_seq=1,candidate_ids=[],provider_request_id=None,failure_code=None,result_ref=None,inference_executed=False,request_key=data['request_key'],request_hash=digest(data),context=context,config=copy.deepcopy(config),created=time.time(),updated=time.time(),error=None,repair_of=original['job_id'],source_response_hash=artifact['response_hash'])
             p['creation_jobs'].append(job);p['content']['job_ids'].append(jid);self.store.save(p,p['revision'])
         if not self.creation.st.jobs.start('authoring_repair',p['id'],lambda:self.execute(p['id'],jid,config,context,spec,payload),lane='cloud'):

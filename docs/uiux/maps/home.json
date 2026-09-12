@@ -4,7 +4,7 @@
   "evidence": "Mechanical current-source map; not UI acceptance or a match to historical screenshots.",
   "sources": {
     "static/studio/app/bootstrap.js": {
-      "sha256": "350844b7b37c9a93dd48b20b8e4d0dc24673175231ce77cf2ebd61d269510397",
+      "sha256": "65cdad65f4b0bcbccd164dac50129103258cd960cd11a0d3b157113610cadc56",
       "exports": [],
       "imports": [
         "static/studio/app/image-workspace-controller.js",
@@ -71,7 +71,7 @@
       ]
     },
     "static/studio/pages/archive.js": {
-      "sha256": "beb6d1e30aa8c7a684707310990cfc8e49c3257223383d42082acc3a203fab4e",
+      "sha256": "cca050ec95b44d6f4348d1234b5c7c6d40ad2c15427bf976cdf6d9fc29ff3c5d",
       "exports": [
         {
           "name": "createFeature",
@@ -84,7 +84,7 @@
       ]
     },
     "static/studio/pages/home.js": {
-      "sha256": "00ad1e9058c5814250f15c512f5d5693d032b544756ee37cdb4c4fa86460afff",
+      "sha256": "476038ac52c3a17f1606f4546de526102ab81495c8cab67f11d7332f3047188b",
       "exports": [
         {
           "name": "projectCard",
@@ -105,7 +105,7 @@
       ]
     },
     "static/studio/styles/modes.css": {
-      "sha256": "b3cd2d85c9547ae9e5742d6a043955122cee889a19a35f5e68b090be849f00ce",
+      "sha256": "777a19acfe57d37b967dbf7fb1c8601a7f42e11e12bd09263755f87e3e357307",
       "imported_by": []
     },
     "static/studio/styles/shell.css": {

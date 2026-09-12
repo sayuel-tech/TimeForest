@@ -90,7 +90,8 @@ class ImageStudio:
         return dict(tools=compiler.TOOLS, defaults=compiler.DEFAULTS, models=self.models, choices=choices,
                     parameter_contract_version=PARAMETER_CONTRACT_VERSION, parameters=public_parameters(), local_models=meta,
                     quick_ingest_preserves_selection=True,
-                    task_discard_version=1,
+                    task_discard_version=1, multi_reference_version=compiler.MULTIREF_REVISION, max_reference_images=9,
+                    multi_reference_nodes_missing=sorted(compiler.MULTIREF_NODES-set(cache.get('node_types',[]))) if 'node_types' in cache else None,
                     text_to_image_version=compiler.TEXT_ADAPTER_REVISION,
                     missing_by_tool={tool:sorted(compiler.required_nodes(tool)-set(cache['node_types'])) for tool in compiler.TOOLS} if 'node_types' in cache else {},
                     node_catalog=dict(source=node_source, updated=cache.get('checked'), error=error, error_kind=error_kind, engine_url=url),
@@ -173,7 +174,11 @@ class ImageStudio:
                             raise ValueError('任务ID已被其他项目使用')
                 history=[r for r in self.store.all('runs',pid) if r['task']==tid]
                 if old and old['submode']!=raw['submode'] and history: raise Conflict('有历史结果的任务换工具请创建新任务')
+                if any(slot in raw for slot in 'JKLMNOPQRSTUVWXYZ'):
+                    raise ValueError('图片编辑最多支持9张图片（A—I）')
                 task={k:copy.deepcopy(raw.get(k)) for k in ('name','submode','prompt','A','B','mask')}
+                for slot in compiler.IMAGE_SLOTS[2:]:
+                    if slot in raw: task[slot]=copy.deepcopy(raw[slot])
                 task['prompt_sources']=prompt_sources(raw.get('prompt_sources',(old or {}).get('prompt_sources')))
                 task.update(id=tid,project=pid,name=str(task.get('name') or '编辑任务')[:120],
                             prompt=str(task.get('prompt') or '')[:20000],settings=compiler.settings(raw.get('settings')),
@@ -181,8 +186,8 @@ class ImageStudio:
                             revision=(old or {}).get('revision',0)+1)
                 for value in task['models'].values():
                     if not value or Path(value).is_absolute() or '..' in value.replace('\\','/').split('/'): raise ValueError('模型名称无效')
-                for role in ('A','B','mask'):
-                    if task[role]:
+                for role in (*compiler.IMAGE_SLOTS,'mask'):
+                    if task.get(role):
                         ref=self.store.get('inputs',task[role],pid)
                         if bool(ref.get('mask')) != (role=='mask'): raise ValueError('图片和遮罩类型不匹配')
                 if task['mask']:
@@ -196,7 +201,7 @@ class ImageStudio:
             uses=[]
             for task in tasks:
                 old=previous.get(task['id'],{})
-                for role in ('A','B'):
+                for role in compiler.active_slots(task):
                     if task.get(role) and task[role]!=old.get(role):
                         ref=self.store.get('inputs',task[role],pid)
                         origin=ref.get('provenance',{})

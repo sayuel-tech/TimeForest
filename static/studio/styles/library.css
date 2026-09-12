@@ -271,9 +271,8 @@
   border-radius: 8px;
 }
 .library-pick-card strong {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 .library-pick-card small {
   font-size: 11px;

@@ -142,3 +142,11 @@ AI尾部的媒体预处理保留源视频显示几何，经LoadVideo(101)→视�
 ### R1时间码呈现
 
 电影生成上游区间和剪辑入出点仍分别保存 upstream_range 与 range 的 in_ms/out_ms 整数毫秒。ui/timecode-input.js 只转换显示为分:秒.毫秒；原始输入按片段／剪辑项保存在 ctx.timecodeDrafts。非法值、范围越界和出点不晚于入点通过原save门阻止保存；错误重绘保留输入，保存中只读，成功或明确放弃后清理。播放取点明确读取主播放器，不读取新增候选缩略视频。参数默认与执行字段未改变。
+
+### 多图编辑 A—I 扩展（2026-09-12）
+
+`dual` 不改存储标识。A/B 沿用旧字段，C—I 为可选顶层输入 ID；缺字段表示未添加位置，null 表示已添加空位。前端 `core/image-inputs.js` 定义稳定字母，controller 复用原上传、资产选择与 ImageSession 保存门。后端 plan 校验同项目图片类型并保留可选键，拒绝 J—Z；仅实际保存的新引用进入 complete_usage，取消不登记。运行按有效工具过滤输入，dual 冻结全部已选 A—I，执行复制同名 PNG，lineage 显示对应 image_A—image_I 来源。
+
+两图图结构和 source_hash 不变；超过两图记录 multi_reference_revision=1，编译替换语义与参考节点为 TimeForestKreaMultiRefEncode/Patch。每张图经独立 LoadImage，以 image_a—image_i 同时连入正、负编码与 patch；空位跳过，编码模板保留字母标记。输出 latent 仍为原节点4，尺寸由 ratio＋megapixels 算出；新增参考在采样前调用上游像素适配／VAE编码，保留各图顺序与原采样设置。
+
+多图 ref_boost 作用于最后一张实际参考，ref_boost_a 作用于此前所有图片（双图仅 A），这是上游 forward 的真实语义。参数说明已同步。catalog 增加 multi_reference_version=1、max_reference_images=9 与同步后 multi_reference_nodes_missing；旧后台禁用增加位置并提示重启，运行准备检查缺失节点且不提交 prompt。节点来源、安装边界和未实测范围见[配套说明](../../comfyui_nodes/README.md)。

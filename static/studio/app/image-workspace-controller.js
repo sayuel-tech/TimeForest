@@ -1,3 +1,4 @@
+import {imageSlots} from '../core/image-inputs.js';
 import {workspaceViewState} from '../ui/workspace-view-state.js';
 import {updateStatusRegion} from '../ui/status-region.js';
 import {addRecordButton,recordSource} from '../features/prompt-library/records.js';
@@ -142,7 +143,7 @@ export function mountWorkspace(root,project,catalog){
     root.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>action(async()=>{await flushMask();page=b.dataset.page;view.inspectorTab=page==='edit'?'assets':'result';render();}));
     root.querySelectorAll('[data-task]').forEach(b=>b.onclick=()=>action(async()=>{await flushMask();viewingTask=null;session.project.current_task=b.dataset.task;selection=null;geom=null;view.assetName='';view.tasksOpen=false;mark();render();}));
     root.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>action(async()=>{await flushMask();const t=task();if(b.dataset.tool===t.submode)return;
-      if(t.submode==='text'||b.dataset.tool==='text'){newTask(b.dataset.tool);}else if(session.project.runs.some(r=>r.task===t.id)){newTask(b.dataset.tool,t.A);}else{t.submode=b.dataset.tool;t.mask=null;t.B=null;mark();}geom=null;render();}));
+      if(t.submode==='text'||b.dataset.tool==='text'){newTask(b.dataset.tool);}else if(session.project.runs.some(r=>r.task===t.id)){newTask(b.dataset.tool,t.A);}else{t.submode=b.dataset.tool;t.mask=null;t.B=null;for(const role of imageSlots.slice(2))delete t[role];mark();}geom=null;render();}));
     root.querySelectorAll('[data-upload-trigger]').forEach(b=>b.onclick=()=>root.querySelector(`[data-upload="${b.dataset.uploadTrigger}"]`)?.click());
     root.querySelector('.image-task-toggle')?.addEventListener('click',e=>{
       view.tasksOpen=!view.tasksOpen;e.currentTarget.setAttribute('aria-expanded',String(view.tasksOpen));
@@ -179,9 +180,22 @@ export function mountWorkspace(root,project,catalog){
       const role=button.dataset.removeInput,t=task();
       if(!await ui.confirm('移除图 '+role+' 的引用？','只移除当前任务的输入引用，原文件、资产库和已有候选保留。'+(role==='A'?'该底图上的标注会一并清空。':''),'移除引用'))return;
       if(session.disposed)return;
-      if(role==='B')await flushMask();
+      if(role!=='A')await flushMask();
       t[role]=null;if(role==='A'){t.mask=null;geom=null;}
       mark();render();
+    }));
+    bindAction('#image-add-reference',async()=>{
+      if(catalog.multi_reference_version!==1)throw new Error('请重启导演台并刷新页面，加载多图保存接口。');
+      const t=task(),role=imageSlots.slice(2).find(role=>!Object.hasOwn(t,role));
+      if(!role)return;
+      await flushMask();t[role]=null;mark();render();
+      root.querySelector(`[data-upload-trigger="${role}"]`)?.focus();
+    });
+    root.querySelectorAll('[data-drop-image-slot]').forEach(button=>button.onclick=()=>action(async()=>{
+      const role=button.dataset.dropImageSlot,t=task();
+      if(t[role]&&!await ui.confirm('移除图 '+role+' 的引用和位置？','原文件、资产库和已有候选保留，其他图片编号不变。','移除引用'))return;
+      if(session.disposed)return;
+      await flushMask();delete t[role];mark();render();
     }));
     bindAction('#image-swap',async()=>{await flushMask();const t=task();[t.A,t.B]=[t.B,t.A];t.mask=null;mark();render();});
     root.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{if(!canvas)return;const type=b.dataset.view;if(type==='fit')canvas.fit();else canvas.setZoom(type==='actual'?1:canvas.zoom*(type==='plus'?1.25:.8));});
